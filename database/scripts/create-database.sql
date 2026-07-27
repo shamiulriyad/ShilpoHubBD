@@ -1,0 +1,2 @@
+-- Database bootstrap script placeholder
+-- Use this for local PostgreSQL initialization when needed.

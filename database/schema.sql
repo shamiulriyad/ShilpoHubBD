@@ -1,0 +1,2 @@
+-- Core schema placeholder
+-- Add tables, indexes, constraints, and triggers here.

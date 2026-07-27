@@ -1,0 +1,40 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Node / Vite / React
+node_modules/
+dist/
+coverage/
+.turbo/
+frontend/node_modules/
+frontend/dist/
+
+# .NET
+bin/
+obj/
+backend/**/bin/
+backend/**/obj/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+frontend/.env
+frontend/.env.local
+backend/.env
+backend/.env.local
+
+# Database / backups
+database/backups/
