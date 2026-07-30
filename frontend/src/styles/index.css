@@ -2,8 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-background: #F8F3EB;
+  --color-surface: #FFFDFC;
+  --color-title: #2E5E4E;
+  --color-heading: #2E5E4E;
+  --color-body: #2B2B2B;
+  --color-primary: #A64B2A;
+  --color-secondary: #D4A017;
+  --color-link: #2C6E91;
+  --color-border: #D9CDBB;
+  --color-success: #4D7C5A;
+}
+
 html,
 body,
 #root {
   height: 100%;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-body;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-heading font-semibold;
+  }
+
+  a {
+    @apply text-link;
+  }
 }

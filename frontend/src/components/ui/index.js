@@ -1,1 +1,9 @@
 export { default as Button } from './Button';
+export { default as Badge } from './Badge';
+export { default as SectionHeader } from './SectionHeader';
+export { default as PageHeader } from './PageHeader';
+export { default as SearchBar } from './SearchBar';
+export { default as FilterPanel } from './FilterPanel';
+export { default as Pagination } from './Pagination';
+export { default as Table } from './Table';
+export { default as ChartPlaceholder } from './ChartPlaceholder';
