@@ -70,9 +70,20 @@ export const routePaths = {
   dashboardSettings: '/dashboard/settings',
   dashboardProfile: '/dashboard/profile',
 
+  // Customer journey
+  customer: '/customer',
+  customerMarketplace: '/customer/marketplace',
+  customerProductDetails: '/customer/products/:productId',
+  customerCraftStory: '/customer/crafts/:craftId/story',
+  customerProducerProfile: '/customer/producers/:producerId',
+  customerProducerStory: '/customer/producers/:producerId/story',
+  customerWorkshops: '/customer/workshops',
+  customerWishlist: '/customer/wishlist',
+  customerCart: '/customer/cart',
+  customerCheckout: '/customer/checkout',
+
   // Roles
   visitor: '/visitor',
-  customer: '/customer',
   artisan: '/artisan',
   farmer: '/farmer',
   retailer: '/retailer',

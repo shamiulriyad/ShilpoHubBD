@@ -4,7 +4,7 @@ import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { ProtectedRoute } from './ProtectedRoute';
 import { routePaths } from './routePaths';
-import { adminSidebarNav } from '../data/navigation';
+import { adminSidebarNav, customerSidebarNav } from '../data/navigation';
 
 import HomePage from '../pages/Home/HomePage';
 
@@ -76,7 +76,16 @@ import CMS from '../pages/Admin/CMS';
 import SecurityCenter from '../pages/Admin/SecurityCenter';
 
 import VisitorPage from '../pages/Visitor/VisitorPage';
-import CustomerPage from '../pages/Customer/CustomerPage';
+import CustomerDashboard from '../pages/Customer/CustomerDashboard';
+import CustomerMarketplace from '../pages/Customer/Marketplace';
+import CustomerProductDetails from '../pages/Customer/ProductDetails';
+import CraftStory from '../pages/Customer/CraftStory';
+import ProducerProfile from '../pages/Customer/ProducerProfile';
+import ProducerStory from '../pages/Customer/ProducerStory';
+import WorkshopGallery from '../pages/Customer/WorkshopGallery';
+import CustomerWishlist from '../pages/Customer/Wishlist';
+import ShoppingCart from '../pages/Customer/ShoppingCart';
+import CustomerCheckout from '../pages/Customer/Checkout';
 import ArtisanPage from '../pages/Artisan/ArtisanPage';
 import FarmerPage from '../pages/Farmer/FarmerPage';
 import RetailerPage from '../pages/Retailer/RetailerPage';
@@ -178,7 +187,6 @@ const router = createBrowserRouter([
           { path: routePaths.academyPortfolio, element: <Portfolio /> },
 
           { path: routePaths.visitor, element: <VisitorPage /> },
-          { path: routePaths.customer, element: <CustomerPage /> },
           { path: routePaths.artisan, element: <ArtisanPage /> },
           { path: routePaths.farmer, element: <FarmerPage /> },
           { path: routePaths.retailer, element: <RetailerPage /> },
@@ -202,6 +210,21 @@ const router = createBrowserRouter([
           { path: routePaths.adminMarketplace, element: <MarketplaceMonitoring /> },
           { path: routePaths.adminCms, element: <CMS /> },
           { path: routePaths.adminSecurity, element: <SecurityCenter /> },
+        ],
+      },
+      {
+        element: <DashboardLayout navItems={customerSidebarNav} sidebarTitle="Customer" />,
+        children: [
+          { path: routePaths.customer, element: <CustomerDashboard /> },
+          { path: routePaths.customerMarketplace, element: <CustomerMarketplace /> },
+          { path: routePaths.customerProductDetails, element: <CustomerProductDetails /> },
+          { path: routePaths.customerCraftStory, element: <CraftStory /> },
+          { path: routePaths.customerProducerProfile, element: <ProducerProfile /> },
+          { path: routePaths.customerProducerStory, element: <ProducerStory /> },
+          { path: routePaths.customerWorkshops, element: <WorkshopGallery /> },
+          { path: routePaths.customerWishlist, element: <CustomerWishlist /> },
+          { path: routePaths.customerCart, element: <ShoppingCart /> },
+          { path: routePaths.customerCheckout, element: <CustomerCheckout /> },
         ],
       },
     ],
