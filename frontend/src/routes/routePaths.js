@@ -81,6 +81,16 @@ export const routePaths = {
   customerWishlist: '/customer/wishlist',
   customerCart: '/customer/cart',
   customerCheckout: '/customer/checkout',
+  customerOrderSuccess: '/customer/order-success',
+  customerCustomOrder: '/customer/custom-order',
+  customerLiveShopping: '/customer/live-shopping/:workshopId',
+  customerAuctions: '/customer/auctions',
+  customerAuctionDetails: '/customer/auctions/:auctionId',
+  customerCommunity: '/customer/community',
+  customerForum: '/customer/community/forum',
+  customerQA: '/customer/community/qa',
+  customerMessages: '/customer/messages',
+  customerFollowing: '/customer/following',
 
   // Roles
   visitor: '/visitor',

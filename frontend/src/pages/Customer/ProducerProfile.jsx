@@ -22,8 +22,11 @@ export default function ProducerProfile() {
         title={producer.name}
         description={`${producer.craft} · ${producer.district}`}
         action={
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <Button variant="secondary">Contact Producer</Button>
+            <Link to={routePaths.customerCustomOrder}>
+              <Button variant="secondary">Request Custom Order</Button>
+            </Link>
             <Link to={routePaths.customerProducerStory.replace(':producerId', producer.id)}>
               <Button variant="primary">Read Full Story</Button>
             </Link>

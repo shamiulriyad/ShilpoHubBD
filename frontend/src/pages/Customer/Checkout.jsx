@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Button } from '../../components/ui';
 
@@ -70,9 +71,11 @@ export default function Checkout() {
             <span>Total</span>
             <span>৳ 5,970</span>
           </div>
-          <Button variant="primary" className="w-full">
-            Place Order
-          </Button>
+          <Link to={routePaths.customerOrderSuccess}>
+            <Button variant="primary" className="w-full">
+              Place Order
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

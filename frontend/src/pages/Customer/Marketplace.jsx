@@ -25,7 +25,10 @@ export default function Marketplace() {
           <p className="text-sm text-body/80">
             {liveWorkshops[0].producer} is streaming {liveWorkshops[0].title.toLowerCase()}.
           </p>
-          <Link to={routePaths.customerWorkshops} className="ml-auto text-sm font-medium text-link hover:underline">
+          <Link
+            to={routePaths.customerLiveShopping.replace(':workshopId', liveWorkshops[0].id)}
+            className="ml-auto text-sm font-medium text-link hover:underline"
+          >
             Watch now →
           </Link>
         </div>

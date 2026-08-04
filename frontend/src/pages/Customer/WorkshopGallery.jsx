@@ -56,9 +56,17 @@ export default function WorkshopGallery() {
               >
                 by {workshop.producer}
               </Link>
-              <Button variant={workshop.status === 'live' ? 'primary' : 'secondary'} className="mt-2 w-full">
-                {workshop.status === 'live' ? 'Join Live' : workshop.status === 'upcoming' ? 'Set Reminder' : 'Watch Replay'}
-              </Button>
+              {workshop.status === 'upcoming' ? (
+                <Button variant="secondary" className="mt-2 w-full">
+                  Set Reminder
+                </Button>
+              ) : (
+                <Link to={routePaths.customerLiveShopping.replace(':workshopId', workshop.id)}>
+                  <Button variant={workshop.status === 'live' ? 'primary' : 'secondary'} className="mt-2 w-full">
+                    {workshop.status === 'live' ? 'Join Live' : 'Watch Replay'}
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         ))}

@@ -86,6 +86,16 @@ import WorkshopGallery from '../pages/Customer/WorkshopGallery';
 import CustomerWishlist from '../pages/Customer/Wishlist';
 import ShoppingCart from '../pages/Customer/ShoppingCart';
 import CustomerCheckout from '../pages/Customer/Checkout';
+import OrderSuccess from '../pages/Customer/OrderSuccess';
+import CustomOrder from '../pages/Customer/CustomOrder';
+import LiveShopping from '../pages/Customer/LiveShopping';
+import AuctionMarketplace from '../pages/Customer/AuctionMarketplace';
+import AuctionDetails from '../pages/Customer/AuctionDetails';
+import CommunityFeed from '../pages/Customer/CommunityFeed';
+import DiscussionForum from '../pages/Customer/DiscussionForum';
+import QuestionsAnswers from '../pages/Customer/QuestionsAnswers';
+import CustomerMessages from '../pages/Customer/Messages';
+import FollowingProducers from '../pages/Customer/FollowingProducers';
 import ArtisanPage from '../pages/Artisan/ArtisanPage';
 import FarmerPage from '../pages/Farmer/FarmerPage';
 import RetailerPage from '../pages/Retailer/RetailerPage';
@@ -225,6 +235,16 @@ const router = createBrowserRouter([
           { path: routePaths.customerWishlist, element: <CustomerWishlist /> },
           { path: routePaths.customerCart, element: <ShoppingCart /> },
           { path: routePaths.customerCheckout, element: <CustomerCheckout /> },
+          { path: routePaths.customerOrderSuccess, element: <OrderSuccess /> },
+          { path: routePaths.customerCustomOrder, element: <CustomOrder /> },
+          { path: routePaths.customerLiveShopping, element: <LiveShopping /> },
+          { path: routePaths.customerAuctions, element: <AuctionMarketplace /> },
+          { path: routePaths.customerAuctionDetails, element: <AuctionDetails /> },
+          { path: routePaths.customerCommunity, element: <CommunityFeed /> },
+          { path: routePaths.customerForum, element: <DiscussionForum /> },
+          { path: routePaths.customerQA, element: <QuestionsAnswers /> },
+          { path: routePaths.customerMessages, element: <CustomerMessages /> },
+          { path: routePaths.customerFollowing, element: <FollowingProducers /> },
         ],
       },
     ],
