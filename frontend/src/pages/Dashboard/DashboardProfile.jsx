@@ -1,6 +1,6 @@
 import { PageHeader, Button } from '../../components/ui';
 import { DashboardCard } from '../../components/cards';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function DashboardProfile() {
   const { user } = useAuth();

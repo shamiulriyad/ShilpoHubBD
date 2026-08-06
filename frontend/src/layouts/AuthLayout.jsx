@@ -1,7 +1,10 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { routePaths } from '../routes/routePaths';
 
 export default function AuthLayout() {
+  const location = useLocation();
+  const isRegister = location.pathname === routePaths.register;
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
@@ -11,7 +14,11 @@ export default function AuthLayout() {
           </span>
           ShilpoHub
         </Link>
-        <div className="w-full max-w-md rounded-2xl border border-border bg-surface p-8 shadow-sm">
+        <div
+          className={`w-full rounded-2xl border border-border bg-surface p-8 shadow-sm transition-[max-width] ${
+            isRegister ? 'max-w-3xl' : 'max-w-md'
+          }`}
+        >
           <Outlet />
         </div>
       </div>
