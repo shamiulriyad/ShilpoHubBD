@@ -86,6 +86,18 @@ export const sidebarNav = [
   { label: 'Settings', path: routePaths.dashboardSettings },
 ];
 
+export const customerSidebarNav = [
+  { label: 'Dashboard', path: routePaths.customer },
+  { label: 'Marketplace', path: routePaths.customerMarketplace },
+  { label: 'Workshops', path: routePaths.customerWorkshops },
+  { label: 'Auctions', path: routePaths.customerAuctions },
+  { label: 'Community', path: routePaths.customerCommunity },
+  { label: 'Messages', path: routePaths.customerMessages },
+  { label: 'Following', path: routePaths.customerFollowing },
+  { label: 'Wishlist', path: routePaths.customerWishlist },
+  { label: 'Cart', path: routePaths.customerCart },
+];
+
 export const adminSidebarNav = [
   { label: 'Dashboard', path: routePaths.admin },
   { label: 'User Management', path: routePaths.adminUsers },

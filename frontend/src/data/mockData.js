@@ -69,9 +69,20 @@ export const categories = [...new Map(crafts.map((c) => [c.category, c])).values
 export const auctions = Array.from({ length: 4 }).map((_, i) => ({
   id: `auction-${i + 1}`,
   name: products[i].name,
+  producer: producers[i % producers.length].name,
+  producerId: producers[i % producers.length].id,
+  district: districts[i % districts.length].name,
+  category: crafts[i % crafts.length].name,
+  description: `A rare, limited-edition ${products[i].name.toLowerCase()} offered directly by the maker. Placeholder auction description covering provenance and condition.`,
   currentBid: 4200 + i * 900,
   bidsCount: 6 + i * 3,
   closesIn: `${2 + i}d ${5 * i}h`,
+  bidHistory: Array.from({ length: 3 }).map((__, j) => ({
+    id: `auction-${i + 1}-bid-${j + 1}`,
+    bidder: `Bidder${(j + 1) * 7 + i}`,
+    amount: 4200 + i * 900 - (2 - j) * 300,
+    time: `${(j + 1) * 3}h ago`,
+  })),
 }));
 
 export const festivals = Array.from({ length: 6 }).map((_, i) => ({
@@ -182,3 +193,153 @@ export const adminUsers = Array.from({ length: 6 }).map((_, i) => ({
   status: i % 3 === 0 ? 'Pending' : 'Active',
   joined: `2026-0${(i % 9) + 1}-0${i + 1}`,
 }));
+
+export const craftStories = crafts.map((craft, i) => ({
+  id: craft.id,
+  title: craft.name,
+  origin: districts[i % districts.length].name,
+  since: 1850 + i * 25,
+  summary: `The story of ${craft.name}, passed down through generations of makers in ${districts[i % districts.length].name}.`,
+  chapters: [
+    {
+      heading: 'Origins',
+      body: `${craft.name} traces back to riverside communities that turned local materials into everyday and ceremonial objects. Placeholder narrative describing early trade routes and the families who first practiced the technique.`,
+    },
+    {
+      heading: 'Materials & Technique',
+      body: `Each piece begins with hand-selected raw material and a technique refined over decades. Placeholder narrative describing tools, preparation steps and the patience the craft demands.`,
+    },
+    {
+      heading: 'A Living Tradition',
+      body: `Today, ${craft.producers}+ producers keep ${craft.name} alive, blending inherited technique with new patterns for a global audience. Placeholder narrative describing present-day practice and preservation efforts.`,
+    },
+  ],
+}));
+
+export const producerStories = producers.map((producer, i) => ({
+  id: producer.id,
+  heritageId: `SH-HID-${2026}${String(1000 + i)}`,
+  generations: 2 + (i % 4),
+  quote: `Every piece I make carries the hands of my ${['mother', 'grandfather', 'teacher', 'family'][i % 4]} before me.`,
+  chapters: [
+    {
+      heading: 'A Craft Inherited',
+      body: `${producer.name} learned ${producer.craft} as a child in ${producer.district}, watching elders work before ever touching the material. Placeholder narrative describing early years and mentorship.`,
+    },
+    {
+      heading: 'Building a Livelihood',
+      body: `Over the years, ${producer.name} turned traditional skill into a sustainable workshop, training apprentices and supplying local markets. Placeholder narrative describing growth and challenges overcome.`,
+    },
+    {
+      heading: 'Sharing the Craft Today',
+      body: `Through ShilpoHub, ${producer.name}'s work now reaches customers nationwide, with each product tracing back to this workshop in ${producer.district}. Placeholder narrative describing present work and legacy.`,
+    },
+  ],
+}));
+
+export const workshops = Array.from({ length: 6 }).map((_, i) => ({
+  id: `workshop-${i + 1}`,
+  title: [
+    'Live Jamdani Loom Session',
+    'Nakshi Kantha Stitch Circle',
+    'Terracotta Throwing Demo',
+    'Bamboo Weaving Basics',
+    'Natural Dye Workshop',
+    'Brass Casting Showcase',
+  ][i],
+  producerId: producers[i % producers.length].id,
+  producer: producers[i % producers.length].name,
+  craft: crafts[i % crafts.length].name,
+  status: i < 2 ? 'live' : i < 4 ? 'upcoming' : 'past',
+  scheduledFor: `2026-0${(i % 9) + 1}-1${i}`,
+  viewers: i < 2 ? 120 + i * 40 : undefined,
+}));
+
+export const orders = Array.from({ length: 4 }).map((_, i) => ({
+  id: `SH-ORD-${10234 + i}`,
+  items: 1 + (i % 3),
+  total: 1500 + i * 800,
+  status: ['Delivered', 'Shipped', 'Processing', 'Delivered'][i],
+  date: `2026-0${(i % 7) + 1}-1${i}`,
+}));
+
+export const reviews = Array.from({ length: 3 }).map((_, i) => ({
+  id: `review-${i + 1}`,
+  author: producers[(i + 2) % producers.length].name,
+  rating: 5 - (i % 2),
+  comment: 'Beautiful craftsmanship and fast delivery. Placeholder review text describing product quality.',
+  date: `2026-0${(i % 7) + 1}-0${i + 1}`,
+}));
+
+export const communityPosts = Array.from({ length: 5 }).map((_, i) => ({
+  id: `post-${i + 1}`,
+  authorId: producers[i % producers.length].id,
+  author: producers[i % producers.length].name,
+  craft: producers[i % producers.length].craft,
+  content: [
+    'Just finished a new batch of natural dyes for this season’s collection — placeholder update from the workshop.',
+    'Grateful for all the support from customers this month. Placeholder post about a recent milestone.',
+    'Behind the scenes from today’s live session — placeholder recap of a workshop stream.',
+    'A look at the loom setup before we start a new Jamdani piece. Placeholder process update.',
+    'Thank you for 500 orders! Placeholder celebration post from the producer.',
+  ][i],
+  likes: 40 + i * 12,
+  comments: 4 + i * 2,
+  time: `${i + 1}h ago`,
+}));
+
+export const forumThreads = Array.from({ length: 6 }).map((_, i) => ({
+  id: `thread-${i + 1}`,
+  title: [
+    'Tips for caring for handwoven Jamdani sarees',
+    'How can we tell if pottery is authentic vs. mass-produced?',
+    'Best practices for shipping fragile terracotta items',
+    'Favorite festivals to buy directly from producers',
+    'Verifying a producer’s Digital Heritage ID',
+    'Recommendations for first-time heritage tourism routes',
+  ][i],
+  category: ['General', 'Authenticity', 'Shipping', 'Tourism', 'Authenticity', 'Tourism'][i],
+  author: producers[i % producers.length].name,
+  replies: 3 + i * 4,
+  views: 120 + i * 45,
+  lastActivity: `${i + 1}d ago`,
+}));
+
+export const qaThreads = Array.from({ length: 4 }).map((_, i) => ({
+  id: `qa-${i + 1}`,
+  question: [
+    'How long does a handwoven Jamdani saree usually take to make?',
+    'What natural materials are used in terracotta glazing?',
+    'Can I request a custom color for Nakshi Kantha embroidery?',
+    'Is Cash on Delivery available outside Dhaka?',
+  ][i],
+  craft: crafts[i % crafts.length].name,
+  askedBy: 'Customer',
+  time: `${i + 1}d ago`,
+  answers: [
+    {
+      id: `qa-${i + 1}-ans-1`,
+      author: producers[i % producers.length].name,
+      isProducer: true,
+      body: 'Placeholder answer from a verified producer explaining the process and typical timelines.',
+      votes: 12 + i,
+    },
+  ],
+}));
+
+export const conversations = producers.slice(0, 4).map((producer, i) => ({
+  id: `conv-${i + 1}`,
+  producerId: producer.id,
+  producer: producer.name,
+  craft: producer.craft,
+  lastMessage: 'Thanks for your interest in the collection, let me know if you have questions…',
+  time: `${i + 1}d ago`,
+  unread: i < 2,
+  thread: [
+    { id: 1, from: producer.name, text: 'Thanks for reaching out! How can I help?', time: '2d ago', self: false },
+    { id: 2, from: 'You', text: 'Is this piece available in a custom size?', time: '2d ago', self: true },
+    { id: 3, from: producer.name, text: 'Yes, I can make one to order — it takes about 2 weeks.', time: '1d ago', self: false },
+  ],
+}));
+
+export const followedProducerIds = producers.slice(0, 4).map((p) => p.id);

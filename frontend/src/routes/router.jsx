@@ -4,7 +4,7 @@ import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { ProtectedRoute } from './ProtectedRoute';
 import { routePaths } from './routePaths';
-import { adminSidebarNav } from '../data/navigation';
+import { adminSidebarNav, customerSidebarNav } from '../data/navigation';
 
 import HomePage from '../pages/Home/HomePage';
 
@@ -76,7 +76,26 @@ import CMS from '../pages/Admin/CMS';
 import SecurityCenter from '../pages/Admin/SecurityCenter';
 
 import VisitorPage from '../pages/Visitor/VisitorPage';
-import CustomerPage from '../pages/Customer/CustomerPage';
+import CustomerDashboard from '../pages/Customer/CustomerDashboard';
+import CustomerMarketplace from '../pages/Customer/Marketplace';
+import CustomerProductDetails from '../pages/Customer/ProductDetails';
+import CraftStory from '../pages/Customer/CraftStory';
+import ProducerProfile from '../pages/Customer/ProducerProfile';
+import ProducerStory from '../pages/Customer/ProducerStory';
+import WorkshopGallery from '../pages/Customer/WorkshopGallery';
+import CustomerWishlist from '../pages/Customer/Wishlist';
+import ShoppingCart from '../pages/Customer/ShoppingCart';
+import CustomerCheckout from '../pages/Customer/Checkout';
+import OrderSuccess from '../pages/Customer/OrderSuccess';
+import CustomOrder from '../pages/Customer/CustomOrder';
+import LiveShopping from '../pages/Customer/LiveShopping';
+import AuctionMarketplace from '../pages/Customer/AuctionMarketplace';
+import AuctionDetails from '../pages/Customer/AuctionDetails';
+import CommunityFeed from '../pages/Customer/CommunityFeed';
+import DiscussionForum from '../pages/Customer/DiscussionForum';
+import QuestionsAnswers from '../pages/Customer/QuestionsAnswers';
+import CustomerMessages from '../pages/Customer/Messages';
+import FollowingProducers from '../pages/Customer/FollowingProducers';
 import ArtisanPage from '../pages/Artisan/ArtisanPage';
 import FarmerPage from '../pages/Farmer/FarmerPage';
 import RetailerPage from '../pages/Retailer/RetailerPage';
@@ -178,7 +197,6 @@ const router = createBrowserRouter([
           { path: routePaths.academyPortfolio, element: <Portfolio /> },
 
           { path: routePaths.visitor, element: <VisitorPage /> },
-          { path: routePaths.customer, element: <CustomerPage /> },
           { path: routePaths.artisan, element: <ArtisanPage /> },
           { path: routePaths.farmer, element: <FarmerPage /> },
           { path: routePaths.retailer, element: <RetailerPage /> },
@@ -202,6 +220,31 @@ const router = createBrowserRouter([
           { path: routePaths.adminMarketplace, element: <MarketplaceMonitoring /> },
           { path: routePaths.adminCms, element: <CMS /> },
           { path: routePaths.adminSecurity, element: <SecurityCenter /> },
+        ],
+      },
+      {
+        element: <DashboardLayout navItems={customerSidebarNav} sidebarTitle="Customer" />,
+        children: [
+          { path: routePaths.customer, element: <CustomerDashboard /> },
+          { path: routePaths.customerMarketplace, element: <CustomerMarketplace /> },
+          { path: routePaths.customerProductDetails, element: <CustomerProductDetails /> },
+          { path: routePaths.customerCraftStory, element: <CraftStory /> },
+          { path: routePaths.customerProducerProfile, element: <ProducerProfile /> },
+          { path: routePaths.customerProducerStory, element: <ProducerStory /> },
+          { path: routePaths.customerWorkshops, element: <WorkshopGallery /> },
+          { path: routePaths.customerWishlist, element: <CustomerWishlist /> },
+          { path: routePaths.customerCart, element: <ShoppingCart /> },
+          { path: routePaths.customerCheckout, element: <CustomerCheckout /> },
+          { path: routePaths.customerOrderSuccess, element: <OrderSuccess /> },
+          { path: routePaths.customerCustomOrder, element: <CustomOrder /> },
+          { path: routePaths.customerLiveShopping, element: <LiveShopping /> },
+          { path: routePaths.customerAuctions, element: <AuctionMarketplace /> },
+          { path: routePaths.customerAuctionDetails, element: <AuctionDetails /> },
+          { path: routePaths.customerCommunity, element: <CommunityFeed /> },
+          { path: routePaths.customerForum, element: <DiscussionForum /> },
+          { path: routePaths.customerQA, element: <QuestionsAnswers /> },
+          { path: routePaths.customerMessages, element: <CustomerMessages /> },
+          { path: routePaths.customerFollowing, element: <FollowingProducers /> },
         ],
       },
     ],
