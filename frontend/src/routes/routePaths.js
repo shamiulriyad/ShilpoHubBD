@@ -56,6 +56,8 @@ export const routePaths = {
   // Auth
   login: '/login',
   register: '/register',
+  forgotPassword: '/forgot-password',
+  resetPassword: '/reset-password',
 
   // Dashboard (authenticated shell)
   dashboard: '/dashboard',

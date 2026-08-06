@@ -55,6 +55,8 @@ import NewsDetails from '../pages/News/NewsDetails';
 import AboutPage from '../pages/About/AboutPage';
 import LoginPage from '../pages/Auth/LoginPage';
 import RegisterPage from '../pages/Auth/RegisterPage';
+import ForgotPasswordPage from '../pages/Auth/ForgotPasswordPage';
+import ResetPasswordPage from '../pages/Auth/ResetPasswordPage';
 
 import DashboardHome from '../pages/Dashboard/DashboardHome';
 import DashboardExplore from '../pages/Dashboard/DashboardExplore';
@@ -171,6 +173,8 @@ const router = createBrowserRouter([
     children: [
       { path: routePaths.login, element: <LoginPage /> },
       { path: routePaths.register, element: <RegisterPage /> },
+      { path: routePaths.forgotPassword, element: <ForgotPasswordPage /> },
+      { path: routePaths.resetPassword, element: <ResetPasswordPage /> },
     ],
   },
 

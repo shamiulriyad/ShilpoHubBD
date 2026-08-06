@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { userMenu } from '../../data/navigation';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function ProfileDropdown() {
   const [open, setOpen] = useState(false);
@@ -17,13 +17,13 @@ export default function ProfileDropdown() {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-3 hover:bg-background"
+        className="flex items-center gap-2 rounded-full border border-border py-1.5 pl-1.5 pr-3.5 hover:bg-background"
       >
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-semibold text-surface">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-surface">
           {(user?.name || 'U').slice(0, 1).toUpperCase()}
         </span>
-        <span className="text-sm font-medium text-body">{user?.name || 'Account'}</span>
-        <span aria-hidden="true" className="text-[10px] text-body/50">▾</span>
+        <span className="text-base font-medium text-body">{user?.name || 'Account'}</span>
+        <span aria-hidden="true" className="text-xs text-body/50">▾</span>
       </button>
 
       {open && (
@@ -33,7 +33,7 @@ export default function ProfileDropdown() {
               key={item.label}
               to={item.path}
               onClick={() => setOpen(false)}
-              className="block rounded-lg px-3 py-2 text-sm text-body hover:bg-background"
+              className="block rounded-lg px-3 py-2.5 text-base text-body hover:bg-background"
             >
               {item.label}
             </Link>
@@ -44,7 +44,7 @@ export default function ProfileDropdown() {
               logout();
               setOpen(false);
             }}
-            className="mt-1 block w-full rounded-lg px-3 py-2 text-left text-sm text-primary hover:bg-background"
+            className="mt-1 block w-full rounded-lg px-3 py-2.5 text-left text-base text-primary hover:bg-background"
           >
             Logout
           </button>
