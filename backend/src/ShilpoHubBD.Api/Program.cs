@@ -34,7 +34,9 @@ if (builder.Environment.IsDevelopment())
 
 // Add services to the container.
 builder.Services.AddScoped<ValidationFilter>();
-builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>());
+builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
+	.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(
+		new System.Text.Json.Serialization.JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

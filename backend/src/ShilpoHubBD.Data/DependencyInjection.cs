@@ -25,6 +25,16 @@ public static class DependencyInjection
 		services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 		services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
 
+		services.AddScoped<IProductRepository, ProductRepository>();
+		services.AddScoped<ICategoryRepository, CategoryRepository>();
+		services.AddScoped<IDistrictRepository, DistrictRepository>();
+		services.AddScoped<ICraftStoryRepository, CraftStoryRepository>();
+		services.AddScoped<IProducerStoryRepository, ProducerStoryRepository>();
+		services.AddScoped<IWorkshopGalleryRepository, WorkshopGalleryRepository>();
+		services.AddScoped<IWishlistRepository, WishlistRepository>();
+		services.AddScoped<ICartRepository, CartRepository>();
+		services.AddScoped<IOrderRepository, OrderRepository>();
+
 		return services;
 	}
 }

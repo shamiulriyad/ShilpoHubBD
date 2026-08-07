@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShilpoHubBD.Data;
@@ -11,9 +12,11 @@ using ShilpoHubBD.Data;
 namespace ShilpoHubBD.Data.Migrations
 {
     [DbContext(typeof(ShilpoHubDbContext))]
-    partial class ShilpoHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260807144457_AddWishlistModule")]
+    partial class AddWishlistModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,171 +58,6 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("UserId", "ProductId", "ProductVariantId");
 
                     b.ToTable("CartItems", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CancelReason")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("Carrier")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("OrderNumber")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<string>("RecipientName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("RecipientPhone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<decimal?>("RefundAmount")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<string>("RefundReason")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("ReturnReason")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("ShippingAddressLine")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<Guid>("ShippingDistrictId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<string>("TrackingNumber")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderNumber")
-                        .IsUnique();
-
-                    b.HasIndex("ShippingDistrictId");
-
-                    b.HasIndex("UserId", "CreatedAt");
-
-                    b.ToTable("Orders", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.OrderItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("LineTotal")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ProductImageUrl")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<Guid?>("ProductVariantId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<string>("VariantName")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductVariantId");
-
-                    b.ToTable("OrderItems", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.OrderStatusEvent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Note")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderStatusEvents", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.WishlistItem", b =>
@@ -1397,60 +1235,6 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("ProductVariant");
                 });
 
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.Order", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.District", "ShippingDistrict")
-                        .WithMany()
-                        .HasForeignKey("ShippingDistrictId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ShippingDistrict");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.OrderItem", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Commerce.Order", "Order")
-                        .WithMany("Items")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.ProductVariant", "ProductVariant")
-                        .WithMany()
-                        .HasForeignKey("ProductVariantId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ProductVariant");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.OrderStatusEvent", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Commerce.Order", "Order")
-                        .WithMany("StatusHistory")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.WishlistItem", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
@@ -1607,13 +1391,6 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasForeignKey("ProducerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.Order", b =>
-                {
-                    b.Navigation("Items");
-
-                    b.Navigation("StatusHistory");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.Role", b =>
