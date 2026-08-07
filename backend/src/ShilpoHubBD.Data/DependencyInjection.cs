@@ -35,6 +35,7 @@ public static class DependencyInjection
 		services.AddScoped<ICartRepository, CartRepository>();
 		services.AddScoped<IOrderRepository, OrderRepository>();
 		services.AddScoped<IPaymentRepository, PaymentRepository>();
+		services.AddScoped<IReviewRepository, ReviewRepository>();
 
 		return services;
 	}

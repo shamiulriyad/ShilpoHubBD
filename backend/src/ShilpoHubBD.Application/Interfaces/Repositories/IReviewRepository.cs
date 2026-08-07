@@ -4,5 +4,13 @@ namespace ShilpoHubBD.Application.Interfaces.Repositories;
 
 public interface IReviewRepository
 {
-	Task<Review?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<(List<Review> Items, int TotalCount)> GetPagedByProductAsync(Guid productId, int page, int pageSize, CancellationToken cancellationToken);
+    Task<Review?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Review?> GetByProductAndUserAsync(Guid productId, Guid userId, CancellationToken cancellationToken);
+    Task<(double AverageRating, int ReviewCount)> GetAggregateAsync(Guid productId, CancellationToken cancellationToken);
+    Task AddAsync(Review review, CancellationToken cancellationToken);
+    Task AddImageAsync(ReviewImage image, CancellationToken cancellationToken);
+    void RemoveImage(ReviewImage image);
+    void Remove(Review review);
+    Task SaveChangesAsync(CancellationToken cancellationToken);
 }

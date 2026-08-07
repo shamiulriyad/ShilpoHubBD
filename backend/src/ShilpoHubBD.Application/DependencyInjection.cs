@@ -4,6 +4,7 @@ using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Application.Services.Auth;
 using ShilpoHubBD.Application.Services.Commerce;
 using ShilpoHubBD.Application.Services.Marketplace;
+using ShilpoHubBD.Application.Services.Reviews;
 
 namespace ShilpoHubBD.Application;
 
@@ -27,6 +28,7 @@ public static class DependencyInjection
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IPaymentService, PaymentService>();
+        services.AddScoped<IReviewService, ReviewService>();
 
         return services;
     }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Domain.Entities.Commerce;
 using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.Marketplace;
+using ShilpoHubBD.Domain.Entities.Reviews;
 
 namespace ShilpoHubBD.Data;
 
@@ -36,6 +37,9 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<OrderStatusEvent> OrderStatusEvents => Set<OrderStatusEvent>();
 
 	public DbSet<Payment> Payments => Set<Payment>();
+
+	public DbSet<Review> Reviews => Set<Review>();
+	public DbSet<ReviewImage> ReviewImages => Set<ReviewImage>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
