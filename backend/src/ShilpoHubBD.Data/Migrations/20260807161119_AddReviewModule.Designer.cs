@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShilpoHubBD.Data;
@@ -11,9 +12,11 @@ using ShilpoHubBD.Data;
 namespace ShilpoHubBD.Data.Migrations
 {
     [DbContext(typeof(ShilpoHubDbContext))]
-    partial class ShilpoHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260807161119_AddReviewModule")]
+    partial class AddReviewModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,225 +301,6 @@ namespace ShilpoHubBD.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("WishlistItems", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.CommunityAnswer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("QuestionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CommunityAnswers", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.CommunityQuestion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CommunityQuestions", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.DiscussionReply", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ThreadId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ThreadId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DiscussionReplies", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.DiscussionThread", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("character varying(4000)");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Category");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DiscussionThreads", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.ProducerFollow", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("FollowerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProducerId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProducerId");
-
-                    b.HasIndex("FollowerId", "ProducerId")
-                        .IsUnique();
-
-                    b.ToTable("ProducerFollows", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.Village", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Craft")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<Guid>("DistrictId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ImageUrl")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DistrictId");
-
-                    b.ToTable("Villages", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.VillageFavorite", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("VillageId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VillageId");
-
-                    b.HasIndex("UserId", "VillageId")
-                        .IsUnique();
-
-                    b.ToTable("VillageFavorites", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.PasswordResetToken", b =>
@@ -1811,115 +1595,6 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.CommunityAnswer", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Community.CommunityQuestion", "Question")
-                        .WithMany("Answers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.CommunityQuestion", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.DiscussionReply", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Community.DiscussionThread", "Thread")
-                        .WithMany("Replies")
-                        .HasForeignKey("ThreadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Thread");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.DiscussionThread", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.ProducerFollow", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Follower")
-                        .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
-                        .WithMany()
-                        .HasForeignKey("ProducerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Follower");
-
-                    b.Navigation("Producer");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.Village", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.District", "District")
-                        .WithMany()
-                        .HasForeignKey("DistrictId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("District");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.VillageFavorite", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Community.Village", "Village")
-                        .WithMany()
-                        .HasForeignKey("VillageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Village");
-                });
-
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.PasswordResetToken", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
@@ -2096,16 +1771,6 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("StatusHistory");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.CommunityQuestion", b =>
-                {
-                    b.Navigation("Answers");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.DiscussionThread", b =>
-                {
-                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.Role", b =>

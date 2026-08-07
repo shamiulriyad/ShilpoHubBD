@@ -48,6 +48,16 @@ public class OrderRepository : IOrderRepository
     public Task<bool> ExistsByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken)
         => _context.Orders.AnyAsync(o => o.OrderNumber == orderNumber, cancellationToken);
 
+    public Task<bool> HasPurchasedProductAsync(Guid userId, Guid productId, CancellationToken cancellationToken)
+        => _context.Orders
+            .Where(o => o.UserId == userId && (
+                o.Status == OrderStatus.Delivered ||
+                o.Status == OrderStatus.ReturnRequested ||
+                o.Status == OrderStatus.Returned ||
+                o.Status == OrderStatus.Refunded))
+            .SelectMany(o => o.Items)
+            .AnyAsync(i => i.ProductId == productId, cancellationToken);
+
     public async Task AddAsync(Order order, CancellationToken cancellationToken)
         => await _context.Orders.AddAsync(order, cancellationToken);
 

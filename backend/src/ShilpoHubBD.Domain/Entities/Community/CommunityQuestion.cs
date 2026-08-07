@@ -1,9 +1,9 @@
 using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.Marketplace;
 
-namespace ShilpoHubBD.Domain.Entities.Reviews;
+namespace ShilpoHubBD.Domain.Entities.Community;
 
-public class Review
+public class CommunityQuestion
 {
     public Guid Id { get; set; }
 
@@ -13,11 +13,8 @@ public class Review
     public Guid UserId { get; set; }
     public User User { get; set; } = null!;
 
-    public int Rating { get; set; }
-    public string Comment { get; set; } = string.Empty;
-
+    public string Body { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
 
-    public ICollection<ReviewImage> Images { get; set; } = new List<ReviewImage>();
+    public ICollection<CommunityAnswer> Answers { get; set; } = new List<CommunityAnswer>();
 }
