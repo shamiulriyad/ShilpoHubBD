@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Application.Services.Auth;
 using ShilpoHubBD.Application.Services.Commerce;
+using ShilpoHubBD.Application.Services.Community;
 using ShilpoHubBD.Application.Services.Marketplace;
 using ShilpoHubBD.Application.Services.Reviews;
 
@@ -29,6 +30,11 @@ public static class DependencyInjection
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IReviewService, ReviewService>();
+
+        services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IDiscussionService, DiscussionService>();
+        services.AddScoped<IProducerFollowService, ProducerFollowService>();
+        services.AddScoped<IVillageService, VillageService>();
 
         return services;
     }
