@@ -38,3 +38,6 @@ backend/.env.local
 
 # Database / backups
 database/backups/
+
+# Local notes
+backendsetup.md

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Infrastructure.Email;
 using ShilpoHubBD.Infrastructure.Options;
+using ShilpoHubBD.Infrastructure.Payments;
 using ShilpoHubBD.Infrastructure.Security;
 
 namespace ShilpoHubBD.Infrastructure;
@@ -16,6 +17,7 @@ public static class DependencyInjection
         services.AddScoped<ITokenService, JwtTokenService>();
         services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
         services.AddScoped<IEmailSender, ConsoleEmailSender>();
+        services.AddScoped<IPaymentProvider, CashOnDeliveryPaymentProvider>();
 
         return services;
     }
