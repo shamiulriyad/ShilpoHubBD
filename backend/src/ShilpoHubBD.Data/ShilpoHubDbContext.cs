@@ -35,6 +35,8 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 	public DbSet<OrderStatusEvent> OrderStatusEvents => Set<OrderStatusEvent>();
 
+	public DbSet<Payment> Payments => Set<Payment>();
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShilpoHubDbContext).Assembly);
