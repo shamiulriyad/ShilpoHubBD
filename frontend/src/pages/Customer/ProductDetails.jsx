@@ -53,6 +53,27 @@ export default function ProductDetails() {
             <Button variant="secondary">Add to Wishlist</Button>
           </div>
 
+          <div className="mt-4 flex flex-wrap gap-4 text-sm">
+            <Link
+              to={routePaths.customerAISimilarProducts.replace(':productId', product.id)}
+              className="text-link hover:underline"
+            >
+              Find similar products →
+            </Link>
+            <Link
+              to={routePaths.customerAIInteriorPreview.replace(':productId', product.id)}
+              className="text-link hover:underline"
+            >
+              Preview in your room →
+            </Link>
+            <Link
+              to={routePaths.customerAIFashionMatching.replace(':productId', product.id)}
+              className="text-link hover:underline"
+            >
+              Complete the look →
+            </Link>
+          </div>
+
           <Link
             to={routePaths.customerProducerProfile.replace(':producerId', producer.id)}
             className="mt-8 flex items-center gap-3 rounded-xl border border-border bg-surface p-4 transition hover:shadow-md"

@@ -94,8 +94,21 @@ export const customerSidebarNav = [
   { label: 'Community', path: routePaths.customerCommunity },
   { label: 'Messages', path: routePaths.customerMessages },
   { label: 'Following', path: routePaths.customerFollowing },
+  { label: 'Favorite Villages', path: routePaths.customerFavoriteVillages },
   { label: 'Wishlist', path: routePaths.customerWishlist },
   { label: 'Cart', path: routePaths.customerCart },
+  { label: 'Order History', path: routePaths.customerOrders },
+  { label: 'Returns', path: routePaths.customerReturns },
+  { label: 'Refunds', path: routePaths.customerRefunds },
+  { label: 'Notifications', path: routePaths.customerNotifications },
+  { label: 'Saved Addresses', path: routePaths.customerAddresses },
+  { label: 'Heritage Collection', path: routePaths.customerHeritageCollection },
+  { label: 'Heritage Passport', path: routePaths.customerHeritagePassport },
+  { label: 'Purchase Analytics', path: routePaths.customerPurchaseAnalytics },
+  { label: 'Impact Dashboard', path: routePaths.customerImpactDashboard },
+  { label: 'Achievements', path: routePaths.customerAchievements },
+  { label: 'Badge Collection', path: routePaths.customerBadges },
+  { label: 'AI Gift Recommendation', path: routePaths.customerAIGiftRecommendation },
 ];
 
 export const adminSidebarNav = [
