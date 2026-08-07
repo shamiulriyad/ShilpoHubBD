@@ -1,7 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, SectionHeader, Badge } from '../../components/ui';
-import { EntityCard, ProductCard } from '../../components/cards';
+import { ProducerCard, ProductCard } from '../../components/cards';
+import { TimelineViewer } from '../../components/media';
 import { craftStories, producers, products } from '../../data/mockData';
 
 export default function CraftStory() {
@@ -27,13 +28,10 @@ export default function CraftStory() {
         <Badge tone="secondary">Since {story.since}</Badge>
       </div>
 
-      <div className="mb-12 space-y-8">
-        {story.chapters.map((chapter) => (
-          <div key={chapter.heading} className="max-w-3xl">
-            <h2 className="mb-2 text-lg font-semibold text-heading">{chapter.heading}</h2>
-            <p className="text-sm leading-relaxed text-body/80">{chapter.body}</p>
-          </div>
-        ))}
+      <div className="mb-12">
+        <TimelineViewer
+          items={story.chapters.map((chapter) => ({ title: chapter.heading, description: chapter.body }))}
+        />
       </div>
 
       {practitioners.length > 0 && (
@@ -41,11 +39,9 @@ export default function CraftStory() {
           <SectionHeader eyebrow="Meet the Makers" title={`Producers of ${story.title}`} />
           <div className="mb-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {practitioners.map((producer) => (
-              <EntityCard
+              <ProducerCard
                 key={producer.id}
-                title={producer.name}
-                subtitle={producer.craft}
-                meta={producer.district}
+                producer={producer}
                 to={routePaths.customerProducerProfile.replace(':producerId', producer.id)}
               />
             ))}

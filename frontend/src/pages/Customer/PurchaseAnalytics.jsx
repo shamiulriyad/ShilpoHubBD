@@ -1,11 +1,12 @@
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, SectionHeader, ChartPlaceholder, Table } from '../../components/ui';
+import { PageHeader, SectionHeader, AnalyticsChart, Table } from '../../components/ui';
 import { StatCard } from '../../components/cards';
 import { orders, categories } from '../../data/mockData';
 
 export default function PurchaseAnalytics() {
   const totalSpent = orders.reduce((sum, order) => sum + order.total, 0);
   const avgOrder = Math.round(totalSpent / (orders.length || 1));
+  const topCategory = categories[0];
 
   return (
     <div>
@@ -23,8 +24,8 @@ export default function PurchaseAnalytics() {
       </div>
 
       <div className="mb-10 grid gap-6 lg:grid-cols-2">
-        <ChartPlaceholder title="Monthly Spending" type="line" />
-        <ChartPlaceholder title="Spending by Category" type="donut" />
+        <AnalyticsChart title="Monthly Spending" type="line" value={`৳ ${totalSpent.toLocaleString()}`} trend="+12% vs last quarter" />
+        <AnalyticsChart title="Spending by Category" type="donut" value={topCategory?.name} />
       </div>
 
       <SectionHeader eyebrow="Breakdown" title="Spending by Category" />

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, Button, SectionHeader } from '../../components/ui';
-import { ProductCard } from '../../components/cards';
+import { RecommendationCard } from '../../components/cards';
 import { products, crafts } from '../../data/mockData';
 
 const occasions = ['Birthday', 'Wedding', 'Anniversary', 'Housewarming'];
@@ -79,9 +79,10 @@ export default function AIGiftRecommendation() {
           <SectionHeader eyebrow="AI Curated" title="Recommended Gifts" />
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {recommendations.map((product) => (
-              <ProductCard
+              <RecommendationCard
                 key={product.id}
                 product={product}
+                reason="Matches the occasion and interests you selected"
                 to={routePaths.customerProductDetails.replace(':productId', product.id)}
               />
             ))}

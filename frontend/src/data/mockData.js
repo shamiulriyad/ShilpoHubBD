@@ -399,10 +399,10 @@ export const heritageCollectionItems = products.slice(0, 5).map((product, i) => 
 }));
 
 export const impactStats = [
-  { label: 'Artisans Supported', value: '9' },
-  { label: 'Villages Reached', value: '6' },
-  { label: 'Est. Income Generated', value: '৳ 42,500' },
-  { label: 'Crafts Preserved', value: '5' },
+  { label: 'Artisans Supported', value: '9', description: 'Producers who received an order from you' },
+  { label: 'Villages Reached', value: '6', description: 'Heritage villages your purchases touched' },
+  { label: 'Est. Income Generated', value: '৳ 42,500', description: 'Estimated earnings passed to artisans' },
+  { label: 'Crafts Preserved', value: '5', description: 'Traditional crafts you help keep alive' },
 ];
 
 export const impactedProducerIds = producers.slice(0, 4).map((p) => p.id);
@@ -433,6 +433,32 @@ export const achievements = [
   { id: 'ach-4', title: 'Master Collector', description: 'Own 10 heritage-certified products.', current: 5, target: 10 },
   { id: 'ach-5', title: 'Village Wanderer', description: 'Collect passport stamps from 8 heritage villages.', current: 3, target: 8 },
 ];
+
+export const materialTraceability = crafts.map((craft, i) => ({
+  craftId: craft.id,
+  steps: [
+    {
+      stage: 'Raw Material Sourcing',
+      location: districts[i % districts.length].name,
+      detail: `Natural, locally sourced materials selected for ${craft.name}.`,
+    },
+    {
+      stage: 'Preparation',
+      location: districts[(i + 1) % districts.length].name,
+      detail: 'Materials cleaned, treated and prepared entirely by hand.',
+    },
+    {
+      stage: 'Craftsmanship',
+      location: districts[(i + 2) % districts.length].name,
+      detail: `Skilled artisans shape each piece using traditional ${craft.name} technique.`,
+    },
+    {
+      stage: 'Quality Check',
+      location: districts[(i + 3) % districts.length].name,
+      detail: 'Every piece is inspected and certified before it is listed.',
+    },
+  ],
+}));
 
 export const badges = [
   { id: 'badge-1', name: 'First Order', icon: '🛍️', description: 'Placed your first order.', earned: true },

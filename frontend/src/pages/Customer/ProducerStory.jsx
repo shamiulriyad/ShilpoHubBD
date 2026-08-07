@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, SectionHeader } from '../../components/ui';
 import { ProductCard } from '../../components/cards';
+import { TimelineViewer } from '../../components/media';
 import { producers, producerStories, products } from '../../data/mockData';
 
 export default function ProducerStory() {
@@ -32,13 +33,10 @@ export default function ProducerStory() {
         “{story.quote}”
       </blockquote>
 
-      <div className="mb-12 space-y-8">
-        {story.chapters.map((chapter) => (
-          <div key={chapter.heading} className="max-w-3xl">
-            <h2 className="mb-2 text-lg font-semibold text-heading">{chapter.heading}</h2>
-            <p className="text-sm leading-relaxed text-body/80">{chapter.body}</p>
-          </div>
-        ))}
+      <div className="mb-12">
+        <TimelineViewer
+          items={story.chapters.map((chapter) => ({ title: chapter.heading, description: chapter.body }))}
+        />
       </div>
 
       {producerProducts.length > 0 && (

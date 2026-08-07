@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, SectionHeader, ChartPlaceholder } from '../../components/ui';
-import { StatCard } from '../../components/cards';
+import { ImpactCard } from '../../components/cards';
 import { impactStats, producers, impactedProducerIds } from '../../data/mockData';
 
 export default function ImpactDashboard() {
@@ -17,7 +17,7 @@ export default function ImpactDashboard() {
 
       <div className="mb-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {impactStats.map((stat) => (
-          <StatCard key={stat.label} label={stat.label} value={stat.value} />
+          <ImpactCard key={stat.label} label={stat.label} value={stat.value} description={stat.description} />
         ))}
       </div>
 

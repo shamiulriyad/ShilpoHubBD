@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge } from '../../components/ui';
-import { ProductCard } from '../../components/cards';
+import { RecommendationCard } from '../../components/cards';
 import { products } from '../../data/mockData';
 
 export default function AIFashionMatching() {
@@ -39,10 +39,12 @@ export default function AIFashionMatching() {
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {matches.map((match) => (
-          <div key={match.id} className="space-y-2">
-            <ProductCard product={match} to={routePaths.customerProductDetails.replace(':productId', match.id)} />
-            <Badge tone="success">{match.matchScore}% Match</Badge>
-          </div>
+          <RecommendationCard
+            key={match.id}
+            product={match}
+            matchScore={match.matchScore}
+            to={routePaths.customerProductDetails.replace(':productId', match.id)}
+          />
         ))}
       </div>
     </div>

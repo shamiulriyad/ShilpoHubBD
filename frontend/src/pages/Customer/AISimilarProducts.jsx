@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge } from '../../components/ui';
-import { ProductCard } from '../../components/cards';
+import { RecommendationCard } from '../../components/cards';
 import { products } from '../../data/mockData';
 
 export default function AISimilarProducts() {
@@ -29,10 +29,12 @@ export default function AISimilarProducts() {
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {similar.map((item) => (
-          <div key={item.id} className="space-y-2">
-            <ProductCard product={item} to={routePaths.customerProductDetails.replace(':productId', item.id)} />
-            <Badge tone="secondary">{item.similarity}% Similar</Badge>
-          </div>
+          <RecommendationCard
+            key={item.id}
+            product={item}
+            matchScore={item.similarity}
+            to={routePaths.customerProductDetails.replace(':productId', item.id)}
+          />
         ))}
       </div>
     </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, Button } from '../../components/ui';
+import { VideoPlayer } from '../../components/media';
 import { workshops } from '../../data/mockData';
 
 const filters = ['All', 'Live', 'Upcoming', 'Past'];
@@ -38,9 +39,12 @@ export default function WorkshopGallery() {
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((workshop) => (
           <div key={workshop.id} className="overflow-hidden rounded-xl border border-border bg-surface">
-            <div className="flex aspect-video items-center justify-center bg-background text-xs text-body/40">
-              Workshop Stream
-            </div>
+            <VideoPlayer
+              title={workshop.title}
+              live={workshop.status === 'live'}
+              viewers={workshop.viewers}
+              bordered={false}
+            />
             <div className="space-y-2 p-4">
               <Badge tone={statusTone[workshop.status]}>
                 {statusLabel[workshop.status]}

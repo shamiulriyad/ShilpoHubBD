@@ -1,11 +1,20 @@
 import { useState } from 'react';
-import { PageHeader, Button } from '../../components/ui';
+import { PageHeader, ChatBox } from '../../components/ui';
 import { conversations } from '../../data/mockData';
 
 export default function Messages() {
   const [activeId, setActiveId] = useState(conversations[0]?.id);
-  const [draft, setDraft] = useState('');
+  const [threads, setThreads] = useState(() =>
+    Object.fromEntries(conversations.map((c) => [c.id, c.thread])),
+  );
   const active = conversations.find((c) => c.id === activeId) || conversations[0];
+
+  function sendMessage(text) {
+    setThreads((prev) => ({
+      ...prev,
+      [active.id]: [...(prev[active.id] || []), { id: (prev[active.id]?.length || 0) + 1, from: 'You', text, self: true }],
+    }));
+  }
 
   return (
     <div>
@@ -43,36 +52,13 @@ export default function Messages() {
               <p className="text-sm font-semibold text-heading">{active.producer}</p>
               <p className="text-xs text-body/60">{active.craft}</p>
             </div>
-            <div className="flex-1 space-y-3 overflow-y-auto p-4">
-              {active.thread.map((msg) => (
-                <div key={msg.id} className={`flex ${msg.self ? 'justify-end' : 'justify-start'}`}>
-                  <div
-                    className={`max-w-[75%] rounded-xl px-3 py-2 text-sm ${
-                      msg.self ? 'bg-primary text-surface' : 'border border-border bg-background text-body'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                setDraft('');
-              }}
-              className="flex gap-2 border-t border-border p-3"
-            >
-              <input
-                value={draft}
-                onChange={(event) => setDraft(event.target.value)}
-                placeholder="Write a message…"
-                className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
-              />
-              <Button type="submit" variant="primary">
-                Send
-              </Button>
-            </form>
+            <ChatBox
+              className="flex-1"
+              bordered={false}
+              messages={threads[active.id] || []}
+              onSend={sendMessage}
+              placeholder="Write a message…"
+            />
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader } from '../../components/ui';
+import { BadgeCard } from '../../components/cards';
 import { badges } from '../../data/mockData';
 
 export default function BadgeCollection() {
@@ -21,17 +22,7 @@ export default function BadgeCollection() {
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {badges.map((badge) => (
-          <div
-            key={badge.id}
-            className={`flex flex-col items-center gap-2 rounded-xl border p-5 text-center ${
-              badge.earned ? 'border-border bg-surface' : 'border-dashed border-border bg-surface opacity-50 grayscale'
-            }`}
-          >
-            <span className="text-3xl">{badge.icon}</span>
-            <p className="text-sm font-semibold text-heading">{badge.name}</p>
-            <p className="text-xs text-body/60">{badge.description}</p>
-            {!badge.earned && <p className="text-xs font-medium text-body/40">Locked</p>}
-          </div>
+          <BadgeCard key={badge.id} badge={badge} />
         ))}
       </div>
     </div>

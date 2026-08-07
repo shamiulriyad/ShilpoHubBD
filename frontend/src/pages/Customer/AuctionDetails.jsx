@@ -1,12 +1,14 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Badge, Button, SectionHeader } from '../../components/ui';
+import { PageHeader, Badge, SectionHeader, BidForm } from '../../components/ui';
 import { auctions } from '../../data/mockData';
 
 export default function AuctionDetails() {
   const { auctionId } = useParams();
   const auction = auctions.find((a) => a.id === auctionId) || auctions[0];
   const related = auctions.filter((a) => a.id !== auction.id).slice(0, 3);
+  const [currentBid, setCurrentBid] = useState(auction.currentBid);
 
   return (
     <div>
@@ -38,19 +40,13 @@ export default function AuctionDetails() {
           <div className="mt-6 space-y-3 rounded-xl border border-border bg-surface p-5">
             <div className="flex items-center justify-between">
               <span className="text-sm text-body/70">Current Bid</span>
-              <span className="text-2xl font-semibold text-primary">৳ {auction.currentBid.toLocaleString()}</span>
+              <span className="text-2xl font-semibold text-primary">৳ {currentBid.toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between text-sm text-body/70">
               <span>{auction.bidsCount} bids</span>
               <span>Closes in {auction.closesIn}</span>
             </div>
-            <div className="flex gap-2">
-              <input
-                placeholder={`৳ ${(auction.currentBid + 200).toLocaleString()} or more`}
-                className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
-              />
-              <Button variant="primary">Place Bid</Button>
-            </div>
+            <BidForm currentBid={currentBid} onSubmit={(amount) => setCurrentBid(Math.max(amount, currentBid + 1))} />
           </div>
         </div>
       </div>

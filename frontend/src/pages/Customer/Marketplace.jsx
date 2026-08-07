@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, SearchBar, SectionHeader, Badge } from '../../components/ui';
-import { ProductCard, EntityCard } from '../../components/cards';
+import { PageHeader, SearchBar, SectionHeader, Badge, CategoryFilter, MarketplaceFilter } from '../../components/ui';
+import { ProductCard, EntityCard, ProducerCard } from '../../components/cards';
 import { products, categories, producers, workshops } from '../../data/mockData';
 
 export default function Marketplace() {
   const liveWorkshops = workshops.filter((w) => w.status === 'live');
+  const [activeCategory, setActiveCategory] = useState('All');
+  const filteredProducts =
+    activeCategory === 'All' ? products : products.filter((p) => p.category === activeCategory);
 
   return (
     <div>
@@ -53,24 +57,38 @@ export default function Marketplace() {
       </div>
 
       <SectionHeader eyebrow="Featured" title="Featured Products" />
-      <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            to={routePaths.customerProductDetails.replace(':productId', product.id)}
+      <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
+        <MarketplaceFilter className="hidden lg:block" />
+        <div>
+          <CategoryFilter
+            className="mb-6"
+            options={['All', ...categories.map((c) => c.name)]}
+            active={activeCategory}
+            onChange={setActiveCategory}
           />
-        ))}
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                to={routePaths.customerProductDetails.replace(':productId', product.id)}
+              />
+            ))}
+            {filteredProducts.length === 0 && (
+              <p className="col-span-full text-sm text-body/60">No products in this category yet.</p>
+            )}
+          </div>
+        </div>
       </div>
 
-      <SectionHeader eyebrow="Community" title="Featured Producers" />
+      <div className="mt-10">
+        <SectionHeader eyebrow="Community" title="Featured Producers" />
+      </div>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {producers.map((producer) => (
-          <EntityCard
+          <ProducerCard
             key={producer.id}
-            title={producer.name}
-            subtitle={producer.craft}
-            meta={producer.district}
+            producer={producer}
             to={routePaths.customerProducerProfile.replace(':producerId', producer.id)}
           />
         ))}

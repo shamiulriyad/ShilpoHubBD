@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Button, Badge, SectionHeader } from '../../components/ui';
-import { ProductCard } from '../../components/cards';
-import { products, crafts, producers, reviews } from '../../data/mockData';
+import { PageHeader, Button, Badge, SectionHeader, WishlistButton } from '../../components/ui';
+import { ProductCard, ReviewCard, MaterialTraceabilityCard } from '../../components/cards';
+import { ProductGallery, Product360Viewer } from '../../components/media';
+import { products, crafts, producers, reviews, materialTraceability } from '../../data/mockData';
 
-const tabs = ['Details', 'Craft Story', 'Reviews'];
+const tabs = ['Details', 'Craft Story', 'Traceability', 'Reviews'];
 
 export default function ProductDetails() {
   const { productId } = useParams();
   const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [view360, setView360] = useState(false);
   const product = products.find((p) => p.id === productId) || products[0];
   const related = products.filter((p) => p.id !== product.id).slice(0, 4);
   const craft = crafts.find((c) => c.name === product.category);
   const producer = producers.find((p) => p.name === product.producer) || producers[0];
+  const traceability = materialTraceability.find((t) => t.craftId === craft?.id);
 
   return (
     <div>
@@ -28,16 +31,16 @@ export default function ProductDetails() {
 
       <div className="grid gap-10 lg:grid-cols-2">
         <div className="space-y-3">
-          <div className="flex aspect-square items-center justify-center rounded-2xl border border-border bg-background text-sm text-body/40">
-            Product Image
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={() => setView360((prev) => !prev)}
+              className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-body hover:bg-background"
+            >
+              {view360 ? 'Show Gallery' : 'Show 360° View'}
+            </button>
           </div>
-          <div className="grid grid-cols-4 gap-3">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex aspect-square items-center justify-center rounded-lg border border-border bg-background text-[10px] text-body/30">
-                Thumb
-              </div>
-            ))}
-          </div>
+          {view360 ? <Product360Viewer productName={product.name} /> : <ProductGallery productName={product.name} />}
         </div>
 
         <div>
@@ -48,9 +51,12 @@ export default function ProductDetails() {
             materials, technique and cultural significance.
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             <Button variant="primary">Add to Cart</Button>
-            <Button variant="secondary">Add to Wishlist</Button>
+            <div className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2">
+              <WishlistButton />
+              <span className="text-sm font-medium text-title">Wishlist</span>
+            </div>
           </div>
 
           <div className="mt-4 flex flex-wrap gap-4 text-sm">
@@ -146,17 +152,22 @@ export default function ProductDetails() {
           </div>
         )}
 
+        {activeTab === 'Traceability' && (
+          <div className="max-w-3xl space-y-3">
+            {traceability ? (
+              traceability.steps.map((step, index) => (
+                <MaterialTraceabilityCard key={step.stage} step={step} index={index} />
+              ))
+            ) : (
+              <p className="text-sm text-body/60">Traceability data unavailable for this product.</p>
+            )}
+          </div>
+        )}
+
         {activeTab === 'Reviews' && (
           <div className="max-w-3xl space-y-4">
             {reviews.map((review) => (
-              <div key={review.id} className="rounded-xl border border-border bg-surface p-4">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-heading">{review.author}</p>
-                  <span className="text-xs text-secondary">{'★'.repeat(review.rating)}</span>
-                </div>
-                <p className="mt-2 text-sm text-body/70">{review.comment}</p>
-                <p className="mt-1 text-xs text-body/50">{review.date}</p>
-              </div>
+              <ReviewCard key={review.id} review={review} />
             ))}
           </div>
         )}
