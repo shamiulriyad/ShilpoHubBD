@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge } from '../../components/ui';
-import { EntityCard } from '../../components/cards';
-import { communityPosts, producers } from '../../data/mockData';
+import { ProducerCard, DiscussionCard } from '../../components/cards';
+import { communityPosts, producers, forumThreads } from '../../data/mockData';
 
 export default function CommunityFeed() {
   return (
@@ -55,22 +55,35 @@ export default function CommunityFeed() {
           ))}
         </div>
 
-        <div className="h-fit space-y-4 rounded-xl border border-border bg-surface p-5">
-          <p className="text-sm font-semibold text-heading">Producers to Follow</p>
-          <div className="grid grid-cols-2 gap-3">
-            {producers.slice(0, 4).map((producer) => (
-              <EntityCard
-                key={producer.id}
-                title={producer.name}
-                subtitle={producer.craft}
-                to={routePaths.customerProducerProfile.replace(':producerId', producer.id)}
-              />
-            ))}
+        <div className="space-y-4">
+          <div className="space-y-4 rounded-xl border border-border bg-surface p-5">
+            <p className="text-sm font-semibold text-heading">Producers to Follow</p>
+            <div className="grid grid-cols-2 gap-3">
+              {producers.slice(0, 4).map((producer) => (
+                <ProducerCard
+                  key={producer.id}
+                  producer={producer}
+                  to={routePaths.customerProducerProfile.replace(':producerId', producer.id)}
+                />
+              ))}
+            </div>
+            <Link to={routePaths.customerFollowing} className="block text-sm font-medium text-link hover:underline">
+              View who you follow →
+            </Link>
+            <Badge tone="secondary">Tip: follow producers to see their updates here</Badge>
           </div>
-          <Link to={routePaths.customerFollowing} className="block text-sm font-medium text-link hover:underline">
-            View who you follow →
-          </Link>
-          <Badge tone="secondary">Tip: follow producers to see their updates here</Badge>
+
+          <div className="space-y-3 rounded-xl border border-border bg-surface p-5">
+            <p className="text-sm font-semibold text-heading">Recent Discussions</p>
+            <div className="space-y-3">
+              {forumThreads.slice(0, 3).map((thread) => (
+                <DiscussionCard key={thread.id} thread={thread} to={routePaths.customerForum} />
+              ))}
+            </div>
+            <Link to={routePaths.customerForum} className="block text-sm font-medium text-link hover:underline">
+              View discussion forum →
+            </Link>
+          </div>
         </div>
       </div>
     </div>

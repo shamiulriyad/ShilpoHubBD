@@ -98,6 +98,23 @@ import DiscussionForum from '../pages/Customer/DiscussionForum';
 import QuestionsAnswers from '../pages/Customer/QuestionsAnswers';
 import CustomerMessages from '../pages/Customer/Messages';
 import FollowingProducers from '../pages/Customer/FollowingProducers';
+import FavoriteVillages from '../pages/Customer/FavoriteVillages';
+import OrderHistory from '../pages/Customer/OrderHistory';
+import OrderDetails from '../pages/Customer/OrderDetails';
+import Returns from '../pages/Customer/Returns';
+import Refunds from '../pages/Customer/Refunds';
+import CustomerNotifications from '../pages/Customer/CustomerNotifications';
+import SavedAddresses from '../pages/Customer/SavedAddresses';
+import HeritageCollection from '../pages/Customer/HeritageCollection';
+import PurchaseAnalytics from '../pages/Customer/PurchaseAnalytics';
+import ImpactDashboard from '../pages/Customer/ImpactDashboard';
+import HeritagePassport from '../pages/Customer/HeritagePassport';
+import Achievements from '../pages/Customer/Achievements';
+import BadgeCollection from '../pages/Customer/BadgeCollection';
+import AIInteriorPreview from '../pages/Customer/AIInteriorPreview';
+import AIFashionMatching from '../pages/Customer/AIFashionMatching';
+import AIGiftRecommendation from '../pages/Customer/AIGiftRecommendation';
+import AISimilarProducts from '../pages/Customer/AISimilarProducts';
 import ArtisanPage from '../pages/Artisan/ArtisanPage';
 import FarmerPage from '../pages/Farmer/FarmerPage';
 import RetailerPage from '../pages/Retailer/RetailerPage';
@@ -249,6 +266,23 @@ const router = createBrowserRouter([
           { path: routePaths.customerQA, element: <QuestionsAnswers /> },
           { path: routePaths.customerMessages, element: <CustomerMessages /> },
           { path: routePaths.customerFollowing, element: <FollowingProducers /> },
+          { path: routePaths.customerFavoriteVillages, element: <FavoriteVillages /> },
+          { path: routePaths.customerOrders, element: <OrderHistory /> },
+          { path: routePaths.customerOrderDetails, element: <OrderDetails /> },
+          { path: routePaths.customerReturns, element: <Returns /> },
+          { path: routePaths.customerRefunds, element: <Refunds /> },
+          { path: routePaths.customerNotifications, element: <CustomerNotifications /> },
+          { path: routePaths.customerAddresses, element: <SavedAddresses /> },
+          { path: routePaths.customerHeritageCollection, element: <HeritageCollection /> },
+          { path: routePaths.customerPurchaseAnalytics, element: <PurchaseAnalytics /> },
+          { path: routePaths.customerImpactDashboard, element: <ImpactDashboard /> },
+          { path: routePaths.customerHeritagePassport, element: <HeritagePassport /> },
+          { path: routePaths.customerAchievements, element: <Achievements /> },
+          { path: routePaths.customerBadges, element: <BadgeCollection /> },
+          { path: routePaths.customerAIInteriorPreview, element: <AIInteriorPreview /> },
+          { path: routePaths.customerAIFashionMatching, element: <AIFashionMatching /> },
+          { path: routePaths.customerAIGiftRecommendation, element: <AIGiftRecommendation /> },
+          { path: routePaths.customerAISimilarProducts, element: <AISimilarProducts /> },
         ],
       },
     ],

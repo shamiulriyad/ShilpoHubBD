@@ -261,6 +261,19 @@ export const orders = Array.from({ length: 4 }).map((_, i) => ({
   total: 1500 + i * 800,
   status: ['Delivered', 'Shipped', 'Processing', 'Delivered'][i],
   date: `2026-0${(i % 7) + 1}-1${i}`,
+  paymentMethod: ['bKash', 'Card Payment', 'Cash on Delivery', 'Nagad'][i],
+  address: `House ${12 + i}, Road ${4 + i}, ${districts[i % districts.length].name}`,
+  lineItems: Array.from({ length: 1 + (i % 3) }).map((__, j) => ({
+    product: products[(i + j) % products.length].name,
+    qty: 1,
+    price: products[(i + j) % products.length].price,
+  })),
+  trackingSteps: [
+    { label: 'Order Placed', done: true, date: `2026-0${(i % 7) + 1}-1${i}` },
+    { label: 'Processing', done: true, date: `2026-0${(i % 7) + 1}-1${i}` },
+    { label: 'Shipped', done: i !== 2, date: i !== 2 ? `2026-0${(i % 7) + 1}-1${i}` : null },
+    { label: 'Delivered', done: i === 0 || i === 3, date: i === 0 || i === 3 ? `2026-0${(i % 7) + 1}-1${i}` : null },
+  ],
 }));
 
 export const reviews = Array.from({ length: 3 }).map((_, i) => ({
@@ -343,3 +356,115 @@ export const conversations = producers.slice(0, 4).map((producer, i) => ({
 }));
 
 export const followedProducerIds = producers.slice(0, 4).map((p) => p.id);
+
+export const favoriteVillageIds = villages.slice(0, 3).map((v) => v.id);
+
+export const addresses = Array.from({ length: 3 }).map((_, i) => ({
+  id: `address-${i + 1}`,
+  label: ['Home', 'Office', 'Parents’ House'][i],
+  name: 'Ayesha Rahman',
+  phone: `+8801${700000000 + i * 111111}`,
+  district: districts[i % districts.length].name,
+  address: `House ${12 + i}, Road ${4 + i}, ${districts[i % districts.length].name}`,
+  isDefault: i === 0,
+}));
+
+export const returns = orders.slice(0, 3).map((order, i) => ({
+  id: `RET-${5000 + i}`,
+  orderId: order.id,
+  product: products[i % products.length].name,
+  reason: ['Wrong size received', 'Item damaged in transit', 'Changed my mind'][i],
+  status: ['Approved', 'Under Review', 'Completed'][i],
+  requestedDate: `2026-0${(i % 7) + 1}-1${i}`,
+}));
+
+export const refunds = returns.map((ret, i) => ({
+  id: `REF-${7000 + i}`,
+  orderId: ret.orderId,
+  amount: 1200 + i * 650,
+  method: ['bKash', 'Card Refund', 'Bank Transfer'][i],
+  status: ['Processed', 'Pending', 'Processed'][i],
+  date: `2026-0${(i % 7) + 1}-1${i}`,
+}));
+
+export const heritageCollectionItems = products.slice(0, 5).map((product, i) => ({
+  id: `collect-${i + 1}`,
+  productId: product.id,
+  product: product.name,
+  category: product.category,
+  heritageId: `SH-HID-${2026}${String(2000 + i)}`,
+  producer: product.producer,
+  acquiredDate: `2026-0${(i % 7) + 1}-0${i + 1}`,
+  craftId: crafts[i % crafts.length].id,
+}));
+
+export const impactStats = [
+  { label: 'Artisans Supported', value: '9', description: 'Producers who received an order from you' },
+  { label: 'Villages Reached', value: '6', description: 'Heritage villages your purchases touched' },
+  { label: 'Est. Income Generated', value: '৳ 42,500', description: 'Estimated earnings passed to artisans' },
+  { label: 'Crafts Preserved', value: '5', description: 'Traditional crafts you help keep alive' },
+];
+
+export const impactedProducerIds = producers.slice(0, 4).map((p) => p.id);
+
+export const heritagePassportStamps = [
+  ...villages.slice(0, 4).map((v, i) => ({
+    id: `stamp-${v.id}`,
+    type: 'Village',
+    name: v.name,
+    district: v.district,
+    collected: i < 3,
+    date: i < 3 ? `2026-0${i + 1}-1${i}` : null,
+  })),
+  ...festivals.slice(0, 3).map((f, i) => ({
+    id: `stamp-${f.id}`,
+    type: 'Festival',
+    name: f.name,
+    district: f.district,
+    collected: i < 1,
+    date: i < 1 ? f.date : null,
+  })),
+];
+
+export const achievements = [
+  { id: 'ach-1', title: 'First Purchase', description: 'Complete your first order on ShilpoHub.', current: 1, target: 1 },
+  { id: 'ach-2', title: 'Heritage Explorer', description: 'Read 5 craft or producer stories.', current: 3, target: 5 },
+  { id: 'ach-3', title: 'Community Voice', description: 'Post 10 times in the community forum.', current: 4, target: 10 },
+  { id: 'ach-4', title: 'Master Collector', description: 'Own 10 heritage-certified products.', current: 5, target: 10 },
+  { id: 'ach-5', title: 'Village Wanderer', description: 'Collect passport stamps from 8 heritage villages.', current: 3, target: 8 },
+];
+
+export const materialTraceability = crafts.map((craft, i) => ({
+  craftId: craft.id,
+  steps: [
+    {
+      stage: 'Raw Material Sourcing',
+      location: districts[i % districts.length].name,
+      detail: `Natural, locally sourced materials selected for ${craft.name}.`,
+    },
+    {
+      stage: 'Preparation',
+      location: districts[(i + 1) % districts.length].name,
+      detail: 'Materials cleaned, treated and prepared entirely by hand.',
+    },
+    {
+      stage: 'Craftsmanship',
+      location: districts[(i + 2) % districts.length].name,
+      detail: `Skilled artisans shape each piece using traditional ${craft.name} technique.`,
+    },
+    {
+      stage: 'Quality Check',
+      location: districts[(i + 3) % districts.length].name,
+      detail: 'Every piece is inspected and certified before it is listed.',
+    },
+  ],
+}));
+
+export const badges = [
+  { id: 'badge-1', name: 'First Order', icon: '🛍️', description: 'Placed your first order.', earned: true },
+  { id: 'badge-2', name: 'Heritage Supporter', icon: '🧵', description: 'Purchased from 5 different producers.', earned: true },
+  { id: 'badge-3', name: 'Storyteller', icon: '📖', description: 'Read 10 craft stories.', earned: false },
+  { id: 'badge-4', name: 'Festival Goer', icon: '🎉', description: 'Attended a heritage festival.', earned: true },
+  { id: 'badge-5', name: 'Top Collector', icon: '🏺', description: 'Own products from every district.', earned: false },
+  { id: 'badge-6', name: 'Community Pillar', icon: '💬', description: 'Active contributor in discussions.', earned: false },
+];
