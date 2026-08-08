@@ -41,6 +41,8 @@ public static class DependencyInjection
 		services.AddScoped<IProducerFollowRepository, ProducerFollowRepository>();
 		services.AddScoped<IVillageRepository, VillageRepository>();
 		services.AddScoped<IMessagingRepository, MessagingRepository>();
+		services.AddScoped<ILiveShoppingRepository, LiveShoppingRepository>();
+		services.AddScoped<IAuctionRepository, AuctionRepository>();
 
 		return services;
 	}

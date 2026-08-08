@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using ShilpoHubBD.Domain.Entities.Auction;
 using ShilpoHubBD.Domain.Entities.Commerce;
 using ShilpoHubBD.Domain.Entities.Community;
 using ShilpoHubBD.Domain.Entities.Identity;
+using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.Marketplace;
 using ShilpoHubBD.Domain.Entities.Messaging;
 using ShilpoHubBD.Domain.Entities.Reviews;
@@ -54,6 +56,14 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<Conversation> Conversations => Set<Conversation>();
 	public DbSet<ConversationParticipant> ConversationParticipants => Set<ConversationParticipant>();
 	public DbSet<Message> Messages => Set<Message>();
+
+	public DbSet<LiveEvent> LiveEvents => Set<LiveEvent>();
+	public DbSet<LiveEventComment> LiveEventComments => Set<LiveEventComment>();
+	public DbSet<LiveEventReaction> LiveEventReactions => Set<LiveEventReaction>();
+	public DbSet<LiveEventPurchase> LiveEventPurchases => Set<LiveEventPurchase>();
+
+	public DbSet<Auction> Auctions => Set<Auction>();
+	public DbSet<AuctionBid> AuctionBids => Set<AuctionBid>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

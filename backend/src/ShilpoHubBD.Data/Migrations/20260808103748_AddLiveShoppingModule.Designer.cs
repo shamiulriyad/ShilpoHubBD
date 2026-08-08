@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShilpoHubBD.Data;
@@ -11,9 +12,11 @@ using ShilpoHubBD.Data;
 namespace ShilpoHubBD.Data.Migrations
 {
     [DbContext(typeof(ShilpoHubDbContext))]
-    partial class ShilpoHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260808103748_AddLiveShoppingModule")]
+    partial class AddLiveShoppingModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,101 +24,6 @@ namespace ShilpoHubBD.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Auction.Auction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("CurrentPrice")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<DateTime>("EndAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("MinBidIncrement")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<Guid>("ProducerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("StartAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("StartingPrice")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("WinnerId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EndAt");
-
-                    b.HasIndex("ProducerId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("WinnerId");
-
-                    b.ToTable("Auctions", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Auction.AuctionBid", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<Guid>("AuctionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BidderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuctionId");
-
-                    b.HasIndex("BidderId");
-
-                    b.HasIndex("AuctionId", "Amount");
-
-                    b.ToTable("AuctionBids", (string)null);
-                });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.CartItem", b =>
                 {
@@ -2017,51 +1925,6 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("ReviewImages", (string)null);
                 });
 
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Auction.Auction", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
-                        .WithMany()
-                        .HasForeignKey("ProducerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Winner")
-                        .WithMany()
-                        .HasForeignKey("WinnerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Producer");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Winner");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Auction.AuctionBid", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Auction.Auction", "Auction")
-                        .WithMany("Bids")
-                        .HasForeignKey("AuctionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Bidder")
-                        .WithMany()
-                        .HasForeignKey("BidderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Auction");
-
-                    b.Navigation("Bidder");
-                });
-
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.CartItem", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
@@ -2568,11 +2431,6 @@ namespace ShilpoHubBD.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Review");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Auction.Auction", b =>
-                {
-                    b.Navigation("Bids");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.Order", b =>
