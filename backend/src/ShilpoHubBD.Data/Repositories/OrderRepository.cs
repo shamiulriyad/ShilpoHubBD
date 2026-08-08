@@ -58,6 +58,23 @@ public class OrderRepository : IOrderRepository
             .SelectMany(o => o.Items)
             .AnyAsync(i => i.ProductId == productId, cancellationToken);
 
+    public Task<bool> HasCompletedOrderFromDistrictAsync(Guid userId, Guid districtId, CancellationToken cancellationToken)
+        => _context.Orders
+            .Where(o => o.UserId == userId && (
+                o.Status == OrderStatus.Delivered ||
+                o.Status == OrderStatus.ReturnRequested ||
+                o.Status == OrderStatus.Returned ||
+                o.Status == OrderStatus.Refunded))
+            .SelectMany(o => o.Items)
+            .AnyAsync(i => i.Product.DistrictId == districtId, cancellationToken);
+
+    public Task<int> GetCompletedOrderCountAsync(Guid userId, CancellationToken cancellationToken)
+        => _context.Orders.CountAsync(o => o.UserId == userId && (
+            o.Status == OrderStatus.Delivered ||
+            o.Status == OrderStatus.ReturnRequested ||
+            o.Status == OrderStatus.Returned ||
+            o.Status == OrderStatus.Refunded), cancellationToken);
+
     public async Task AddAsync(Order order, CancellationToken cancellationToken)
         => await _context.Orders.AddAsync(order, cancellationToken);
 

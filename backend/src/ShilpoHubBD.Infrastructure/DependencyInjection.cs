@@ -4,6 +4,7 @@ using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Infrastructure.Email;
 using ShilpoHubBD.Infrastructure.Options;
 using ShilpoHubBD.Infrastructure.Payments;
+using ShilpoHubBD.Infrastructure.Recommendations;
 using ShilpoHubBD.Infrastructure.Security;
 
 namespace ShilpoHubBD.Infrastructure;
@@ -18,6 +19,7 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
         services.AddScoped<IEmailSender, ConsoleEmailSender>();
         services.AddScoped<IPaymentProvider, CashOnDeliveryPaymentProvider>();
+        services.AddScoped<IRecommendationProvider, DummyRecommendationProvider>();
 
         return services;
     }
