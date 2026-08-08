@@ -1,12 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using ShilpoHubBD.Domain.Entities.Achievement;
 using ShilpoHubBD.Domain.Entities.Auction;
+using ShilpoHubBD.Domain.Entities.Certificate;
 using ShilpoHubBD.Domain.Entities.Commerce;
 using ShilpoHubBD.Domain.Entities.Community;
 using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.Marketplace;
 using ShilpoHubBD.Domain.Entities.Messaging;
+using ShilpoHubBD.Domain.Entities.Passport;
+using ShilpoHubBD.Domain.Entities.QRVerification;
 using ShilpoHubBD.Domain.Entities.Reviews;
+using ShilpoHubBD.Domain.Entities.Traceability;
 
 namespace ShilpoHubBD.Data;
 
@@ -64,6 +69,22 @@ public class ShilpoHubDbContext : DbContext
 
 	public DbSet<Auction> Auctions => Set<Auction>();
 	public DbSet<AuctionBid> AuctionBids => Set<AuctionBid>();
+
+	public DbSet<QRCode> QRCodes => Set<QRCode>();
+	public DbSet<QRVerificationRecord> QRVerificationRecords => Set<QRVerificationRecord>();
+
+	public DbSet<Certificate> Certificates => Set<Certificate>();
+
+	public DbSet<ProductTraceability> ProductTraceabilities => Set<ProductTraceability>();
+	public DbSet<MaterialSource> MaterialSources => Set<MaterialSource>();
+	public DbSet<TimelineEvent> TimelineEvents => Set<TimelineEvent>();
+
+	public DbSet<Badge> Badges => Set<Badge>();
+	public DbSet<UserBadge> UserBadges => Set<UserBadge>();
+
+	public DbSet<XpTransaction> XpTransactions => Set<XpTransaction>();
+	public DbSet<Achievement> Achievements => Set<Achievement>();
+	public DbSet<UserAchievement> UserAchievements => Set<UserAchievement>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

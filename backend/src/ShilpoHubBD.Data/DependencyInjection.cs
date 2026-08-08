@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShilpoHubBD.Application.Interfaces.Repositories;
+using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Data.Repositories;
+using ShilpoHubBD.Data.Search;
 
 namespace ShilpoHubBD.Data;
 
@@ -43,6 +45,14 @@ public static class DependencyInjection
 		services.AddScoped<IMessagingRepository, MessagingRepository>();
 		services.AddScoped<ILiveShoppingRepository, LiveShoppingRepository>();
 		services.AddScoped<IAuctionRepository, AuctionRepository>();
+		services.AddScoped<IQRVerificationRepository, QRVerificationRepository>();
+		services.AddScoped<ICertificateRepository, CertificateRepository>();
+		services.AddScoped<ITraceabilityRepository, TraceabilityRepository>();
+		services.AddScoped<ISearchProvider, PostgresProductSearchProvider>();
+		services.AddScoped<IPassportRepository, PassportRepository>();
+		services.AddScoped<IAchievementRepository, AchievementRepository>();
+		services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+		services.AddScoped<IImpactRepository, ImpactRepository>();
 
 		return services;
 	}
