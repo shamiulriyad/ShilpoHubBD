@@ -16,11 +16,19 @@ public class Product
     public bool IsActive { get; set; } = true;
 
     public string? MakingProcessVideoUrl { get; set; }
+    public string? Story { get; set; }
+    public int? LowStockThreshold { get; set; }
 
     public int ViewCount { get; set; }
     public int SalesCount { get; set; }
     public decimal AverageRating { get; set; }
     public int ReviewCount { get; set; }
+
+    public HandmadeVerificationStatus HandmadeVerificationStatus { get; set; } = HandmadeVerificationStatus.Pending;
+    public Guid? HandmadeVerifiedByUserId { get; set; }
+    public User? HandmadeVerifiedBy { get; set; }
+    public string? HandmadeVerificationNotes { get; set; }
+    public DateTime? HandmadeVerifiedAt { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
@@ -36,4 +44,5 @@ public class Product
 
     public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
     public ICollection<ProductVariant> Variants { get; set; } = new List<ProductVariant>();
+    public ICollection<ProductVideo> Videos { get; set; } = new List<ProductVideo>();
 }

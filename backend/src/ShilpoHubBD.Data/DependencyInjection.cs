@@ -53,6 +53,17 @@ public static class DependencyInjection
 		services.AddScoped<IAchievementRepository, AchievementRepository>();
 		services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 		services.AddScoped<IImpactRepository, ImpactRepository>();
+		services.AddScoped<IHeritageIdentityRepository, HeritageIdentityRepository>();
+		services.AddScoped<IInventoryRepository, InventoryRepository>();
+		services.AddScoped<ICustomOrderRepository, CustomOrderRepository>();
+		services.AddScoped<IProducerOrderRepository, ProducerOrderRepository>();
+
+		services.AddScoped<IMentorRepository, MentorRepository>();
+		services.AddScoped<ICourseRepository, CourseRepository>();
+		services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+		services.AddScoped<ITrainingCertificateRepository, TrainingCertificateRepository>();
+
+		services.AddScoped<ISustainabilityRepository, SustainabilityRepository>();
 
 		return services;
 	}

@@ -23,7 +23,10 @@ public class UpdateProductRequestValidator : AbstractValidator<UpdateProductRequ
 
         RuleFor(x => x.ImageUrls).NotEmpty().WithMessage("At least one product image is required.");
         RuleForEach(x => x.ImageUrls).NotEmpty().MaximumLength(2000);
+        RuleForEach(x => x.ThreeSixtyImageUrls).NotEmpty().MaximumLength(2000);
 
         RuleFor(x => x.MakingProcessVideoUrl).MaximumLength(2000);
+        RuleFor(x => x.Story).MaximumLength(4000);
+        RuleFor(x => x.LowStockThreshold).GreaterThanOrEqualTo(0).When(x => x.LowStockThreshold.HasValue);
     }
 }

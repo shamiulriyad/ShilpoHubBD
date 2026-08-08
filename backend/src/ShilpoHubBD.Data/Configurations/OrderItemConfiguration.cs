@@ -19,7 +19,13 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
         builder.Property(i => i.Quantity).IsRequired();
         builder.Property(i => i.LineTotal).IsRequired().HasColumnType("decimal(12,2)");
 
+        builder.Property(i => i.ProducerStatus).HasConversion<string>().HasMaxLength(20).IsRequired();
+        builder.Property(i => i.ProducerNote).HasMaxLength(1000);
+        builder.Property(i => i.TrackingNumber).HasMaxLength(100);
+        builder.Property(i => i.Carrier).HasMaxLength(100);
+
         builder.HasIndex(i => i.OrderId);
+        builder.HasIndex(i => i.ProducerStatus);
 
         builder.HasOne(i => i.Product)
             .WithMany()

@@ -7,6 +7,7 @@ public class LiveEventListItemDto
     public Guid ProductId { get; set; }
     public string ProductName { get; set; } = string.Empty;
     public string? ProductImageUrl { get; set; }
+    public bool HasLiveAuction { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public DateTime ScheduledStartAt { get; set; }

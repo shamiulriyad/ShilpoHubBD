@@ -17,6 +17,7 @@ public class LiveShoppingRepository : ILiveShoppingRepository
         => _context.LiveEvents
             .Include(e => e.Producer)
             .Include(e => e.Product).ThenInclude(p => p.Images)
+            .Include(e => e.Auction)
             .Include(e => e.Comments).ThenInclude(c => c.User)
             .Include(e => e.Reactions)
             .Include(e => e.Purchases)

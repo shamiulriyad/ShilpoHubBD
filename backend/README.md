@@ -10,7 +10,7 @@ ASP.NET Core 8 Web API for **ShilpoHubBD**, a marketplace connecting Bangladeshi
 | Database | PostgreSQL (Supabase), via `Npgsql.EntityFrameworkCore.PostgreSQL` |
 | Auth | JWT Bearer (access + refresh tokens), BCrypt password hashing |
 | Validation | FluentValidation |
-| Realtime | SignalR (`/hubs/messaging`) |
+| Realtime | SignalR (`/hubs/messaging`, `/hubs/live-events`) |
 | API docs | Swagger / OpenAPI (`Swashbuckle`) |
 | Health checks | `/health/db` |
 
@@ -36,6 +36,8 @@ Abstract providers (swap the implementation without touching callers):
 - `IPaymentProvider` → `CashOnDeliveryPaymentProvider` (Infrastructure)
 - `IRecommendationProvider` → `DummyRecommendationProvider` (Infrastructure)
 - `ISearchProvider` → `PostgresProductSearchProvider` (Data, native PostgreSQL full-text search)
+- `IAIBusinessProvider` → `DummyAIBusinessProvider` (Infrastructure, rule-based; ready for a future Gemini/OpenAI/custom-ML implementation)
+- `IMessageNotifier` → `SignalRMessageNotifier`, `ILiveEventNotifier` → `SignalRLiveEventNotifier` (Api/Realtime, keep SignalR out of the Application layer)
 
 ## Prerequisites
 
@@ -72,7 +74,7 @@ Abstract providers (swap the implementation without touching callers):
    ```
    - Swagger UI (Development): `https://localhost:5001/swagger`
    - Health check: `GET /health/db`
-   - SignalR messaging hub: `/hubs/messaging`
+   - SignalR hubs: `/hubs/messaging`, `/hubs/live-events`
 
 ## Database migrations
 
@@ -93,7 +95,7 @@ JWT Bearer auth (`Authorization: Bearer <token>`). Roles (`ShilpoHubBD.Domain.Co
 
 `Customer`, `Producer`, `BusinessPartner`, `Tourist`, `HeritageAcademyMember`, `HeritageInnovationHub`, `GovernmentNGO`, `LogisticsPartner`, `SuperAdmin`.
 
-Most write endpoints require `[Authorize]`; producer-owned resources (products, live events, auctions, QR codes, certificates, traceability records) are additionally ownership-checked against the authenticated user, with `SuperAdmin` able to manage anything. Catalog/admin-only actions (roles, categories, districts, craft stories, achievement definitions) require `SuperAdmin`.
+Most write endpoints require `[Authorize]`; producer-owned resources (products, live events, auctions, QR codes, certificates, traceability records, orders, courses, mentor profiles, sustainability records, heritage identity) are additionally ownership-checked against the authenticated user, with `SuperAdmin` able to manage anything. Catalog/admin-only actions (roles, categories, districts, craft stories, achievement definitions, sustainability material certification verification) require `SuperAdmin`.
 
 ## API modules
 
@@ -104,8 +106,11 @@ All routes are prefixed `/api`. Auth requirement: **Public** (no token needed), 
 | Auth | `/auth` | Register, login, refresh, logout, password reset |
 | Roles | `/roles` | Role catalog (SuperAdmin-managed) |
 | Categories / Districts | `/categories`, `/districts` | Marketplace reference data |
-| Products | `/products` | Product CRUD, variants, featured/trending lists |
+| Products | `/products` | Product CRUD, variants, bulk upload, production videos, 360° images, handmade verification, featured/trending lists |
+| Inventory | `/inventory` | Stock adjustments with audit history, low-stock alerts |
+| Custom Orders | `/custom-orders` | Customer-to-producer custom order requests, quotes, accept/reject/cancel |
 | Craft Stories / Producer Stories | `/craft-stories`, `/producer-stories` | Editorial heritage content per category/producer |
+| Heritage Identity | `/heritage-identity` | Digital heritage ID, government verification, family heritage tree, skill timeline, awards, certifications, workshop profile, story archive, and the **Heritage Legacy Score** (configurable rule-based weights across experience/verification/awards/certifications/products/reviews/apprentices trained/courses published/cultural contribution, with score history and a recalculation endpoint) |
 | Workshop Gallery | `/workshop-gallery` | Producer workshop media |
 | Wishlist / Cart | `/wishlist`, `/cart` | Per-user shopping state |
 | Orders | `/orders` | Checkout, tracking, cancel/return, fulfillment lifecycle |
@@ -114,7 +119,11 @@ All routes are prefixed `/api`. Auth requirement: **Public** (no token needed), 
 | Questions / Discussions | `/questions`, `/discussions` | Community Q&A and threaded discussions |
 | Producer Follows / Villages | `/producer-follows`, `/villages` | Follow producers, favorite villages |
 | Messaging | `/messaging` | Conversations, messages, read receipts, realtime via SignalR |
-| Live Shopping | `/live-events` | Live events, comments, reactions, buy-during-live |
+| Producer Orders | `/producer/orders` | Producer-side order fulfillment (accept/reject/processing/ship/deliver, scoped to a producer's own products), customer list, revenue dashboard, sales analytics, visitor analytics, income reports, product performance |
+| AI Business Assistant | `/producer/ai-business` | Price suggestion, product description generator, translation, demand forecast, production planner, material forecast, seasonal prediction, sales insights — all rule-based/dummy today, provider-abstracted for a future real model |
+| Live Shopping | `/live-events` | Live events, comments, reactions, buy-during-live, optional linked live auction, realtime updates via `/hubs/live-events` |
+| Learning & Mentorship | `/mentors`, `/courses`, `/enrollments`, `/training-certificates` | Become a mentor, publish courses & lessons, apprentice enrollment, lesson-progress tracking, auto-issued training certificates on course completion (verify/download, same pattern as product certificates) |
+| Sustainability | `/sustainability` | Eco Score, Green Production Badge, Carbon Savings, sustainable material records and certifications — configurable rule-based scoring, no AI |
 | Auctions | `/auctions` | Auctions, bids, timer-driven winner resolution |
 | QR Verification | `/qr-verification` | Generate/verify/revoke product QR codes, scan history |
 | Certificates | `/certificates` | Generate/verify/download certificates of authenticity |
@@ -143,5 +152,6 @@ backend/
         ├── Controllers/
         ├── Hubs/
         ├── Middlewares/
+        ├── Realtime/            # SignalR notifier implementations (IMessageNotifier, ILiveEventNotifier)
         └── Program.cs
 ```

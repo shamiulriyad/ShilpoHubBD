@@ -393,11 +393,30 @@ namespace ShilpoHubBD.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Carrier")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeliveredAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<decimal>("LineTotal")
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ProducerNote")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime?>("ProducerRespondedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ProducerStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
@@ -417,6 +436,13 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime?>("ShippedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TrackingNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(10,2)");
 
@@ -427,6 +453,8 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProducerStatus");
 
                     b.HasIndex("ProductId");
 
@@ -760,6 +788,373 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("VillageFavorites", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.CustomOrders.CustomOrderRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("Budget")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("Deadline")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProducerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ProducerResponse")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("QuotedPrice")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime?>("RespondedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Specifications")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProducerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CustomOrderRequests", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.FamilyHeritageMember", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ActiveYearsRange")
+                        .HasColumnType("text");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Generation")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProducerHeritageIdentityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Relation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Story")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProducerHeritageIdentityId");
+
+                    b.ToTable("FamilyHeritageMembers", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.HeritageAward", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("IssuingOrganization")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProducerHeritageIdentityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProducerHeritageIdentityId");
+
+                    b.ToTable("HeritageAwards", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.HeritageCertification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CertificateNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CertificateUrl")
+                        .HasColumnType("text");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ExpiryYear")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IssuedYear")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("IssuingBody")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProducerHeritageIdentityId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProducerHeritageIdentityId");
+
+                    b.ToTable("HeritageCertifications", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DistrictId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("EstablishedYear")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("HeritageIdNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("LegacyScore")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PrimaryCraft")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("ProducerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("VerificationNotes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("VerificationStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("VerifiedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("WorkshopAddress")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("WorkshopDescription")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("WorkshopName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("YearsOfExperience")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DistrictId");
+
+                    b.HasIndex("HeritageIdNumber")
+                        .IsUnique();
+
+                    b.HasIndex("ProducerId")
+                        .IsUnique();
+
+                    b.HasIndex("VerifiedByUserId");
+
+                    b.ToTable("ProducerHeritageIdentities", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.ScoreHistoryEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ApprenticesTrainedPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AwardsPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CalculatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CertificationsPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CoursesPublishedPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CulturalContributionPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProducerHeritageIdentityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ProductsPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReviewsPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VerificationPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YearsOfExperiencePoints")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProducerHeritageIdentityId", "CalculatedAt");
+
+                    b.ToTable("HeritageScoreHistory", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.SkillTimelineEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProducerHeritageIdentityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProducerHeritageIdentityId");
+
+                    b.ToTable("SkillTimelineEntries", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.StoryArchiveEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProducerHeritageIdentityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProducerHeritageIdentityId");
+
+                    b.ToTable("StoryArchiveEntries", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.PasswordResetToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -975,10 +1370,294 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Inventory.InventoryTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ChangeAmount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("NewStock")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PreviousStock")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ProductVariantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.ToTable("InventoryTransactions", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.Course", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<int?>("MaxApprentices")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("MentorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("PublishedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MentorId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("Courses", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseEnrollment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ApprenticeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("EnrolledAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprenticeId");
+
+                    b.HasIndex("CourseId", "ApprenticeId")
+                        .IsUnique();
+
+                    b.ToTable("CourseEnrollments", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseLesson", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("VideoUrl")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId", "DisplayOrder");
+
+                    b.ToTable("CourseLessons", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.LessonProgress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("EnrollmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("EnrollmentId", "LessonId")
+                        .IsUnique();
+
+                    b.ToTable("LessonProgress", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.MentorProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Expertise")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("YearsOfExperience")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("MentorProfiles", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.TrainingCertificate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ApprenticeName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("CertificateNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("CourseTitle")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Guid>("EnrollmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("MentorName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CertificateNumber")
+                        .IsUnique();
+
+                    b.HasIndex("EnrollmentId")
+                        .IsUnique();
+
+                    b.ToTable("TrainingCertificates", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveShopping.LiveEvent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AuctionId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1018,6 +1697,8 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuctionId");
 
                     b.HasIndex("ProducerId");
 
@@ -1871,11 +2552,29 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<Guid>("DistrictId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("HandmadeVerificationNotes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("HandmadeVerificationStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime?>("HandmadeVerifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("HandmadeVerifiedByUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsFeatured")
                         .HasColumnType("boolean");
+
+                    b.Property<int?>("LowStockThreshold")
+                        .HasColumnType("integer");
 
                     b.Property<string>("MakingProcessVideoUrl")
                         .HasMaxLength(2000)
@@ -1906,6 +2605,10 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Story")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1917,6 +2620,8 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("DistrictId");
+
+                    b.HasIndex("HandmadeVerifiedByUserId");
 
                     b.HasIndex("ProducerId");
 
@@ -1940,6 +2645,11 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("integer");
+
+                    b.Property<string>("ImageType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -1994,6 +2704,37 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductVariants", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.ProductVideo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("VideoUrl")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductVideos", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.WorkshopGalleryItem", b =>
@@ -2297,6 +3038,138 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("ReviewId");
 
                     b.ToTable("ReviewImages", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainabilityProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("BadgeLevel")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("EcoScore")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<DateTime?>("LastCalculatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProducerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("TotalCarbonSavingsKg")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProducerId")
+                        .IsUnique();
+
+                    b.ToTable("SustainabilityProfiles", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainableMaterialCertification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CertificateReference")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("CertifyingBody")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("MaterialName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Guid>("SustainabilityProfileId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SustainabilityProfileId");
+
+                    b.ToTable("SustainableMaterialCertifications", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainableMaterialRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("CarbonSavingsPerUnitKg")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<bool>("IsBiodegradable")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsLocallySourced")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsRecycled")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsRenewable")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("MaterialName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("QuantityUsed")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<DateTime>("RecordedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("SustainabilityProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SustainabilityProfileId");
+
+                    b.ToTable("SustainableMaterialRecords", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Traceability.MaterialSource", b =>
@@ -2706,6 +3579,123 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Village");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.CustomOrders.CustomOrderRequest", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
+                        .WithMany()
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Producer");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.FamilyHeritageMember", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", "ProducerHeritageIdentity")
+                        .WithMany("FamilyMembers")
+                        .HasForeignKey("ProducerHeritageIdentityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProducerHeritageIdentity");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.HeritageAward", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", "ProducerHeritageIdentity")
+                        .WithMany("Awards")
+                        .HasForeignKey("ProducerHeritageIdentityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProducerHeritageIdentity");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.HeritageCertification", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", "ProducerHeritageIdentity")
+                        .WithMany("Certifications")
+                        .HasForeignKey("ProducerHeritageIdentityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProducerHeritageIdentity");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
+                        .WithMany()
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "VerifiedBy")
+                        .WithMany()
+                        .HasForeignKey("VerifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("District");
+
+                    b.Navigation("Producer");
+
+                    b.Navigation("VerifiedBy");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.ScoreHistoryEntry", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", "ProducerHeritageIdentity")
+                        .WithMany("ScoreHistory")
+                        .HasForeignKey("ProducerHeritageIdentityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProducerHeritageIdentity");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.SkillTimelineEntry", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", "ProducerHeritageIdentity")
+                        .WithMany("SkillTimeline")
+                        .HasForeignKey("ProducerHeritageIdentityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProducerHeritageIdentity");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.StoryArchiveEntry", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", "ProducerHeritageIdentity")
+                        .WithMany("StoryArchive")
+                        .HasForeignKey("ProducerHeritageIdentityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProducerHeritageIdentity");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.PasswordResetToken", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
@@ -2747,8 +3737,121 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Inventory.InventoryTransaction", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductVariant");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.Course", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Learning.MentorProfile", "Mentor")
+                        .WithMany("Courses")
+                        .HasForeignKey("MentorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Mentor");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseEnrollment", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Apprentice")
+                        .WithMany()
+                        .HasForeignKey("ApprenticeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Learning.Course", "Course")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Apprentice");
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseLesson", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Learning.Course", "Course")
+                        .WithMany("Lessons")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.LessonProgress", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Learning.CourseEnrollment", "Enrollment")
+                        .WithMany("LessonProgress")
+                        .HasForeignKey("EnrollmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Learning.CourseLesson", "Lesson")
+                        .WithMany()
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Enrollment");
+
+                    b.Navigation("Lesson");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.MentorProfile", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.TrainingCertificate", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Learning.CourseEnrollment", "Enrollment")
+                        .WithMany()
+                        .HasForeignKey("EnrollmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Enrollment");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveShopping.LiveEvent", b =>
                 {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Auction.Auction", "Auction")
+                        .WithMany()
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
                         .WithMany()
                         .HasForeignKey("ProducerId")
@@ -2760,6 +3863,8 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Auction");
 
                     b.Navigation("Producer");
 
@@ -2887,6 +3992,11 @@ namespace ShilpoHubBD.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "HandmadeVerifiedBy")
+                        .WithMany()
+                        .HasForeignKey("HandmadeVerifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
                         .WithMany()
                         .HasForeignKey("ProducerId")
@@ -2896,6 +4006,8 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("District");
+
+                    b.Navigation("HandmadeVerifiedBy");
 
                     b.Navigation("Producer");
                 });
@@ -2915,6 +4027,17 @@ namespace ShilpoHubBD.Data.Migrations
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
                         .WithMany("Variants")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.ProductVideo", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
+                        .WithMany("Videos")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3056,6 +4179,46 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Review");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainabilityProfile", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
+                        .WithMany()
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Producer");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainableMaterialCertification", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Sustainability.SustainabilityProfile", "SustainabilityProfile")
+                        .WithMany("Certifications")
+                        .HasForeignKey("SustainabilityProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SustainabilityProfile");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainableMaterialRecord", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Sustainability.SustainabilityProfile", "SustainabilityProfile")
+                        .WithMany("MaterialRecords")
+                        .HasForeignKey("SustainabilityProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SustainabilityProfile");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Traceability.MaterialSource", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Traceability.ProductTraceability", "ProductTraceability")
@@ -3116,6 +4279,21 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Replies");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", b =>
+                {
+                    b.Navigation("Awards");
+
+                    b.Navigation("Certifications");
+
+                    b.Navigation("FamilyMembers");
+
+                    b.Navigation("ScoreHistory");
+
+                    b.Navigation("SkillTimeline");
+
+                    b.Navigation("StoryArchive");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.Role", b =>
                 {
                     b.Navigation("UserRoles");
@@ -3128,6 +4306,23 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.Course", b =>
+                {
+                    b.Navigation("Enrollments");
+
+                    b.Navigation("Lessons");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseEnrollment", b =>
+                {
+                    b.Navigation("LessonProgress");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.MentorProfile", b =>
+                {
+                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveShopping.LiveEvent", b =>
@@ -3164,6 +4359,8 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Variants");
+
+                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Messaging.Conversation", b =>
@@ -3186,6 +4383,13 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.Review", b =>
                 {
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainabilityProfile", b =>
+                {
+                    b.Navigation("Certifications");
+
+                    b.Navigation("MaterialRecords");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Traceability.ProductTraceability", b =>

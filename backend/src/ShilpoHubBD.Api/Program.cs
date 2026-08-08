@@ -63,12 +63,13 @@ builder.Services.AddSwaggerGen(options =>
 	});
 });
 
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IMessageNotifier, SignalRMessageNotifier>();
+builder.Services.AddScoped<ILiveEventNotifier, SignalRLiveEventNotifier>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(connectionString))
@@ -156,6 +157,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<MessagingHub>("/hubs/messaging");
+app.MapHub<LiveEventHub>("/hubs/live-events");
 app.MapHealthChecks("/health/db");
 
 // Idempotent SuperAdmin seed for local/dev environments; controlled entirely via .env, never baked into migrations.
