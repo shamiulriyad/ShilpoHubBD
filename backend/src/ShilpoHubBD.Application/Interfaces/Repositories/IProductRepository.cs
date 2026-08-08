@@ -12,7 +12,9 @@ public interface IProductRepository
     Task<List<Product>> GetTrendingAsync(int count, CancellationToken cancellationToken);
     Task<List<Product>> GetByProducerAsync(Guid producerId, CancellationToken cancellationToken);
     Task<bool> ExistsBySlugAsync(string slug, CancellationToken cancellationToken);
+    Task<List<Product>> GetLowStockByProducerAsync(Guid producerId, CancellationToken cancellationToken);
     Task AddAsync(Product product, CancellationToken cancellationToken);
     Task AddVariantAsync(ProductVariant variant, CancellationToken cancellationToken);
+    Task AddVideoAsync(ProductVideo video, CancellationToken cancellationToken);
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }

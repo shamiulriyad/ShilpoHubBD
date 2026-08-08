@@ -25,11 +25,15 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.IsFeatured).IsRequired();
         builder.Property(p => p.IsActive).IsRequired();
         builder.Property(p => p.MakingProcessVideoUrl).HasMaxLength(2000);
+        builder.Property(p => p.Story).HasMaxLength(4000);
 
         builder.Property(p => p.ViewCount).IsRequired();
         builder.Property(p => p.SalesCount).IsRequired();
         builder.Property(p => p.AverageRating).IsRequired().HasColumnType("decimal(3,2)");
         builder.Property(p => p.ReviewCount).IsRequired();
+
+        builder.Property(p => p.HandmadeVerificationStatus).HasConversion<string>().HasMaxLength(20).IsRequired();
+        builder.Property(p => p.HandmadeVerificationNotes).HasMaxLength(1000);
 
         builder.Property(p => p.CreatedAt).IsRequired();
         builder.Property(p => p.UpdatedAt).IsRequired();
@@ -54,12 +58,22 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasForeignKey(p => p.ProducerId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.HasOne(p => p.HandmadeVerifiedBy)
+            .WithMany()
+            .HasForeignKey(p => p.HandmadeVerifiedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.HasMany(p => p.Images)
             .WithOne(i => i.Product)
             .HasForeignKey(i => i.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(p => p.Variants)
+            .WithOne(v => v.Product)
+            .HasForeignKey(v => v.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(p => p.Videos)
             .WithOne(v => v.Product)
             .HasForeignKey(v => v.ProductId)
             .OnDelete(DeleteBehavior.Cascade);

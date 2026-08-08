@@ -1,7 +1,10 @@
 using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShilpoHubBD.Application.Interfaces.Services;
+using ShilpoHubBD.Application.Options;
 using ShilpoHubBD.Application.Services.Achievement;
+using ShilpoHubBD.Application.Services.AIBusiness;
 using ShilpoHubBD.Application.Services.AIShopping;
 using ShilpoHubBD.Application.Services.Analytics;
 using ShilpoHubBD.Application.Services.Auth;
@@ -9,24 +12,33 @@ using ShilpoHubBD.Application.Services.Commerce;
 using ShilpoHubBD.Application.Services.Auction;
 using ShilpoHubBD.Application.Services.Certificate;
 using ShilpoHubBD.Application.Services.Community;
+using ShilpoHubBD.Application.Services.CustomOrders;
+using ShilpoHubBD.Application.Services.HeritageIdentity;
 using ShilpoHubBD.Application.Services.Impact;
+using ShilpoHubBD.Application.Services.Inventory;
+using ShilpoHubBD.Application.Services.Learning;
 using ShilpoHubBD.Application.Services.LiveShopping;
 using ShilpoHubBD.Application.Services.Marketplace;
 using ShilpoHubBD.Application.Services.Messaging;
 using ShilpoHubBD.Application.Services.Passport;
+using ShilpoHubBD.Application.Services.ProducerBusiness;
 using ShilpoHubBD.Application.Services.QRVerification;
 using ShilpoHubBD.Application.Services.Recommendation;
 using ShilpoHubBD.Application.Services.Reviews;
 using ShilpoHubBD.Application.Services.Search;
+using ShilpoHubBD.Application.Services.Sustainability;
 using ShilpoHubBD.Application.Services.Traceability;
 
 namespace ShilpoHubBD.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+
+        services.Configure<HeritageScoreOptions>(configuration.GetSection("HeritageScore"));
+        services.Configure<SustainabilityScoreOptions>(configuration.GetSection("SustainabilityScore"));
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
@@ -77,6 +89,21 @@ public static class DependencyInjection
         services.AddScoped<IAnalyticsService, AnalyticsService>();
 
         services.AddScoped<IImpactService, ImpactService>();
+
+        services.AddScoped<IHeritageIdentityService, HeritageIdentityService>();
+
+        services.AddScoped<IInventoryService, InventoryService>();
+        services.AddScoped<ICustomOrderService, CustomOrderService>();
+
+        services.AddScoped<IProducerOrderService, ProducerOrderService>();
+        services.AddScoped<IAIBusinessService, AIBusinessService>();
+
+        services.AddScoped<IMentorService, MentorService>();
+        services.AddScoped<ICourseService, CourseService>();
+        services.AddScoped<IEnrollmentService, EnrollmentService>();
+        services.AddScoped<ITrainingCertificateService, TrainingCertificateService>();
+
+        services.AddScoped<ISustainabilityService, SustainabilityService>();
 
         return services;
     }

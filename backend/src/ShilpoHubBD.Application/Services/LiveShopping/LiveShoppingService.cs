@@ -12,16 +12,22 @@ public class LiveShoppingService : ILiveShoppingService
 {
     private readonly ILiveShoppingRepository _liveShoppingRepository;
     private readonly IProductRepository _productRepository;
+    private readonly IAuctionRepository _auctionRepository;
     private readonly ICartService _cartService;
+    private readonly ILiveEventNotifier _liveEventNotifier;
 
     public LiveShoppingService(
         ILiveShoppingRepository liveShoppingRepository,
         IProductRepository productRepository,
-        ICartService cartService)
+        IAuctionRepository auctionRepository,
+        ICartService cartService,
+        ILiveEventNotifier liveEventNotifier)
     {
         _liveShoppingRepository = liveShoppingRepository;
         _productRepository = productRepository;
+        _auctionRepository = auctionRepository;
         _cartService = cartService;
+        _liveEventNotifier = liveEventNotifier;
     }
 
     public async Task<PagedResult<LiveEventListItemDto>> GetAllAsync(LiveEventQueryParameters query, CancellationToken cancellationToken)
@@ -54,12 +60,24 @@ public class LiveShoppingService : ILiveShoppingService
             throw new UnauthorizedAccessException("You can only host live events for your own products.");
         }
 
+        if (request.AuctionId.HasValue)
+        {
+            var auction = await _auctionRepository.GetByIdAsync(request.AuctionId.Value, cancellationToken)
+                ?? throw new NotFoundException("Auction not found.");
+
+            if (auction.ProducerId != producerId)
+            {
+                throw new UnauthorizedAccessException("You can only link auctions you own to a live event.");
+            }
+        }
+
         var now = DateTime.UtcNow;
         var liveEvent = new LiveEvent
         {
             Id = Guid.NewGuid(),
             ProducerId = producerId,
             ProductId = request.ProductId,
+            AuctionId = request.AuctionId,
             Title = request.Title.Trim(),
             Description = request.Description.Trim(),
             Status = LiveEventStatus.Scheduled,
@@ -93,7 +111,10 @@ public class LiveShoppingService : ILiveShoppingService
         liveEvent.UpdatedAt = now;
 
         await _liveShoppingRepository.SaveChangesAsync(cancellationToken);
-        return ToDto(liveEvent);
+
+        var dto = ToDto(liveEvent);
+        await _liveEventNotifier.NotifyStatusChangedAsync(id, dto, cancellationToken);
+        return dto;
     }
 
     public async Task<LiveEventDto> EndAsync(Guid id, Guid producerId, bool isAdmin, CancellationToken cancellationToken)
@@ -114,7 +135,10 @@ public class LiveShoppingService : ILiveShoppingService
         liveEvent.UpdatedAt = now;
 
         await _liveShoppingRepository.SaveChangesAsync(cancellationToken);
-        return ToDto(liveEvent);
+
+        var dto = ToDto(liveEvent);
+        await _liveEventNotifier.NotifyStatusChangedAsync(id, dto, cancellationToken);
+        return dto;
     }
 
     public async Task<LiveEventCommentDto> AddCommentAsync(Guid id, Guid userId, AddLiveCommentRequest request, CancellationToken cancellationToken)
@@ -141,7 +165,10 @@ public class LiveShoppingService : ILiveShoppingService
 
         var updated = await _liveShoppingRepository.GetByIdAsync(id, cancellationToken);
         var saved = updated!.Comments.First(c => c.Id == comment.Id);
-        return ToCommentDto(saved);
+        var dto = ToCommentDto(saved);
+
+        await _liveEventNotifier.NotifyCommentAsync(id, dto, cancellationToken);
+        return dto;
     }
 
     public async Task<List<ReactionSummaryDto>> AddReactionAsync(Guid id, Guid userId, AddLiveReactionRequest request, CancellationToken cancellationToken)
@@ -167,7 +194,10 @@ public class LiveShoppingService : ILiveShoppingService
         await _liveShoppingRepository.SaveChangesAsync(cancellationToken);
 
         var updated = await _liveShoppingRepository.GetByIdAsync(id, cancellationToken);
-        return ToReactionSummary(updated!);
+        var summary = ToReactionSummary(updated!);
+
+        await _liveEventNotifier.NotifyReactionAsync(id, summary, cancellationToken);
+        return summary;
     }
 
     public async Task<CartItemDto> BuyDuringLiveAsync(Guid id, Guid userId, BuyDuringLiveRequest request, CancellationToken cancellationToken)
@@ -196,6 +226,7 @@ public class LiveShoppingService : ILiveShoppingService
         await _liveShoppingRepository.AddPurchaseAsync(purchase, cancellationToken);
         await _liveShoppingRepository.SaveChangesAsync(cancellationToken);
 
+        await _liveEventNotifier.NotifyPurchaseAsync(id, liveEvent.Purchases.Count, cancellationToken);
         return cartItem;
     }
 
@@ -214,6 +245,7 @@ public class LiveShoppingService : ILiveShoppingService
         ProductId = liveEvent.ProductId,
         ProductName = liveEvent.Product.Name,
         ProductImageUrl = liveEvent.Product.Images.OrderBy(i => i.DisplayOrder).FirstOrDefault()?.ImageUrl,
+        HasLiveAuction = liveEvent.AuctionId.HasValue,
         Title = liveEvent.Title,
         Status = liveEvent.Status.ToString(),
         ScheduledStartAt = liveEvent.ScheduledStartAt,
@@ -230,6 +262,10 @@ public class LiveShoppingService : ILiveShoppingService
         ProductName = liveEvent.Product.Name,
         ProductImageUrl = liveEvent.Product.Images.OrderBy(i => i.DisplayOrder).FirstOrDefault()?.ImageUrl,
         ProductPrice = liveEvent.Product.DiscountPrice ?? liveEvent.Product.Price,
+        AuctionId = liveEvent.AuctionId,
+        AuctionTitle = liveEvent.Auction?.Title,
+        AuctionStatus = liveEvent.Auction?.Status.ToString(),
+        AuctionCurrentPrice = liveEvent.Auction?.CurrentPrice,
         Title = liveEvent.Title,
         Description = liveEvent.Description,
         Status = liveEvent.Status.ToString(),

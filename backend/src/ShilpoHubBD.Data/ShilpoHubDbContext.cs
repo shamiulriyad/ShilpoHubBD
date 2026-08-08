@@ -4,13 +4,18 @@ using ShilpoHubBD.Domain.Entities.Auction;
 using ShilpoHubBD.Domain.Entities.Certificate;
 using ShilpoHubBD.Domain.Entities.Commerce;
 using ShilpoHubBD.Domain.Entities.Community;
+using ShilpoHubBD.Domain.Entities.CustomOrders;
+using ShilpoHubBD.Domain.Entities.HeritageIdentity;
 using ShilpoHubBD.Domain.Entities.Identity;
+using ShilpoHubBD.Domain.Entities.Inventory;
+using ShilpoHubBD.Domain.Entities.Learning;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.Marketplace;
 using ShilpoHubBD.Domain.Entities.Messaging;
 using ShilpoHubBD.Domain.Entities.Passport;
 using ShilpoHubBD.Domain.Entities.QRVerification;
 using ShilpoHubBD.Domain.Entities.Reviews;
+using ShilpoHubBD.Domain.Entities.Sustainability;
 using ShilpoHubBD.Domain.Entities.Traceability;
 
 namespace ShilpoHubBD.Data;
@@ -32,6 +37,7 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<Product> Products => Set<Product>();
 	public DbSet<ProductImage> ProductImages => Set<ProductImage>();
 	public DbSet<ProductVariant> ProductVariants => Set<ProductVariant>();
+	public DbSet<ProductVideo> ProductVideos => Set<ProductVideo>();
 	public DbSet<CraftStory> CraftStories => Set<CraftStory>();
 	public DbSet<CraftStoryChapter> CraftStoryChapters => Set<CraftStoryChapter>();
 	public DbSet<ProducerStory> ProducerStories => Set<ProducerStory>();
@@ -85,6 +91,28 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<XpTransaction> XpTransactions => Set<XpTransaction>();
 	public DbSet<Achievement> Achievements => Set<Achievement>();
 	public DbSet<UserAchievement> UserAchievements => Set<UserAchievement>();
+
+	public DbSet<ProducerHeritageIdentity> ProducerHeritageIdentities => Set<ProducerHeritageIdentity>();
+	public DbSet<FamilyHeritageMember> FamilyHeritageMembers => Set<FamilyHeritageMember>();
+	public DbSet<SkillTimelineEntry> SkillTimelineEntries => Set<SkillTimelineEntry>();
+	public DbSet<HeritageAward> HeritageAwards => Set<HeritageAward>();
+	public DbSet<HeritageCertification> HeritageCertifications => Set<HeritageCertification>();
+	public DbSet<StoryArchiveEntry> StoryArchiveEntries => Set<StoryArchiveEntry>();
+	public DbSet<ScoreHistoryEntry> HeritageScoreHistory => Set<ScoreHistoryEntry>();
+
+	public DbSet<InventoryTransaction> InventoryTransactions => Set<InventoryTransaction>();
+	public DbSet<CustomOrderRequest> CustomOrderRequests => Set<CustomOrderRequest>();
+
+	public DbSet<MentorProfile> MentorProfiles => Set<MentorProfile>();
+	public DbSet<Course> Courses => Set<Course>();
+	public DbSet<CourseLesson> CourseLessons => Set<CourseLesson>();
+	public DbSet<CourseEnrollment> CourseEnrollments => Set<CourseEnrollment>();
+	public DbSet<LessonProgress> LessonProgress => Set<LessonProgress>();
+	public DbSet<TrainingCertificate> TrainingCertificates => Set<TrainingCertificate>();
+
+	public DbSet<SustainabilityProfile> SustainabilityProfiles => Set<SustainabilityProfile>();
+	public DbSet<SustainableMaterialRecord> SustainableMaterialRecords => Set<SustainableMaterialRecord>();
+	public DbSet<SustainableMaterialCertification> SustainableMaterialCertifications => Set<SustainableMaterialCertification>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

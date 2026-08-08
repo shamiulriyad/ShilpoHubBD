@@ -19,8 +19,10 @@ public class ProductRepository : IProductRepository
             .Include(p => p.Category)
             .Include(p => p.District)
             .Include(p => p.Producer)
+            .Include(p => p.HandmadeVerifiedBy)
             .Include(p => p.Images)
             .Include(p => p.Variants)
+            .Include(p => p.Videos)
             .AsSplitQuery();
 
     public async Task<(List<Product> Items, int TotalCount)> GetPagedAsync(ProductQueryParameters query, CancellationToken cancellationToken)
@@ -102,11 +104,21 @@ public class ProductRepository : IProductRepository
     public Task<bool> ExistsBySlugAsync(string slug, CancellationToken cancellationToken)
         => _context.Products.AnyAsync(p => p.Slug == slug, cancellationToken);
 
+    public Task<List<Product>> GetLowStockByProducerAsync(Guid producerId, CancellationToken cancellationToken)
+        => WithDetails()
+            .Where(p => p.ProducerId == producerId && p.IsActive
+                && p.LowStockThreshold.HasValue && p.Stock <= p.LowStockThreshold.Value)
+            .OrderBy(p => p.Stock)
+            .ToListAsync(cancellationToken);
+
     public async Task AddAsync(Product product, CancellationToken cancellationToken)
         => await _context.Products.AddAsync(product, cancellationToken);
 
     public async Task AddVariantAsync(ProductVariant variant, CancellationToken cancellationToken)
         => await _context.ProductVariants.AddAsync(variant, cancellationToken);
+
+    public async Task AddVideoAsync(ProductVideo video, CancellationToken cancellationToken)
+        => await _context.ProductVideos.AddAsync(video, cancellationToken);
 
     public Task SaveChangesAsync(CancellationToken cancellationToken)
         => _context.SaveChangesAsync(cancellationToken);
