@@ -3,6 +3,7 @@ using ShilpoHubBD.Domain.Entities.Commerce;
 using ShilpoHubBD.Domain.Entities.Community;
 using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.Marketplace;
+using ShilpoHubBD.Domain.Entities.Messaging;
 using ShilpoHubBD.Domain.Entities.Reviews;
 
 namespace ShilpoHubBD.Data;
@@ -49,6 +50,10 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<ProducerFollow> ProducerFollows => Set<ProducerFollow>();
 	public DbSet<Village> Villages => Set<Village>();
 	public DbSet<VillageFavorite> VillageFavorites => Set<VillageFavorite>();
+
+	public DbSet<Conversation> Conversations => Set<Conversation>();
+	public DbSet<ConversationParticipant> ConversationParticipants => Set<ConversationParticipant>();
+	public DbSet<Message> Messages => Set<Message>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

@@ -2,7 +2,9 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ShilpoHubBD.Api.Hubs;
 using ShilpoHubBD.Api.Middlewares;
+using ShilpoHubBD.Api.Realtime;
 using ShilpoHubBD.Application;
 using ShilpoHubBD.Application.DTOs.Auth;
 using ShilpoHubBD.Application.Interfaces.Repositories;
@@ -65,6 +67,9 @@ builder.Services.AddApplication();
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddSignalR();
+builder.Services.AddScoped<IMessageNotifier, SignalRMessageNotifier>();
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(connectionString))
 {
@@ -103,6 +108,22 @@ builder.Services
 			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
 			ClockSkew = TimeSpan.Zero,
 		};
+
+		// Browsers cannot set an Authorization header on the WebSocket handshake, so SignalR
+		// clients pass the access token as a query parameter instead.
+		options.Events = new JwtBearerEvents
+		{
+			OnMessageReceived = context =>
+			{
+				var accessToken = context.Request.Query["access_token"];
+				if (!string.IsNullOrEmpty(accessToken) && context.HttpContext.Request.Path.StartsWithSegments("/hubs"))
+				{
+					context.Token = accessToken;
+				}
+
+				return Task.CompletedTask;
+			},
+		};
 	});
 
 builder.Services.AddAuthorization();
@@ -134,6 +155,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<MessagingHub>("/hubs/messaging");
 app.MapHealthChecks("/health/db");
 
 // Idempotent SuperAdmin seed for local/dev environments; controlled entirely via .env, never baked into migrations.

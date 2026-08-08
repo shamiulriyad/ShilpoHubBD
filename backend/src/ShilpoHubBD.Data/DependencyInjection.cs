@@ -40,6 +40,7 @@ public static class DependencyInjection
 		services.AddScoped<IDiscussionRepository, DiscussionRepository>();
 		services.AddScoped<IProducerFollowRepository, ProducerFollowRepository>();
 		services.AddScoped<IVillageRepository, VillageRepository>();
+		services.AddScoped<IMessagingRepository, MessagingRepository>();
 
 		return services;
 	}

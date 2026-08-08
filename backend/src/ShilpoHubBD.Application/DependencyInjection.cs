@@ -5,6 +5,7 @@ using ShilpoHubBD.Application.Services.Auth;
 using ShilpoHubBD.Application.Services.Commerce;
 using ShilpoHubBD.Application.Services.Community;
 using ShilpoHubBD.Application.Services.Marketplace;
+using ShilpoHubBD.Application.Services.Messaging;
 using ShilpoHubBD.Application.Services.Reviews;
 
 namespace ShilpoHubBD.Application;
@@ -35,6 +36,8 @@ public static class DependencyInjection
         services.AddScoped<IDiscussionService, DiscussionService>();
         services.AddScoped<IProducerFollowService, ProducerFollowService>();
         services.AddScoped<IVillageService, VillageService>();
+
+        services.AddScoped<IMessagingService, MessagingService>();
 
         return services;
     }
