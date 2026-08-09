@@ -42,6 +42,9 @@ builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+	// Several modules reuse short, generic DTO names (e.g. UpdateMilestoneStatusRequest); Swashbuckle's
+	// default schemaId is just the class name, so those collide across namespaces without this.
+	options.CustomSchemaIds(type => type.FullName);
 	options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 	{
 		Name = "Authorization",

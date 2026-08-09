@@ -65,6 +65,21 @@ public static class DependencyInjection
 
 		services.AddScoped<ISustainabilityRepository, SustainabilityRepository>();
 
+		services.AddScoped<IBusinessPartnerRepository, BusinessPartnerRepository>();
+		services.AddScoped<ISupplierDiscoveryRepository, SupplierDiscoveryRepository>();
+		services.AddScoped<ISupplierMatchingRepository, SupplierMatchingRepository>();
+		services.AddScoped<IProducerComparisonRepository, ProducerComparisonRepository>();
+		services.AddScoped<IQuotationRepository, QuotationRepository>();
+		services.AddScoped<IProcurementRepository, ProcurementRepository>();
+		services.AddScoped<IContractRepository, ContractRepository>();
+		services.AddScoped<IPartnershipRepository, PartnershipRepository>();
+		services.AddScoped<IAIIntelligenceRepository, AIIntelligenceRepository>();
+		services.AddScoped<IDesignCollaborationRepository, DesignCollaborationRepository>();
+		services.AddScoped<ICSRSponsorshipRepository, CSRSponsorshipRepository>();
+		services.AddScoped<IProductDevelopmentRepository, ProductDevelopmentRepository>();
+		services.AddScoped<IInvestmentRepository, InvestmentRepository>();
+		services.AddScoped<IBusinessPartnerAnalyticsRepository, BusinessPartnerAnalyticsRepository>();
+
 		return services;
 	}
 }
