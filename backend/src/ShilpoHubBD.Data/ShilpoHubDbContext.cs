@@ -1,19 +1,28 @@
 using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Domain.Entities.Achievement;
 using ShilpoHubBD.Domain.Entities.Auction;
+using ShilpoHubBD.Domain.Entities.BusinessPartner;
 using ShilpoHubBD.Domain.Entities.Certificate;
 using ShilpoHubBD.Domain.Entities.Commerce;
 using ShilpoHubBD.Domain.Entities.Community;
+using ShilpoHubBD.Domain.Entities.Contracts;
+using ShilpoHubBD.Domain.Entities.CSRSponsorship;
 using ShilpoHubBD.Domain.Entities.CustomOrders;
+using ShilpoHubBD.Domain.Entities.DesignCollaboration;
 using ShilpoHubBD.Domain.Entities.HeritageIdentity;
 using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.Inventory;
+using ShilpoHubBD.Domain.Entities.Investment;
 using ShilpoHubBD.Domain.Entities.Learning;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
+using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
 using ShilpoHubBD.Domain.Entities.Marketplace;
 using ShilpoHubBD.Domain.Entities.Messaging;
 using ShilpoHubBD.Domain.Entities.Passport;
+using ShilpoHubBD.Domain.Entities.Procurement;
+using ShilpoHubBD.Domain.Entities.ProductDevelopment;
 using ShilpoHubBD.Domain.Entities.QRVerification;
+using ShilpoHubBD.Domain.Entities.Quotations;
 using ShilpoHubBD.Domain.Entities.Reviews;
 using ShilpoHubBD.Domain.Entities.Sustainability;
 using ShilpoHubBD.Domain.Entities.Traceability;
@@ -113,6 +122,57 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<SustainabilityProfile> SustainabilityProfiles => Set<SustainabilityProfile>();
 	public DbSet<SustainableMaterialRecord> SustainableMaterialRecords => Set<SustainableMaterialRecord>();
 	public DbSet<SustainableMaterialCertification> SustainableMaterialCertifications => Set<SustainableMaterialCertification>();
+
+	public DbSet<BusinessPartnerProfile> BusinessPartnerProfiles => Set<BusinessPartnerProfile>();
+	public DbSet<BusinessDocument> BusinessDocuments => Set<BusinessDocument>();
+	public DbSet<BusinessPartnerPreferredCategory> BusinessPartnerPreferredCategories => Set<BusinessPartnerPreferredCategory>();
+
+	public DbSet<QuotationRequest> QuotationRequests => Set<QuotationRequest>();
+	public DbSet<QuotationRequestItem> QuotationRequestItems => Set<QuotationRequestItem>();
+	public DbSet<QuotationRequestProducer> QuotationRequestProducers => Set<QuotationRequestProducer>();
+	public DbSet<QuotationResponse> QuotationResponses => Set<QuotationResponse>();
+	public DbSet<QuotationResponseItem> QuotationResponseItems => Set<QuotationResponseItem>();
+	public DbSet<QuotationStatusEvent> QuotationStatusEvents => Set<QuotationStatusEvent>();
+
+	public DbSet<ProcurementRequest> ProcurementRequests => Set<ProcurementRequest>();
+	public DbSet<ProcurementItem> ProcurementItems => Set<ProcurementItem>();
+	public DbSet<ProcurementStatusEvent> ProcurementStatusEvents => Set<ProcurementStatusEvent>();
+
+	public DbSet<Contract> Contracts => Set<Contract>();
+	public DbSet<ContractItem> ContractItems => Set<ContractItem>();
+	public DbSet<ContractDeliverySchedule> ContractDeliverySchedules => Set<ContractDeliverySchedule>();
+	public DbSet<ContractDocument> ContractDocuments => Set<ContractDocument>();
+	public DbSet<ContractStatusEvent> ContractStatusEvents => Set<ContractStatusEvent>();
+
+	public DbSet<ManufacturingPartnership> ManufacturingPartnerships => Set<ManufacturingPartnership>();
+	public DbSet<ManufacturingMilestone> ManufacturingMilestones => Set<ManufacturingMilestone>();
+	public DbSet<PartnershipStatusEvent> PartnershipStatusEvents => Set<PartnershipStatusEvent>();
+
+	public DbSet<DesignCollaborationProject> DesignCollaborationProjects => Set<DesignCollaborationProject>();
+	public DbSet<DesignFile> DesignFiles => Set<DesignFile>();
+	public DbSet<DesignComment> DesignComments => Set<DesignComment>();
+	public DbSet<DesignRevision> DesignRevisions => Set<DesignRevision>();
+	public DbSet<CollaborationStatusEvent> CollaborationStatusEvents => Set<CollaborationStatusEvent>();
+
+	public DbSet<SponsorshipOpportunity> SponsorshipOpportunities => Set<SponsorshipOpportunity>();
+	public DbSet<SponsorshipProposal> SponsorshipProposals => Set<SponsorshipProposal>();
+	public DbSet<SponsorshipMilestone> SponsorshipMilestones => Set<SponsorshipMilestone>();
+	public DbSet<SponsorshipProgressUpdate> SponsorshipProgressUpdates => Set<SponsorshipProgressUpdate>();
+	public DbSet<SponsorshipImpactRecord> SponsorshipImpactRecords => Set<SponsorshipImpactRecord>();
+	public DbSet<SponsorshipStatusEvent> SponsorshipStatusEvents => Set<SponsorshipStatusEvent>();
+
+	public DbSet<ProductDevelopmentProject> ProductDevelopmentProjects => Set<ProductDevelopmentProject>();
+	public DbSet<PrototypeVersion> PrototypeVersions => Set<PrototypeVersion>();
+	public DbSet<PrototypeFile> PrototypeFiles => Set<PrototypeFile>();
+	public DbSet<ProductDevelopmentComment> ProductDevelopmentComments => Set<ProductDevelopmentComment>();
+	public DbSet<ProductDevelopmentMilestone> ProductDevelopmentMilestones => Set<ProductDevelopmentMilestone>();
+	public DbSet<ProductDevelopmentStatusEvent> ProductDevelopmentStatusEvents => Set<ProductDevelopmentStatusEvent>();
+
+	public DbSet<InvestmentOpportunity> InvestmentOpportunities => Set<InvestmentOpportunity>();
+	public DbSet<InvestmentProposal> InvestmentProposals => Set<InvestmentProposal>();
+	public DbSet<InvestmentMilestone> InvestmentMilestones => Set<InvestmentMilestone>();
+	public DbSet<InvestmentDocument> InvestmentDocuments => Set<InvestmentDocument>();
+	public DbSet<InvestmentStatusEvent> InvestmentStatusEvents => Set<InvestmentStatusEvent>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

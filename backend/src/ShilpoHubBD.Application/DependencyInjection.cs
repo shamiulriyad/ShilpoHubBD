@@ -5,27 +5,41 @@ using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Application.Options;
 using ShilpoHubBD.Application.Services.Achievement;
 using ShilpoHubBD.Application.Services.AIBusiness;
+using ShilpoHubBD.Application.Services.AIBusinessPartner;
 using ShilpoHubBD.Application.Services.AIShopping;
 using ShilpoHubBD.Application.Services.Analytics;
 using ShilpoHubBD.Application.Services.Auth;
+using ShilpoHubBD.Application.Services.BusinessPartner;
+using ShilpoHubBD.Application.Services.BusinessPartnerAnalytics;
 using ShilpoHubBD.Application.Services.Commerce;
 using ShilpoHubBD.Application.Services.Auction;
 using ShilpoHubBD.Application.Services.Certificate;
 using ShilpoHubBD.Application.Services.Community;
+using ShilpoHubBD.Application.Services.Contracts;
+using ShilpoHubBD.Application.Services.CSRSponsorship;
 using ShilpoHubBD.Application.Services.CustomOrders;
+using ShilpoHubBD.Application.Services.DesignCollaboration;
 using ShilpoHubBD.Application.Services.HeritageIdentity;
 using ShilpoHubBD.Application.Services.Impact;
 using ShilpoHubBD.Application.Services.Inventory;
+using ShilpoHubBD.Application.Services.Investment;
 using ShilpoHubBD.Application.Services.Learning;
 using ShilpoHubBD.Application.Services.LiveShopping;
+using ShilpoHubBD.Application.Services.ManufacturingPartnership;
 using ShilpoHubBD.Application.Services.Marketplace;
 using ShilpoHubBD.Application.Services.Messaging;
 using ShilpoHubBD.Application.Services.Passport;
 using ShilpoHubBD.Application.Services.ProducerBusiness;
+using ShilpoHubBD.Application.Services.ProducerComparison;
+using ShilpoHubBD.Application.Services.ProductDevelopment;
+using ShilpoHubBD.Application.Services.Procurement;
+using ShilpoHubBD.Application.Services.Quotations;
 using ShilpoHubBD.Application.Services.QRVerification;
 using ShilpoHubBD.Application.Services.Recommendation;
 using ShilpoHubBD.Application.Services.Reviews;
 using ShilpoHubBD.Application.Services.Search;
+using ShilpoHubBD.Application.Services.SupplierDiscovery;
+using ShilpoHubBD.Application.Services.SupplierMatching;
 using ShilpoHubBD.Application.Services.Sustainability;
 using ShilpoHubBD.Application.Services.Traceability;
 
@@ -104,6 +118,21 @@ public static class DependencyInjection
         services.AddScoped<ITrainingCertificateService, TrainingCertificateService>();
 
         services.AddScoped<ISustainabilityService, SustainabilityService>();
+
+        services.AddScoped<IBusinessPartnerService, BusinessPartnerService>();
+        services.AddScoped<ISupplierDiscoveryService, SupplierDiscoveryService>();
+        services.AddScoped<ISupplierMatchingService, SupplierMatchingService>();
+        services.AddScoped<IProducerComparisonService, ProducerComparisonService>();
+        services.AddScoped<IQuotationService, QuotationService>();
+        services.AddScoped<IProcurementService, ProcurementService>();
+        services.AddScoped<IContractService, ContractService>();
+        services.AddScoped<IPartnershipService, PartnershipService>();
+        services.AddScoped<IBusinessPartnerAIService, BusinessPartnerAIService>();
+        services.AddScoped<IDesignCollaborationService, DesignCollaborationService>();
+        services.AddScoped<ICSRSponsorshipService, CSRSponsorshipService>();
+        services.AddScoped<IProductDevelopmentService, ProductDevelopmentService>();
+        services.AddScoped<IInvestmentService, InvestmentService>();
+        services.AddScoped<IBusinessPartnerAnalyticsService, BusinessPartnerAnalyticsService>();
 
         return services;
     }

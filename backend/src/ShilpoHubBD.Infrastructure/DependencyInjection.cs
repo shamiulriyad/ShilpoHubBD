@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Infrastructure.AIBusiness;
+using ShilpoHubBD.Infrastructure.AIBusinessPartner;
 using ShilpoHubBD.Infrastructure.Email;
 using ShilpoHubBD.Infrastructure.Options;
 using ShilpoHubBD.Infrastructure.Payments;
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<IPaymentProvider, CashOnDeliveryPaymentProvider>();
         services.AddScoped<IRecommendationProvider, DummyRecommendationProvider>();
         services.AddScoped<IAIBusinessProvider, DummyAIBusinessProvider>();
+        services.AddScoped<IAIBusinessPartnerProvider, DummyBusinessPartnerAIProvider>();
 
         return services;
     }
