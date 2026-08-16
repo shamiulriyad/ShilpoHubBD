@@ -80,6 +80,11 @@ public static class DependencyInjection
 		services.AddScoped<IInvestmentRepository, InvestmentRepository>();
 		services.AddScoped<IBusinessPartnerAnalyticsRepository, BusinessPartnerAnalyticsRepository>();
 
+		services.AddScoped<IHeritagePlaceRepository, HeritagePlaceRepository>();
+		services.AddScoped<IHeritageFestivalRepository, HeritageFestivalRepository>();
+		services.AddScoped<ICulturalEventRepository, CulturalEventRepository>();
+		services.AddScoped<ILocalCuisineRepository, LocalCuisineRepository>();
+
 		return services;
 	}
 }

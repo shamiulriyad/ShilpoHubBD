@@ -19,6 +19,7 @@ using ShilpoHubBD.Application.Services.Contracts;
 using ShilpoHubBD.Application.Services.CSRSponsorship;
 using ShilpoHubBD.Application.Services.CustomOrders;
 using ShilpoHubBD.Application.Services.DesignCollaboration;
+using ShilpoHubBD.Application.Services.HeritageDiscovery;
 using ShilpoHubBD.Application.Services.HeritageIdentity;
 using ShilpoHubBD.Application.Services.Impact;
 using ShilpoHubBD.Application.Services.Inventory;
@@ -133,6 +134,11 @@ public static class DependencyInjection
         services.AddScoped<IProductDevelopmentService, ProductDevelopmentService>();
         services.AddScoped<IInvestmentService, InvestmentService>();
         services.AddScoped<IBusinessPartnerAnalyticsService, BusinessPartnerAnalyticsService>();
+
+        services.AddScoped<IHeritagePlaceService, HeritagePlaceService>();
+        services.AddScoped<IHeritageFestivalService, HeritageFestivalService>();
+        services.AddScoped<ICulturalEventService, CulturalEventService>();
+        services.AddScoped<ILocalCuisineService, LocalCuisineService>();
 
         return services;
     }
