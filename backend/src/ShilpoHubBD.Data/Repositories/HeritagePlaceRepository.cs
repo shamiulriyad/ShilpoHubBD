@@ -64,6 +64,9 @@ public class HeritagePlaceRepository : IHeritagePlaceRepository
     public Task<HeritagePlace?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => WithDetails().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
+    public Task<List<HeritagePlace>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+        => WithDetails().Where(p => ids.Contains(p.Id)).ToListAsync(cancellationToken);
+
     public async Task AddAsync(HeritagePlace place, CancellationToken cancellationToken)
         => await _context.HeritagePlaces.AddAsync(place, cancellationToken);
 

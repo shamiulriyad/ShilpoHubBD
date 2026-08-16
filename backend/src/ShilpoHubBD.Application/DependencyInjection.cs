@@ -8,6 +8,7 @@ using ShilpoHubBD.Application.Services.AIBusiness;
 using ShilpoHubBD.Application.Services.AIBusinessPartner;
 using ShilpoHubBD.Application.Services.AIShopping;
 using ShilpoHubBD.Application.Services.Analytics;
+using ShilpoHubBD.Application.Services.AITourism;
 using ShilpoHubBD.Application.Services.Auth;
 using ShilpoHubBD.Application.Services.BusinessPartner;
 using ShilpoHubBD.Application.Services.BusinessPartnerAnalytics;
@@ -144,6 +145,8 @@ public static class DependencyInjection
         services.AddScoped<ITouristServiceService, TouristServiceService>();
         services.AddScoped<IServiceAvailabilityService, ServiceAvailabilityService>();
         services.AddScoped<IBookingService, BookingService>();
+
+        services.AddScoped<IAITourismService, AITourismService>();
 
         return services;
     }
