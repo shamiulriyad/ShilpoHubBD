@@ -9,6 +9,7 @@ using ShilpoHubBD.Domain.Entities.Contracts;
 using ShilpoHubBD.Domain.Entities.CSRSponsorship;
 using ShilpoHubBD.Domain.Entities.CustomOrders;
 using ShilpoHubBD.Domain.Entities.DesignCollaboration;
+using ShilpoHubBD.Domain.Entities.HeritageDiscovery;
 using ShilpoHubBD.Domain.Entities.HeritageIdentity;
 using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.Inventory;
@@ -173,6 +174,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<InvestmentMilestone> InvestmentMilestones => Set<InvestmentMilestone>();
 	public DbSet<InvestmentDocument> InvestmentDocuments => Set<InvestmentDocument>();
 	public DbSet<InvestmentStatusEvent> InvestmentStatusEvents => Set<InvestmentStatusEvent>();
+
+	public DbSet<HeritagePlace> HeritagePlaces => Set<HeritagePlace>();
+	public DbSet<HeritageFestival> HeritageFestivals => Set<HeritageFestival>();
+	public DbSet<CulturalEvent> CulturalEvents => Set<CulturalEvent>();
+	public DbSet<LocalCuisine> LocalCuisines => Set<LocalCuisine>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
