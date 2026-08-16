@@ -27,6 +27,7 @@ using ShilpoHubBD.Domain.Entities.Quotations;
 using ShilpoHubBD.Domain.Entities.Reviews;
 using ShilpoHubBD.Domain.Entities.Sustainability;
 using ShilpoHubBD.Domain.Entities.Traceability;
+using ShilpoHubBD.Domain.Entities.TouristBooking;
 
 namespace ShilpoHubBD.Data;
 
@@ -179,6 +180,10 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<HeritageFestival> HeritageFestivals => Set<HeritageFestival>();
 	public DbSet<CulturalEvent> CulturalEvents => Set<CulturalEvent>();
 	public DbSet<LocalCuisine> LocalCuisines => Set<LocalCuisine>();
+
+	public DbSet<TouristService> TouristServices => Set<TouristService>();
+	public DbSet<ServiceAvailabilitySlot> ServiceAvailabilitySlots => Set<ServiceAvailabilitySlot>();
+	public DbSet<Booking> Bookings => Set<Booking>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

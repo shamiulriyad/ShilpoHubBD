@@ -85,6 +85,10 @@ public static class DependencyInjection
 		services.AddScoped<ICulturalEventRepository, CulturalEventRepository>();
 		services.AddScoped<ILocalCuisineRepository, LocalCuisineRepository>();
 
+		services.AddScoped<ITouristServiceRepository, TouristServiceRepository>();
+		services.AddScoped<IServiceAvailabilitySlotRepository, ServiceAvailabilitySlotRepository>();
+		services.AddScoped<IBookingRepository, BookingRepository>();
+
 		return services;
 	}
 }

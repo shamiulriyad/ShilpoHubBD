@@ -43,6 +43,7 @@ using ShilpoHubBD.Application.Services.SupplierDiscovery;
 using ShilpoHubBD.Application.Services.SupplierMatching;
 using ShilpoHubBD.Application.Services.Sustainability;
 using ShilpoHubBD.Application.Services.Traceability;
+using ShilpoHubBD.Application.Services.TouristBooking;
 
 namespace ShilpoHubBD.Application;
 
@@ -139,6 +140,10 @@ public static class DependencyInjection
         services.AddScoped<IHeritageFestivalService, HeritageFestivalService>();
         services.AddScoped<ICulturalEventService, CulturalEventService>();
         services.AddScoped<ILocalCuisineService, LocalCuisineService>();
+
+        services.AddScoped<ITouristServiceService, TouristServiceService>();
+        services.AddScoped<IServiceAvailabilityService, ServiceAvailabilityService>();
+        services.AddScoped<IBookingService, BookingService>();
 
         return services;
     }
