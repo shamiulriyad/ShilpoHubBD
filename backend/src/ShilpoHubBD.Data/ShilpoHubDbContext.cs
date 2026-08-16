@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Domain.Entities.Achievement;
+using ShilpoHubBD.Domain.Entities.ArVr;
 using ShilpoHubBD.Domain.Entities.Auction;
 using ShilpoHubBD.Domain.Entities.BusinessPartner;
 using ShilpoHubBD.Domain.Entities.Certificate;
@@ -184,6 +185,12 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<TouristService> TouristServices => Set<TouristService>();
 	public DbSet<ServiceAvailabilitySlot> ServiceAvailabilitySlots => Set<ServiceAvailabilitySlot>();
 	public DbSet<Booking> Bookings => Set<Booking>();
+
+	public DbSet<MuseumItem> MuseumItems => Set<MuseumItem>();
+	public DbSet<MuseumItemMedia> MuseumItemMedia => Set<MuseumItemMedia>();
+	public DbSet<VillageTourStop> VillageTourStops => Set<VillageTourStop>();
+	public DbSet<CulturalStory> CulturalStories => Set<CulturalStory>();
+	public DbSet<CulturalStoryChapter> CulturalStoryChapters => Set<CulturalStoryChapter>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
