@@ -73,6 +73,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IMessageNotifier, SignalRMessageNotifier>();
 builder.Services.AddScoped<ILiveEventNotifier, SignalRLiveEventNotifier>();
+builder.Services.AddScoped<ILiveClassNotifier, SignalRLiveClassNotifier>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(connectionString))
@@ -161,6 +162,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<MessagingHub>("/hubs/messaging");
 app.MapHub<LiveEventHub>("/hubs/live-events");
+app.MapHub<LiveClassHub>("/hubs/live-classes");
 app.MapHealthChecks("/health/db");
 
 // Idempotent SuperAdmin seed for local/dev environments; controlled entirely via .env, never baked into migrations.

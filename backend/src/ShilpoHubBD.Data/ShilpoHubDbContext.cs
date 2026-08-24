@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Domain.Entities.Achievement;
+using ShilpoHubBD.Domain.Entities.Assessment;
 using ShilpoHubBD.Domain.Entities.ArVr;
 using ShilpoHubBD.Domain.Entities.Auction;
 using ShilpoHubBD.Domain.Entities.BusinessPartner;
@@ -16,6 +17,7 @@ using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.Inventory;
 using ShilpoHubBD.Domain.Entities.Investment;
 using ShilpoHubBD.Domain.Entities.Learning;
+using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
 using ShilpoHubBD.Domain.Entities.Marketplace;
@@ -195,6 +197,24 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<TouristService> TouristServices => Set<TouristService>();
 	public DbSet<ServiceAvailabilitySlot> ServiceAvailabilitySlots => Set<ServiceAvailabilitySlot>();
 	public DbSet<Booking> Bookings => Set<Booking>();
+
+	public DbSet<LiveClass> LiveClasses => Set<LiveClass>();
+	public DbSet<LiveClassParticipant> LiveClassParticipants => Set<LiveClassParticipant>();
+	public DbSet<LiveClassQuestion> LiveClassQuestions => Set<LiveClassQuestion>();
+	public DbSet<LiveClassAttendance> LiveClassAttendances => Set<LiveClassAttendance>();
+
+	public DbSet<Assignment> Assignments => Set<Assignment>();
+	public DbSet<AssignmentSubmission> AssignmentSubmissions => Set<AssignmentSubmission>();
+	public DbSet<Quiz> Quizzes => Set<Quiz>();
+	public DbSet<QuizQuestion> QuizQuestions => Set<QuizQuestion>();
+	public DbSet<QuizQuestionOption> QuizQuestionOptions => Set<QuizQuestionOption>();
+	public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
+	public DbSet<QuizAttemptAnswer> QuizAttemptAnswers => Set<QuizAttemptAnswer>();
+	public DbSet<Exam> Exams => Set<Exam>();
+	public DbSet<ExamQuestion> ExamQuestions => Set<ExamQuestion>();
+	public DbSet<ExamQuestionOption> ExamQuestionOptions => Set<ExamQuestionOption>();
+	public DbSet<ExamAttempt> ExamAttempts => Set<ExamAttempt>();
+	public DbSet<ExamAttemptAnswer> ExamAttemptAnswers => Set<ExamAttemptAnswer>();
 
 	public DbSet<MuseumItem> MuseumItems => Set<MuseumItem>();
 	public DbSet<MuseumItemMedia> MuseumItemMedia => Set<MuseumItemMedia>();
