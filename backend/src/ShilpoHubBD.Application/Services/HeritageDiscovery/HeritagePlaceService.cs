@@ -165,6 +165,8 @@ public class HeritagePlaceService : IHeritagePlaceService
         ImageUrl = place.ImageUrl,
         IsFeatured = place.IsFeatured,
         IsActive = place.IsActive,
+        AverageRating = place.AverageRating,
+        ReviewCount = place.ReviewCount,
         DistrictId = place.DistrictId,
         DistrictName = place.District.Name,
         DistanceKm = distanceKm.HasValue ? Math.Round(distanceKm.Value, 2) : null,

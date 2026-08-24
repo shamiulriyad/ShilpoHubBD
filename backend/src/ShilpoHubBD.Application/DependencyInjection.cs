@@ -8,6 +8,8 @@ using ShilpoHubBD.Application.Services.AIBusiness;
 using ShilpoHubBD.Application.Services.AIBusinessPartner;
 using ShilpoHubBD.Application.Services.AIShopping;
 using ShilpoHubBD.Application.Services.Analytics;
+using ShilpoHubBD.Application.Services.AITourism;
+using ShilpoHubBD.Application.Services.ArVr;
 using ShilpoHubBD.Application.Services.Auth;
 using ShilpoHubBD.Application.Services.BusinessPartner;
 using ShilpoHubBD.Application.Services.BusinessPartnerAnalytics;
@@ -103,6 +105,7 @@ public static class DependencyInjection
         services.AddScoped<IAchievementService, AchievementService>();
 
         services.AddScoped<IAnalyticsService, AnalyticsService>();
+        services.AddScoped<ITouristAnalyticsService, TouristAnalyticsService>();
 
         services.AddScoped<IImpactService, ImpactService>();
 
@@ -140,10 +143,18 @@ public static class DependencyInjection
         services.AddScoped<IHeritageFestivalService, HeritageFestivalService>();
         services.AddScoped<ICulturalEventService, CulturalEventService>();
         services.AddScoped<ILocalCuisineService, LocalCuisineService>();
+        services.AddScoped<IHeritageRouteService, HeritageRouteService>();
 
         services.AddScoped<ITouristServiceService, TouristServiceService>();
         services.AddScoped<IServiceAvailabilityService, ServiceAvailabilityService>();
         services.AddScoped<IBookingService, BookingService>();
+
+        services.AddScoped<IAITourismService, AITourismService>();
+
+        services.AddScoped<IMuseumItemService, MuseumItemService>();
+        services.AddScoped<IVillageTourService, VillageTourService>();
+        services.AddScoped<ICulturalStoryService, CulturalStoryService>();
+        services.AddScoped<IArCraftScanService, ArCraftScanService>();
 
         return services;
     }

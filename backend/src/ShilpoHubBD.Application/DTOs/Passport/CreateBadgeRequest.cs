@@ -11,4 +11,5 @@ public class CreateBadgeRequest
     public Guid? DistrictId { get; set; }
     public string? FestivalName { get; set; }
     public int? RequiredPurchaseCount { get; set; }
+    public int? RequiredCheckInCount { get; set; }
 }

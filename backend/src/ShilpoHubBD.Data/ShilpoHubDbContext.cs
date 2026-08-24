@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Domain.Entities.Achievement;
+using ShilpoHubBD.Domain.Entities.ArVr;
 using ShilpoHubBD.Domain.Entities.Auction;
 using ShilpoHubBD.Domain.Entities.BusinessPartner;
 using ShilpoHubBD.Domain.Entities.Certificate;
@@ -98,6 +99,8 @@ public class ShilpoHubDbContext : DbContext
 
 	public DbSet<Badge> Badges => Set<Badge>();
 	public DbSet<UserBadge> UserBadges => Set<UserBadge>();
+	public DbSet<HeritageCheckIn> HeritageCheckIns => Set<HeritageCheckIn>();
+	public DbSet<TravelJournalEntry> TravelJournalEntries => Set<TravelJournalEntry>();
 
 	public DbSet<XpTransaction> XpTransactions => Set<XpTransaction>();
 	public DbSet<Achievement> Achievements => Set<Achievement>();
@@ -180,10 +183,18 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<HeritageFestival> HeritageFestivals => Set<HeritageFestival>();
 	public DbSet<CulturalEvent> CulturalEvents => Set<CulturalEvent>();
 	public DbSet<LocalCuisine> LocalCuisines => Set<LocalCuisine>();
+	public DbSet<HeritageRoute> HeritageRoutes => Set<HeritageRoute>();
+	public DbSet<RouteStop> RouteStops => Set<RouteStop>();
 
 	public DbSet<TouristService> TouristServices => Set<TouristService>();
 	public DbSet<ServiceAvailabilitySlot> ServiceAvailabilitySlots => Set<ServiceAvailabilitySlot>();
 	public DbSet<Booking> Bookings => Set<Booking>();
+
+	public DbSet<MuseumItem> MuseumItems => Set<MuseumItem>();
+	public DbSet<MuseumItemMedia> MuseumItemMedia => Set<MuseumItemMedia>();
+	public DbSet<VillageTourStop> VillageTourStops => Set<VillageTourStop>();
+	public DbSet<CulturalStory> CulturalStories => Set<CulturalStory>();
+	public DbSet<CulturalStoryChapter> CulturalStoryChapters => Set<CulturalStoryChapter>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

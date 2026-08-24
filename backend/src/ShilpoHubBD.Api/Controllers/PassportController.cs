@@ -69,4 +69,52 @@ public class PassportController : ControllerBase
         var result = await _passportService.EvaluatePurchaseBadgesAsync(CurrentUserId, cancellationToken);
         return Ok(result);
     }
+
+    [Authorize]
+    [HttpPost("checkins")]
+    public async Task<ActionResult<CheckInDto>> CheckIn(CreateCheckInRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _passportService.CheckInAsync(CurrentUserId, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet("checkins/mine")]
+    public async Task<ActionResult<List<CheckInDto>>> GetMyCheckIns(CancellationToken cancellationToken)
+    {
+        var result = await _passportService.GetMyCheckInsAsync(CurrentUserId, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpPost("journal")]
+    public async Task<ActionResult<TravelJournalEntryDto>> AddJournalEntry(CreateJournalEntryRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _passportService.AddJournalEntryAsync(CurrentUserId, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet("journal/mine")]
+    public async Task<ActionResult<List<TravelJournalEntryDto>>> GetMyJournal(CancellationToken cancellationToken)
+    {
+        var result = await _passportService.GetMyJournalAsync(CurrentUserId, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpPut("journal/{id:guid}")]
+    public async Task<ActionResult<TravelJournalEntryDto>> UpdateJournalEntry(Guid id, UpdateJournalEntryRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _passportService.UpdateJournalEntryAsync(CurrentUserId, id, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpDelete("journal/{id:guid}")]
+    public async Task<IActionResult> DeleteJournalEntry(Guid id, CancellationToken cancellationToken)
+    {
+        await _passportService.DeleteJournalEntryAsync(CurrentUserId, id, cancellationToken);
+        return NoContent();
+    }
 }

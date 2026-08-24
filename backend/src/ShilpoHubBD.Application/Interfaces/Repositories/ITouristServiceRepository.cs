@@ -11,6 +11,7 @@ public interface ITouristServiceRepository
         Guid producerId, int page, int pageSize, CancellationToken cancellationToken);
 
     Task<TouristService?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<List<TouristService>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken);
     Task AddAsync(TouristService service, CancellationToken cancellationToken);
     void Remove(TouristService service);
     Task SaveChangesAsync(CancellationToken cancellationToken);

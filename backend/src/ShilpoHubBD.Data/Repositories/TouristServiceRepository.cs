@@ -66,6 +66,9 @@ public class TouristServiceRepository : ITouristServiceRepository
     public Task<TouristService?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => WithDetails().FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
 
+    public Task<List<TouristService>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+        => WithDetails().Where(s => ids.Contains(s.Id)).ToListAsync(cancellationToken);
+
     public async Task AddAsync(TouristService service, CancellationToken cancellationToken)
         => await _context.TouristServices.AddAsync(service, cancellationToken);
 

@@ -21,6 +21,9 @@ public class Badge
     // Set when Type == Purchase.
     public int? RequiredPurchaseCount { get; set; }
 
+    // Set when Type == CheckIn.
+    public int? RequiredCheckInCount { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public ICollection<UserBadge> UserBadges { get; set; } = new List<UserBadge>();
