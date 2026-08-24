@@ -28,6 +28,7 @@ using ShilpoHubBD.Domain.Entities.ProductDevelopment;
 using ShilpoHubBD.Domain.Entities.QRVerification;
 using ShilpoHubBD.Domain.Entities.Quotations;
 using ShilpoHubBD.Domain.Entities.Reviews;
+using ShilpoHubBD.Domain.Entities.Roadmap;
 using ShilpoHubBD.Domain.Entities.SkillAssessment;
 using ShilpoHubBD.Domain.Entities.Sustainability;
 using ShilpoHubBD.Domain.Entities.Traceability;
@@ -220,6 +221,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<SkillAssessment> SkillAssessments => Set<SkillAssessment>();
 	public DbSet<SkillAssessmentInsight> SkillAssessmentInsights => Set<SkillAssessmentInsight>();
 	public DbSet<SkillAssessmentRecommendedSkill> SkillAssessmentRecommendedSkills => Set<SkillAssessmentRecommendedSkill>();
+
+	public DbSet<LearningRoadmap> LearningRoadmaps => Set<LearningRoadmap>();
+	public DbSet<RoadmapMilestone> RoadmapMilestones => Set<RoadmapMilestone>();
+	public DbSet<RoadmapRecommendedCourse> RoadmapRecommendedCourses => Set<RoadmapRecommendedCourse>();
+	public DbSet<RoadmapRecommendedLesson> RoadmapRecommendedLessons => Set<RoadmapRecommendedLesson>();
 
 	public DbSet<MuseumItem> MuseumItems => Set<MuseumItem>();
 	public DbSet<MuseumItemMedia> MuseumItemMedia => Set<MuseumItemMedia>();
