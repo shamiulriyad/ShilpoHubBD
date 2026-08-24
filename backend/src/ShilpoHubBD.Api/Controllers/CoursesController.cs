@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using ShilpoHubBD.Application.DTOs.Common;
 using ShilpoHubBD.Application.DTOs.Learning;
 using ShilpoHubBD.Application.Interfaces.Services;
-using ShilpoHubBD.Domain.Constants;
 
 namespace ShilpoHubBD.Api.Controllers;
 
@@ -41,7 +40,7 @@ public class CoursesController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
+    [Authorize]
     [HttpGet("mine")]
     public async Task<ActionResult<List<CourseListItemDto>>> GetMine(CancellationToken cancellationToken)
     {
@@ -49,7 +48,7 @@ public class CoursesController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<CourseDto>> Create(CreateCourseRequest request, CancellationToken cancellationToken)
     {
@@ -57,7 +56,7 @@ public class CoursesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
+    [Authorize]
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<CourseDto>> Update(Guid id, UpdateCourseRequest request, CancellationToken cancellationToken)
     {
@@ -65,7 +64,7 @@ public class CoursesController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
+    [Authorize]
     [HttpPost("{id:guid}/publish")]
     public async Task<ActionResult<CourseDto>> Publish(Guid id, CancellationToken cancellationToken)
     {
@@ -73,7 +72,7 @@ public class CoursesController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
+    [Authorize]
     [HttpPost("{id:guid}/archive")]
     public async Task<ActionResult<CourseDto>> Archive(Guid id, CancellationToken cancellationToken)
     {
@@ -81,7 +80,15 @@ public class CoursesController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
+    [Authorize]
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+    {
+        await _courseService.DeleteAsync(CurrentUserId, id, cancellationToken);
+        return NoContent();
+    }
+
+    [Authorize]
     [HttpPost("{id:guid}/lessons")]
     public async Task<ActionResult<CourseLessonDto>> AddLesson(Guid id, CreateLessonRequest request, CancellationToken cancellationToken)
     {
@@ -89,7 +96,7 @@ public class CoursesController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
+    [Authorize]
     [HttpPut("{id:guid}/lessons/{lessonId:guid}")]
     public async Task<ActionResult<CourseLessonDto>> UpdateLesson(
         Guid id, Guid lessonId, UpdateLessonRequest request, CancellationToken cancellationToken)
@@ -98,11 +105,52 @@ public class CoursesController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
+    [Authorize]
     [HttpDelete("{id:guid}/lessons/{lessonId:guid}")]
     public async Task<IActionResult> DeleteLesson(Guid id, Guid lessonId, CancellationToken cancellationToken)
     {
         await _courseService.DeleteLessonAsync(CurrentUserId, id, lessonId, cancellationToken);
+        return NoContent();
+    }
+
+    [Authorize]
+    [HttpPost("{id:guid}/modules")]
+    public async Task<ActionResult<CourseModuleDto>> AddModule(Guid id, CreateCourseModuleRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _courseService.AddModuleAsync(CurrentUserId, id, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpPut("{id:guid}/modules/{moduleId:guid}")]
+    public async Task<ActionResult<CourseModuleDto>> UpdateModule(
+        Guid id, Guid moduleId, UpdateCourseModuleRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _courseService.UpdateModuleAsync(CurrentUserId, id, moduleId, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpDelete("{id:guid}/modules/{moduleId:guid}")]
+    public async Task<IActionResult> DeleteModule(Guid id, Guid moduleId, CancellationToken cancellationToken)
+    {
+        await _courseService.DeleteModuleAsync(CurrentUserId, id, moduleId, cancellationToken);
+        return NoContent();
+    }
+
+    [Authorize]
+    [HttpPost("{id:guid}/materials")]
+    public async Task<ActionResult<CourseMaterialDto>> AddMaterial(Guid id, CreateCourseMaterialRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _courseService.AddMaterialAsync(CurrentUserId, id, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpDelete("{id:guid}/materials/{materialId:guid}")]
+    public async Task<IActionResult> DeleteMaterial(Guid id, Guid materialId, CancellationToken cancellationToken)
+    {
+        await _courseService.DeleteMaterialAsync(CurrentUserId, id, materialId, cancellationToken);
         return NoContent();
     }
 }

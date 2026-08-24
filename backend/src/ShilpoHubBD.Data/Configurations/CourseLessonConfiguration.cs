@@ -19,5 +19,11 @@ public class CourseLessonConfiguration : IEntityTypeConfiguration<CourseLesson>
         builder.Property(l => l.UpdatedAt).IsRequired();
 
         builder.HasIndex(l => new { l.CourseId, l.DisplayOrder });
+        builder.HasIndex(l => l.ModuleId);
+
+        builder.HasOne(l => l.Module)
+            .WithMany(m => m.Lessons)
+            .HasForeignKey(l => l.ModuleId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

@@ -121,6 +121,9 @@ public static class DependencyInjection
         services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<IEnrollmentService, EnrollmentService>();
         services.AddScoped<ITrainingCertificateService, TrainingCertificateService>();
+        services.AddScoped<IHeritageSkillService, HeritageSkillService>();
+        services.AddScoped<IAcademyMemberProfileService, AcademyMemberProfileService>();
+        services.AddScoped<ICourseCategoryService, CourseCategoryService>();
 
         services.AddScoped<ISustainabilityService, SustainabilityService>();
 

@@ -47,7 +47,6 @@ public class EnrollmentsController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
     [HttpGet("courses/{courseId:guid}")]
     public async Task<ActionResult<List<EnrollmentListItemDto>>> GetByCourse(Guid courseId, CancellationToken cancellationToken)
     {
@@ -55,7 +54,6 @@ public class EnrollmentsController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
     [HttpPost("{id:guid}/progress")]
     public async Task<ActionResult<CourseEnrollmentDto>> MarkLessonProgress(
         Guid id, MarkLessonProgressRequest request, CancellationToken cancellationToken)
@@ -64,7 +62,6 @@ public class EnrollmentsController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = RoleNames.Producer)]
     [HttpPost("{id:guid}/complete")]
     public async Task<ActionResult<CourseEnrollmentDto>> Complete(Guid id, CancellationToken cancellationToken)
     {

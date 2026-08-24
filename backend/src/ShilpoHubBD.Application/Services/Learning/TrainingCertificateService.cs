@@ -85,7 +85,8 @@ public class TrainingCertificateService : ITrainingCertificateService
             var enrollment = await _enrollmentRepository.GetByIdAsync(certificate.EnrollmentId, cancellationToken)
                 ?? throw new NotFoundException("Enrollment not found.");
 
-            if (enrollment.Course.Mentor.UserId != userId)
+            var authorUserId = enrollment.Course.Mentor?.UserId ?? enrollment.Course.TrainerProfile?.UserId;
+            if (authorUserId != userId)
             {
                 throw new UnauthorizedAccessException("You do not have permission to manage this training certificate.");
             }
