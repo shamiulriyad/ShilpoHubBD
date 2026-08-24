@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Domain.Entities.Achievement;
+using ShilpoHubBD.Domain.Entities.Assessment;
 using ShilpoHubBD.Domain.Entities.ArVr;
 using ShilpoHubBD.Domain.Entities.Auction;
 using ShilpoHubBD.Domain.Entities.BusinessPartner;
@@ -201,6 +202,19 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<LiveClassParticipant> LiveClassParticipants => Set<LiveClassParticipant>();
 	public DbSet<LiveClassQuestion> LiveClassQuestions => Set<LiveClassQuestion>();
 	public DbSet<LiveClassAttendance> LiveClassAttendances => Set<LiveClassAttendance>();
+
+	public DbSet<Assignment> Assignments => Set<Assignment>();
+	public DbSet<AssignmentSubmission> AssignmentSubmissions => Set<AssignmentSubmission>();
+	public DbSet<Quiz> Quizzes => Set<Quiz>();
+	public DbSet<QuizQuestion> QuizQuestions => Set<QuizQuestion>();
+	public DbSet<QuizQuestionOption> QuizQuestionOptions => Set<QuizQuestionOption>();
+	public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
+	public DbSet<QuizAttemptAnswer> QuizAttemptAnswers => Set<QuizAttemptAnswer>();
+	public DbSet<Exam> Exams => Set<Exam>();
+	public DbSet<ExamQuestion> ExamQuestions => Set<ExamQuestion>();
+	public DbSet<ExamQuestionOption> ExamQuestionOptions => Set<ExamQuestionOption>();
+	public DbSet<ExamAttempt> ExamAttempts => Set<ExamAttempt>();
+	public DbSet<ExamAttemptAnswer> ExamAttemptAnswers => Set<ExamAttemptAnswer>();
 
 	public DbSet<MuseumItem> MuseumItems => Set<MuseumItem>();
 	public DbSet<MuseumItemMedia> MuseumItemMedia => Set<MuseumItemMedia>();

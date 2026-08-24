@@ -125,6 +125,9 @@ public static class DependencyInjection
         services.AddScoped<IAcademyMemberProfileService, AcademyMemberProfileService>();
         services.AddScoped<ICourseCategoryService, CourseCategoryService>();
         services.AddScoped<ILiveClassService, LiveClassService>();
+        services.AddScoped<IAssignmentService, AssignmentService>();
+        services.AddScoped<IQuizService, QuizService>();
+        services.AddScoped<IExamService, ExamService>();
 
         services.AddScoped<ISustainabilityService, SustainabilityService>();
 
