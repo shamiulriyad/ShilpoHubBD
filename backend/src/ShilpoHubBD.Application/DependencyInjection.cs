@@ -41,6 +41,7 @@ using ShilpoHubBD.Application.Services.QRVerification;
 using ShilpoHubBD.Application.Services.Recommendation;
 using ShilpoHubBD.Application.Services.Reviews;
 using ShilpoHubBD.Application.Services.Search;
+using ShilpoHubBD.Application.Services.SkillAssessment;
 using ShilpoHubBD.Application.Services.SupplierDiscovery;
 using ShilpoHubBD.Application.Services.SupplierMatching;
 using ShilpoHubBD.Application.Services.Sustainability;
@@ -128,6 +129,8 @@ public static class DependencyInjection
         services.AddScoped<IAssignmentService, AssignmentService>();
         services.AddScoped<IQuizService, QuizService>();
         services.AddScoped<IExamService, ExamService>();
+        services.AddScoped<IAISkillAssessmentProvider, DummySkillAssessmentProvider>();
+        services.AddScoped<ISkillAssessmentService, SkillAssessmentService>();
 
         services.AddScoped<ISustainabilityService, SustainabilityService>();
 

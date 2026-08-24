@@ -11,6 +11,7 @@ public interface IAssignmentRepository
 
     Task<AssignmentSubmission?> GetSubmissionByIdAsync(Guid submissionId, CancellationToken cancellationToken);
     Task<AssignmentSubmission?> GetSubmissionByStudentAsync(Guid assignmentId, Guid studentUserId, CancellationToken cancellationToken);
+    Task<List<AssignmentSubmission>> GetSubmissionsByStudentAsync(Guid studentUserId, CancellationToken cancellationToken);
     Task AddSubmissionAsync(AssignmentSubmission submission, CancellationToken cancellationToken);
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
