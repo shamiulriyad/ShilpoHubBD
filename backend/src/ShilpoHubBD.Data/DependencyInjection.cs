@@ -65,6 +65,8 @@ public static class DependencyInjection
 		services.AddScoped<ICourseRepository, CourseRepository>();
 		services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 		services.AddScoped<ITrainingCertificateRepository, TrainingCertificateRepository>();
+		services.AddScoped<IHeritageSkillRepository, HeritageSkillRepository>();
+		services.AddScoped<IAcademyMemberProfileRepository, AcademyMemberProfileRepository>();
 
 		services.AddScoped<ISustainabilityRepository, SustainabilityRepository>();
 
