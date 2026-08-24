@@ -30,6 +30,8 @@ using ShilpoHubBD.Application.Services.Learning;
 using ShilpoHubBD.Application.Services.LiveShopping;
 using ShilpoHubBD.Application.Services.ManufacturingPartnership;
 using ShilpoHubBD.Application.Services.Marketplace;
+using ShilpoHubBD.Application.Services.MentorMatching;
+using ShilpoHubBD.Application.Services.Mentorship;
 using ShilpoHubBD.Application.Services.Messaging;
 using ShilpoHubBD.Application.Services.Passport;
 using ShilpoHubBD.Application.Services.ProducerBusiness;
@@ -134,6 +136,8 @@ public static class DependencyInjection
         services.AddScoped<ISkillAssessmentService, SkillAssessmentService>();
         services.AddScoped<ILearningRoadmapProvider, RuleBasedLearningRoadmapProvider>();
         services.AddScoped<ILearningRoadmapService, LearningRoadmapService>();
+        services.AddScoped<IMentorMatchingService, MentorMatchingService>();
+        services.AddScoped<IMentorshipService, MentorshipService>();
 
         services.AddScoped<ISustainabilityService, SustainabilityService>();
 

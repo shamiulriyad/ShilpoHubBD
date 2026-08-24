@@ -1,19 +1,17 @@
-namespace ShilpoHubBD.Application.DTOs.Learning;
+namespace ShilpoHubBD.Application.DTOs.MentorMatching;
 
-public class MentorProfileDto
+public class MentorMatchResultDto
 {
-    public Guid Id { get; set; }
+    public Guid MentorProfileId { get; set; }
     public Guid UserId { get; set; }
     public string FullName { get; set; } = string.Empty;
     public string Bio { get; set; } = string.Empty;
     public string Expertise { get; set; } = string.Empty;
     public int YearsOfExperience { get; set; }
-    public bool IsActive { get; set; }
     public string? Location { get; set; }
     public string? AvailabilityNote { get; set; }
     public string? PreferredCategory { get; set; }
-    public List<MentorSkillDto> Skills { get; set; } = new();
-    public int PublishedCourseCount { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+
+    public decimal MatchScore { get; set; }
+    public List<string> MatchReasons { get; set; } = new();
 }

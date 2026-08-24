@@ -21,6 +21,7 @@ using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
 using ShilpoHubBD.Domain.Entities.Marketplace;
+using ShilpoHubBD.Domain.Entities.Mentorship;
 using ShilpoHubBD.Domain.Entities.Messaging;
 using ShilpoHubBD.Domain.Entities.Passport;
 using ShilpoHubBD.Domain.Entities.Procurement;
@@ -122,6 +123,8 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<CustomOrderRequest> CustomOrderRequests => Set<CustomOrderRequest>();
 
 	public DbSet<MentorProfile> MentorProfiles => Set<MentorProfile>();
+	public DbSet<MentorSkill> MentorSkills => Set<MentorSkill>();
+	public DbSet<MentorshipRequest> MentorshipRequests => Set<MentorshipRequest>();
 	public DbSet<HeritageSkill> HeritageSkills => Set<HeritageSkill>();
 	public DbSet<CourseCategory> CourseCategories => Set<CourseCategory>();
 	public DbSet<CourseModule> CourseModules => Set<CourseModule>();
