@@ -45,6 +45,13 @@ public class AssignmentRepository : IAssignmentRepository
             .Include(s => s.Student)
             .FirstOrDefaultAsync(s => s.AssignmentId == assignmentId && s.StudentUserId == studentUserId, cancellationToken);
 
+    public Task<List<AssignmentSubmission>> GetSubmissionsByStudentAsync(Guid studentUserId, CancellationToken cancellationToken)
+        => _context.AssignmentSubmissions
+            .Include(s => s.Assignment)
+            .Where(s => s.StudentUserId == studentUserId)
+            .OrderByDescending(s => s.SubmittedAt)
+            .ToListAsync(cancellationToken);
+
     public async Task AddSubmissionAsync(AssignmentSubmission submission, CancellationToken cancellationToken)
         => await _context.AssignmentSubmissions.AddAsync(submission, cancellationToken);
 

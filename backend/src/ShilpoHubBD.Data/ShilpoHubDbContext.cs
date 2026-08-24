@@ -28,6 +28,7 @@ using ShilpoHubBD.Domain.Entities.ProductDevelopment;
 using ShilpoHubBD.Domain.Entities.QRVerification;
 using ShilpoHubBD.Domain.Entities.Quotations;
 using ShilpoHubBD.Domain.Entities.Reviews;
+using ShilpoHubBD.Domain.Entities.SkillAssessment;
 using ShilpoHubBD.Domain.Entities.Sustainability;
 using ShilpoHubBD.Domain.Entities.Traceability;
 using ShilpoHubBD.Domain.Entities.TouristBooking;
@@ -215,6 +216,10 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<ExamQuestionOption> ExamQuestionOptions => Set<ExamQuestionOption>();
 	public DbSet<ExamAttempt> ExamAttempts => Set<ExamAttempt>();
 	public DbSet<ExamAttemptAnswer> ExamAttemptAnswers => Set<ExamAttemptAnswer>();
+
+	public DbSet<SkillAssessment> SkillAssessments => Set<SkillAssessment>();
+	public DbSet<SkillAssessmentInsight> SkillAssessmentInsights => Set<SkillAssessmentInsight>();
+	public DbSet<SkillAssessmentRecommendedSkill> SkillAssessmentRecommendedSkills => Set<SkillAssessmentRecommendedSkill>();
 
 	public DbSet<MuseumItem> MuseumItems => Set<MuseumItem>();
 	public DbSet<MuseumItemMedia> MuseumItemMedia => Set<MuseumItemMedia>();
