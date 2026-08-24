@@ -119,6 +119,9 @@ public class ShilpoHubDbContext : DbContext
 
 	public DbSet<MentorProfile> MentorProfiles => Set<MentorProfile>();
 	public DbSet<HeritageSkill> HeritageSkills => Set<HeritageSkill>();
+	public DbSet<CourseCategory> CourseCategories => Set<CourseCategory>();
+	public DbSet<CourseModule> CourseModules => Set<CourseModule>();
+	public DbSet<CourseMaterial> CourseMaterials => Set<CourseMaterial>();
 	public DbSet<AcademyMemberProfile> AcademyMemberProfiles => Set<AcademyMemberProfile>();
 	public DbSet<AcademyMemberSkill> AcademyMemberSkills => Set<AcademyMemberSkill>();
 	public DbSet<Course> Courses => Set<Course>();

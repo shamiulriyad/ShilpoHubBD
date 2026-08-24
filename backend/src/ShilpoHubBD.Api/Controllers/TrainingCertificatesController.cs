@@ -56,7 +56,7 @@ public class TrainingCertificatesController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = $"{RoleNames.Producer},{RoleNames.SuperAdmin}")]
+    [Authorize]
     [HttpPost("{id:guid}/revoke")]
     public async Task<IActionResult> Revoke(Guid id, CancellationToken cancellationToken)
     {
