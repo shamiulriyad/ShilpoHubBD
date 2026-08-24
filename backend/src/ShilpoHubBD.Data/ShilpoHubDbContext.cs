@@ -16,6 +16,7 @@ using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.Inventory;
 using ShilpoHubBD.Domain.Entities.Investment;
 using ShilpoHubBD.Domain.Entities.Learning;
+using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
 using ShilpoHubBD.Domain.Entities.Marketplace;
@@ -195,6 +196,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<TouristService> TouristServices => Set<TouristService>();
 	public DbSet<ServiceAvailabilitySlot> ServiceAvailabilitySlots => Set<ServiceAvailabilitySlot>();
 	public DbSet<Booking> Bookings => Set<Booking>();
+
+	public DbSet<LiveClass> LiveClasses => Set<LiveClass>();
+	public DbSet<LiveClassParticipant> LiveClassParticipants => Set<LiveClassParticipant>();
+	public DbSet<LiveClassQuestion> LiveClassQuestions => Set<LiveClassQuestion>();
+	public DbSet<LiveClassAttendance> LiveClassAttendances => Set<LiveClassAttendance>();
 
 	public DbSet<MuseumItem> MuseumItems => Set<MuseumItem>();
 	public DbSet<MuseumItemMedia> MuseumItemMedia => Set<MuseumItemMedia>();

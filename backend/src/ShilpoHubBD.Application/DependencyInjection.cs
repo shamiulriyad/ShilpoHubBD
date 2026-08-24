@@ -124,6 +124,7 @@ public static class DependencyInjection
         services.AddScoped<IHeritageSkillService, HeritageSkillService>();
         services.AddScoped<IAcademyMemberProfileService, AcademyMemberProfileService>();
         services.AddScoped<ICourseCategoryService, CourseCategoryService>();
+        services.AddScoped<ILiveClassService, LiveClassService>();
 
         services.AddScoped<ISustainabilityService, SustainabilityService>();
 
