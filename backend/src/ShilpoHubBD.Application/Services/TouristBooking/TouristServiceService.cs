@@ -145,6 +145,8 @@ public class TouristServiceService : ITouristServiceService
         Location = service.Location,
         ImageUrl = service.ImageUrl,
         IsActive = service.IsActive,
+        AverageRating = service.AverageRating,
+        ReviewCount = service.ReviewCount,
         ProducerId = service.ProducerId,
         ProducerName = service.Producer.FullName,
         DistrictId = service.DistrictId,

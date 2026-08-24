@@ -14,6 +14,8 @@ public class HeritagePlace
     public string? ImageUrl { get; set; }
     public bool IsFeatured { get; set; }
     public bool IsActive { get; set; } = true;
+    public decimal AverageRating { get; set; }
+    public int ReviewCount { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 

@@ -12,6 +12,8 @@ public class TouristServiceDto
     public string? Location { get; set; }
     public string? ImageUrl { get; set; }
     public bool IsActive { get; set; }
+    public decimal AverageRating { get; set; }
+    public int ReviewCount { get; set; }
     public Guid ProducerId { get; set; }
     public string ProducerName { get; set; } = string.Empty;
     public Guid DistrictId { get; set; }

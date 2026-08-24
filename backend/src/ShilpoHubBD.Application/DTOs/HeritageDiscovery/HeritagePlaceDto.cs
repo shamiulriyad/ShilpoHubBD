@@ -12,6 +12,8 @@ public class HeritagePlaceDto
     public string? ImageUrl { get; set; }
     public bool IsFeatured { get; set; }
     public bool IsActive { get; set; }
+    public decimal AverageRating { get; set; }
+    public int ReviewCount { get; set; }
     public Guid DistrictId { get; set; }
     public string DistrictName { get; set; } = string.Empty;
     public double? DistanceKm { get; set; }

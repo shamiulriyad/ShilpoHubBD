@@ -34,12 +34,39 @@ public class ReviewsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("heritage-place/{heritagePlaceId:guid}")]
+    public async Task<ActionResult<PagedResult<ReviewDto>>> GetByHeritagePlace(
+        Guid heritagePlaceId, [FromQuery] ReviewQueryParameters query, CancellationToken cancellationToken)
+    {
+        var result = await _reviewService.GetByHeritagePlaceAsync(heritagePlaceId, query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet("service/{touristServiceId:guid}")]
+    public async Task<ActionResult<PagedResult<ReviewDto>>> GetByService(
+        Guid touristServiceId, [FromQuery] ReviewQueryParameters query, CancellationToken cancellationToken)
+    {
+        var result = await _reviewService.GetByServiceAsync(touristServiceId, query, cancellationToken);
+        return Ok(result);
+    }
+
     [Authorize]
     [HttpPost]
     public async Task<ActionResult<ReviewDto>> Create(CreateReviewRequest request, CancellationToken cancellationToken)
     {
         var result = await _reviewService.CreateAsync(CurrentUserId, request, cancellationToken);
-        return CreatedAtAction(nameof(GetByProduct), new { productId = result.ProductId }, result);
+
+        if (result.ProductId.HasValue)
+        {
+            return CreatedAtAction(nameof(GetByProduct), new { productId = result.ProductId }, result);
+        }
+
+        if (result.HeritagePlaceId.HasValue)
+        {
+            return CreatedAtAction(nameof(GetByHeritagePlace), new { heritagePlaceId = result.HeritagePlaceId }, result);
+        }
+
+        return StatusCode(201, result);
     }
 
     [Authorize]

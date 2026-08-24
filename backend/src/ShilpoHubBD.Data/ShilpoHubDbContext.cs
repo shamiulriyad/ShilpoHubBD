@@ -99,6 +99,8 @@ public class ShilpoHubDbContext : DbContext
 
 	public DbSet<Badge> Badges => Set<Badge>();
 	public DbSet<UserBadge> UserBadges => Set<UserBadge>();
+	public DbSet<HeritageCheckIn> HeritageCheckIns => Set<HeritageCheckIn>();
+	public DbSet<TravelJournalEntry> TravelJournalEntries => Set<TravelJournalEntry>();
 
 	public DbSet<XpTransaction> XpTransactions => Set<XpTransaction>();
 	public DbSet<Achievement> Achievements => Set<Achievement>();
@@ -181,6 +183,8 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<HeritageFestival> HeritageFestivals => Set<HeritageFestival>();
 	public DbSet<CulturalEvent> CulturalEvents => Set<CulturalEvent>();
 	public DbSet<LocalCuisine> LocalCuisines => Set<LocalCuisine>();
+	public DbSet<HeritageRoute> HeritageRoutes => Set<HeritageRoute>();
+	public DbSet<RouteStop> RouteStops => Set<RouteStop>();
 
 	public DbSet<TouristService> TouristServices => Set<TouristService>();
 	public DbSet<ServiceAvailabilitySlot> ServiceAvailabilitySlots => Set<ServiceAvailabilitySlot>();

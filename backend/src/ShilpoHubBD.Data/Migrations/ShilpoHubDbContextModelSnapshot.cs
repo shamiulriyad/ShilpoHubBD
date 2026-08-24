@@ -2039,6 +2039,9 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<decimal>("AverageRating")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -2076,6 +2079,9 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
+                    b.Property<int>("ReviewCount")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -2090,6 +2096,51 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("Latitude", "Longitude");
 
                     b.ToTable("HeritagePlaces", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritageRoute", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<int>("EstimatedDurationMinutes")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsRecommended")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<double>("TotalDistanceKm")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsRecommended");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("HeritageRoutes", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.LocalCuisine", b =>
@@ -2142,6 +2193,49 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("LocalCuisines", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.RouteStop", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("DistanceFromPreviousKm")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("EstimatedTravelMinutesFromPrevious")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("HeritagePlaceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("RouteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TransportationMode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HeritagePlaceId");
+
+                    b.HasIndex("RouteId", "HeritagePlaceId")
+                        .IsUnique();
+
+                    b.HasIndex("RouteId", "Order")
+                        .IsUnique();
+
+                    b.ToTable("RouteStops", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.FamilyHeritageMember", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2178,7 +2272,7 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.HasIndex("ProducerHeritageIdentityId");
 
-                    b.ToTable("FamilyHeritageMembers");
+                    b.ToTable("FamilyHeritageMembers", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.HeritageAward", b =>
@@ -2214,7 +2308,7 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.HasIndex("ProducerHeritageIdentityId");
 
-                    b.ToTable("HeritageAwards");
+                    b.ToTable("HeritageAwards", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.HeritageCertification", b =>
@@ -2253,7 +2347,7 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.HasIndex("ProducerHeritageIdentityId");
 
-                    b.ToTable("HeritageCertifications");
+                    b.ToTable("HeritageCertifications", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", b =>
@@ -2413,7 +2507,7 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.HasIndex("ProducerHeritageIdentityId");
 
-                    b.ToTable("SkillTimelineEntries");
+                    b.ToTable("SkillTimelineEntries", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.StoryArchiveEntry", b =>
@@ -2443,7 +2537,7 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.HasIndex("ProducerHeritageIdentityId");
 
-                    b.ToTable("StoryArchiveEntries");
+                    b.ToTable("StoryArchiveEntries", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.PasswordResetToken", b =>
@@ -4502,6 +4596,9 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int?>("RequiredCheckInCount")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("RequiredPurchaseCount")
                         .HasColumnType("integer");
 
@@ -4519,6 +4616,86 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("Type");
 
                     b.ToTable("Badges", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.HeritageCheckIn", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("CheckInDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("CheckedInAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("HeritagePlaceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HeritagePlaceId");
+
+                    b.HasIndex("UserId", "HeritagePlaceId", "CheckInDate")
+                        .IsUnique();
+
+                    b.ToTable("HeritageCheckIns", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.TravelJournalEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CheckInId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("HeritagePlaceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PhotoUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CheckInId");
+
+                    b.HasIndex("HeritagePlaceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TravelJournalEntries", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.UserBadge", b =>
@@ -5227,6 +5404,9 @@ namespace ShilpoHubBD.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("BookingId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasMaxLength(2000)
@@ -5235,7 +5415,10 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid?>("HeritagePlaceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Rating")
@@ -5251,8 +5434,17 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("BookingId", "UserId")
+                        .IsUnique()
+                        .HasFilter("\"BookingId\" IS NOT NULL");
+
+                    b.HasIndex("HeritagePlaceId", "UserId")
+                        .IsUnique()
+                        .HasFilter("\"HeritagePlaceId\" IS NOT NULL");
+
                     b.HasIndex("ProductId", "UserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"ProductId\" IS NOT NULL");
 
                     b.ToTable("Reviews", (string)null);
                 });
@@ -5524,6 +5716,9 @@ namespace ShilpoHubBD.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("AverageRating")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -5557,6 +5752,9 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.Property<Guid>("ProducerId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("ReviewCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -6452,6 +6650,25 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("HeritagePlace");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.RouteStop", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritagePlace", "HeritagePlace")
+                        .WithMany()
+                        .HasForeignKey("HeritagePlaceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritageRoute", "Route")
+                        .WithMany("Stops")
+                        .HasForeignKey("RouteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HeritagePlace");
+
+                    b.Navigation("Route");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.FamilyHeritageMember", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", "ProducerHeritageIdentity")
@@ -7053,6 +7270,50 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("District");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.HeritageCheckIn", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritagePlace", "HeritagePlace")
+                        .WithMany()
+                        .HasForeignKey("HeritagePlaceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HeritagePlace");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.TravelJournalEntry", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Passport.HeritageCheckIn", "CheckIn")
+                        .WithMany()
+                        .HasForeignKey("CheckInId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritagePlace", "HeritagePlace")
+                        .WithMany()
+                        .HasForeignKey("HeritagePlaceId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CheckIn");
+
+                    b.Navigation("HeritagePlace");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.UserBadge", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Passport.Badge", "Badge")
@@ -7372,17 +7633,30 @@ namespace ShilpoHubBD.Data.Migrations
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.Review", b =>
                 {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.TouristBooking.Booking", "Booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritagePlace", "HeritagePlace")
+                        .WithMany()
+                        .HasForeignKey("HeritagePlaceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("HeritagePlace");
 
                     b.Navigation("Product");
 
@@ -7632,6 +7906,11 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Events");
 
                     b.Navigation("Festivals");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritageRoute", b =>
+                {
+                    b.Navigation("Stops");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", b =>

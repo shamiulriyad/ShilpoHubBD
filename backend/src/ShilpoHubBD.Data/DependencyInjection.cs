@@ -50,8 +50,11 @@ public static class DependencyInjection
 		services.AddScoped<ITraceabilityRepository, TraceabilityRepository>();
 		services.AddScoped<ISearchProvider, PostgresProductSearchProvider>();
 		services.AddScoped<IPassportRepository, PassportRepository>();
+		services.AddScoped<IHeritageCheckInRepository, HeritageCheckInRepository>();
+		services.AddScoped<ITravelJournalRepository, TravelJournalRepository>();
 		services.AddScoped<IAchievementRepository, AchievementRepository>();
 		services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+		services.AddScoped<ITouristAnalyticsRepository, TouristAnalyticsRepository>();
 		services.AddScoped<IImpactRepository, ImpactRepository>();
 		services.AddScoped<IHeritageIdentityRepository, HeritageIdentityRepository>();
 		services.AddScoped<IInventoryRepository, InventoryRepository>();
@@ -84,6 +87,7 @@ public static class DependencyInjection
 		services.AddScoped<IHeritageFestivalRepository, HeritageFestivalRepository>();
 		services.AddScoped<ICulturalEventRepository, CulturalEventRepository>();
 		services.AddScoped<ILocalCuisineRepository, LocalCuisineRepository>();
+		services.AddScoped<IHeritageRouteRepository, HeritageRouteRepository>();
 
 		services.AddScoped<ITouristServiceRepository, TouristServiceRepository>();
 		services.AddScoped<IServiceAvailabilitySlotRepository, ServiceAvailabilitySlotRepository>();

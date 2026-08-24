@@ -105,6 +105,7 @@ public static class DependencyInjection
         services.AddScoped<IAchievementService, AchievementService>();
 
         services.AddScoped<IAnalyticsService, AnalyticsService>();
+        services.AddScoped<ITouristAnalyticsService, TouristAnalyticsService>();
 
         services.AddScoped<IImpactService, ImpactService>();
 
@@ -142,6 +143,7 @@ public static class DependencyInjection
         services.AddScoped<IHeritageFestivalService, HeritageFestivalService>();
         services.AddScoped<ICulturalEventService, CulturalEventService>();
         services.AddScoped<ILocalCuisineService, LocalCuisineService>();
+        services.AddScoped<IHeritageRouteService, HeritageRouteService>();
 
         services.AddScoped<ITouristServiceService, TouristServiceService>();
         services.AddScoped<IServiceAvailabilityService, ServiceAvailabilityService>();
