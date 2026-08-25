@@ -21,6 +21,7 @@ using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
 using ShilpoHubBD.Domain.Entities.Marketplace;
+using ShilpoHubBD.Domain.Entities.Mentorship;
 using ShilpoHubBD.Domain.Entities.Messaging;
 using ShilpoHubBD.Domain.Entities.Passport;
 using ShilpoHubBD.Domain.Entities.Procurement;
@@ -28,6 +29,7 @@ using ShilpoHubBD.Domain.Entities.ProductDevelopment;
 using ShilpoHubBD.Domain.Entities.QRVerification;
 using ShilpoHubBD.Domain.Entities.Quotations;
 using ShilpoHubBD.Domain.Entities.Reviews;
+using ShilpoHubBD.Domain.Entities.Roadmap;
 using ShilpoHubBD.Domain.Entities.SkillAssessment;
 using ShilpoHubBD.Domain.Entities.Sustainability;
 using ShilpoHubBD.Domain.Entities.Traceability;
@@ -121,6 +123,8 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<CustomOrderRequest> CustomOrderRequests => Set<CustomOrderRequest>();
 
 	public DbSet<MentorProfile> MentorProfiles => Set<MentorProfile>();
+	public DbSet<MentorSkill> MentorSkills => Set<MentorSkill>();
+	public DbSet<MentorshipRequest> MentorshipRequests => Set<MentorshipRequest>();
 	public DbSet<HeritageSkill> HeritageSkills => Set<HeritageSkill>();
 	public DbSet<CourseCategory> CourseCategories => Set<CourseCategory>();
 	public DbSet<CourseModule> CourseModules => Set<CourseModule>();
@@ -220,6 +224,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<SkillAssessment> SkillAssessments => Set<SkillAssessment>();
 	public DbSet<SkillAssessmentInsight> SkillAssessmentInsights => Set<SkillAssessmentInsight>();
 	public DbSet<SkillAssessmentRecommendedSkill> SkillAssessmentRecommendedSkills => Set<SkillAssessmentRecommendedSkill>();
+
+	public DbSet<LearningRoadmap> LearningRoadmaps => Set<LearningRoadmap>();
+	public DbSet<RoadmapMilestone> RoadmapMilestones => Set<RoadmapMilestone>();
+	public DbSet<RoadmapRecommendedCourse> RoadmapRecommendedCourses => Set<RoadmapRecommendedCourse>();
+	public DbSet<RoadmapRecommendedLesson> RoadmapRecommendedLessons => Set<RoadmapRecommendedLesson>();
 
 	public DbSet<MuseumItem> MuseumItems => Set<MuseumItem>();
 	public DbSet<MuseumItemMedia> MuseumItemMedia => Set<MuseumItemMedia>();

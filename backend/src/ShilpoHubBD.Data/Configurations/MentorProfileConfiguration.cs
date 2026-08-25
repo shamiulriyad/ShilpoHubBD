@@ -15,6 +15,9 @@ public class MentorProfileConfiguration : IEntityTypeConfiguration<MentorProfile
         builder.Property(m => m.Expertise).IsRequired().HasMaxLength(500);
         builder.Property(m => m.YearsOfExperience).IsRequired();
         builder.Property(m => m.IsActive).IsRequired();
+        builder.Property(m => m.Location).HasMaxLength(200);
+        builder.Property(m => m.AvailabilityNote).HasMaxLength(500);
+        builder.Property(m => m.PreferredCategory).HasMaxLength(100);
         builder.Property(m => m.CreatedAt).IsRequired();
         builder.Property(m => m.UpdatedAt).IsRequired();
 
@@ -24,5 +27,10 @@ public class MentorProfileConfiguration : IEntityTypeConfiguration<MentorProfile
             .WithMany()
             .HasForeignKey(m => m.UserId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(m => m.Skills)
+            .WithOne(s => s.MentorProfile)
+            .HasForeignKey(s => s.MentorProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
