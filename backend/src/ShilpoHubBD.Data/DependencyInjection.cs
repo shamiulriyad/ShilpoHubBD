@@ -81,6 +81,8 @@ public static class DependencyInjection
 		services.AddScoped<IApprenticeEnrollmentRepository, ApprenticeEnrollmentRepository>();
 		services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 		services.AddScoped<IMentorFeedbackRepository, MentorFeedbackRepository>();
+		services.AddScoped<IJobListingRepository, JobListingRepository>();
+		services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
 
 		services.AddScoped<ISustainabilityRepository, SustainabilityRepository>();
 

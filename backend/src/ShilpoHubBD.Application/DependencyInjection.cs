@@ -22,6 +22,7 @@ using ShilpoHubBD.Application.Services.Contracts;
 using ShilpoHubBD.Application.Services.CSRSponsorship;
 using ShilpoHubBD.Application.Services.CustomOrders;
 using ShilpoHubBD.Application.Services.DesignCollaboration;
+using ShilpoHubBD.Application.Services.Employment;
 using ShilpoHubBD.Application.Services.HeritageDiscovery;
 using ShilpoHubBD.Application.Services.HeritageIdentity;
 using ShilpoHubBD.Application.Services.Impact;
@@ -145,6 +146,9 @@ public static class DependencyInjection
         services.AddScoped<IApprenticeEnrollmentService, ApprenticeEnrollmentService>();
         services.AddScoped<IMentorFeedbackService, MentorFeedbackService>();
         services.AddScoped<IPortfolioService, PortfolioService>();
+        services.AddScoped<IJobListingService, JobListingService>();
+        services.AddScoped<IJobApplicationService, JobApplicationService>();
+        services.AddScoped<IJobMatchingService, JobMatchingService>();
 
         services.AddScoped<ISustainabilityService, SustainabilityService>();
 
