@@ -9,6 +9,7 @@ using ShilpoHubBD.Application.Services.AIBusinessPartner;
 using ShilpoHubBD.Application.Services.AIShopping;
 using ShilpoHubBD.Application.Services.Analytics;
 using ShilpoHubBD.Application.Services.AITourism;
+using ShilpoHubBD.Application.Services.Apprenticeship;
 using ShilpoHubBD.Application.Services.ArVr;
 using ShilpoHubBD.Application.Services.Auth;
 using ShilpoHubBD.Application.Services.BusinessPartner;
@@ -138,6 +139,9 @@ public static class DependencyInjection
         services.AddScoped<ILearningRoadmapService, LearningRoadmapService>();
         services.AddScoped<IMentorMatchingService, MentorMatchingService>();
         services.AddScoped<IMentorshipService, MentorshipService>();
+        services.AddScoped<IApprenticeshipProgramService, ApprenticeshipProgramService>();
+        services.AddScoped<IProgramApplicationService, ProgramApplicationService>();
+        services.AddScoped<IApprenticeEnrollmentService, ApprenticeEnrollmentService>();
 
         services.AddScoped<ISustainabilityService, SustainabilityService>();
 

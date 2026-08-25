@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Domain.Entities.Achievement;
+using ShilpoHubBD.Domain.Entities.Apprenticeship;
 using ShilpoHubBD.Domain.Entities.Assessment;
 using ShilpoHubBD.Domain.Entities.ArVr;
 using ShilpoHubBD.Domain.Entities.Auction;
@@ -136,6 +137,12 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<CourseEnrollment> CourseEnrollments => Set<CourseEnrollment>();
 	public DbSet<LessonProgress> LessonProgress => Set<LessonProgress>();
 	public DbSet<TrainingCertificate> TrainingCertificates => Set<TrainingCertificate>();
+
+	public DbSet<ApprenticeshipProgram> ApprenticeshipPrograms => Set<ApprenticeshipProgram>();
+	public DbSet<TrainingMilestone> TrainingMilestones => Set<TrainingMilestone>();
+	public DbSet<ProgramApplication> ProgramApplications => Set<ProgramApplication>();
+	public DbSet<ApprenticeEnrollment> ApprenticeEnrollments => Set<ApprenticeEnrollment>();
+	public DbSet<ApprenticeMilestoneProgress> ApprenticeMilestoneProgress => Set<ApprenticeMilestoneProgress>();
 
 	public DbSet<SustainabilityProfile> SustainabilityProfiles => Set<SustainabilityProfile>();
 	public DbSet<SustainableMaterialRecord> SustainableMaterialRecords => Set<SustainableMaterialRecord>();
