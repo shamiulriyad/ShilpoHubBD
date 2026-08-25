@@ -12,6 +12,7 @@ using ShilpoHubBD.Domain.Entities.Contracts;
 using ShilpoHubBD.Domain.Entities.CSRSponsorship;
 using ShilpoHubBD.Domain.Entities.CustomOrders;
 using ShilpoHubBD.Domain.Entities.DesignCollaboration;
+using ShilpoHubBD.Domain.Entities.Employment;
 using ShilpoHubBD.Domain.Entities.HeritageDiscovery;
 using ShilpoHubBD.Domain.Entities.HeritageIdentity;
 using ShilpoHubBD.Domain.Entities.Identity;
@@ -148,6 +149,10 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<Portfolio> Portfolios => Set<Portfolio>();
 	public DbSet<PortfolioProject> PortfolioProjects => Set<PortfolioProject>();
 	public DbSet<MentorFeedback> MentorFeedbacks => Set<MentorFeedback>();
+
+	public DbSet<JobListing> JobListings => Set<JobListing>();
+	public DbSet<JobSkillRequirement> JobSkillRequirements => Set<JobSkillRequirement>();
+	public DbSet<JobApplication> JobApplications => Set<JobApplication>();
 
 	public DbSet<SustainabilityProfile> SustainabilityProfiles => Set<SustainabilityProfile>();
 	public DbSet<SustainableMaterialRecord> SustainableMaterialRecords => Set<SustainableMaterialRecord>();

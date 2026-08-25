@@ -63,6 +63,15 @@ public class PortfolioService : IPortfolioService
         return await AssembleAsync(portfolio, profile, cancellationToken);
     }
 
+    public async Task<PortfolioDto> GetPortfolioForProfileAsync(Guid academyMemberProfileId, CancellationToken cancellationToken)
+    {
+        var portfolio = await _portfolioRepository.GetByAcademyMemberProfileIdAsync(academyMemberProfileId, cancellationToken)
+            ?? throw new NotFoundException("Portfolio not found.");
+
+        var profile = await _profileService.GetByIdAsync(academyMemberProfileId, cancellationToken);
+        return await AssembleAsync(portfolio, profile, cancellationToken);
+    }
+
     public async Task<PortfolioDto> UpdateMyPortfolioAsync(Guid userId, UpdatePortfolioRequest request, CancellationToken cancellationToken)
     {
         var (portfolio, profile) = await GetOrCreatePortfolioAsync(userId, cancellationToken);
