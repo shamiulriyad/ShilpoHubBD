@@ -148,11 +148,14 @@ public class EnrollmentService : IEnrollmentService
             var certificate = new TrainingCertificate
             {
                 Id = Guid.NewGuid(),
+                Type = CertificateType.Course,
+                RecipientUserId = enrollment.ApprenticeId,
+                IssuerUserId = AuthorUserId(enrollment.Course),
                 EnrollmentId = enrollment.Id,
                 CertificateNumber = GenerateCertificateNumber(now),
-                CourseTitle = enrollment.Course.Title,
-                ApprenticeName = enrollment.Apprentice.FullName,
-                MentorName = AuthorNameOf(enrollment.Course),
+                Title = enrollment.Course.Title,
+                RecipientName = enrollment.Apprentice.FullName,
+                IssuerName = AuthorNameOf(enrollment.Course),
                 IsRevoked = false,
                 IssuedAt = now,
             };
