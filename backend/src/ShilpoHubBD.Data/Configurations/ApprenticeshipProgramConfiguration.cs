@@ -24,6 +24,7 @@ public class ApprenticeshipProgramConfiguration : IEntityTypeConfiguration<Appre
         builder.HasIndex(p => p.TrainerProfileId);
         builder.HasIndex(p => p.Status);
         builder.HasIndex(p => p.Type);
+        builder.HasIndex(p => p.HeritageSkillId);
 
         builder.HasOne(p => p.Mentor)
             .WithMany()

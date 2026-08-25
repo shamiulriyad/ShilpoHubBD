@@ -19,6 +19,12 @@ public class ProgramApplicationConfiguration : IEntityTypeConfiguration<ProgramA
         builder.HasIndex(a => new { a.ProgramId, a.Status });
         builder.HasIndex(a => new { a.ApplicantUserId, a.Status });
 
+        // Backstops the application-layer duplicate check against a race between two concurrent
+        // requests; still allows re-applying after a prior application was rejected/withdrawn.
+        builder.HasIndex(a => new { a.ProgramId, a.ApplicantUserId })
+            .IsUnique()
+            .HasFilter("\"Status\" IN ('Pending', 'Accepted')");
+
         builder.HasOne(a => a.Applicant)
             .WithMany()
             .HasForeignKey(a => a.ApplicantUserId)
