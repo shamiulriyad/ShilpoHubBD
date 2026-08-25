@@ -211,6 +211,7 @@ public class EnrollmentService : IEnrollmentService
         ApprenticeName = enrollment.Apprentice.FullName,
         Status = enrollment.Status.ToString(),
         EnrolledAt = enrollment.EnrolledAt,
+        CompletedAt = enrollment.CompletedAt,
         ProgressPercent = CalculateProgressPercent(enrollment),
     };
 

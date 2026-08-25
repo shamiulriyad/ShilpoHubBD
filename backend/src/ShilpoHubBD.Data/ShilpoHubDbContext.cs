@@ -25,6 +25,7 @@ using ShilpoHubBD.Domain.Entities.Marketplace;
 using ShilpoHubBD.Domain.Entities.Mentorship;
 using ShilpoHubBD.Domain.Entities.Messaging;
 using ShilpoHubBD.Domain.Entities.Passport;
+using ShilpoHubBD.Domain.Entities.Portfolio;
 using ShilpoHubBD.Domain.Entities.Procurement;
 using ShilpoHubBD.Domain.Entities.ProductDevelopment;
 using ShilpoHubBD.Domain.Entities.QRVerification;
@@ -143,6 +144,10 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<ProgramApplication> ProgramApplications => Set<ProgramApplication>();
 	public DbSet<ApprenticeEnrollment> ApprenticeEnrollments => Set<ApprenticeEnrollment>();
 	public DbSet<ApprenticeMilestoneProgress> ApprenticeMilestoneProgress => Set<ApprenticeMilestoneProgress>();
+
+	public DbSet<Portfolio> Portfolios => Set<Portfolio>();
+	public DbSet<PortfolioProject> PortfolioProjects => Set<PortfolioProject>();
+	public DbSet<MentorFeedback> MentorFeedbacks => Set<MentorFeedback>();
 
 	public DbSet<SustainabilityProfile> SustainabilityProfiles => Set<SustainabilityProfile>();
 	public DbSet<SustainableMaterialRecord> SustainableMaterialRecords => Set<SustainableMaterialRecord>();
