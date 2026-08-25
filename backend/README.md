@@ -10,7 +10,7 @@ ASP.NET Core 8 Web API for **ShilpoHubBD**, a marketplace connecting Bangladeshi
 | Database | PostgreSQL (Supabase), via `Npgsql.EntityFrameworkCore.PostgreSQL` |
 | Auth | JWT Bearer (access + refresh tokens), BCrypt password hashing |
 | Validation | FluentValidation |
-| Realtime | SignalR (`/hubs/messaging`, `/hubs/live-events`) |
+| Realtime | SignalR (`/hubs/messaging`, `/hubs/live-events`, `/hubs/live-classes`) |
 | API docs | Swagger / OpenAPI (`Swashbuckle`) |
 | Health checks | `/health/db` |
 
@@ -74,7 +74,7 @@ Abstract providers (swap the implementation without touching callers):
    ```
    - Swagger UI (Development): `https://localhost:5001/swagger`
    - Health check: `GET /health/db`
-   - SignalR hubs: `/hubs/messaging`, `/hubs/live-events`
+   - SignalR hubs: `/hubs/messaging`, `/hubs/live-events`, `/hubs/live-classes`
 
 ## Database migrations
 
@@ -95,7 +95,7 @@ JWT Bearer auth (`Authorization: Bearer <token>`). Roles (`ShilpoHubBD.Domain.Co
 
 `Customer`, `Producer`, `BusinessPartner`, `Tourist`, `HeritageAcademyMember`, `HeritageInnovationHub`, `GovernmentNGO`, `LogisticsPartner`, `SuperAdmin`.
 
-Most write endpoints require `[Authorize]`; producer-owned resources (products, live events, auctions, QR codes, certificates, traceability records, orders, courses, mentor profiles, sustainability records, heritage identity) are additionally ownership-checked against the authenticated user, with `SuperAdmin` able to manage anything. Catalog/admin-only actions (roles, categories, districts, craft stories, achievement definitions, sustainability material certification verification) require `SuperAdmin`.
+Most write endpoints require `[Authorize]`; producer-owned resources (products, live events, auctions, QR codes, certificates, traceability records, orders, courses, mentor profiles, apprenticeship & internship programs, sustainability records, heritage identity) are additionally ownership-checked against the authenticated user, with `SuperAdmin` able to manage anything. Job listings follow the same pattern for `BusinessPartner`-role users, gated on top by their business profile's verification status. Catalog/admin-only actions (roles, categories, districts, craft stories, achievement definitions, sustainability material certification verification) require `SuperAdmin`.
 
 ## API modules
 
@@ -122,7 +122,7 @@ All routes are prefixed `/api`. Auth requirement: **Public** (no token needed), 
 | Producer Orders | `/producer/orders` | Producer-side order fulfillment (accept/reject/processing/ship/deliver, scoped to a producer's own products), customer list, revenue dashboard, sales analytics, visitor analytics, income reports, product performance |
 | AI Business Assistant | `/producer/ai-business` | Price suggestion, product description generator, translation, demand forecast, production planner, material forecast, seasonal prediction, sales insights — all rule-based/dummy today, provider-abstracted for a future real model |
 | Live Shopping | `/live-events` | Live events, comments, reactions, buy-during-live, optional linked live auction, realtime updates via `/hubs/live-events` |
-| Learning & Mentorship | `/mentors`, `/courses`, `/enrollments`, `/training-certificates` | Become a mentor, publish courses & lessons, apprentice enrollment, lesson-progress tracking, auto-issued training certificates on course completion (verify/download, same pattern as product certificates) |
+| **Heritage Academy** | | Learner/trainer/mentor education platform — see the [Heritage Academy modules](#heritage-academy-modules) table below for the full breakdown |
 | Sustainability | `/sustainability` | Eco Score, Green Production Badge, Carbon Savings, sustainable material records and certifications — configurable rule-based scoring, no AI |
 | Auctions | `/auctions` | Auctions, bids, timer-driven winner resolution |
 | QR Verification | `/qr-verification` | Generate/verify/revoke product QR codes, scan history |
@@ -135,6 +135,28 @@ All routes are prefixed `/api`. Auth requirement: **Public** (no token needed), 
 | Achievements | `/achievements` | XP, levels, achievement unlocks |
 | Analytics | `/analytics` | Personal purchase analytics, spending, favorite categories |
 | Impact | `/impact` | Heritage score, families supported, estimated CO₂ savings |
+
+### Heritage Academy modules
+
+A full learner → trainer/mentor → certified-professional pipeline for heritage skills, built on top of the existing `User`/`Producer`/`Certificate` system rather than duplicating it. A course/program/job listing is authored by either a `MentorProfile` (a `Producer` who opted into mentoring via `POST /mentors`) or an `AcademyMemberProfile` with `Role = Trainer` — never a new "instructor" concept. All AI-flavored features (skill assessment, learning roadmap, mentor matching, job matching) are rule-based today behind a swappable provider interface, exactly like the marketplace's `IRecommendationProvider`/`IAIBusinessProvider` pattern — ready for a real model later without touching callers.
+
+| Module | Base route | Summary |
+|---|---|---|
+| Academy Profile | `/academy-profiles` | Learner/Trainer/Mentor role profile, heritage skills with level (Beginner→Expert), learning preferences, learning history |
+| Mentors | `/mentors` | A `Producer` becomes a mentor, manages their mentor profile & taught skills |
+| Heritage Skills | `/heritage-skills` | Shared skill catalog referenced by courses, member/mentor skills, apprenticeship requirements, job requirements, and certificates — one lookup table, no duplication |
+| Courses | `/courses`, `/course-categories` | Mentor- or Trainer-authored courses, modules, lessons, downloadable materials, categories; Draft → Published → Archived lifecycle |
+| Enrollments | `/enrollments` | Course enrollment with capacity limits, per-lesson progress tracking, completion (auto-issues a Course certificate) |
+| Live Classes | `/live-classes` | Scheduled live classes, participants, live Q&A, attendance, class history; realtime via `/hubs/live-classes` |
+| Assignments / Quizzes / Exams | `/assignments`, `/quizzes`, `/exams` | Assignment submission & manual grading; quiz/exam attempts with attempt limits, automatic MCQ scoring, and manual essay evaluation |
+| AI Skill Assessment | `/skill-assessments` | Rule-based skill level, strengths/weaknesses, and recommended-skill assessment from a learner's courses, quizzes, exams and assignments — behind `IAISkillAssessmentProvider` for a future real model |
+| Learning Roadmap | `/learning-roadmaps` | Rule-based personalized roadmap — goals, skill milestones, recommended courses/lessons, next step — behind `ILearningRoadmapProvider` |
+| Mentor Matching | `/mentor-matching` | Rule-based mentor discovery, scored on skill match, skill level, location, experience, availability, category |
+| Mentorship | `/mentorship-requests` | Request a mentor, accept/reject/complete, mentorship history |
+| Internship & Apprenticeship | `/apprenticeship-programs`, `/program-applications`, `/apprentice-enrollments` | Mentor/Trainer-run internship & apprenticeship programs with eligibility requirements, applications, training milestones, and completion (auto-issues an Apprenticeship certificate) |
+| Certificates | `/training-certificates` | Unified digital certificate system — Course, Skill (mentor/trainer-issued), and Apprenticeship certificates all issued, verified, downloaded and revoked through one entity/API, each with its own `SH-TRN-`/`SH-SKL-`/`SH-APR-` numbered ID |
+| Digital Portfolio | `/portfolios`, `/mentor-feedback` | Aggregated member portfolio — heritage skills, completed courses, certificates, showcase projects, graded assignments, achievements, apprenticeship experience, mentor feedback — with member-controlled public/private visibility |
+| Employment | `/job-listings`, `/job-applications`, `/job-matching` | Job listings from verified `BusinessPartner` employers with skill requirements, applications through hire/reject, and rule-based job recommendations matched against a member's skills, plus employer review of an applicant's portfolio |
 
 ## Project structure
 
