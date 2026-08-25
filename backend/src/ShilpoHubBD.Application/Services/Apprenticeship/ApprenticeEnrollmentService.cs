@@ -3,6 +3,7 @@ using ShilpoHubBD.Application.Exceptions;
 using ShilpoHubBD.Application.Interfaces.Repositories;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Domain.Entities.Apprenticeship;
+using ShilpoHubBD.Domain.Entities.Learning;
 
 namespace ShilpoHubBD.Application.Services.Apprenticeship;
 
@@ -10,13 +11,16 @@ public class ApprenticeEnrollmentService : IApprenticeEnrollmentService
 {
     private readonly IApprenticeEnrollmentRepository _enrollmentRepository;
     private readonly IApprenticeshipProgramRepository _programRepository;
+    private readonly ITrainingCertificateRepository _trainingCertificateRepository;
 
     public ApprenticeEnrollmentService(
         IApprenticeEnrollmentRepository enrollmentRepository,
-        IApprenticeshipProgramRepository programRepository)
+        IApprenticeshipProgramRepository programRepository,
+        ITrainingCertificateRepository trainingCertificateRepository)
     {
         _enrollmentRepository = enrollmentRepository;
         _programRepository = programRepository;
+        _trainingCertificateRepository = trainingCertificateRepository;
     }
 
     public async Task<List<ApprenticeEnrollmentListItemDto>> GetMyEnrollmentsAsync(Guid apprenticeUserId, CancellationToken cancellationToken)
@@ -91,8 +95,30 @@ public class ApprenticeEnrollmentService : IApprenticeEnrollmentService
             throw new ConflictException("This enrollment has already been marked complete.");
         }
 
+        var now = DateTime.UtcNow;
         enrollment.Status = ApprenticeEnrollmentStatus.Completed;
-        enrollment.CompletedAt = DateTime.UtcNow;
+        enrollment.CompletedAt = now;
+
+        var existingCertificate = await _trainingCertificateRepository.GetByApprenticeEnrollmentIdAsync(enrollment.Id, cancellationToken);
+        if (existingCertificate is null)
+        {
+            var certificate = new TrainingCertificate
+            {
+                Id = Guid.NewGuid(),
+                Type = CertificateType.Apprenticeship,
+                RecipientUserId = enrollment.ApprenticeUserId,
+                IssuerUserId = ProviderUserId(enrollment.Program),
+                ApprenticeEnrollmentId = enrollment.Id,
+                CertificateNumber = GenerateCertificateNumber(now),
+                Title = enrollment.Program.Title,
+                RecipientName = enrollment.Apprentice.FullName,
+                IssuerName = ProviderNameOf(enrollment.Program),
+                IsRevoked = false,
+                IssuedAt = now,
+            };
+
+            await _trainingCertificateRepository.AddAsync(certificate, cancellationToken);
+        }
 
         await _enrollmentRepository.SaveChangesAsync(cancellationToken);
         return ToDto(enrollment);
@@ -127,6 +153,12 @@ public class ApprenticeEnrollmentService : IApprenticeEnrollmentService
     private static Guid? ProviderUserId(ApprenticeshipProgram program)
         => program.Mentor?.UserId ?? program.TrainerProfile?.UserId;
 
+    private static string ProviderNameOf(ApprenticeshipProgram program)
+        => program.Mentor?.User.FullName ?? program.TrainerProfile?.User.FullName ?? string.Empty;
+
+    private static string GenerateCertificateNumber(DateTime issuedAt)
+        => $"SH-APR-{issuedAt:yyyyMMdd}-{Guid.NewGuid().ToString("N")[..8].ToUpperInvariant()}";
+
     private static decimal CalculateProgressPercent(ApprenticeEnrollment enrollment)
     {
         var totalMilestones = enrollment.Program.Milestones.Count;
@@ -148,6 +180,7 @@ public class ApprenticeEnrollmentService : IApprenticeEnrollmentService
         ApprenticeName = enrollment.Apprentice.FullName,
         Status = enrollment.Status.ToString(),
         EnrolledAt = enrollment.EnrolledAt,
+        CompletedAt = enrollment.CompletedAt,
         ProgressPercent = CalculateProgressPercent(enrollment),
     };
 

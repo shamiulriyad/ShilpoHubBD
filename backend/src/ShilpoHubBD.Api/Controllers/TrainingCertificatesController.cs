@@ -57,6 +57,15 @@ public class TrainingCertificatesController : ControllerBase
     }
 
     [Authorize]
+    [HttpPost("skill/issue")]
+    public async Task<ActionResult<TrainingCertificateDto>> IssueSkillCertificate(
+        IssueSkillCertificateRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _trainingCertificateService.IssueSkillCertificateAsync(CurrentUserId, request, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+
+    [Authorize]
     [HttpPost("{id:guid}/revoke")]
     public async Task<IActionResult> Revoke(Guid id, CancellationToken cancellationToken)
     {

@@ -35,6 +35,7 @@ using ShilpoHubBD.Application.Services.MentorMatching;
 using ShilpoHubBD.Application.Services.Mentorship;
 using ShilpoHubBD.Application.Services.Messaging;
 using ShilpoHubBD.Application.Services.Passport;
+using ShilpoHubBD.Application.Services.Portfolio;
 using ShilpoHubBD.Application.Services.ProducerBusiness;
 using ShilpoHubBD.Application.Services.ProducerComparison;
 using ShilpoHubBD.Application.Services.ProductDevelopment;
@@ -142,6 +143,8 @@ public static class DependencyInjection
         services.AddScoped<IApprenticeshipProgramService, ApprenticeshipProgramService>();
         services.AddScoped<IProgramApplicationService, ProgramApplicationService>();
         services.AddScoped<IApprenticeEnrollmentService, ApprenticeEnrollmentService>();
+        services.AddScoped<IMentorFeedbackService, MentorFeedbackService>();
+        services.AddScoped<IPortfolioService, PortfolioService>();
 
         services.AddScoped<ISustainabilityService, SustainabilityService>();
 
