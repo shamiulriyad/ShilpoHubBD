@@ -1,10 +1,13 @@
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Button } from '../../components/ui';
+import { PageHeader, Button, AsyncState } from '../../components/ui';
 import { VillageCard } from '../../components/cards';
-import { villages, favoriteVillageIds } from '../../data/mockData';
+import { useFavoriteVillages, useVillageFavoriteMutations } from '../../hooks/useVillages';
+import { toVillageCardItem } from '../../utils/villageAdapters';
 
 export default function FavoriteVillages() {
-  const favorites = villages.filter((v) => favoriteVillageIds.includes(v.id));
+  const { data, isLoading, isError, error } = useFavoriteVillages();
+  const { unfavorite } = useVillageFavoriteMutations();
+  const favorites = data || [];
 
   return (
     <div>
@@ -15,14 +18,17 @@ export default function FavoriteVillages() {
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {favorites.map((village) => (
-          <div key={village.id} className="space-y-2">
-            <VillageCard village={village} to={routePaths.exploreVillageDetails.replace(':villageId', village.id)} />
-            <Button variant="secondary" className="w-full">
-              Remove from Favorites
-            </Button>
-          </div>
-        ))}
+        <AsyncState isLoading={isLoading} isError={isError} error={error}>
+          {favorites.map((village) => (
+            <div key={village.id} className="space-y-2">
+              <VillageCard village={toVillageCardItem(village)} to={routePaths.exploreVillageDetails.replace(':villageId', village.id)} />
+              <Button variant="secondary" className="w-full" onClick={() => unfavorite.mutate(village.id)}>
+                Remove from Favorites
+              </Button>
+            </div>
+          ))}
+          {favorites.length === 0 && <p className="col-span-full text-sm text-body/60">No favorite villages yet.</p>}
+        </AsyncState>
       </div>
     </div>
   );

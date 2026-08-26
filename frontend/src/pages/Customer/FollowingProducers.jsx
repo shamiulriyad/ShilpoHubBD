@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Button } from '../../components/ui';
-import { producers, followedProducerIds } from '../../data/mockData';
+import { PageHeader, Button, AsyncState } from '../../components/ui';
+import { useFollowedProducers, useProducerFollowMutations } from '../../hooks/useProducerFollows';
 
 export default function FollowingProducers() {
-  const following = producers.filter((p) => followedProducerIds.includes(p.id));
+  const { data, isLoading, isError, error } = useFollowedProducers();
+  const { unfollow } = useProducerFollowMutations();
+  const following = data || [];
 
   return (
     <div>
@@ -14,28 +16,35 @@ export default function FollowingProducers() {
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {following.map((producer) => (
-          <div key={producer.id} className="flex items-center gap-4 rounded-xl border border-border bg-surface p-4">
-            <Link
-              to={routePaths.customerProducerProfile.replace(':producerId', producer.id)}
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-base font-semibold text-primary"
-            >
-              {producer.name.slice(0, 1)}
-            </Link>
-            <div className="min-w-0 flex-1">
+        <AsyncState isLoading={isLoading} isError={isError} error={error}>
+          {following.map((producer) => (
+            <div key={producer.producerId} className="flex items-center gap-4 rounded-xl border border-border bg-surface p-4">
               <Link
-                to={routePaths.customerProducerProfile.replace(':producerId', producer.id)}
-                className="truncate text-sm font-semibold text-heading hover:underline"
+                to={routePaths.customerProducerProfile.replace(':producerId', producer.producerId)}
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-base font-semibold text-primary"
               >
-                {producer.name}
+                {producer.producerName.slice(0, 1)}
               </Link>
-              <p className="truncate text-xs text-body/60">
-                {producer.craft} · {producer.district}
-              </p>
+              <div className="min-w-0 flex-1">
+                <Link
+                  to={routePaths.customerProducerProfile.replace(':producerId', producer.producerId)}
+                  className="truncate text-sm font-semibold text-heading hover:underline"
+                >
+                  {producer.producerName}
+                </Link>
+                <p className="truncate text-xs text-body/60">
+                  Following since {new Date(producer.followedAt).toLocaleDateString()}
+                </p>
+              </div>
+              <Button variant="secondary" onClick={() => unfollow.mutate(producer.producerId)}>
+                Unfollow
+              </Button>
             </div>
-            <Button variant="secondary">Unfollow</Button>
-          </div>
-        ))}
+          ))}
+          {following.length === 0 && (
+            <p className="col-span-full text-sm text-body/60">You aren't following any producers yet.</p>
+          )}
+        </AsyncState>
       </div>
     </div>
   );

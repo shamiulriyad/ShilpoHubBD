@@ -1,45 +1,56 @@
 import { useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader } from '../../components/ui';
-import { VillageCard, EntityCard, StatCard } from '../../components/cards';
-import { districts, villages, producers } from '../../data/mockData';
+import { PageHeader, AsyncState } from '../../components/ui';
+import { VillageCard, StatCard } from '../../components/cards';
+import { useDistricts } from '../../hooks/useDistricts';
+import { useVillages } from '../../hooks/useVillages';
+import { toVillageCardItem } from '../../utils/villageAdapters';
 
 export default function DistrictDetails() {
   const { districtId } = useParams();
-  const district = districts.find((d) => d.id === districtId) || districts[0];
+  const districtsQuery = useDistricts();
+  const villagesQuery = useVillages();
+
+  const district = (districtsQuery.data || []).find((d) => d.id === districtId);
+  const districtVillages = (villagesQuery.data || []).filter((v) => v.districtId === districtId);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <PageHeader
-        breadcrumbs={[
-          { label: 'Home', path: routePaths.home },
-          { label: 'Explore', path: routePaths.explore },
-          { label: 'Districts', path: routePaths.exploreDistricts },
-          { label: district.name },
-        ]}
-        title={district.name}
-        description="District heritage overview."
-      />
+      <AsyncState isLoading={districtsQuery.isLoading} isError={districtsQuery.isError} error={districtsQuery.error}>
+        {district && (
+          <>
+            <PageHeader
+              breadcrumbs={[
+                { label: 'Home', path: routePaths.home },
+                { label: 'Explore', path: routePaths.explore },
+                { label: 'Districts', path: routePaths.exploreDistricts },
+                { label: district.name },
+              ]}
+              title={district.name}
+              description={`${district.division} Division`}
+            />
 
-      <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <StatCard label="Heritage Villages" value={district.villages} />
-        <StatCard label="Craft Disciplines" value={district.crafts} />
-        <StatCard label="Registered Producers" value={producers.length * 4} />
-      </div>
+            <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
+              <StatCard label="Heritage Villages" value={districtVillages.length} />
+              <StatCard label="Division" value={district.division} />
+            </div>
 
-      <p className="mb-3 text-sm font-semibold text-heading">Villages in {district.name}</p>
-      <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {villages.map((village) => (
-          <VillageCard key={village.id} village={village} to={routePaths.exploreVillageDetails.replace(':villageId', village.id)} />
-        ))}
-      </div>
-
-      <p className="mb-3 text-sm font-semibold text-heading">Producers from {district.name}</p>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {producers.map((producer) => (
-          <EntityCard key={producer.id} title={producer.name} subtitle={producer.craft} to={routePaths.exploreProducerDetails.replace(':producerId', producer.id)} />
-        ))}
-      </div>
+            <p className="mb-3 text-sm font-semibold text-heading">Villages in {district.name}</p>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {districtVillages.map((village) => (
+                <VillageCard
+                  key={village.id}
+                  village={toVillageCardItem(village)}
+                  to={routePaths.exploreVillageDetails.replace(':villageId', village.id)}
+                />
+              ))}
+              {districtVillages.length === 0 && (
+                <p className="col-span-full text-sm text-body/60">No villages recorded for this district yet.</p>
+              )}
+            </div>
+          </>
+        )}
+      </AsyncState>
     </div>
   );
 }

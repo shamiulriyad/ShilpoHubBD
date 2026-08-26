@@ -1,9 +1,18 @@
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader } from '../../components/ui';
+import { PageHeader, AsyncState } from '../../components/ui';
 import { EntityCard } from '../../components/cards';
-import { districts } from '../../data/mockData';
+import { useDistricts } from '../../hooks/useDistricts';
+import { useVillages } from '../../hooks/useVillages';
 
 export default function Districts() {
+  const districtsQuery = useDistricts();
+  const villagesQuery = useVillages();
+
+  const villageCountByDistrict = (villagesQuery.data || []).reduce((acc, village) => {
+    acc[village.districtId] = (acc[village.districtId] || 0) + 1;
+    return acc;
+  }, {});
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <PageHeader
@@ -16,14 +25,16 @@ export default function Districts() {
         description="Browse heritage villages, crafts and producers by district."
       />
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {districts.map((district) => (
-          <EntityCard
-            key={district.id}
-            title={district.name}
-            subtitle={`${district.villages} villages · ${district.crafts} crafts`}
-            to={routePaths.exploreDistrictDetails.replace(':districtId', district.id)}
-          />
-        ))}
+        <AsyncState isLoading={districtsQuery.isLoading} isError={districtsQuery.isError} error={districtsQuery.error}>
+          {districtsQuery.data?.map((district) => (
+            <EntityCard
+              key={district.id}
+              title={district.name}
+              subtitle={`${villageCountByDistrict[district.id] || 0} villages · ${district.division}`}
+              to={routePaths.exploreDistrictDetails.replace(':districtId', district.id)}
+            />
+          ))}
+        </AsyncState>
       </div>
     </div>
   );

@@ -14,8 +14,8 @@ export default function DiscussionCard({ thread, to }) {
       <p className="text-xs text-body/60">by {thread.author}</p>
       <div className="flex gap-4 text-xs text-body/50">
         <span>{thread.replies} replies</span>
-        <span>{thread.views} views</span>
-        <span>{thread.lastActivity}</span>
+        {thread.views != null && <span>{thread.views} views</span>}
+        {thread.lastActivity && <span>{thread.lastActivity}</span>}
       </div>
     </Link>
   );

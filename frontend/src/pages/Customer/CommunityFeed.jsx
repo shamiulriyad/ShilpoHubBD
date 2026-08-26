@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Badge } from '../../components/ui';
+import { PageHeader, Badge, AsyncState } from '../../components/ui';
 import { ProducerCard, DiscussionCard } from '../../components/cards';
-import { communityPosts, producers, forumThreads } from '../../data/mockData';
+import { useDiscussions } from '../../hooks/useDiscussions';
+// No backend controller backs a generic "community post feed" or a producer-suggestion
+// endpoint (there is no ProducersController) — both stay on mock data for now.
+import { communityPosts, producers } from '../../data/mockData';
 
 export default function CommunityFeed() {
+  const discussionsQuery = useDiscussions({ pageSize: 3 });
+
   return (
     <div>
       <PageHeader
@@ -75,11 +80,23 @@ export default function CommunityFeed() {
 
           <div className="space-y-3 rounded-xl border border-border bg-surface p-5">
             <p className="text-sm font-semibold text-heading">Recent Discussions</p>
-            <div className="space-y-3">
-              {forumThreads.slice(0, 3).map((thread) => (
-                <DiscussionCard key={thread.id} thread={thread} to={routePaths.customerForum} />
-              ))}
-            </div>
+            <AsyncState isLoading={discussionsQuery.isLoading} isError={discussionsQuery.isError} error={discussionsQuery.error}>
+              <div className="space-y-3">
+                {discussionsQuery.data?.items.map((thread) => (
+                  <DiscussionCard
+                    key={thread.id}
+                    thread={{
+                      title: thread.title,
+                      category: thread.category,
+                      author: thread.authorName,
+                      replies: thread.replyCount,
+                      lastActivity: new Date(thread.createdAt).toLocaleDateString(),
+                    }}
+                    to={routePaths.customerForum}
+                  />
+                ))}
+              </div>
+            </AsyncState>
             <Link to={routePaths.customerForum} className="block text-sm font-medium text-link hover:underline">
               View discussion forum →
             </Link>

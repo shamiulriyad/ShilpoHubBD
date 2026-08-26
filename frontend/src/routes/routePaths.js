@@ -32,6 +32,11 @@ export const routePaths = {
   tourismVillages: '/tourism/villages',
   tourismRoutes: '/tourism/routes',
   tourismPassport: '/tourism/passport',
+  tourismCuisines: '/tourism/cuisines',
+  tourismServices: '/tourism/services',
+  tourismServiceDetails: '/tourism/services/:serviceId',
+  tourismBookings: '/tourism/bookings',
+  tourismAiPlanner: '/tourism/ai-planner',
 
   // Academy
   academy: '/academy',
@@ -41,6 +46,12 @@ export const routePaths = {
   academyLearning: '/academy/learning',
   academyCertificates: '/academy/certificates',
   academyPortfolio: '/academy/portfolio',
+  academyExamDetails: '/academy/exams/:examId',
+  academyQuizDetails: '/academy/quizzes/:quizId',
+  academyAssignmentDetails: '/academy/assignments/:assignmentId',
+  academyLiveClasses: '/academy/live-classes',
+  academyLiveClassDetails: '/academy/live-classes/:liveClassId',
+  academySkillAssessments: '/academy/skill-assessments',
 
   // Research / Innovation Hub
   research: '/research',
@@ -110,6 +121,37 @@ export const routePaths = {
   customerAIFashionMatching: '/customer/ai/fashion-matching/:productId',
   customerAIGiftRecommendation: '/customer/ai/gift-recommendation',
   customerAISimilarProducts: '/customer/ai/similar-products/:productId',
+
+  // Producer dashboard (backend role: Producer)
+  producer: '/producer',
+  producerContracts: '/producer/contracts',
+  producerQuotations: '/producer/quotations',
+  producerPartnerships: '/producer/partnerships',
+  producerDesignCollaborations: '/producer/design-collaborations',
+  producerProductDevelopment: '/producer/product-development',
+  producerCsr: '/producer/csr-sponsorship',
+  producerInvestments: '/producer/investment-opportunities',
+  producerInventory: '/producer/inventory',
+  producerOrders: '/producer/orders',
+  producerSustainability: '/producer/sustainability',
+  producerAiAssistant: '/producer/ai-assistant',
+
+  // Business Partner dashboard (backend role: BusinessPartner)
+  businessPartner: '/business-partner',
+  businessPartnerProfile: '/business-partner/profile',
+  businessPartnerContracts: '/business-partner/contracts',
+  businessPartnerQuotations: '/business-partner/quotations',
+  businessPartnerProcurements: '/business-partner/procurements',
+  businessPartnerPartnerships: '/business-partner/partnerships',
+  businessPartnerDesignCollaborations: '/business-partner/design-collaborations',
+  businessPartnerProductDevelopment: '/business-partner/product-development',
+  businessPartnerCsr: '/business-partner/csr-sponsorship',
+  businessPartnerInvestments: '/business-partner/investment-opportunities',
+  businessPartnerSupplierDiscovery: '/business-partner/supplier-discovery',
+  businessPartnerSupplierMatching: '/business-partner/supplier-matching',
+  businessPartnerProducerComparison: '/business-partner/producer-comparison',
+  businessPartnerAnalytics: '/business-partner/analytics',
+  businessPartnerAiIntelligence: '/business-partner/ai-intelligence',
 
   // Roles
   visitor: '/visitor',

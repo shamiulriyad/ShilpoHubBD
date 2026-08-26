@@ -43,6 +43,9 @@ export const megaMenus = {
       { label: 'Festivals', description: 'Cultural festival directory', path: routePaths.tourismFestivals },
       { label: 'Cultural Events', description: 'Upcoming events calendar', path: routePaths.tourismEvents },
       { label: 'Tour Routes', description: 'Guided heritage travel routes', path: routePaths.tourismRoutes },
+      { label: 'Local Cuisine', description: 'Traditional dishes and where to try them', path: routePaths.tourismCuisines },
+      { label: 'Tourist Services', description: 'Book guides, workshops, homestays and transport', path: routePaths.tourismServices },
+      { label: 'AI Trip Planner', description: 'Get an AI-generated day-by-day itinerary', path: routePaths.tourismAiPlanner },
     ],
   },
   academy: {
@@ -52,6 +55,7 @@ export const megaMenus = {
       { label: 'Courses', description: 'Browse the course catalog', path: routePaths.academy },
       { label: 'Mentors', description: 'Master artisans & trainers', path: routePaths.academyMentors },
       { label: 'Certifications', description: 'Recognized skill certificates', path: routePaths.academyCertifications },
+      { label: 'Live Classes', description: 'Join live sessions with mentors', path: routePaths.academyLiveClasses },
     ],
   },
   research: {
@@ -79,6 +83,10 @@ export const sidebarNav = [
   { label: 'Marketplace', path: routePaths.dashboardMarketplace },
   { label: 'Tourism', path: routePaths.dashboardTourism },
   { label: 'Academy', path: routePaths.dashboardAcademy },
+  { label: 'My Learning', path: routePaths.academyLearning },
+  { label: 'Skill Assessments', path: routePaths.academySkillAssessments },
+  { label: 'Certificates', path: routePaths.academyCertificates },
+  { label: 'Portfolio', path: routePaths.academyPortfolio },
   { label: 'Community', path: routePaths.dashboardCommunity },
   { label: 'Analytics', path: routePaths.dashboardAnalytics },
   { label: 'Messages', path: routePaths.dashboardMessages },
@@ -109,6 +117,39 @@ export const customerSidebarNav = [
   { label: 'Achievements', path: routePaths.customerAchievements },
   { label: 'Badge Collection', path: routePaths.customerBadges },
   { label: 'AI Gift Recommendation', path: routePaths.customerAIGiftRecommendation },
+];
+
+export const producerSidebarNav = [
+  { label: 'Dashboard', path: routePaths.producer },
+  { label: 'Orders & Fulfillment', path: routePaths.producerOrders },
+  { label: 'Inventory', path: routePaths.producerInventory },
+  { label: 'Contracts', path: routePaths.producerContracts },
+  { label: 'Quotation Requests', path: routePaths.producerQuotations },
+  { label: 'Manufacturing Partnerships', path: routePaths.producerPartnerships },
+  { label: 'Design Collaborations', path: routePaths.producerDesignCollaborations },
+  { label: 'Product Development', path: routePaths.producerProductDevelopment },
+  { label: 'CSR Sponsorship', path: routePaths.producerCsr },
+  { label: 'Investment Opportunities', path: routePaths.producerInvestments },
+  { label: 'Sustainability Profile', path: routePaths.producerSustainability },
+  { label: 'AI Business Assistant', path: routePaths.producerAiAssistant },
+];
+
+export const businessPartnerSidebarNav = [
+  { label: 'Dashboard', path: routePaths.businessPartner },
+  { label: 'Company Profile', path: routePaths.businessPartnerProfile },
+  { label: 'Contracts', path: routePaths.businessPartnerContracts },
+  { label: 'Quotations', path: routePaths.businessPartnerQuotations },
+  { label: 'Procurement', path: routePaths.businessPartnerProcurements },
+  { label: 'Manufacturing Partnerships', path: routePaths.businessPartnerPartnerships },
+  { label: 'Design Collaborations', path: routePaths.businessPartnerDesignCollaborations },
+  { label: 'Product Development', path: routePaths.businessPartnerProductDevelopment },
+  { label: 'Sponsorship Marketplace', path: routePaths.businessPartnerCsr },
+  { label: 'Investment Marketplace', path: routePaths.businessPartnerInvestments },
+  { label: 'Supplier Discovery', path: routePaths.businessPartnerSupplierDiscovery },
+  { label: 'Supplier Matching (AI)', path: routePaths.businessPartnerSupplierMatching },
+  { label: 'Compare Producers', path: routePaths.businessPartnerProducerComparison },
+  { label: 'Analytics', path: routePaths.businessPartnerAnalytics },
+  { label: 'AI Intelligence', path: routePaths.businessPartnerAiIntelligence },
 ];
 
 export const adminSidebarNav = [
