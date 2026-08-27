@@ -30,6 +30,7 @@ using ShilpoHubBD.Domain.Entities.Portfolio;
 using ShilpoHubBD.Domain.Entities.Procurement;
 using ShilpoHubBD.Domain.Entities.ProductDevelopment;
 using ShilpoHubBD.Domain.Entities.QRVerification;
+using ShilpoHubBD.Domain.Entities.Research;
 using ShilpoHubBD.Domain.Entities.Quotations;
 using ShilpoHubBD.Domain.Entities.Reviews;
 using ShilpoHubBD.Domain.Entities.Roadmap;
@@ -252,6 +253,15 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<VillageTourStop> VillageTourStops => Set<VillageTourStop>();
 	public DbSet<CulturalStory> CulturalStories => Set<CulturalStory>();
 	public DbSet<CulturalStoryChapter> CulturalStoryChapters => Set<CulturalStoryChapter>();
+
+	public DbSet<ResearchProject> ResearchProjects => Set<ResearchProject>();
+	public DbSet<ResearchProjectMember> ResearchProjectMembers => Set<ResearchProjectMember>();
+	public DbSet<ResearchTask> ResearchTasks => Set<ResearchTask>();
+	public DbSet<ResearchMilestone> ResearchMilestones => Set<ResearchMilestone>();
+	public DbSet<ResearchNote> ResearchNotes => Set<ResearchNote>();
+	public DbSet<ResearchPaper> ResearchPapers => Set<ResearchPaper>();
+	public DbSet<ResearchPublication> ResearchPublications => Set<ResearchPublication>();
+	public DbSet<ResearchActivity> ResearchActivities => Set<ResearchActivity>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
