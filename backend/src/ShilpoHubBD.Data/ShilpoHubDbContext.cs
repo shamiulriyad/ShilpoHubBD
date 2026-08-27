@@ -20,6 +20,7 @@ using ShilpoHubBD.Domain.Entities.HeritageIdentity;
 using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.Inventory;
 using ShilpoHubBD.Domain.Entities.Investment;
+using ShilpoHubBD.Domain.Entities.KnowledgeGraph;
 using ShilpoHubBD.Domain.Entities.Learning;
 using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
@@ -281,6 +282,9 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<SurveyResponseAnswer> SurveyResponseAnswers => Set<SurveyResponseAnswer>();
 	public DbSet<FieldEvidence> FieldEvidence => Set<FieldEvidence>();
 	public DbSet<DataCollectionEvent> DataCollectionEvents => Set<DataCollectionEvent>();
+
+	public DbSet<KnowledgeNode> KnowledgeNodes => Set<KnowledgeNode>();
+	public DbSet<KnowledgeRelationship> KnowledgeRelationships => Set<KnowledgeRelationship>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

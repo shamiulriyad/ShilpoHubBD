@@ -30,6 +30,7 @@ using ShilpoHubBD.Application.Services.HeritageIdentity;
 using ShilpoHubBD.Application.Services.Impact;
 using ShilpoHubBD.Application.Services.Inventory;
 using ShilpoHubBD.Application.Services.Investment;
+using ShilpoHubBD.Application.Services.KnowledgeGraph;
 using ShilpoHubBD.Application.Services.Learning;
 using ShilpoHubBD.Application.Services.LiveShopping;
 using ShilpoHubBD.Application.Services.ManufacturingPartnership;
@@ -193,6 +194,8 @@ public static class DependencyInjection
         services.AddScoped<ISurveyService, SurveyService>();
         services.AddScoped<ISurveyResponseService, SurveyResponseService>();
         services.AddScoped<IFieldEvidenceService, FieldEvidenceService>();
+
+        services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>();
 
         services.AddScoped<IHeritageDatasetService, HeritageDatasetService>();
         services.AddScoped<IHeritageDataService, HeritageDataService>();
