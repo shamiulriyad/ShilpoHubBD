@@ -23,6 +23,7 @@ using ShilpoHubBD.Application.Services.CSRSponsorship;
 using ShilpoHubBD.Application.Services.CustomOrders;
 using ShilpoHubBD.Application.Services.DesignCollaboration;
 using ShilpoHubBD.Application.Services.Employment;
+using ShilpoHubBD.Application.Services.FieldResearch;
 using ShilpoHubBD.Application.Services.HeritageDatabase;
 using ShilpoHubBD.Application.Services.HeritageDiscovery;
 using ShilpoHubBD.Application.Services.HeritageIdentity;
@@ -188,6 +189,10 @@ public static class DependencyInjection
         services.AddScoped<IResearchPaperService, ResearchPaperService>();
         services.AddScoped<IResearchPublicationService, ResearchPublicationService>();
         services.AddScoped<IResearchAIService, ResearchAIService>();
+
+        services.AddScoped<ISurveyService, SurveyService>();
+        services.AddScoped<ISurveyResponseService, SurveyResponseService>();
+        services.AddScoped<IFieldEvidenceService, FieldEvidenceService>();
 
         services.AddScoped<IHeritageDatasetService, HeritageDatasetService>();
         services.AddScoped<IHeritageDataService, HeritageDataService>();
