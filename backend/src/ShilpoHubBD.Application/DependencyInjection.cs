@@ -28,6 +28,7 @@ using ShilpoHubBD.Application.Services.HeritageDatabase;
 using ShilpoHubBD.Application.Services.HeritageDiscovery;
 using ShilpoHubBD.Application.Services.HeritageIdentity;
 using ShilpoHubBD.Application.Services.Impact;
+using ShilpoHubBD.Application.Services.Innovation;
 using ShilpoHubBD.Application.Services.Inventory;
 using ShilpoHubBD.Application.Services.Investment;
 using ShilpoHubBD.Application.Services.KnowledgeGraph;
@@ -196,6 +197,11 @@ public static class DependencyInjection
         services.AddScoped<IFieldEvidenceService, FieldEvidenceService>();
 
         services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>();
+
+        services.AddScoped<IInnovationExperimentService, InnovationExperimentService>();
+        services.AddScoped<IPreservationStrategyService, PreservationStrategyService>();
+        services.AddScoped<IInnovationPrototypeService, InnovationPrototypeService>();
+        services.AddScoped<IHeritageInnovationSubmissionService, HeritageInnovationSubmissionService>();
 
         services.AddScoped<IHeritageDatasetService, HeritageDatasetService>();
         services.AddScoped<IHeritageDataService, HeritageDataService>();
