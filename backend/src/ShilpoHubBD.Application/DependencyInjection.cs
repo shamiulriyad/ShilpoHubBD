@@ -44,6 +44,7 @@ using ShilpoHubBD.Application.Services.Procurement;
 using ShilpoHubBD.Application.Services.Quotations;
 using ShilpoHubBD.Application.Services.QRVerification;
 using ShilpoHubBD.Application.Services.Recommendation;
+using ShilpoHubBD.Application.Services.Research;
 using ShilpoHubBD.Application.Services.Reviews;
 using ShilpoHubBD.Application.Services.Roadmap;
 using ShilpoHubBD.Application.Services.Search;
@@ -178,6 +179,13 @@ public static class DependencyInjection
         services.AddScoped<IBookingService, BookingService>();
 
         services.AddScoped<IAITourismService, AITourismService>();
+
+        services.AddScoped<IResearchProjectService, ResearchProjectService>();
+        services.AddScoped<IResearchTaskService, ResearchTaskService>();
+        services.AddScoped<IResearchMilestoneService, ResearchMilestoneService>();
+        services.AddScoped<IResearchNoteService, ResearchNoteService>();
+        services.AddScoped<IResearchPaperService, ResearchPaperService>();
+        services.AddScoped<IResearchPublicationService, ResearchPublicationService>();
 
         services.AddScoped<IMuseumItemService, MuseumItemService>();
         services.AddScoped<IVillageTourService, VillageTourService>();
