@@ -13,6 +13,7 @@ using ShilpoHubBD.Domain.Entities.CSRSponsorship;
 using ShilpoHubBD.Domain.Entities.CustomOrders;
 using ShilpoHubBD.Domain.Entities.DesignCollaboration;
 using ShilpoHubBD.Domain.Entities.Employment;
+using ShilpoHubBD.Domain.Entities.FieldResearch;
 using ShilpoHubBD.Domain.Entities.HeritageDatabase;
 using ShilpoHubBD.Domain.Entities.HeritageDiscovery;
 using ShilpoHubBD.Domain.Entities.HeritageIdentity;
@@ -263,12 +264,23 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<ResearchPaper> ResearchPapers => Set<ResearchPaper>();
 	public DbSet<ResearchPublication> ResearchPublications => Set<ResearchPublication>();
 	public DbSet<ResearchActivity> ResearchActivities => Set<ResearchActivity>();
+	public DbSet<ResearchAIAnalysis> ResearchAIAnalyses => Set<ResearchAIAnalysis>();
+	public DbSet<ResearchAIFinding> ResearchAIFindings => Set<ResearchAIFinding>();
+	public DbSet<ResearchAICitation> ResearchAICitations => Set<ResearchAICitation>();
 
 	public DbSet<HeritageDataset> HeritageDatasets => Set<HeritageDataset>();
 	public DbSet<HeritageDatasetVersion> HeritageDatasetVersions => Set<HeritageDatasetVersion>();
 	public DbSet<HeritageDatasetAccessGrant> HeritageDatasetAccessGrants => Set<HeritageDatasetAccessGrant>();
 	public DbSet<HeritageDatasetExport> HeritageDatasetExports => Set<HeritageDatasetExport>();
 	public DbSet<HeritageRiskRecord> HeritageRiskRecords => Set<HeritageRiskRecord>();
+
+	public DbSet<Survey> Surveys => Set<Survey>();
+	public DbSet<SurveyQuestion> SurveyQuestions => Set<SurveyQuestion>();
+	public DbSet<SurveyFieldAssignment> SurveyFieldAssignments => Set<SurveyFieldAssignment>();
+	public DbSet<SurveyResponse> SurveyResponses => Set<SurveyResponse>();
+	public DbSet<SurveyResponseAnswer> SurveyResponseAnswers => Set<SurveyResponseAnswer>();
+	public DbSet<FieldEvidence> FieldEvidence => Set<FieldEvidence>();
+	public DbSet<DataCollectionEvent> DataCollectionEvents => Set<DataCollectionEvent>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
