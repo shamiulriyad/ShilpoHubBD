@@ -91,6 +91,77 @@ internal static class ResearchMappings
         UpdatedAt = paper.UpdatedAt,
     };
 
+    public static ResearchAIFindingDto ToDto(this ResearchAIFinding f) => new()
+    {
+        Id = f.Id,
+        Category = f.Category.ToString(),
+        Heading = f.Heading,
+        Detail = f.Detail,
+        Metric = f.Metric,
+        Score = f.Score,
+        DisplayOrder = f.DisplayOrder,
+    };
+
+    public static ResearchAICitationDto ToDto(this ResearchAICitation c) => new()
+    {
+        Id = c.Id,
+        ResearchPublicationId = c.ResearchPublicationId,
+        Style = c.Style.ToString(),
+        SourceTitle = c.SourceTitle,
+        Authors = c.Authors,
+        Year = c.Year,
+        Container = c.Container,
+        Doi = c.Doi,
+        Url = c.Url,
+        FormattedCitation = c.FormattedCitation,
+        DisplayOrder = c.DisplayOrder,
+    };
+
+    public static ResearchAIAnalysisListItemDto ToListItemDto(this ResearchAIAnalysis a) => new()
+    {
+        Id = a.Id,
+        ResearchProjectId = a.ResearchProjectId,
+        AnalysisType = a.AnalysisType.ToString(),
+        Status = a.Status.ToString(),
+        ProviderName = a.ProviderName,
+        Title = a.Title,
+        ResultSummary = a.ResultSummary,
+        Confidence = a.Confidence,
+        FindingCount = a.Findings.Count,
+        CitationCount = a.Citations.Count,
+        RequestedByUserId = a.RequestedByUserId,
+        RequestedByName = a.RequestedBy?.FullName ?? string.Empty,
+        CreatedAt = a.CreatedAt,
+        CompletedAt = a.CompletedAt,
+    };
+
+    public static ResearchAIAnalysisDto ToDto(this ResearchAIAnalysis a) => new()
+    {
+        Id = a.Id,
+        ResearchProjectId = a.ResearchProjectId,
+        AnalysisType = a.AnalysisType.ToString(),
+        Status = a.Status.ToString(),
+        ProviderName = a.ProviderName,
+        Title = a.Title,
+        ResearchQuestions = a.ResearchQuestions,
+        InputSummary = a.InputSummary,
+        ResultSummary = a.ResultSummary,
+        ResultJson = a.ResultJson,
+        ContextJson = a.ContextJson,
+        Confidence = a.Confidence,
+        ErrorMessage = a.ErrorMessage,
+        DatasetId = a.DatasetId,
+        DatasetName = a.Dataset?.Name,
+        ResearchPaperId = a.ResearchPaperId,
+        PaperTitle = a.Paper?.Title,
+        RequestedByUserId = a.RequestedByUserId,
+        RequestedByName = a.RequestedBy?.FullName ?? string.Empty,
+        CreatedAt = a.CreatedAt,
+        CompletedAt = a.CompletedAt,
+        Findings = a.Findings.OrderBy(f => f.DisplayOrder).Select(f => f.ToDto()).ToList(),
+        Citations = a.Citations.OrderBy(c => c.DisplayOrder).Select(c => c.ToDto()).ToList(),
+    };
+
     public static ResearchPublicationDto ToDto(this ResearchPublication publication) => new()
     {
         Id = publication.Id,

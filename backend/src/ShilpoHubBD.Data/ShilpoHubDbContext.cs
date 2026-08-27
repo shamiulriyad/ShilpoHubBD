@@ -263,6 +263,9 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<ResearchPaper> ResearchPapers => Set<ResearchPaper>();
 	public DbSet<ResearchPublication> ResearchPublications => Set<ResearchPublication>();
 	public DbSet<ResearchActivity> ResearchActivities => Set<ResearchActivity>();
+	public DbSet<ResearchAIAnalysis> ResearchAIAnalyses => Set<ResearchAIAnalysis>();
+	public DbSet<ResearchAIFinding> ResearchAIFindings => Set<ResearchAIFinding>();
+	public DbSet<ResearchAICitation> ResearchAICitations => Set<ResearchAICitation>();
 
 	public DbSet<HeritageDataset> HeritageDatasets => Set<HeritageDataset>();
 	public DbSet<HeritageDatasetVersion> HeritageDatasetVersions => Set<HeritageDatasetVersion>();

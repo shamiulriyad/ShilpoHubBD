@@ -187,6 +187,7 @@ public static class DependencyInjection
         services.AddScoped<IResearchNoteService, ResearchNoteService>();
         services.AddScoped<IResearchPaperService, ResearchPaperService>();
         services.AddScoped<IResearchPublicationService, ResearchPublicationService>();
+        services.AddScoped<IResearchAIService, ResearchAIService>();
 
         services.AddScoped<IHeritageDatasetService, HeritageDatasetService>();
         services.AddScoped<IHeritageDataService, HeritageDataService>();

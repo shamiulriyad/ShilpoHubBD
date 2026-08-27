@@ -8,6 +8,7 @@ using ShilpoHubBD.Infrastructure.Email;
 using ShilpoHubBD.Infrastructure.Options;
 using ShilpoHubBD.Infrastructure.Payments;
 using ShilpoHubBD.Infrastructure.Recommendations;
+using ShilpoHubBD.Infrastructure.ResearchAI;
 using ShilpoHubBD.Infrastructure.Security;
 
 namespace ShilpoHubBD.Infrastructure;
@@ -26,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<IAIBusinessProvider, DummyAIBusinessProvider>();
         services.AddScoped<IAIBusinessPartnerProvider, DummyBusinessPartnerAIProvider>();
         services.AddScoped<IAITourismProvider, DummyAITourismProvider>();
+        services.AddScoped<IResearchAIProvider, DummyResearchAIProvider>();
 
         return services;
     }
