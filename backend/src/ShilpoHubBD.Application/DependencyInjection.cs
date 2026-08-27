@@ -23,6 +23,7 @@ using ShilpoHubBD.Application.Services.CSRSponsorship;
 using ShilpoHubBD.Application.Services.CustomOrders;
 using ShilpoHubBD.Application.Services.DesignCollaboration;
 using ShilpoHubBD.Application.Services.Employment;
+using ShilpoHubBD.Application.Services.HeritageDatabase;
 using ShilpoHubBD.Application.Services.HeritageDiscovery;
 using ShilpoHubBD.Application.Services.HeritageIdentity;
 using ShilpoHubBD.Application.Services.Impact;
@@ -186,6 +187,10 @@ public static class DependencyInjection
         services.AddScoped<IResearchNoteService, ResearchNoteService>();
         services.AddScoped<IResearchPaperService, ResearchPaperService>();
         services.AddScoped<IResearchPublicationService, ResearchPublicationService>();
+
+        services.AddScoped<IHeritageDatasetService, HeritageDatasetService>();
+        services.AddScoped<IHeritageDataService, HeritageDataService>();
+        services.AddScoped<IHeritageRiskService, HeritageRiskService>();
 
         services.AddScoped<IMuseumItemService, MuseumItemService>();
         services.AddScoped<IVillageTourService, VillageTourService>();

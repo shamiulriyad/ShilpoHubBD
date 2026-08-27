@@ -13,6 +13,7 @@ using ShilpoHubBD.Domain.Entities.CSRSponsorship;
 using ShilpoHubBD.Domain.Entities.CustomOrders;
 using ShilpoHubBD.Domain.Entities.DesignCollaboration;
 using ShilpoHubBD.Domain.Entities.Employment;
+using ShilpoHubBD.Domain.Entities.HeritageDatabase;
 using ShilpoHubBD.Domain.Entities.HeritageDiscovery;
 using ShilpoHubBD.Domain.Entities.HeritageIdentity;
 using ShilpoHubBD.Domain.Entities.Identity;
@@ -262,6 +263,12 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<ResearchPaper> ResearchPapers => Set<ResearchPaper>();
 	public DbSet<ResearchPublication> ResearchPublications => Set<ResearchPublication>();
 	public DbSet<ResearchActivity> ResearchActivities => Set<ResearchActivity>();
+
+	public DbSet<HeritageDataset> HeritageDatasets => Set<HeritageDataset>();
+	public DbSet<HeritageDatasetVersion> HeritageDatasetVersions => Set<HeritageDatasetVersion>();
+	public DbSet<HeritageDatasetAccessGrant> HeritageDatasetAccessGrants => Set<HeritageDatasetAccessGrant>();
+	public DbSet<HeritageDatasetExport> HeritageDatasetExports => Set<HeritageDatasetExport>();
+	public DbSet<HeritageRiskRecord> HeritageRiskRecords => Set<HeritageRiskRecord>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
