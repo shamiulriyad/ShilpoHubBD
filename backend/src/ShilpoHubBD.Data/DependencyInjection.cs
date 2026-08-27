@@ -114,6 +114,13 @@ public static class DependencyInjection
 		services.AddScoped<IResearchProjectRepository, ResearchProjectRepository>();
 		services.AddScoped<IResearchAIAnalysisRepository, ResearchAIAnalysisRepository>();
 		services.AddScoped<ISurveyRepository, SurveyRepository>();
+		services.AddScoped<IKnowledgeGraphRepository, KnowledgeGraphRepository>();
+
+		services.AddScoped<IInnovationLinkResolver, InnovationLinkResolver>();
+		services.AddScoped<IInnovationExperimentRepository, InnovationExperimentRepository>();
+		services.AddScoped<IPreservationStrategyRepository, PreservationStrategyRepository>();
+		services.AddScoped<IInnovationPrototypeRepository, InnovationPrototypeRepository>();
+		services.AddScoped<IHeritageInnovationSubmissionRepository, HeritageInnovationSubmissionRepository>();
 
 		services.AddScoped<IHeritageDatasetRepository, HeritageDatasetRepository>();
 		services.AddScoped<IHeritageDataRepository, HeritageDataRepository>();
