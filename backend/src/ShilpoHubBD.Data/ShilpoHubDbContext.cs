@@ -312,6 +312,12 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<PolicySimulation> PolicySimulations => Set<PolicySimulation>();
 	public DbSet<PolicySimulationProjection> PolicySimulationProjections => Set<PolicySimulationProjection>();
 	public DbSet<PolicySimulationRecommendation> PolicySimulationRecommendations => Set<PolicySimulationRecommendation>();
+	public DbSet<MonitoringFlag> MonitoringFlags => Set<MonitoringFlag>();
+	public DbSet<MonitoringFlagEvent> MonitoringFlagEvents => Set<MonitoringFlagEvent>();
+	public DbSet<Complaint> Complaints => Set<Complaint>();
+	public DbSet<ComplaintUpdate> ComplaintUpdates => Set<ComplaintUpdate>();
+	public DbSet<ComplianceRecord> ComplianceRecords => Set<ComplianceRecord>();
+	public DbSet<ComplianceRequirement> ComplianceRequirements => Set<ComplianceRequirement>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
