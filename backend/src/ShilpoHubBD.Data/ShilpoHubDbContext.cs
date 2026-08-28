@@ -318,6 +318,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<ComplaintUpdate> ComplaintUpdates => Set<ComplaintUpdate>();
 	public DbSet<ComplianceRecord> ComplianceRecords => Set<ComplianceRecord>();
 	public DbSet<ComplianceRequirement> ComplianceRequirements => Set<ComplianceRequirement>();
+	public DbSet<FundingProgram> FundingPrograms => Set<FundingProgram>();
+	public DbSet<FundingApplication> FundingApplications => Set<FundingApplication>();
+	public DbSet<FundingApplicationReview> FundingApplicationReviews => Set<FundingApplicationReview>();
+	public DbSet<FundingDisbursement> FundingDisbursements => Set<FundingDisbursement>();
+	public DbSet<FundingApplicationEvent> FundingApplicationEvents => Set<FundingApplicationEvent>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

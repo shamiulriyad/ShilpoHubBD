@@ -132,6 +132,7 @@ public static class DependencyInjection
 		services.AddScoped<IMonitoringRepository, MonitoringRepository>();
 		services.AddScoped<IComplaintRepository, ComplaintRepository>();
 		services.AddScoped<IComplianceRepository, ComplianceRepository>();
+		services.AddScoped<IFundingRepository, FundingRepository>();
 
 		services.AddScoped<IMuseumItemRepository, MuseumItemRepository>();
 		services.AddScoped<IVillageTourStopRepository, VillageTourStopRepository>();
