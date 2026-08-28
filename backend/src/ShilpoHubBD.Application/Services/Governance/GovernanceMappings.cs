@@ -347,4 +347,144 @@ internal static class GovernanceMappings
         NextReviewDue = r.NextReviewDue,
         UpdatedAt = r.UpdatedAt,
     };
+
+    // ---- Funding programmes -----------------------------------------
+
+    public static FundingProgramDto ToDto(this FundingProgram p, int applicationCount, int approvedCount) => new()
+    {
+        Id = p.Id,
+        Name = p.Name,
+        Slug = p.Slug,
+        Type = p.Type.ToString(),
+        Status = p.Status.ToString(),
+        Description = p.Description,
+        EligibilityCriteria = p.EligibilityCriteria,
+        Currency = p.Currency,
+        TotalBudget = p.TotalBudget,
+        AllocatedAmount = p.AllocatedAmount,
+        DisbursedAmount = p.DisbursedAmount,
+        RemainingBudget = p.TotalBudget - p.AllocatedAmount,
+        MinAmountPerApplicant = p.MinAmountPerApplicant,
+        MaxAmountPerApplicant = p.MaxAmountPerApplicant,
+        ApplicationOpensAt = p.ApplicationOpensAt,
+        ApplicationClosesAt = p.ApplicationClosesAt,
+        RequiresRepayment = p.RequiresRepayment,
+        InterestRatePercent = p.InterestRatePercent,
+        RepaymentPeriodMonths = p.RepaymentPeriodMonths,
+        ManagedByUserId = p.ManagedByUserId,
+        ManagedByName = p.ManagedBy?.FullName,
+        ApplicationCount = applicationCount,
+        ApprovedCount = approvedCount,
+        CreatedAt = p.CreatedAt,
+        UpdatedAt = p.UpdatedAt,
+    };
+
+    public static FundingProgramListItemDto ToListItemDto(this FundingProgram p, int applicationCount) => new()
+    {
+        Id = p.Id,
+        Name = p.Name,
+        Slug = p.Slug,
+        Type = p.Type.ToString(),
+        Status = p.Status.ToString(),
+        Currency = p.Currency,
+        TotalBudget = p.TotalBudget,
+        AllocatedAmount = p.AllocatedAmount,
+        DisbursedAmount = p.DisbursedAmount,
+        ApplicationClosesAt = p.ApplicationClosesAt,
+        ApplicationCount = applicationCount,
+    };
+
+    // ---- Funding applications --------------------------------------
+
+    public static FundingApplicationDto ToDto(this FundingApplication a) => new()
+    {
+        Id = a.Id,
+        FundingProgramId = a.FundingProgramId,
+        ProgramName = a.Program?.Name ?? string.Empty,
+        ProgramType = a.Program?.Type.ToString() ?? string.Empty,
+        ReferenceCode = a.ReferenceCode,
+        ApplicantType = a.ApplicantType.ToString(),
+        ApplicantUserId = a.ApplicantUserId,
+        ApplicantVillageId = a.ApplicantVillageId,
+        ApplicantLabel = a.ApplicantLabel,
+        Status = a.Status.ToString(),
+        RequestedAmount = a.RequestedAmount,
+        ApprovedAmount = a.ApprovedAmount,
+        Purpose = a.Purpose,
+        Justification = a.Justification,
+        ContactName = a.ContactName,
+        ContactPhone = a.ContactPhone,
+        ContactEmail = a.ContactEmail,
+        SubmittedAt = a.SubmittedAt,
+        DecisionAt = a.DecisionAt,
+        DecisionByName = a.DecisionBy?.FullName,
+        DecisionNotes = a.DecisionNotes,
+        RepaymentStatus = a.RepaymentStatus.ToString(),
+        OutstandingBalance = a.OutstandingBalance,
+        TotalRepaid = a.TotalRepaid,
+        NextRepaymentDueAt = a.NextRepaymentDueAt,
+        TotalDisbursed = a.Disbursements
+            .Where(d => d.Status == Domain.Entities.Governance.FundingDisbursementStatus.Paid)
+            .Sum(d => d.Amount),
+        CreatedAt = a.CreatedAt,
+        UpdatedAt = a.UpdatedAt,
+        Reviews = a.Reviews
+            .OrderByDescending(r => r.CreatedAt)
+            .Select(r => new FundingApplicationReviewDto
+            {
+                Id = r.Id,
+                ReviewerUserId = r.ReviewerUserId,
+                ReviewerName = r.Reviewer?.FullName,
+                Decision = r.Decision.ToString(),
+                Score = r.Score,
+                RecommendedAmount = r.RecommendedAmount,
+                Comments = r.Comments,
+                CreatedAt = r.CreatedAt,
+            })
+            .ToList(),
+        Disbursements = a.Disbursements
+            .OrderBy(d => d.ScheduledFor)
+            .Select(d => new FundingDisbursementDto
+            {
+                Id = d.Id,
+                Amount = d.Amount,
+                Method = d.Method.ToString(),
+                Status = d.Status.ToString(),
+                ScheduledFor = d.ScheduledFor,
+                PaidAt = d.PaidAt,
+                Reference = d.Reference,
+                Notes = d.Notes,
+                RecordedByName = d.RecordedBy?.FullName,
+                CreatedAt = d.CreatedAt,
+            })
+            .ToList(),
+        Events = a.Events
+            .OrderBy(e => e.CreatedAt)
+            .Select(e => new FundingApplicationEventDto
+            {
+                Type = e.Type.ToString(),
+                Note = e.Note,
+                FromStatus = e.FromStatus?.ToString(),
+                ToStatus = e.ToStatus?.ToString(),
+                ActorUserId = e.ActorUserId,
+                ActorName = e.Actor?.FullName,
+                CreatedAt = e.CreatedAt,
+            })
+            .ToList(),
+    };
+
+    public static FundingApplicationListItemDto ToListItemDto(this FundingApplication a) => new()
+    {
+        Id = a.Id,
+        FundingProgramId = a.FundingProgramId,
+        ProgramName = a.Program?.Name ?? string.Empty,
+        ReferenceCode = a.ReferenceCode,
+        ApplicantType = a.ApplicantType.ToString(),
+        ApplicantLabel = a.ApplicantLabel,
+        Status = a.Status.ToString(),
+        RequestedAmount = a.RequestedAmount,
+        ApprovedAmount = a.ApprovedAmount,
+        RepaymentStatus = a.RepaymentStatus.ToString(),
+        SubmittedAt = a.SubmittedAt,
+    };
 }

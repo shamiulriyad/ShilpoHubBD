@@ -214,6 +214,7 @@ public static class DependencyInjection
         services.AddScoped<IMonitoringService, MonitoringService>();
         services.AddScoped<IComplaintService, ComplaintService>();
         services.AddScoped<IComplianceService, ComplianceService>();
+        services.AddScoped<IFundingService, FundingService>();
 
         services.AddScoped<IMuseumItemService, MuseumItemService>();
         services.AddScoped<IVillageTourService, VillageTourService>();
