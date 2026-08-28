@@ -14,6 +14,7 @@ using ShilpoHubBD.Domain.Entities.CustomOrders;
 using ShilpoHubBD.Domain.Entities.DesignCollaboration;
 using ShilpoHubBD.Domain.Entities.Employment;
 using ShilpoHubBD.Domain.Entities.FieldResearch;
+using ShilpoHubBD.Domain.Entities.Governance;
 using ShilpoHubBD.Domain.Entities.HeritageDatabase;
 using ShilpoHubBD.Domain.Entities.HeritageDiscovery;
 using ShilpoHubBD.Domain.Entities.HeritageIdentity;
@@ -303,6 +304,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<SubmissionTeamMember> SubmissionTeamMembers => Set<SubmissionTeamMember>();
 	public DbSet<SubmissionReview> SubmissionReviews => Set<SubmissionReview>();
 	public DbSet<SubmissionEvent> SubmissionEvents => Set<SubmissionEvent>();
+
+	public DbSet<NationalDashboardSnapshot> NationalDashboardSnapshots => Set<NationalDashboardSnapshot>();
+	public DbSet<DashboardDistrictStat> DashboardDistrictStats => Set<DashboardDistrictStat>();
+	public DbSet<HeritageIndexRecord> HeritageIndexRecords => Set<HeritageIndexRecord>();
+	public DbSet<HeritageIndexComponent> HeritageIndexComponents => Set<HeritageIndexComponent>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

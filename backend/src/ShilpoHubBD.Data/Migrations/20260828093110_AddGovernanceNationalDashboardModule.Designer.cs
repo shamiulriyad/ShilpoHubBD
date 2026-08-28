@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShilpoHubBD.Data;
@@ -11,9 +12,11 @@ using ShilpoHubBD.Data;
 namespace ShilpoHubBD.Data.Migrations
 {
     [DbContext(typeof(ShilpoHubDbContext))]
-    partial class ShilpoHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260828093110_AddGovernanceNationalDashboardModule")]
+    partial class AddGovernanceNationalDashboardModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3200,128 +3203,6 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("NationalDashboardSnapshotId", "Rank");
 
                     b.ToTable("DashboardDistrictStats", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.HeritageIndexComponent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("ContributionScore")
-                        .HasColumnType("numeric(6,2)");
-
-                    b.Property<string>("Detail")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("HeritageIndexRecordId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("character varying(80)");
-
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("character varying(160)");
-
-                    b.Property<decimal>("RawValue")
-                        .HasColumnType("numeric(18,2)");
-
-                    b.Property<decimal>("Weight")
-                        .HasColumnType("numeric(6,3)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HeritageIndexRecordId", "DisplayOrder");
-
-                    b.ToTable("HeritageIndexComponents", (string)null);
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.HeritageIndexRecord", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ComputedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("GeneratedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("IndexType")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<string>("Method")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("character varying(80)");
-
-                    b.Property<string>("Notes")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<DateTime>("PeriodEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("PeriodStart")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Rating")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Scope")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<Guid?>("ScopeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ScopeLabel")
-                        .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("character varying(160)");
-
-                    b.Property<decimal>("Score")
-                        .HasColumnType("numeric(6,2)");
-
-                    b.Property<string>("SignalsJson")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Summary")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GeneratedByUserId");
-
-                    b.HasIndex("IndexType");
-
-                    b.HasIndex("ScopeLabel");
-
-                    b.HasIndex("IndexType", "Scope", "ScopeId", "PeriodEnd");
-
-                    b.ToTable("HeritageIndexRecords", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.NationalDashboardSnapshot", b =>
@@ -11435,28 +11316,6 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Snapshot");
                 });
 
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.HeritageIndexComponent", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Governance.HeritageIndexRecord", "Record")
-                        .WithMany("Components")
-                        .HasForeignKey("HeritageIndexRecordId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Record");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.HeritageIndexRecord", b =>
-                {
-                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "GeneratedBy")
-                        .WithMany()
-                        .HasForeignKey("GeneratedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("GeneratedBy");
-                });
-
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.NationalDashboardSnapshot", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "GeneratedBy")
@@ -14052,11 +13911,6 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Answers");
 
                     b.Navigation("Evidence");
-                });
-
-            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.HeritageIndexRecord", b =>
-                {
-                    b.Navigation("Components");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.NationalDashboardSnapshot", b =>
