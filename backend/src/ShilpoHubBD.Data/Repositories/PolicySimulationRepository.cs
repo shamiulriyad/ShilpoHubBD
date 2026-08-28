@@ -55,12 +55,11 @@ public class PolicySimulationRepository : IPolicySimulationRepository
         int producers, activeProducers;
         if (districtId.HasValue)
         {
-            var ids = await _context.Products
+            var ids = _context.Products
                 .Where(p => p.DistrictId == districtId.Value)
                 .Select(p => p.ProducerId)
-                .Distinct()
-                .ToListAsync(cancellationToken);
-            producers = ids.Count;
+                .Distinct();
+            producers = await ids.CountAsync(cancellationToken);
             activeProducers = await _context.Users.CountAsync(u => ids.Contains(u.Id) && u.IsActive, cancellationToken);
         }
         else

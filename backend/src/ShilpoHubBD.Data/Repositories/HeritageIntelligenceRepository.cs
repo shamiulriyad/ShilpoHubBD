@@ -82,11 +82,11 @@ public class HeritageIntelligenceRepository : IHeritageIntelligenceRepository
                 .Select(u => u.Id);
         }
 
-        var producerIdList = await producerIds.ToListAsync(cancellationToken);
-
-        var totalProducers = producerIdList.Count;
+        // Keep the producer set as an IQueryable so EF emits an IN (SELECT ...) sub-query rather than
+        // a literal id list — the National / District sets can be large.
+        var totalProducers = await producerIds.CountAsync(cancellationToken);
         var activeProducers = await _context.Users
-            .CountAsync(u => producerIdList.Contains(u.Id) && u.IsActive, cancellationToken);
+            .CountAsync(u => producerIds.Contains(u.Id) && u.IsActive, cancellationToken);
 
         var phi = _context.ProducerHeritageIdentities.AsQueryable();
         if (districtId.HasValue)
@@ -119,8 +119,8 @@ public class HeritageIntelligenceRepository : IHeritageIntelligenceRepository
         }
         else if (scope == HeritageIndexScope.Craft && !string.IsNullOrWhiteSpace(craft))
         {
-            products = products.Where(p => producerIdList.Contains(p.ProducerId));
-            orderItems = orderItems.Where(i => producerIdList.Contains(i.Product.ProducerId));
+            products = products.Where(p => producerIds.Contains(p.ProducerId));
+            orderItems = orderItems.Where(i => producerIds.Contains(i.Product.ProducerId));
         }
 
         var activeProducts = await products.CountAsync(cancellationToken);
@@ -154,7 +154,7 @@ public class HeritageIntelligenceRepository : IHeritageIntelligenceRepository
             : await _context.HeritageFestivals.CountAsync(cancellationToken);
 
         var storyEntries = await _context.StoryArchiveEntries
-            .CountAsync(e => producerIdList.Contains(e.ProducerHeritageIdentity.ProducerId), cancellationToken);
+            .CountAsync(e => producerIds.Contains(e.ProducerHeritageIdentity.ProducerId), cancellationToken);
 
         // ---- Risk assessments -----------------------------------
         var risk = _context.HeritageRiskRecords.AsQueryable();
