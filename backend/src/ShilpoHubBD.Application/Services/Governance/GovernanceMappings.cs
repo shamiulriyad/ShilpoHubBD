@@ -115,4 +115,236 @@ internal static class GovernanceMappings
         ComputedAt = r.ComputedAt,
         GeneratedByName = r.GeneratedBy?.FullName,
     };
+
+    public static PolicySimulationDto ToDto(this PolicySimulation s) => new()
+    {
+        Id = s.Id,
+        Title = s.Title,
+        SimulationType = s.SimulationType.ToString(),
+        Scope = s.Scope.ToString(),
+        ScopeId = s.ScopeId,
+        ScopeLabel = s.ScopeLabel,
+        Status = s.Status.ToString(),
+        HorizonMonths = s.HorizonMonths,
+        InputsJson = s.InputsJson,
+        AssumptionsJson = s.AssumptionsJson,
+        Method = s.Method,
+        Summary = s.Summary,
+        Confidence = s.Confidence.ToString(),
+        BaselineProducers = s.BaselineProducers,
+        BaselineActiveProducers = s.BaselineActiveProducers,
+        BaselineEmployment = s.BaselineEmployment,
+        BaselineExportValue = s.BaselineExportValue,
+        BaselineTourismRevenue = s.BaselineTourismRevenue,
+        BaselineEconomyValue = s.BaselineEconomyValue,
+        Notes = s.Notes,
+        FailureReason = s.FailureReason,
+        GeneratedByUserId = s.GeneratedByUserId,
+        GeneratedByName = s.GeneratedBy?.FullName,
+        CreatedAt = s.CreatedAt,
+        CompletedAt = s.CompletedAt,
+        Projections = s.Projections
+            .OrderBy(p => p.DisplayOrder)
+            .Select(p => new PolicySimulationProjectionDto
+            {
+                Metric = p.Metric,
+                Unit = p.Unit,
+                BaselineValue = p.BaselineValue,
+                ProjectedValue = p.ProjectedValue,
+                DeltaValue = p.DeltaValue,
+                DeltaPercent = p.DeltaPercent,
+                HorizonMonths = p.HorizonMonths,
+                Confidence = p.Confidence.ToString(),
+                Detail = p.Detail,
+                DisplayOrder = p.DisplayOrder,
+            })
+            .ToList(),
+        Recommendations = s.Recommendations
+            .OrderBy(r => r.DisplayOrder)
+            .Select(r => new PolicySimulationRecommendationDto
+            {
+                Priority = r.Priority.ToString(),
+                Title = r.Title,
+                Detail = r.Detail,
+                DisplayOrder = r.DisplayOrder,
+            })
+            .ToList(),
+    };
+
+    public static PolicySimulationListItemDto ToListItemDto(this PolicySimulation s) => new()
+    {
+        Id = s.Id,
+        Title = s.Title,
+        SimulationType = s.SimulationType.ToString(),
+        Scope = s.Scope.ToString(),
+        ScopeLabel = s.ScopeLabel,
+        Status = s.Status.ToString(),
+        HorizonMonths = s.HorizonMonths,
+        Confidence = s.Confidence.ToString(),
+        CreatedAt = s.CreatedAt,
+        GeneratedByName = s.GeneratedBy?.FullName,
+    };
+
+    // ---- Monitoring flags -------------------------------------------
+
+    public static MonitoringFlagDto ToDto(this MonitoringFlag f) => new()
+    {
+        Id = f.Id,
+        FlagType = f.FlagType.ToString(),
+        Severity = f.Severity.ToString(),
+        Status = f.Status.ToString(),
+        Source = f.Source.ToString(),
+        SubjectType = f.SubjectType.ToString(),
+        SubjectId = f.SubjectId,
+        SubjectLabel = f.SubjectLabel,
+        Title = f.Title,
+        Description = f.Description,
+        EvidenceJson = f.EvidenceJson,
+        RiskScore = f.RiskScore,
+        DetectedAt = f.DetectedAt,
+        AssignedToUserId = f.AssignedToUserId,
+        AssignedToName = f.AssignedTo?.FullName,
+        ResolvedAt = f.ResolvedAt,
+        ResolvedByName = f.ResolvedBy?.FullName,
+        ResolutionNotes = f.ResolutionNotes,
+        CreatedByUserId = f.CreatedByUserId,
+        CreatedByName = f.CreatedBy?.FullName,
+        CreatedAt = f.CreatedAt,
+        UpdatedAt = f.UpdatedAt,
+        Events = f.Events
+            .OrderBy(e => e.CreatedAt)
+            .Select(e => new MonitoringFlagEventDto
+            {
+                Type = e.Type.ToString(),
+                Note = e.Note,
+                FromStatus = e.FromStatus?.ToString(),
+                ToStatus = e.ToStatus?.ToString(),
+                ActorUserId = e.ActorUserId,
+                ActorName = e.Actor?.FullName,
+                CreatedAt = e.CreatedAt,
+            })
+            .ToList(),
+    };
+
+    public static MonitoringFlagListItemDto ToListItemDto(this MonitoringFlag f) => new()
+    {
+        Id = f.Id,
+        FlagType = f.FlagType.ToString(),
+        Severity = f.Severity.ToString(),
+        Status = f.Status.ToString(),
+        SubjectType = f.SubjectType.ToString(),
+        SubjectId = f.SubjectId,
+        SubjectLabel = f.SubjectLabel,
+        Title = f.Title,
+        RiskScore = f.RiskScore,
+        DetectedAt = f.DetectedAt,
+        AssignedToName = f.AssignedTo?.FullName,
+    };
+
+    // ---- Complaints -----------------------------------------------
+
+    public static ComplaintDto ToDto(this Complaint c) => new()
+    {
+        Id = c.Id,
+        ReferenceCode = c.ReferenceCode,
+        Category = c.Category.ToString(),
+        Status = c.Status.ToString(),
+        Priority = c.Priority.ToString(),
+        Title = c.Title,
+        Description = c.Description,
+        ComplainantUserId = c.ComplainantUserId,
+        ComplainantName = c.ComplainantName ?? c.ComplainantUser?.FullName,
+        ComplainantContact = c.ComplainantContact,
+        AgainstType = c.AgainstType.ToString(),
+        AgainstId = c.AgainstId,
+        AgainstLabel = c.AgainstLabel,
+        RelatedOrderId = c.RelatedOrderId,
+        MonitoringFlagId = c.MonitoringFlagId,
+        AssignedToUserId = c.AssignedToUserId,
+        AssignedToName = c.AssignedTo?.FullName,
+        Resolution = c.Resolution,
+        ResolvedAt = c.ResolvedAt,
+        ResolvedByName = c.ResolvedBy?.FullName,
+        CreatedAt = c.CreatedAt,
+        UpdatedAt = c.UpdatedAt,
+        Updates = c.Updates
+            .OrderBy(u => u.CreatedAt)
+            .Select(u => new ComplaintUpdateDto
+            {
+                Id = u.Id,
+                Message = u.Message,
+                IsInternal = u.IsInternal,
+                FromStatus = u.FromStatus?.ToString(),
+                ToStatus = u.ToStatus?.ToString(),
+                ActorUserId = u.ActorUserId,
+                ActorName = u.Actor?.FullName,
+                CreatedAt = u.CreatedAt,
+            })
+            .ToList(),
+    };
+
+    public static ComplaintListItemDto ToListItemDto(this Complaint c) => new()
+    {
+        Id = c.Id,
+        ReferenceCode = c.ReferenceCode,
+        Category = c.Category.ToString(),
+        Status = c.Status.ToString(),
+        Priority = c.Priority.ToString(),
+        Title = c.Title,
+        AgainstLabel = c.AgainstLabel,
+        AssignedToName = c.AssignedTo?.FullName,
+        CreatedAt = c.CreatedAt,
+    };
+
+    // ---- Compliance ---------------------------------------------
+
+    public static ComplianceRecordDto ToDto(this ComplianceRecord r) => new()
+    {
+        Id = r.Id,
+        EntityType = r.EntityType.ToString(),
+        EntityId = r.EntityId,
+        EntityLabel = r.EntityLabel,
+        Framework = r.Framework,
+        Status = r.Status.ToString(),
+        OverallScorePercent = r.OverallScorePercent,
+        PeriodStart = r.PeriodStart,
+        PeriodEnd = r.PeriodEnd,
+        LastReviewedAt = r.LastReviewedAt,
+        NextReviewDue = r.NextReviewDue,
+        ReviewerUserId = r.ReviewerUserId,
+        ReviewerName = r.Reviewer?.FullName,
+        Notes = r.Notes,
+        CreatedByUserId = r.CreatedByUserId,
+        CreatedByName = r.CreatedBy?.FullName,
+        CreatedAt = r.CreatedAt,
+        UpdatedAt = r.UpdatedAt,
+        Requirements = r.Requirements
+            .OrderBy(x => x.DisplayOrder)
+            .Select(x => new ComplianceRequirementDto
+            {
+                Id = x.Id,
+                Code = x.Code,
+                Title = x.Title,
+                Description = x.Description,
+                IsMandatory = x.IsMandatory,
+                Status = x.Status.ToString(),
+                Evidence = x.Evidence,
+                ReviewedAt = x.ReviewedAt,
+                DisplayOrder = x.DisplayOrder,
+            })
+            .ToList(),
+    };
+
+    public static ComplianceRecordListItemDto ToListItemDto(this ComplianceRecord r) => new()
+    {
+        Id = r.Id,
+        EntityType = r.EntityType.ToString(),
+        EntityId = r.EntityId,
+        EntityLabel = r.EntityLabel,
+        Framework = r.Framework,
+        Status = r.Status.ToString(),
+        OverallScorePercent = r.OverallScorePercent,
+        NextReviewDue = r.NextReviewDue,
+        UpdatedAt = r.UpdatedAt,
+    };
 }
