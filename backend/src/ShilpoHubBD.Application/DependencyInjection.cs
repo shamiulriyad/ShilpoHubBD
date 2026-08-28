@@ -24,6 +24,7 @@ using ShilpoHubBD.Application.Services.CustomOrders;
 using ShilpoHubBD.Application.Services.DesignCollaboration;
 using ShilpoHubBD.Application.Services.Employment;
 using ShilpoHubBD.Application.Services.FieldResearch;
+using ShilpoHubBD.Application.Services.Governance;
 using ShilpoHubBD.Application.Services.HeritageDatabase;
 using ShilpoHubBD.Application.Services.HeritageDiscovery;
 using ShilpoHubBD.Application.Services.HeritageIdentity;
@@ -206,6 +207,8 @@ public static class DependencyInjection
         services.AddScoped<IHeritageDatasetService, HeritageDatasetService>();
         services.AddScoped<IHeritageDataService, HeritageDataService>();
         services.AddScoped<IHeritageRiskService, HeritageRiskService>();
+
+        services.AddScoped<INationalDashboardService, NationalDashboardService>();
 
         services.AddScoped<IMuseumItemService, MuseumItemService>();
         services.AddScoped<IVillageTourService, VillageTourService>();

@@ -126,6 +126,8 @@ public static class DependencyInjection
 		services.AddScoped<IHeritageDataRepository, HeritageDataRepository>();
 		services.AddScoped<IHeritageRiskRepository, HeritageRiskRepository>();
 
+		services.AddScoped<INationalDashboardRepository, NationalDashboardRepository>();
+
 		services.AddScoped<IMuseumItemRepository, MuseumItemRepository>();
 		services.AddScoped<IVillageTourStopRepository, VillageTourStopRepository>();
 		services.AddScoped<ICulturalStoryRepository, CulturalStoryRepository>();
