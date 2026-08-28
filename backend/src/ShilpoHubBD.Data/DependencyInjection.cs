@@ -73,6 +73,16 @@ public static class DependencyInjection
 		services.AddScoped<IQuizRepository, QuizRepository>();
 		services.AddScoped<IExamRepository, ExamRepository>();
 		services.AddScoped<ISkillAssessmentRepository, SkillAssessmentRepository>();
+		services.AddScoped<ILearningRoadmapRepository, LearningRoadmapRepository>();
+		services.AddScoped<IMentorMatchingRepository, MentorMatchingRepository>();
+		services.AddScoped<IMentorshipRequestRepository, MentorshipRequestRepository>();
+		services.AddScoped<IApprenticeshipProgramRepository, ApprenticeshipProgramRepository>();
+		services.AddScoped<IProgramApplicationRepository, ProgramApplicationRepository>();
+		services.AddScoped<IApprenticeEnrollmentRepository, ApprenticeEnrollmentRepository>();
+		services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+		services.AddScoped<IMentorFeedbackRepository, MentorFeedbackRepository>();
+		services.AddScoped<IJobListingRepository, JobListingRepository>();
+		services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
 
 		services.AddScoped<ISustainabilityRepository, SustainabilityRepository>();
 
@@ -100,6 +110,30 @@ public static class DependencyInjection
 		services.AddScoped<ITouristServiceRepository, TouristServiceRepository>();
 		services.AddScoped<IServiceAvailabilitySlotRepository, ServiceAvailabilitySlotRepository>();
 		services.AddScoped<IBookingRepository, BookingRepository>();
+
+		services.AddScoped<IResearchProjectRepository, ResearchProjectRepository>();
+		services.AddScoped<IResearchAIAnalysisRepository, ResearchAIAnalysisRepository>();
+		services.AddScoped<ISurveyRepository, SurveyRepository>();
+		services.AddScoped<IKnowledgeGraphRepository, KnowledgeGraphRepository>();
+
+		services.AddScoped<IInnovationLinkResolver, InnovationLinkResolver>();
+		services.AddScoped<IInnovationExperimentRepository, InnovationExperimentRepository>();
+		services.AddScoped<IPreservationStrategyRepository, PreservationStrategyRepository>();
+		services.AddScoped<IInnovationPrototypeRepository, InnovationPrototypeRepository>();
+		services.AddScoped<IHeritageInnovationSubmissionRepository, HeritageInnovationSubmissionRepository>();
+
+		services.AddScoped<IHeritageDatasetRepository, HeritageDatasetRepository>();
+		services.AddScoped<IHeritageDataRepository, HeritageDataRepository>();
+		services.AddScoped<IHeritageRiskRepository, HeritageRiskRepository>();
+
+		services.AddScoped<INationalDashboardRepository, NationalDashboardRepository>();
+		services.AddScoped<IHeritageIntelligenceRepository, HeritageIntelligenceRepository>();
+		services.AddScoped<IPolicySimulationRepository, PolicySimulationRepository>();
+		services.AddScoped<IMonitoringRepository, MonitoringRepository>();
+		services.AddScoped<IComplaintRepository, ComplaintRepository>();
+		services.AddScoped<IComplianceRepository, ComplianceRepository>();
+		services.AddScoped<IFundingRepository, FundingRepository>();
+		services.AddScoped<IGovAnalyticsRepository, GovAnalyticsRepository>();
 
 		services.AddScoped<IMuseumItemRepository, MuseumItemRepository>();
 		services.AddScoped<IVillageTourStopRepository, VillageTourStopRepository>();

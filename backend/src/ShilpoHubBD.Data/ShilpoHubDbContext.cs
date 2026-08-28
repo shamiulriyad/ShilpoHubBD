@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Domain.Entities.Achievement;
+using ShilpoHubBD.Domain.Entities.Apprenticeship;
 using ShilpoHubBD.Domain.Entities.Assessment;
 using ShilpoHubBD.Domain.Entities.ArVr;
 using ShilpoHubBD.Domain.Entities.Auction;
@@ -11,23 +12,33 @@ using ShilpoHubBD.Domain.Entities.Contracts;
 using ShilpoHubBD.Domain.Entities.CSRSponsorship;
 using ShilpoHubBD.Domain.Entities.CustomOrders;
 using ShilpoHubBD.Domain.Entities.DesignCollaboration;
+using ShilpoHubBD.Domain.Entities.Employment;
+using ShilpoHubBD.Domain.Entities.FieldResearch;
+using ShilpoHubBD.Domain.Entities.Governance;
+using ShilpoHubBD.Domain.Entities.HeritageDatabase;
 using ShilpoHubBD.Domain.Entities.HeritageDiscovery;
 using ShilpoHubBD.Domain.Entities.HeritageIdentity;
 using ShilpoHubBD.Domain.Entities.Identity;
+using ShilpoHubBD.Domain.Entities.Innovation;
 using ShilpoHubBD.Domain.Entities.Inventory;
 using ShilpoHubBD.Domain.Entities.Investment;
+using ShilpoHubBD.Domain.Entities.KnowledgeGraph;
 using ShilpoHubBD.Domain.Entities.Learning;
 using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
 using ShilpoHubBD.Domain.Entities.Marketplace;
+using ShilpoHubBD.Domain.Entities.Mentorship;
 using ShilpoHubBD.Domain.Entities.Messaging;
 using ShilpoHubBD.Domain.Entities.Passport;
+using ShilpoHubBD.Domain.Entities.Portfolio;
 using ShilpoHubBD.Domain.Entities.Procurement;
 using ShilpoHubBD.Domain.Entities.ProductDevelopment;
 using ShilpoHubBD.Domain.Entities.QRVerification;
+using ShilpoHubBD.Domain.Entities.Research;
 using ShilpoHubBD.Domain.Entities.Quotations;
 using ShilpoHubBD.Domain.Entities.Reviews;
+using ShilpoHubBD.Domain.Entities.Roadmap;
 using ShilpoHubBD.Domain.Entities.SkillAssessment;
 using ShilpoHubBD.Domain.Entities.Sustainability;
 using ShilpoHubBD.Domain.Entities.Traceability;
@@ -121,6 +132,8 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<CustomOrderRequest> CustomOrderRequests => Set<CustomOrderRequest>();
 
 	public DbSet<MentorProfile> MentorProfiles => Set<MentorProfile>();
+	public DbSet<MentorSkill> MentorSkills => Set<MentorSkill>();
+	public DbSet<MentorshipRequest> MentorshipRequests => Set<MentorshipRequest>();
 	public DbSet<HeritageSkill> HeritageSkills => Set<HeritageSkill>();
 	public DbSet<CourseCategory> CourseCategories => Set<CourseCategory>();
 	public DbSet<CourseModule> CourseModules => Set<CourseModule>();
@@ -132,6 +145,20 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<CourseEnrollment> CourseEnrollments => Set<CourseEnrollment>();
 	public DbSet<LessonProgress> LessonProgress => Set<LessonProgress>();
 	public DbSet<TrainingCertificate> TrainingCertificates => Set<TrainingCertificate>();
+
+	public DbSet<ApprenticeshipProgram> ApprenticeshipPrograms => Set<ApprenticeshipProgram>();
+	public DbSet<TrainingMilestone> TrainingMilestones => Set<TrainingMilestone>();
+	public DbSet<ProgramApplication> ProgramApplications => Set<ProgramApplication>();
+	public DbSet<ApprenticeEnrollment> ApprenticeEnrollments => Set<ApprenticeEnrollment>();
+	public DbSet<ApprenticeMilestoneProgress> ApprenticeMilestoneProgress => Set<ApprenticeMilestoneProgress>();
+
+	public DbSet<Portfolio> Portfolios => Set<Portfolio>();
+	public DbSet<PortfolioProject> PortfolioProjects => Set<PortfolioProject>();
+	public DbSet<MentorFeedback> MentorFeedbacks => Set<MentorFeedback>();
+
+	public DbSet<JobListing> JobListings => Set<JobListing>();
+	public DbSet<JobSkillRequirement> JobSkillRequirements => Set<JobSkillRequirement>();
+	public DbSet<JobApplication> JobApplications => Set<JobApplication>();
 
 	public DbSet<SustainabilityProfile> SustainabilityProfiles => Set<SustainabilityProfile>();
 	public DbSet<SustainableMaterialRecord> SustainableMaterialRecords => Set<SustainableMaterialRecord>();
@@ -221,11 +248,86 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<SkillAssessmentInsight> SkillAssessmentInsights => Set<SkillAssessmentInsight>();
 	public DbSet<SkillAssessmentRecommendedSkill> SkillAssessmentRecommendedSkills => Set<SkillAssessmentRecommendedSkill>();
 
+	public DbSet<LearningRoadmap> LearningRoadmaps => Set<LearningRoadmap>();
+	public DbSet<RoadmapMilestone> RoadmapMilestones => Set<RoadmapMilestone>();
+	public DbSet<RoadmapRecommendedCourse> RoadmapRecommendedCourses => Set<RoadmapRecommendedCourse>();
+	public DbSet<RoadmapRecommendedLesson> RoadmapRecommendedLessons => Set<RoadmapRecommendedLesson>();
+
 	public DbSet<MuseumItem> MuseumItems => Set<MuseumItem>();
 	public DbSet<MuseumItemMedia> MuseumItemMedia => Set<MuseumItemMedia>();
 	public DbSet<VillageTourStop> VillageTourStops => Set<VillageTourStop>();
 	public DbSet<CulturalStory> CulturalStories => Set<CulturalStory>();
 	public DbSet<CulturalStoryChapter> CulturalStoryChapters => Set<CulturalStoryChapter>();
+
+	public DbSet<ResearchProject> ResearchProjects => Set<ResearchProject>();
+	public DbSet<ResearchProjectMember> ResearchProjectMembers => Set<ResearchProjectMember>();
+	public DbSet<ResearchTask> ResearchTasks => Set<ResearchTask>();
+	public DbSet<ResearchMilestone> ResearchMilestones => Set<ResearchMilestone>();
+	public DbSet<ResearchNote> ResearchNotes => Set<ResearchNote>();
+	public DbSet<ResearchPaper> ResearchPapers => Set<ResearchPaper>();
+	public DbSet<ResearchPublication> ResearchPublications => Set<ResearchPublication>();
+	public DbSet<ResearchActivity> ResearchActivities => Set<ResearchActivity>();
+	public DbSet<ResearchAIAnalysis> ResearchAIAnalyses => Set<ResearchAIAnalysis>();
+	public DbSet<ResearchAIFinding> ResearchAIFindings => Set<ResearchAIFinding>();
+	public DbSet<ResearchAICitation> ResearchAICitations => Set<ResearchAICitation>();
+
+	public DbSet<HeritageDataset> HeritageDatasets => Set<HeritageDataset>();
+	public DbSet<HeritageDatasetVersion> HeritageDatasetVersions => Set<HeritageDatasetVersion>();
+	public DbSet<HeritageDatasetAccessGrant> HeritageDatasetAccessGrants => Set<HeritageDatasetAccessGrant>();
+	public DbSet<HeritageDatasetExport> HeritageDatasetExports => Set<HeritageDatasetExport>();
+	public DbSet<HeritageRiskRecord> HeritageRiskRecords => Set<HeritageRiskRecord>();
+
+	public DbSet<Survey> Surveys => Set<Survey>();
+	public DbSet<SurveyQuestion> SurveyQuestions => Set<SurveyQuestion>();
+	public DbSet<SurveyFieldAssignment> SurveyFieldAssignments => Set<SurveyFieldAssignment>();
+	public DbSet<SurveyResponse> SurveyResponses => Set<SurveyResponse>();
+	public DbSet<SurveyResponseAnswer> SurveyResponseAnswers => Set<SurveyResponseAnswer>();
+	public DbSet<FieldEvidence> FieldEvidence => Set<FieldEvidence>();
+	public DbSet<DataCollectionEvent> DataCollectionEvents => Set<DataCollectionEvent>();
+
+	public DbSet<KnowledgeNode> KnowledgeNodes => Set<KnowledgeNode>();
+	public DbSet<KnowledgeRelationship> KnowledgeRelationships => Set<KnowledgeRelationship>();
+
+	public DbSet<InnovationExperiment> InnovationExperiments => Set<InnovationExperiment>();
+	public DbSet<InnovationExperimentVersion> InnovationExperimentVersions => Set<InnovationExperimentVersion>();
+	public DbSet<TrainingRun> TrainingRuns => Set<TrainingRun>();
+	public DbSet<PreservationStrategy> PreservationStrategies => Set<PreservationStrategy>();
+	public DbSet<StrategyObjective> StrategyObjectives => Set<StrategyObjective>();
+	public DbSet<StrategyAction> StrategyActions => Set<StrategyAction>();
+	public DbSet<InnovationPrototype> InnovationPrototypes => Set<InnovationPrototype>();
+	public DbSet<PrototypeIteration> PrototypeIterations => Set<PrototypeIteration>();
+	public DbSet<PrototypeTestCase> PrototypeTestCases => Set<PrototypeTestCase>();
+	public DbSet<PrototypeTestRun> PrototypeTestRuns => Set<PrototypeTestRun>();
+	public DbSet<PrototypeTestResult> PrototypeTestResults => Set<PrototypeTestResult>();
+	public DbSet<PrototypeIssue> PrototypeIssues => Set<PrototypeIssue>();
+	public DbSet<HeritageInnovationSubmission> HeritageInnovationSubmissions => Set<HeritageInnovationSubmission>();
+	public DbSet<SubmissionTeamMember> SubmissionTeamMembers => Set<SubmissionTeamMember>();
+	public DbSet<SubmissionReview> SubmissionReviews => Set<SubmissionReview>();
+	public DbSet<SubmissionEvent> SubmissionEvents => Set<SubmissionEvent>();
+
+	public DbSet<NationalDashboardSnapshot> NationalDashboardSnapshots => Set<NationalDashboardSnapshot>();
+	public DbSet<DashboardDistrictStat> DashboardDistrictStats => Set<DashboardDistrictStat>();
+	public DbSet<HeritageIndexRecord> HeritageIndexRecords => Set<HeritageIndexRecord>();
+	public DbSet<HeritageIndexComponent> HeritageIndexComponents => Set<HeritageIndexComponent>();
+	public DbSet<PolicySimulation> PolicySimulations => Set<PolicySimulation>();
+	public DbSet<PolicySimulationProjection> PolicySimulationProjections => Set<PolicySimulationProjection>();
+	public DbSet<PolicySimulationRecommendation> PolicySimulationRecommendations => Set<PolicySimulationRecommendation>();
+	public DbSet<MonitoringFlag> MonitoringFlags => Set<MonitoringFlag>();
+	public DbSet<MonitoringFlagEvent> MonitoringFlagEvents => Set<MonitoringFlagEvent>();
+	public DbSet<Complaint> Complaints => Set<Complaint>();
+	public DbSet<ComplaintUpdate> ComplaintUpdates => Set<ComplaintUpdate>();
+	public DbSet<ComplianceRecord> ComplianceRecords => Set<ComplianceRecord>();
+	public DbSet<ComplianceRequirement> ComplianceRequirements => Set<ComplianceRequirement>();
+	public DbSet<FundingProgram> FundingPrograms => Set<FundingProgram>();
+	public DbSet<FundingApplication> FundingApplications => Set<FundingApplication>();
+	public DbSet<FundingApplicationReview> FundingApplicationReviews => Set<FundingApplicationReview>();
+	public DbSet<FundingDisbursement> FundingDisbursements => Set<FundingDisbursement>();
+	public DbSet<FundingApplicationEvent> FundingApplicationEvents => Set<FundingApplicationEvent>();
+	public DbSet<GovReport> GovReports => Set<GovReport>();
+	public DbSet<GovReportSection> GovReportSections => Set<GovReportSection>();
+	public DbSet<AnalyticsExport> AnalyticsExports => Set<AnalyticsExport>();
+	public DbSet<GovForecast> GovForecasts => Set<GovForecast>();
+	public DbSet<GovForecastPoint> GovForecastPoints => Set<GovForecastPoint>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

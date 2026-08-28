@@ -62,4 +62,20 @@ public class MentorsController : ControllerBase
         var result = await _mentorService.UpdateProfileAsync(CurrentUserId, request, cancellationToken);
         return Ok(result);
     }
+
+    [Authorize(Roles = RoleNames.Producer)]
+    [HttpPost("me/skills")]
+    public async Task<ActionResult<MentorProfileDto>> AddSkill(AddMentorSkillRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mentorService.AddSkillAsync(CurrentUserId, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = RoleNames.Producer)]
+    [HttpDelete("me/skills/{heritageSkillId:guid}")]
+    public async Task<ActionResult<MentorProfileDto>> RemoveSkill(Guid heritageSkillId, CancellationToken cancellationToken)
+    {
+        var result = await _mentorService.RemoveSkillAsync(CurrentUserId, heritageSkillId, cancellationToken);
+        return Ok(result);
+    }
 }

@@ -13,21 +13,36 @@ public class TrainingCertificateRepository : ITrainingCertificateRepository
         _context = context;
     }
 
-    public Task<TrainingCertificate?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    private IQueryable<TrainingCertificate> WithDetails()
         => _context.TrainingCertificates
             .Include(c => c.Enrollment)
-            .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+            .Include(c => c.ApprenticeEnrollment)
+            .Include(c => c.HeritageSkill)
+            .AsSplitQuery();
+
+    public Task<TrainingCertificate?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        => WithDetails().FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
     public Task<TrainingCertificate?> GetByEnrollmentIdAsync(Guid enrollmentId, CancellationToken cancellationToken)
         => _context.TrainingCertificates.FirstOrDefaultAsync(c => c.EnrollmentId == enrollmentId, cancellationToken);
 
-    public Task<TrainingCertificate?> GetByCertificateNumberAsync(string certificateNumber, CancellationToken cancellationToken)
-        => _context.TrainingCertificates.FirstOrDefaultAsync(c => c.CertificateNumber == certificateNumber, cancellationToken);
+    public Task<TrainingCertificate?> GetByApprenticeEnrollmentIdAsync(Guid apprenticeEnrollmentId, CancellationToken cancellationToken)
+        => _context.TrainingCertificates.FirstOrDefaultAsync(c => c.ApprenticeEnrollmentId == apprenticeEnrollmentId, cancellationToken);
 
-    public Task<List<TrainingCertificate>> GetByApprenticeAsync(Guid apprenticeId, CancellationToken cancellationToken)
-        => _context.TrainingCertificates
-            .Include(c => c.Enrollment)
-            .Where(c => c.Enrollment.ApprenticeId == apprenticeId)
+    public Task<TrainingCertificate?> GetActiveSkillCertificateAsync(Guid recipientUserId, Guid heritageSkillId, CancellationToken cancellationToken)
+        => _context.TrainingCertificates.FirstOrDefaultAsync(
+            c => c.Type == CertificateType.Skill
+                && c.RecipientUserId == recipientUserId
+                && c.HeritageSkillId == heritageSkillId
+                && !c.IsRevoked,
+            cancellationToken);
+
+    public Task<TrainingCertificate?> GetByCertificateNumberAsync(string certificateNumber, CancellationToken cancellationToken)
+        => WithDetails().FirstOrDefaultAsync(c => c.CertificateNumber == certificateNumber, cancellationToken);
+
+    public Task<List<TrainingCertificate>> GetByRecipientAsync(Guid recipientUserId, CancellationToken cancellationToken)
+        => WithDetails()
+            .Where(c => c.RecipientUserId == recipientUserId)
             .OrderByDescending(c => c.IssuedAt)
             .ToListAsync(cancellationToken);
 
