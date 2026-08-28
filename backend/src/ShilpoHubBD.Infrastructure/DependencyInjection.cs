@@ -5,6 +5,7 @@ using ShilpoHubBD.Infrastructure.AIBusiness;
 using ShilpoHubBD.Infrastructure.AIBusinessPartner;
 using ShilpoHubBD.Infrastructure.AITourism;
 using ShilpoHubBD.Infrastructure.Email;
+using ShilpoHubBD.Infrastructure.GovForecasting;
 using ShilpoHubBD.Infrastructure.HeritageIntelligence;
 using ShilpoHubBD.Infrastructure.Options;
 using ShilpoHubBD.Infrastructure.PolicySimulation;
@@ -32,6 +33,7 @@ public static class DependencyInjection
         services.AddScoped<IResearchAIProvider, DummyResearchAIProvider>();
         services.AddScoped<IHeritageIntelligenceProvider, RuleBasedHeritageIntelligenceProvider>();
         services.AddScoped<IPolicySimulationProvider, RuleBasedPolicySimulationProvider>();
+        services.AddScoped<IGovForecastProvider, RuleBasedGovForecastProvider>();
 
         return services;
     }

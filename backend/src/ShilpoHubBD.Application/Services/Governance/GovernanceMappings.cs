@@ -487,4 +487,117 @@ internal static class GovernanceMappings
         RepaymentStatus = a.RepaymentStatus.ToString(),
         SubmittedAt = a.SubmittedAt,
     };
+
+    // ---- Reports --------------------------------------------------
+
+    public static GovReportDto ToDto(this GovReport r) => new()
+    {
+        Id = r.Id,
+        Title = r.Title,
+        ReportType = r.ReportType.ToString(),
+        Status = r.Status.ToString(),
+        PeriodStart = r.PeriodStart,
+        PeriodEnd = r.PeriodEnd,
+        Summary = r.Summary,
+        Highlights = r.Highlights,
+        PayloadJson = r.PayloadJson,
+        GeneratedAt = r.GeneratedAt,
+        GeneratedByUserId = r.GeneratedByUserId,
+        GeneratedByName = r.GeneratedBy?.FullName,
+        PublishedAt = r.PublishedAt,
+        CreatedAt = r.CreatedAt,
+        UpdatedAt = r.UpdatedAt,
+        Sections = r.Sections
+            .OrderBy(s => s.DisplayOrder)
+            .Select(s => new GovReportSectionDto
+            {
+                Key = s.Key,
+                Title = s.Title,
+                Narrative = s.Narrative,
+                ContentJson = s.ContentJson,
+                DisplayOrder = s.DisplayOrder,
+            })
+            .ToList(),
+    };
+
+    public static GovReportListItemDto ToListItemDto(this GovReport r) => new()
+    {
+        Id = r.Id,
+        Title = r.Title,
+        ReportType = r.ReportType.ToString(),
+        Status = r.Status.ToString(),
+        PeriodStart = r.PeriodStart,
+        PeriodEnd = r.PeriodEnd,
+        GeneratedAt = r.GeneratedAt,
+        GeneratedByName = r.GeneratedBy?.FullName,
+        PublishedAt = r.PublishedAt,
+    };
+
+    // ---- Analytics exports ------------------------------------
+
+    public static AnalyticsExportDto ToDto(this AnalyticsExport e) => new()
+    {
+        Id = e.Id,
+        Dataset = e.Dataset.ToString(),
+        Format = e.Format.ToString(),
+        Status = e.Status.ToString(),
+        FiltersJson = e.FiltersJson,
+        RowCount = e.RowCount,
+        FileUrl = e.FileUrl,
+        FileSizeBytes = e.FileSizeBytes,
+        FailureReason = e.FailureReason,
+        GovReportId = e.GovReportId,
+        RequestedByUserId = e.RequestedByUserId,
+        RequestedByName = e.RequestedBy?.FullName,
+        RequestedAt = e.RequestedAt,
+        CompletedAt = e.CompletedAt,
+    };
+
+    // ---- Forecasts ------------------------------------------
+
+    public static GovForecastDto ToDto(this GovForecast f) => new()
+    {
+        Id = f.Id,
+        Title = f.Title,
+        Method = f.Method,
+        HorizonMonths = f.HorizonMonths,
+        BaselineAsOf = f.BaselineAsOf,
+        AssumptionsJson = f.AssumptionsJson,
+        Summary = f.Summary,
+        GeneratedAt = f.GeneratedAt,
+        GeneratedByUserId = f.GeneratedByUserId,
+        GeneratedByName = f.GeneratedBy?.FullName,
+        CreatedAt = f.CreatedAt,
+        Series = f.Points
+            .GroupBy(p => new { p.Metric, p.Unit, p.BaselineValue })
+            .OrderBy(g => g.Min(p => p.DisplayOrder))
+            .Select(g => new GovForecastSeriesDto
+            {
+                Metric = g.Key.Metric,
+                Unit = g.Key.Unit,
+                BaselineValue = g.Key.BaselineValue,
+                Points = g.OrderBy(p => p.MonthOffset)
+                    .Select(p => new GovForecastPointDto
+                    {
+                        MonthOffset = p.MonthOffset,
+                        PeriodDate = p.PeriodDate,
+                        ProjectedValue = p.ProjectedValue,
+                        LowerBound = p.LowerBound,
+                        UpperBound = p.UpperBound,
+                        Confidence = p.Confidence.ToString(),
+                    })
+                    .ToList(),
+            })
+            .ToList(),
+    };
+
+    public static GovForecastListItemDto ToListItemDto(this GovForecast f) => new()
+    {
+        Id = f.Id,
+        Title = f.Title,
+        HorizonMonths = f.HorizonMonths,
+        BaselineAsOf = f.BaselineAsOf,
+        GeneratedAt = f.GeneratedAt,
+        GeneratedByName = f.GeneratedBy?.FullName,
+    };
 }

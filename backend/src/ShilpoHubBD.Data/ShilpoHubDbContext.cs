@@ -323,6 +323,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<FundingApplicationReview> FundingApplicationReviews => Set<FundingApplicationReview>();
 	public DbSet<FundingDisbursement> FundingDisbursements => Set<FundingDisbursement>();
 	public DbSet<FundingApplicationEvent> FundingApplicationEvents => Set<FundingApplicationEvent>();
+	public DbSet<GovReport> GovReports => Set<GovReport>();
+	public DbSet<GovReportSection> GovReportSections => Set<GovReportSection>();
+	public DbSet<AnalyticsExport> AnalyticsExports => Set<AnalyticsExport>();
+	public DbSet<GovForecast> GovForecasts => Set<GovForecast>();
+	public DbSet<GovForecastPoint> GovForecastPoints => Set<GovForecastPoint>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
