@@ -1,32 +1,75 @@
 using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShilpoHubBD.Application.Interfaces.Services;
+using ShilpoHubBD.Application.Options;
 using ShilpoHubBD.Application.Services.Achievement;
+using ShilpoHubBD.Application.Services.AIBusiness;
+using ShilpoHubBD.Application.Services.AIBusinessPartner;
 using ShilpoHubBD.Application.Services.AIShopping;
 using ShilpoHubBD.Application.Services.Analytics;
+using ShilpoHubBD.Application.Services.AITourism;
+using ShilpoHubBD.Application.Services.Apprenticeship;
+using ShilpoHubBD.Application.Services.ArVr;
 using ShilpoHubBD.Application.Services.Auth;
+using ShilpoHubBD.Application.Services.BusinessPartner;
+using ShilpoHubBD.Application.Services.BusinessPartnerAnalytics;
 using ShilpoHubBD.Application.Services.Commerce;
 using ShilpoHubBD.Application.Services.Auction;
 using ShilpoHubBD.Application.Services.Certificate;
 using ShilpoHubBD.Application.Services.Community;
+using ShilpoHubBD.Application.Services.Contracts;
+using ShilpoHubBD.Application.Services.CSRSponsorship;
+using ShilpoHubBD.Application.Services.CustomOrders;
+using ShilpoHubBD.Application.Services.DesignCollaboration;
+using ShilpoHubBD.Application.Services.Employment;
+using ShilpoHubBD.Application.Services.FieldResearch;
+using ShilpoHubBD.Application.Services.Governance;
+using ShilpoHubBD.Application.Services.HeritageDatabase;
+using ShilpoHubBD.Application.Services.HeritageDiscovery;
+using ShilpoHubBD.Application.Services.HeritageIdentity;
 using ShilpoHubBD.Application.Services.Impact;
+using ShilpoHubBD.Application.Services.Innovation;
+using ShilpoHubBD.Application.Services.Inventory;
+using ShilpoHubBD.Application.Services.Investment;
+using ShilpoHubBD.Application.Services.KnowledgeGraph;
+using ShilpoHubBD.Application.Services.Learning;
 using ShilpoHubBD.Application.Services.LiveShopping;
+using ShilpoHubBD.Application.Services.ManufacturingPartnership;
 using ShilpoHubBD.Application.Services.Marketplace;
+using ShilpoHubBD.Application.Services.MentorMatching;
+using ShilpoHubBD.Application.Services.Mentorship;
 using ShilpoHubBD.Application.Services.Messaging;
 using ShilpoHubBD.Application.Services.Passport;
+using ShilpoHubBD.Application.Services.Portfolio;
+using ShilpoHubBD.Application.Services.ProducerBusiness;
+using ShilpoHubBD.Application.Services.ProducerComparison;
+using ShilpoHubBD.Application.Services.ProductDevelopment;
+using ShilpoHubBD.Application.Services.Procurement;
+using ShilpoHubBD.Application.Services.Quotations;
 using ShilpoHubBD.Application.Services.QRVerification;
 using ShilpoHubBD.Application.Services.Recommendation;
+using ShilpoHubBD.Application.Services.Research;
 using ShilpoHubBD.Application.Services.Reviews;
+using ShilpoHubBD.Application.Services.Roadmap;
 using ShilpoHubBD.Application.Services.Search;
+using ShilpoHubBD.Application.Services.SkillAssessment;
+using ShilpoHubBD.Application.Services.SupplierDiscovery;
+using ShilpoHubBD.Application.Services.SupplierMatching;
+using ShilpoHubBD.Application.Services.Sustainability;
 using ShilpoHubBD.Application.Services.Traceability;
+using ShilpoHubBD.Application.Services.TouristBooking;
 
 namespace ShilpoHubBD.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+
+        services.Configure<HeritageScoreOptions>(configuration.GetSection("HeritageScore"));
+        services.Configure<SustainabilityScoreOptions>(configuration.GetSection("SustainabilityScore"));
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
@@ -75,8 +118,110 @@ public static class DependencyInjection
         services.AddScoped<IAchievementService, AchievementService>();
 
         services.AddScoped<IAnalyticsService, AnalyticsService>();
+        services.AddScoped<ITouristAnalyticsService, TouristAnalyticsService>();
 
         services.AddScoped<IImpactService, ImpactService>();
+
+        services.AddScoped<IHeritageIdentityService, HeritageIdentityService>();
+
+        services.AddScoped<IInventoryService, InventoryService>();
+        services.AddScoped<ICustomOrderService, CustomOrderService>();
+
+        services.AddScoped<IProducerOrderService, ProducerOrderService>();
+        services.AddScoped<IAIBusinessService, AIBusinessService>();
+
+        services.AddScoped<IMentorService, MentorService>();
+        services.AddScoped<ICourseService, CourseService>();
+        services.AddScoped<IEnrollmentService, EnrollmentService>();
+        services.AddScoped<ITrainingCertificateService, TrainingCertificateService>();
+        services.AddScoped<IHeritageSkillService, HeritageSkillService>();
+        services.AddScoped<IAcademyMemberProfileService, AcademyMemberProfileService>();
+        services.AddScoped<ICourseCategoryService, CourseCategoryService>();
+        services.AddScoped<ILiveClassService, LiveClassService>();
+        services.AddScoped<IAssignmentService, AssignmentService>();
+        services.AddScoped<IQuizService, QuizService>();
+        services.AddScoped<IExamService, ExamService>();
+        services.AddScoped<IAISkillAssessmentProvider, DummySkillAssessmentProvider>();
+        services.AddScoped<ISkillAssessmentService, SkillAssessmentService>();
+        services.AddScoped<ILearningRoadmapProvider, RuleBasedLearningRoadmapProvider>();
+        services.AddScoped<ILearningRoadmapService, LearningRoadmapService>();
+        services.AddScoped<IMentorMatchingService, MentorMatchingService>();
+        services.AddScoped<IMentorshipService, MentorshipService>();
+        services.AddScoped<IApprenticeshipProgramService, ApprenticeshipProgramService>();
+        services.AddScoped<IProgramApplicationService, ProgramApplicationService>();
+        services.AddScoped<IApprenticeEnrollmentService, ApprenticeEnrollmentService>();
+        services.AddScoped<IMentorFeedbackService, MentorFeedbackService>();
+        services.AddScoped<IPortfolioService, PortfolioService>();
+        services.AddScoped<IJobListingService, JobListingService>();
+        services.AddScoped<IJobApplicationService, JobApplicationService>();
+        services.AddScoped<IJobMatchingService, JobMatchingService>();
+
+        services.AddScoped<ISustainabilityService, SustainabilityService>();
+
+        services.AddScoped<IBusinessPartnerService, BusinessPartnerService>();
+        services.AddScoped<ISupplierDiscoveryService, SupplierDiscoveryService>();
+        services.AddScoped<ISupplierMatchingService, SupplierMatchingService>();
+        services.AddScoped<IProducerComparisonService, ProducerComparisonService>();
+        services.AddScoped<IQuotationService, QuotationService>();
+        services.AddScoped<IProcurementService, ProcurementService>();
+        services.AddScoped<IContractService, ContractService>();
+        services.AddScoped<IPartnershipService, PartnershipService>();
+        services.AddScoped<IBusinessPartnerAIService, BusinessPartnerAIService>();
+        services.AddScoped<IDesignCollaborationService, DesignCollaborationService>();
+        services.AddScoped<ICSRSponsorshipService, CSRSponsorshipService>();
+        services.AddScoped<IProductDevelopmentService, ProductDevelopmentService>();
+        services.AddScoped<IInvestmentService, InvestmentService>();
+        services.AddScoped<IBusinessPartnerAnalyticsService, BusinessPartnerAnalyticsService>();
+
+        services.AddScoped<IHeritagePlaceService, HeritagePlaceService>();
+        services.AddScoped<IHeritageFestivalService, HeritageFestivalService>();
+        services.AddScoped<ICulturalEventService, CulturalEventService>();
+        services.AddScoped<ILocalCuisineService, LocalCuisineService>();
+        services.AddScoped<IHeritageRouteService, HeritageRouteService>();
+
+        services.AddScoped<ITouristServiceService, TouristServiceService>();
+        services.AddScoped<IServiceAvailabilityService, ServiceAvailabilityService>();
+        services.AddScoped<IBookingService, BookingService>();
+
+        services.AddScoped<IAITourismService, AITourismService>();
+
+        services.AddScoped<IResearchProjectService, ResearchProjectService>();
+        services.AddScoped<IResearchTaskService, ResearchTaskService>();
+        services.AddScoped<IResearchMilestoneService, ResearchMilestoneService>();
+        services.AddScoped<IResearchNoteService, ResearchNoteService>();
+        services.AddScoped<IResearchPaperService, ResearchPaperService>();
+        services.AddScoped<IResearchPublicationService, ResearchPublicationService>();
+        services.AddScoped<IResearchAIService, ResearchAIService>();
+
+        services.AddScoped<ISurveyService, SurveyService>();
+        services.AddScoped<ISurveyResponseService, SurveyResponseService>();
+        services.AddScoped<IFieldEvidenceService, FieldEvidenceService>();
+
+        services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>();
+
+        services.AddScoped<IInnovationExperimentService, InnovationExperimentService>();
+        services.AddScoped<IPreservationStrategyService, PreservationStrategyService>();
+        services.AddScoped<IInnovationPrototypeService, InnovationPrototypeService>();
+        services.AddScoped<IHeritageInnovationSubmissionService, HeritageInnovationSubmissionService>();
+
+        services.AddScoped<IHeritageDatasetService, HeritageDatasetService>();
+        services.AddScoped<IHeritageDataService, HeritageDataService>();
+        services.AddScoped<IHeritageRiskService, HeritageRiskService>();
+
+        services.AddScoped<INationalDashboardService, NationalDashboardService>();
+        services.AddScoped<IHeritageIntelligenceService, HeritageIntelligenceService>();
+        services.AddScoped<IPolicySimulationService, PolicySimulationService>();
+        services.AddScoped<IMonitoringService, MonitoringService>();
+        services.AddScoped<IComplaintService, ComplaintService>();
+        services.AddScoped<IComplianceService, ComplianceService>();
+        services.AddScoped<IFundingService, FundingService>();
+        services.AddScoped<IGovReportService, GovReportService>();
+        services.AddScoped<IGovForecastService, GovForecastService>();
+
+        services.AddScoped<IMuseumItemService, MuseumItemService>();
+        services.AddScoped<IVillageTourService, VillageTourService>();
+        services.AddScoped<ICulturalStoryService, CulturalStoryService>();
+        services.AddScoped<IArCraftScanService, ArCraftScanService>();
 
         return services;
     }

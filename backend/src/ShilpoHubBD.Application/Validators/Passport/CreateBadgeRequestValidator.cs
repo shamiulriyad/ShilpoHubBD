@@ -18,5 +18,7 @@ public class CreateBadgeRequestValidator : AbstractValidator<CreateBadgeRequest>
             .WithMessage("FestivalName is required for festival badges.");
         RuleFor(x => x.RequiredPurchaseCount).NotEmpty().GreaterThan(0).When(x => x.Type == BadgeType.Purchase)
             .WithMessage("RequiredPurchaseCount is required for purchase badges.");
+        RuleFor(x => x.RequiredCheckInCount).NotEmpty().GreaterThan(0).When(x => x.Type == BadgeType.CheckIn)
+            .WithMessage("RequiredCheckInCount is required for check-in badges.");
     }
 }

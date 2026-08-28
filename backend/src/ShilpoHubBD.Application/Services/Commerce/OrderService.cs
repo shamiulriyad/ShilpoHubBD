@@ -163,6 +163,7 @@ public class OrderService : IOrderService
         }
 
         RestoreStock(order);
+        CancelProducerFulfillment(order);
 
         order.Status = OrderStatus.Cancelled;
         order.CancelReason = request.Reason?.Trim();
@@ -318,6 +319,19 @@ public class OrderService : IOrderService
             }
 
             item.Product.SalesCount = Math.Max(0, item.Product.SalesCount - item.Quantity);
+        }
+    }
+
+    // Keeps per-producer fulfillment status (see OrderItem.ProducerStatus) in sync when the
+    // customer or admin cancels the whole order before any producer has shipped their part of it.
+    private static void CancelProducerFulfillment(Order order)
+    {
+        foreach (var item in order.Items)
+        {
+            if (item.ProducerStatus is OrderItemProducerStatus.Pending or OrderItemProducerStatus.Accepted or OrderItemProducerStatus.Processing)
+            {
+                item.ProducerStatus = OrderItemProducerStatus.Cancelled;
+            }
         }
     }
 

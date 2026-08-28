@@ -31,6 +31,11 @@ public class LiveEventConfiguration : IEntityTypeConfiguration<LiveEvent>
             .HasForeignKey(e => e.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.HasOne(e => e.Auction)
+            .WithMany()
+            .HasForeignKey(e => e.AuctionId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.HasMany(e => e.Comments)
             .WithOne(c => c.LiveEvent)
             .HasForeignKey(c => c.LiveEventId)

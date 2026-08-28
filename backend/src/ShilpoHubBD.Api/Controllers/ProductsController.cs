@@ -127,4 +127,44 @@ public class ProductsController : ControllerBase
         var result = await _productService.DeleteVariantAsync(productId, variantId, CurrentUserId, IsAdmin, cancellationToken);
         return Ok(result);
     }
+
+    [Authorize(Roles = $"{RoleNames.Producer},{RoleNames.SuperAdmin}")]
+    [HttpPost("bulk")]
+    public async Task<ActionResult<BulkCreateProductsResultDto>> BulkCreate(BulkCreateProductsRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _productService.BulkCreateAsync(CurrentUserId, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = $"{RoleNames.Producer},{RoleNames.SuperAdmin}")]
+    [HttpPost("{productId:guid}/videos")]
+    public async Task<ActionResult<ProductDto>> AddVideo(Guid productId, CreateProductVideoRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _productService.AddVideoAsync(productId, CurrentUserId, IsAdmin, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = $"{RoleNames.Producer},{RoleNames.SuperAdmin}")]
+    [HttpPut("{productId:guid}/videos/{videoId:guid}")]
+    public async Task<ActionResult<ProductDto>> UpdateVideo(Guid productId, Guid videoId, UpdateProductVideoRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _productService.UpdateVideoAsync(productId, videoId, CurrentUserId, IsAdmin, request, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = $"{RoleNames.Producer},{RoleNames.SuperAdmin}")]
+    [HttpDelete("{productId:guid}/videos/{videoId:guid}")]
+    public async Task<ActionResult<ProductDto>> DeleteVideo(Guid productId, Guid videoId, CancellationToken cancellationToken)
+    {
+        var result = await _productService.DeleteVideoAsync(productId, videoId, CurrentUserId, IsAdmin, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    [HttpPatch("{id:guid}/handmade-verification")]
+    public async Task<ActionResult<ProductDto>> SetHandmadeVerification(Guid id, SetHandmadeVerificationRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _productService.SetHandmadeVerificationAsync(id, CurrentUserId, request, cancellationToken);
+        return Ok(result);
+    }
 }

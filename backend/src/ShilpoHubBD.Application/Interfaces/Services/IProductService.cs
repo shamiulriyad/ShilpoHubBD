@@ -19,4 +19,12 @@ public interface IProductService
     Task<ProductDto> AddVariantAsync(Guid productId, Guid currentUserId, bool isAdmin, CreateProductVariantRequest request, CancellationToken cancellationToken);
     Task<ProductDto> UpdateVariantAsync(Guid productId, Guid variantId, Guid currentUserId, bool isAdmin, UpdateProductVariantRequest request, CancellationToken cancellationToken);
     Task<ProductDto> DeleteVariantAsync(Guid productId, Guid variantId, Guid currentUserId, bool isAdmin, CancellationToken cancellationToken);
+
+    Task<BulkCreateProductsResultDto> BulkCreateAsync(Guid producerId, BulkCreateProductsRequest request, CancellationToken cancellationToken);
+
+    Task<ProductDto> AddVideoAsync(Guid productId, Guid currentUserId, bool isAdmin, CreateProductVideoRequest request, CancellationToken cancellationToken);
+    Task<ProductDto> UpdateVideoAsync(Guid productId, Guid videoId, Guid currentUserId, bool isAdmin, UpdateProductVideoRequest request, CancellationToken cancellationToken);
+    Task<ProductDto> DeleteVideoAsync(Guid productId, Guid videoId, Guid currentUserId, bool isAdmin, CancellationToken cancellationToken);
+
+    Task<ProductDto> SetHandmadeVerificationAsync(Guid productId, Guid verifierUserId, SetHandmadeVerificationRequest request, CancellationToken cancellationToken);
 }

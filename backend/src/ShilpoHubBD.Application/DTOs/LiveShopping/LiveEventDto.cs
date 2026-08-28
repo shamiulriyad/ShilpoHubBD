@@ -9,6 +9,10 @@ public class LiveEventDto
     public string ProductName { get; set; } = string.Empty;
     public string? ProductImageUrl { get; set; }
     public decimal ProductPrice { get; set; }
+    public Guid? AuctionId { get; set; }
+    public string? AuctionTitle { get; set; }
+    public string? AuctionStatus { get; set; }
+    public decimal? AuctionCurrentPrice { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;

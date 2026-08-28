@@ -1,5 +1,6 @@
 using ShilpoHubBD.Domain.Entities.Identity;
 using ShilpoHubBD.Domain.Entities.Marketplace;
+using AuctionEntity = ShilpoHubBD.Domain.Entities.Auction.Auction;
 
 namespace ShilpoHubBD.Domain.Entities.LiveShopping;
 
@@ -12,6 +13,10 @@ public class LiveEvent
 
     public Guid ProductId { get; set; }
     public Product Product { get; set; } = null!;
+
+    // Optional link to a live auction running alongside this event (Live Auction Integration).
+    public Guid? AuctionId { get; set; }
+    public AuctionEntity? Auction { get; set; }
 
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
