@@ -209,6 +209,7 @@ public static class DependencyInjection
         services.AddScoped<IHeritageRiskService, HeritageRiskService>();
 
         services.AddScoped<INationalDashboardService, NationalDashboardService>();
+        services.AddScoped<IHeritageIntelligenceService, HeritageIntelligenceService>();
 
         services.AddScoped<IMuseumItemService, MuseumItemService>();
         services.AddScoped<IVillageTourService, VillageTourService>();

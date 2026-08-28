@@ -307,6 +307,8 @@ public class ShilpoHubDbContext : DbContext
 
 	public DbSet<NationalDashboardSnapshot> NationalDashboardSnapshots => Set<NationalDashboardSnapshot>();
 	public DbSet<DashboardDistrictStat> DashboardDistrictStats => Set<DashboardDistrictStat>();
+	public DbSet<HeritageIndexRecord> HeritageIndexRecords => Set<HeritageIndexRecord>();
+	public DbSet<HeritageIndexComponent> HeritageIndexComponents => Set<HeritageIndexComponent>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

@@ -67,4 +67,52 @@ internal static class GovernanceMappings
         ExportSalesValue = s.ExportSalesValue,
         GeneratedByName = s.GeneratedBy?.FullName,
     };
+
+    public static HeritageIndexRecordDto ToDto(this HeritageIndexRecord r) => new()
+    {
+        Id = r.Id,
+        IndexType = r.IndexType.ToString(),
+        Scope = r.Scope.ToString(),
+        ScopeId = r.ScopeId,
+        ScopeLabel = r.ScopeLabel,
+        Score = r.Score,
+        Rating = r.Rating.ToString(),
+        Method = r.Method,
+        Summary = r.Summary,
+        PeriodStart = r.PeriodStart,
+        PeriodEnd = r.PeriodEnd,
+        ComputedAt = r.ComputedAt,
+        Notes = r.Notes,
+        GeneratedByUserId = r.GeneratedByUserId,
+        GeneratedByName = r.GeneratedBy?.FullName,
+        CreatedAt = r.CreatedAt,
+        Components = r.Components
+            .OrderBy(c => c.DisplayOrder)
+            .Select(c => new HeritageIndexComponentDto
+            {
+                Key = c.Key,
+                Label = c.Label,
+                RawValue = c.RawValue,
+                Weight = c.Weight,
+                ContributionScore = c.ContributionScore,
+                Detail = c.Detail,
+                DisplayOrder = c.DisplayOrder,
+            })
+            .ToList(),
+    };
+
+    public static HeritageIndexRecordListItemDto ToListItemDto(this HeritageIndexRecord r) => new()
+    {
+        Id = r.Id,
+        IndexType = r.IndexType.ToString(),
+        Scope = r.Scope.ToString(),
+        ScopeId = r.ScopeId,
+        ScopeLabel = r.ScopeLabel,
+        Score = r.Score,
+        Rating = r.Rating.ToString(),
+        PeriodStart = r.PeriodStart,
+        PeriodEnd = r.PeriodEnd,
+        ComputedAt = r.ComputedAt,
+        GeneratedByName = r.GeneratedBy?.FullName,
+    };
 }
