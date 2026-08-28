@@ -115,4 +115,73 @@ internal static class GovernanceMappings
         ComputedAt = r.ComputedAt,
         GeneratedByName = r.GeneratedBy?.FullName,
     };
+
+    public static PolicySimulationDto ToDto(this PolicySimulation s) => new()
+    {
+        Id = s.Id,
+        Title = s.Title,
+        SimulationType = s.SimulationType.ToString(),
+        Scope = s.Scope.ToString(),
+        ScopeId = s.ScopeId,
+        ScopeLabel = s.ScopeLabel,
+        Status = s.Status.ToString(),
+        HorizonMonths = s.HorizonMonths,
+        InputsJson = s.InputsJson,
+        AssumptionsJson = s.AssumptionsJson,
+        Method = s.Method,
+        Summary = s.Summary,
+        Confidence = s.Confidence.ToString(),
+        BaselineProducers = s.BaselineProducers,
+        BaselineActiveProducers = s.BaselineActiveProducers,
+        BaselineEmployment = s.BaselineEmployment,
+        BaselineExportValue = s.BaselineExportValue,
+        BaselineTourismRevenue = s.BaselineTourismRevenue,
+        BaselineEconomyValue = s.BaselineEconomyValue,
+        Notes = s.Notes,
+        FailureReason = s.FailureReason,
+        GeneratedByUserId = s.GeneratedByUserId,
+        GeneratedByName = s.GeneratedBy?.FullName,
+        CreatedAt = s.CreatedAt,
+        CompletedAt = s.CompletedAt,
+        Projections = s.Projections
+            .OrderBy(p => p.DisplayOrder)
+            .Select(p => new PolicySimulationProjectionDto
+            {
+                Metric = p.Metric,
+                Unit = p.Unit,
+                BaselineValue = p.BaselineValue,
+                ProjectedValue = p.ProjectedValue,
+                DeltaValue = p.DeltaValue,
+                DeltaPercent = p.DeltaPercent,
+                HorizonMonths = p.HorizonMonths,
+                Confidence = p.Confidence.ToString(),
+                Detail = p.Detail,
+                DisplayOrder = p.DisplayOrder,
+            })
+            .ToList(),
+        Recommendations = s.Recommendations
+            .OrderBy(r => r.DisplayOrder)
+            .Select(r => new PolicySimulationRecommendationDto
+            {
+                Priority = r.Priority.ToString(),
+                Title = r.Title,
+                Detail = r.Detail,
+                DisplayOrder = r.DisplayOrder,
+            })
+            .ToList(),
+    };
+
+    public static PolicySimulationListItemDto ToListItemDto(this PolicySimulation s) => new()
+    {
+        Id = s.Id,
+        Title = s.Title,
+        SimulationType = s.SimulationType.ToString(),
+        Scope = s.Scope.ToString(),
+        ScopeLabel = s.ScopeLabel,
+        Status = s.Status.ToString(),
+        HorizonMonths = s.HorizonMonths,
+        Confidence = s.Confidence.ToString(),
+        CreatedAt = s.CreatedAt,
+        GeneratedByName = s.GeneratedBy?.FullName,
+    };
 }

@@ -309,6 +309,9 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<DashboardDistrictStat> DashboardDistrictStats => Set<DashboardDistrictStat>();
 	public DbSet<HeritageIndexRecord> HeritageIndexRecords => Set<HeritageIndexRecord>();
 	public DbSet<HeritageIndexComponent> HeritageIndexComponents => Set<HeritageIndexComponent>();
+	public DbSet<PolicySimulation> PolicySimulations => Set<PolicySimulation>();
+	public DbSet<PolicySimulationProjection> PolicySimulationProjections => Set<PolicySimulationProjection>();
+	public DbSet<PolicySimulationRecommendation> PolicySimulationRecommendations => Set<PolicySimulationRecommendation>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

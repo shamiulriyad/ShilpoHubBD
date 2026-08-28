@@ -7,6 +7,7 @@ using ShilpoHubBD.Infrastructure.AITourism;
 using ShilpoHubBD.Infrastructure.Email;
 using ShilpoHubBD.Infrastructure.HeritageIntelligence;
 using ShilpoHubBD.Infrastructure.Options;
+using ShilpoHubBD.Infrastructure.PolicySimulation;
 using ShilpoHubBD.Infrastructure.Payments;
 using ShilpoHubBD.Infrastructure.Recommendations;
 using ShilpoHubBD.Infrastructure.ResearchAI;
@@ -30,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IAITourismProvider, DummyAITourismProvider>();
         services.AddScoped<IResearchAIProvider, DummyResearchAIProvider>();
         services.AddScoped<IHeritageIntelligenceProvider, RuleBasedHeritageIntelligenceProvider>();
+        services.AddScoped<IPolicySimulationProvider, RuleBasedPolicySimulationProvider>();
 
         return services;
     }
