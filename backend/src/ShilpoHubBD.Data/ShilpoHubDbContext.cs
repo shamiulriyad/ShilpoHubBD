@@ -338,6 +338,9 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<DeliveryRoute> DeliveryRoutes => Set<DeliveryRoute>();
 	public DbSet<DeliveryRouteStop> DeliveryRouteStops => Set<DeliveryRouteStop>();
 	public DbSet<DeliveryRouteEvent> DeliveryRouteEvents => Set<DeliveryRouteEvent>();
+	public DbSet<Shipment> Shipments => Set<Shipment>();
+	public DbSet<ShipmentTrackingEvent> ShipmentTrackingEvents => Set<ShipmentTrackingEvent>();
+	public DbSet<DeliveryAttempt> DeliveryAttempts => Set<DeliveryAttempt>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

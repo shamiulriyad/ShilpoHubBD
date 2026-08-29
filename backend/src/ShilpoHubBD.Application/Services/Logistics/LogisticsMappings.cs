@@ -280,4 +280,147 @@ internal static class LogisticsMappings
         ActorName = e.Actor?.FullName,
         CreatedAt = e.CreatedAt,
     };
+
+    public static ShipmentDto ToDto(this Shipment s) => new()
+    {
+        Id = s.Id,
+        TrackingNumber = s.TrackingNumber,
+        LogisticsPartnerProfileId = s.LogisticsPartnerProfileId,
+        LogisticsPartnerName = s.Profile?.CompanyName,
+        CreatedByUserId = s.CreatedByUserId,
+        CreatedByName = s.CreatedBy?.FullName,
+        Status = s.Status.ToString(),
+        ServiceLevel = s.ServiceLevel.ToString(),
+        OrderId = s.OrderId,
+        OrderNumber = s.Order?.OrderNumber,
+        PickupRequestId = s.PickupRequestId,
+        PickupReferenceCode = s.PickupRequest?.ReferenceCode,
+        DeliveryRouteId = s.DeliveryRouteId,
+        DeliveryRouteCode = s.DeliveryRoute?.RouteCode,
+        OriginContactName = s.OriginContactName,
+        OriginPhone = s.OriginPhone,
+        OriginAddressLine = s.OriginAddressLine,
+        OriginCity = s.OriginCity,
+        OriginDistrictId = s.OriginDistrictId,
+        OriginDistrictName = s.OriginDistrict?.Name,
+        OriginPostalCode = s.OriginPostalCode,
+        RecipientName = s.RecipientName,
+        RecipientPhone = s.RecipientPhone,
+        DestinationAddressLine = s.DestinationAddressLine,
+        DestinationCity = s.DestinationCity,
+        DestinationDistrictId = s.DestinationDistrictId,
+        DestinationDistrictName = s.DestinationDistrict?.Name,
+        DestinationPostalCode = s.DestinationPostalCode,
+        ParcelCount = s.ParcelCount,
+        TotalWeightKg = s.TotalWeightKg,
+        DimensionsNote = s.DimensionsNote,
+        DeclaredValue = s.DeclaredValue,
+        ShippingCost = s.ShippingCost,
+        IsCashOnDelivery = s.IsCashOnDelivery,
+        CodAmount = s.CodAmount,
+        CodCollected = s.CodCollected,
+        CodCollectedAt = s.CodCollectedAt,
+        CurrentLocationLabel = s.CurrentLocationLabel,
+        CurrentLatitude = s.CurrentLatitude,
+        CurrentLongitude = s.CurrentLongitude,
+        EstimatedDeliveryAt = s.EstimatedDeliveryAt,
+        DispatchedAt = s.DispatchedAt,
+        DeliveredAt = s.DeliveredAt,
+        LastStatusAt = s.LastStatusAt,
+        DeliveryAttemptCount = s.DeliveryAttemptCount,
+        ReceivedByName = s.ReceivedByName,
+        ProofOfDeliveryNote = s.ProofOfDeliveryNote,
+        SignatureImageUrl = s.SignatureImageUrl,
+        FailureReason = s.FailureReason,
+        CancellationReason = s.CancellationReason,
+        CreatedAt = s.CreatedAt,
+        UpdatedAt = s.UpdatedAt,
+        Events = s.Events
+            .OrderBy(e => e.OccurredAt)
+            .ThenBy(e => e.CreatedAt)
+            .Select(e => e.ToDto())
+            .ToList(),
+        Attempts = s.Attempts
+            .OrderBy(a => a.AttemptNumber)
+            .Select(a => a.ToDto())
+            .ToList(),
+    };
+
+    public static ShipmentListItemDto ToListItemDto(this Shipment s) => new()
+    {
+        Id = s.Id,
+        TrackingNumber = s.TrackingNumber,
+        Status = s.Status.ToString(),
+        ServiceLevel = s.ServiceLevel.ToString(),
+        RecipientName = s.RecipientName,
+        DestinationCity = s.DestinationCity,
+        DestinationDistrictName = s.DestinationDistrict?.Name,
+        ParcelCount = s.ParcelCount,
+        IsCashOnDelivery = s.IsCashOnDelivery,
+        EstimatedDeliveryAt = s.EstimatedDeliveryAt,
+        LastStatusAt = s.LastStatusAt,
+        OrderId = s.OrderId,
+        OrderNumber = s.Order?.OrderNumber,
+        CreatedAt = s.CreatedAt,
+    };
+
+    public static ShipmentTrackingEventDto ToDto(this ShipmentTrackingEvent e) => new()
+    {
+        Id = e.Id,
+        EventType = e.EventType.ToString(),
+        FromStatus = e.FromStatus?.ToString(),
+        ToStatus = e.ToStatus?.ToString(),
+        LocationLabel = e.LocationLabel,
+        Latitude = e.Latitude,
+        Longitude = e.Longitude,
+        DistrictId = e.DistrictId,
+        DistrictName = e.District?.Name,
+        Description = e.Description,
+        OccurredAt = e.OccurredAt,
+        RecordedByUserId = e.RecordedByUserId,
+        RecordedByName = e.RecordedBy?.FullName,
+        CreatedAt = e.CreatedAt,
+    };
+
+    public static DeliveryAttemptDto ToDto(this DeliveryAttempt a) => new()
+    {
+        Id = a.Id,
+        AttemptNumber = a.AttemptNumber,
+        Outcome = a.Outcome.ToString(),
+        AttemptedAt = a.AttemptedAt,
+        Note = a.Note,
+        NextAttemptAt = a.NextAttemptAt,
+        RecordedByUserId = a.RecordedByUserId,
+        RecordedByName = a.RecordedBy?.FullName,
+        CreatedAt = a.CreatedAt,
+    };
+
+    public static ShipmentTrackingDto ToTrackingDto(this Shipment s) => new()
+    {
+        TrackingNumber = s.TrackingNumber,
+        Status = s.Status.ToString(),
+        ServiceLevel = s.ServiceLevel.ToString(),
+        OriginCity = s.OriginCity,
+        DestinationCity = s.DestinationCity,
+        DestinationDistrictName = s.DestinationDistrict?.Name,
+        ParcelCount = s.ParcelCount,
+        EstimatedDeliveryAt = s.EstimatedDeliveryAt,
+        DispatchedAt = s.DispatchedAt,
+        DeliveredAt = s.DeliveredAt,
+        LastStatusAt = s.LastStatusAt,
+        CurrentLocationLabel = s.CurrentLocationLabel,
+        Checkpoints = s.Events
+            .OrderBy(e => e.OccurredAt)
+            .ThenBy(e => e.CreatedAt)
+            .Select(e => new ShipmentTrackingCheckpointDto
+            {
+                EventType = e.EventType.ToString(),
+                Status = e.ToStatus?.ToString(),
+                LocationLabel = e.LocationLabel,
+                DistrictName = e.District?.Name,
+                Description = e.Description,
+                OccurredAt = e.OccurredAt,
+            })
+            .ToList(),
+    };
 }
