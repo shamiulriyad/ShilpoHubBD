@@ -34,6 +34,7 @@ using ShilpoHubBD.Application.Services.Inventory;
 using ShilpoHubBD.Application.Services.Investment;
 using ShilpoHubBD.Application.Services.KnowledgeGraph;
 using ShilpoHubBD.Application.Services.Learning;
+using ShilpoHubBD.Application.Services.Logistics;
 using ShilpoHubBD.Application.Services.LiveShopping;
 using ShilpoHubBD.Application.Services.ManufacturingPartnership;
 using ShilpoHubBD.Application.Services.Marketplace;
@@ -217,6 +218,9 @@ public static class DependencyInjection
         services.AddScoped<IFundingService, FundingService>();
         services.AddScoped<IGovReportService, GovReportService>();
         services.AddScoped<IGovForecastService, GovForecastService>();
+
+        services.AddScoped<ILogisticsPartnerService, LogisticsPartnerService>();
+        services.AddScoped<IPickupSchedulingService, PickupSchedulingService>();
 
         services.AddScoped<IMuseumItemService, MuseumItemService>();
         services.AddScoped<IVillageTourService, VillageTourService>();
