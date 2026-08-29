@@ -221,6 +221,7 @@ public static class DependencyInjection
 
         services.AddScoped<ILogisticsPartnerService, LogisticsPartnerService>();
         services.AddScoped<IPickupSchedulingService, PickupSchedulingService>();
+        services.AddScoped<IRouteOptimizationService, RouteOptimizationService>();
 
         services.AddScoped<IMuseumItemService, MuseumItemService>();
         services.AddScoped<IVillageTourService, VillageTourService>();

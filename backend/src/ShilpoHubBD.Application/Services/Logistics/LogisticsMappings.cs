@@ -170,4 +170,114 @@ internal static class LogisticsMappings
         ActorName = e.Actor?.FullName,
         CreatedAt = e.CreatedAt,
     };
+
+    public static DeliveryRouteDto ToDto(this DeliveryRoute r) => new()
+    {
+        Id = r.Id,
+        RouteCode = r.RouteCode,
+        LogisticsPartnerProfileId = r.LogisticsPartnerProfileId,
+        LogisticsPartnerName = r.Profile?.CompanyName,
+        CreatedByUserId = r.CreatedByUserId,
+        CreatedByName = r.CreatedBy?.FullName,
+        Name = r.Name,
+        Status = r.Status.ToString(),
+        ScheduledDate = r.ScheduledDate,
+        PlannedStartAt = r.PlannedStartAt,
+        PlannedEndAt = r.PlannedEndAt,
+        ActualStartAt = r.ActualStartAt,
+        ActualEndAt = r.ActualEndAt,
+        StartLocationLabel = r.StartLocationLabel,
+        StartLatitude = r.StartLatitude,
+        StartLongitude = r.StartLongitude,
+        EndLocationLabel = r.EndLocationLabel,
+        EndLatitude = r.EndLatitude,
+        EndLongitude = r.EndLongitude,
+        OriginDistrictId = r.OriginDistrictId,
+        OriginDistrictName = r.OriginDistrict?.Name,
+        AssignedDriverName = r.AssignedDriverName,
+        AssignedDriverPhone = r.AssignedDriverPhone,
+        AssignedVehicleLabel = r.AssignedVehicleLabel,
+        VehicleCapacityKg = r.VehicleCapacityKg,
+        AssignedAt = r.AssignedAt,
+        TotalStops = r.TotalStops,
+        CompletedStops = r.CompletedStops,
+        TotalLoadKg = r.TotalLoadKg,
+        TotalDistanceKm = r.TotalDistanceKm,
+        EstimatedDurationMinutes = r.EstimatedDurationMinutes,
+        OptimizationStrategy = r.OptimizationStrategy,
+        Notes = r.Notes,
+        CancellationReason = r.CancellationReason,
+        CreatedAt = r.CreatedAt,
+        UpdatedAt = r.UpdatedAt,
+        Stops = r.Stops
+            .OrderBy(s => s.Sequence)
+            .Select(s => s.ToDto())
+            .ToList(),
+        Events = r.Events
+            .OrderBy(e => e.CreatedAt)
+            .Select(e => e.ToDto())
+            .ToList(),
+    };
+
+    public static DeliveryRouteListItemDto ToListItemDto(this DeliveryRoute r) => new()
+    {
+        Id = r.Id,
+        RouteCode = r.RouteCode,
+        Name = r.Name,
+        Status = r.Status.ToString(),
+        ScheduledDate = r.ScheduledDate,
+        AssignedDriverName = r.AssignedDriverName,
+        AssignedVehicleLabel = r.AssignedVehicleLabel,
+        TotalStops = r.TotalStops,
+        CompletedStops = r.CompletedStops,
+        TotalLoadKg = r.TotalLoadKg,
+        TotalDistanceKm = r.TotalDistanceKm,
+        OptimizationStrategy = r.OptimizationStrategy,
+        CreatedAt = r.CreatedAt,
+    };
+
+    public static RouteStopDto ToDto(this DeliveryRouteStop s) => new()
+    {
+        Id = s.Id,
+        Sequence = s.Sequence,
+        StopType = s.StopType.ToString(),
+        Status = s.Status.ToString(),
+        PickupRequestId = s.PickupRequestId,
+        PickupReferenceCode = s.PickupRequest?.ReferenceCode,
+        OrderId = s.OrderId,
+        OrderNumber = s.Order?.OrderNumber,
+        ContactName = s.ContactName,
+        ContactPhone = s.ContactPhone,
+        AddressLine = s.AddressLine,
+        City = s.City,
+        DistrictId = s.DistrictId,
+        DistrictName = s.District?.Name,
+        PostalCode = s.PostalCode,
+        Latitude = s.Latitude,
+        Longitude = s.Longitude,
+        LoadKg = s.LoadKg,
+        PackageCount = s.PackageCount,
+        PlannedArrivalAt = s.PlannedArrivalAt,
+        PlannedDepartureAt = s.PlannedDepartureAt,
+        ActualArrivalAt = s.ActualArrivalAt,
+        ActualDepartureAt = s.ActualDepartureAt,
+        ServiceDurationMinutes = s.ServiceDurationMinutes,
+        DistanceFromPreviousKm = s.DistanceFromPreviousKm,
+        Instructions = s.Instructions,
+        CompletionNote = s.CompletionNote,
+        FailureReason = s.FailureReason,
+    };
+
+    public static RouteEventDto ToDto(this DeliveryRouteEvent e) => new()
+    {
+        Id = e.Id,
+        Type = e.Type.ToString(),
+        RouteStopId = e.RouteStopId,
+        FromStatus = e.FromStatus?.ToString(),
+        ToStatus = e.ToStatus?.ToString(),
+        Note = e.Note,
+        ActorUserId = e.ActorUserId,
+        ActorName = e.Actor?.FullName,
+        CreatedAt = e.CreatedAt,
+    };
 }

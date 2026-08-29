@@ -335,6 +335,9 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<PickupRequest> PickupRequests => Set<PickupRequest>();
 	public DbSet<PickupItem> PickupItems => Set<PickupItem>();
 	public DbSet<PickupEvent> PickupEvents => Set<PickupEvent>();
+	public DbSet<DeliveryRoute> DeliveryRoutes => Set<DeliveryRoute>();
+	public DbSet<DeliveryRouteStop> DeliveryRouteStops => Set<DeliveryRouteStop>();
+	public DbSet<DeliveryRouteEvent> DeliveryRouteEvents => Set<DeliveryRouteEvent>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
