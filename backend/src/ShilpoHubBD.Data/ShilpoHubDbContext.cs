@@ -346,6 +346,10 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<WarehouseBin> WarehouseBins => Set<WarehouseBin>();
 	public DbSet<WarehouseStockItem> WarehouseStockItems => Set<WarehouseStockItem>();
 	public DbSet<WarehouseStockMovement> WarehouseStockMovements => Set<WarehouseStockMovement>();
+	public DbSet<ReturnRequest> ReturnRequests => Set<ReturnRequest>();
+	public DbSet<ReturnItem> ReturnItems => Set<ReturnItem>();
+	public DbSet<ReturnInspection> ReturnInspections => Set<ReturnInspection>();
+	public DbSet<ReturnEvent> ReturnEvents => Set<ReturnEvent>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
