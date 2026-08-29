@@ -24,6 +24,7 @@ using ShilpoHubBD.Domain.Entities.Inventory;
 using ShilpoHubBD.Domain.Entities.Investment;
 using ShilpoHubBD.Domain.Entities.KnowledgeGraph;
 using ShilpoHubBD.Domain.Entities.Learning;
+using ShilpoHubBD.Domain.Entities.Logistics;
 using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
@@ -328,6 +329,12 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<AnalyticsExport> AnalyticsExports => Set<AnalyticsExport>();
 	public DbSet<GovForecast> GovForecasts => Set<GovForecast>();
 	public DbSet<GovForecastPoint> GovForecastPoints => Set<GovForecastPoint>();
+
+	public DbSet<LogisticsPartnerProfile> LogisticsPartnerProfiles => Set<LogisticsPartnerProfile>();
+	public DbSet<LogisticsServiceArea> LogisticsServiceAreas => Set<LogisticsServiceArea>();
+	public DbSet<PickupRequest> PickupRequests => Set<PickupRequest>();
+	public DbSet<PickupItem> PickupItems => Set<PickupItem>();
+	public DbSet<PickupEvent> PickupEvents => Set<PickupEvent>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
