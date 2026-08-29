@@ -225,6 +225,7 @@ public static class DependencyInjection
         services.AddScoped<IDeliveryTrackingService, DeliveryTrackingService>();
         services.AddScoped<IWarehouseService, WarehouseService>();
         services.AddScoped<IWarehouseStockService, WarehouseStockService>();
+        services.AddScoped<IReturnHandlingService, ReturnHandlingService>();
 
         services.AddScoped<IMuseumItemService, MuseumItemService>();
         services.AddScoped<IVillageTourService, VillageTourService>();

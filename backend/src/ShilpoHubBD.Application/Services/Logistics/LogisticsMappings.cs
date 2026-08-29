@@ -580,4 +580,121 @@ internal static class LogisticsMappings
         OccurredAt = m.OccurredAt,
         CreatedAt = m.CreatedAt,
     };
+
+    // ---- Return handling ---------------------------------------
+
+    public static ReturnRequestDto ToDto(this ReturnRequest r) => new()
+    {
+        Id = r.Id,
+        ReferenceCode = r.ReferenceCode,
+        LogisticsPartnerProfileId = r.LogisticsPartnerProfileId,
+        LogisticsPartnerName = r.Profile?.CompanyName,
+        CreatedByUserId = r.CreatedByUserId,
+        CreatedByName = r.CreatedBy?.FullName,
+        ShipmentId = r.ShipmentId,
+        ShipmentTrackingNumber = r.Shipment?.TrackingNumber,
+        OrderId = r.OrderId,
+        OrderNumber = r.Order?.OrderNumber,
+        DestinationWarehouseId = r.DestinationWarehouseId,
+        DestinationWarehouseCode = r.DestinationWarehouse?.Code,
+        Status = r.Status.ToString(),
+        Reason = r.Reason.ToString(),
+        ReasonDetail = r.ReasonDetail,
+        CustomerName = r.CustomerName,
+        CustomerPhone = r.CustomerPhone,
+        PickupContactName = r.PickupContactName,
+        PickupPhone = r.PickupPhone,
+        PickupAddressLine = r.PickupAddressLine,
+        PickupCity = r.PickupCity,
+        PickupDistrictId = r.PickupDistrictId,
+        PickupDistrictName = r.PickupDistrict?.Name,
+        PickupPostalCode = r.PickupPostalCode,
+        ScheduledPickupAt = r.ScheduledPickupAt,
+        ActualPickupAt = r.ActualPickupAt,
+        AssignedCarrierLabel = r.AssignedCarrierLabel,
+        AssignedDriverName = r.AssignedDriverName,
+        ReceivedAt = r.ReceivedAt,
+        ResolutionType = r.ResolutionType?.ToString(),
+        ResolutionNote = r.ResolutionNote,
+        RefundAmount = r.RefundAmount,
+        RefundMethod = r.RefundMethod,
+        RefundReference = r.RefundReference,
+        RefundedAt = r.RefundedAt,
+        ApprovedByUserId = r.ApprovedByUserId,
+        ApprovedByName = r.ApprovedBy?.FullName,
+        ApprovedAt = r.ApprovedAt,
+        RejectionReason = r.RejectionReason,
+        CancellationReason = r.CancellationReason,
+        CreatedAt = r.CreatedAt,
+        UpdatedAt = r.UpdatedAt,
+        Items = r.Items
+            .OrderBy(i => i.Description)
+            .Select(i => i.ToDto())
+            .ToList(),
+        Inspections = r.Inspections
+            .OrderByDescending(i => i.InspectedAt)
+            .Select(i => i.ToDto())
+            .ToList(),
+        Events = r.Events
+            .OrderBy(e => e.CreatedAt)
+            .Select(e => e.ToDto())
+            .ToList(),
+    };
+
+    public static ReturnRequestListItemDto ToListItemDto(this ReturnRequest r) => new()
+    {
+        Id = r.Id,
+        ReferenceCode = r.ReferenceCode,
+        Status = r.Status.ToString(),
+        Reason = r.Reason.ToString(),
+        CustomerName = r.CustomerName,
+        PickupCity = r.PickupCity,
+        ScheduledPickupAt = r.ScheduledPickupAt,
+        RefundAmount = r.RefundAmount,
+        ItemCount = r.Items.Count,
+        ShipmentId = r.ShipmentId,
+        OrderId = r.OrderId,
+        CreatedAt = r.CreatedAt,
+    };
+
+    public static ReturnItemDto ToDto(this ReturnItem i) => new()
+    {
+        Id = i.Id,
+        ProductId = i.ProductId,
+        ProductName = i.Product?.Name,
+        Sku = i.Sku,
+        Description = i.Description,
+        Quantity = i.Quantity,
+        QuantityReceived = i.QuantityReceived,
+        RestockedQuantity = i.RestockedQuantity,
+        Condition = i.Condition.ToString(),
+        Disposition = i.Disposition.ToString(),
+        UnitRefundAmount = i.UnitRefundAmount,
+        Notes = i.Notes,
+    };
+
+    public static ReturnInspectionDto ToDto(this ReturnInspection i) => new()
+    {
+        Id = i.Id,
+        InspectedByUserId = i.InspectedByUserId,
+        InspectedByName = i.InspectedBy?.FullName,
+        InspectedAt = i.InspectedAt,
+        OverallCondition = i.OverallCondition.ToString(),
+        Summary = i.Summary,
+        RecommendedResolution = i.RecommendedResolution.ToString(),
+        PhotosJson = i.PhotosJson,
+        CreatedAt = i.CreatedAt,
+    };
+
+    public static ReturnEventDto ToDto(this ReturnEvent e) => new()
+    {
+        Id = e.Id,
+        Type = e.Type.ToString(),
+        FromStatus = e.FromStatus?.ToString(),
+        ToStatus = e.ToStatus?.ToString(),
+        Note = e.Note,
+        ActorUserId = e.ActorUserId,
+        ActorName = e.Actor?.FullName,
+        CreatedAt = e.CreatedAt,
+    };
 }
