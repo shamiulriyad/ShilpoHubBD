@@ -223,6 +223,8 @@ public static class DependencyInjection
         services.AddScoped<IPickupSchedulingService, PickupSchedulingService>();
         services.AddScoped<IRouteOptimizationService, RouteOptimizationService>();
         services.AddScoped<IDeliveryTrackingService, DeliveryTrackingService>();
+        services.AddScoped<IWarehouseService, WarehouseService>();
+        services.AddScoped<IWarehouseStockService, WarehouseStockService>();
 
         services.AddScoped<IMuseumItemService, MuseumItemService>();
         services.AddScoped<IVillageTourService, VillageTourService>();

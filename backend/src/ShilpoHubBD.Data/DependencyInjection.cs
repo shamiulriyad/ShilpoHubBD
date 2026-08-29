@@ -139,6 +139,8 @@ public static class DependencyInjection
 		services.AddScoped<IPickupRequestRepository, PickupRequestRepository>();
 		services.AddScoped<IRouteOptimizationRepository, RouteOptimizationRepository>();
 		services.AddScoped<IDeliveryTrackingRepository, DeliveryTrackingRepository>();
+		services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+		services.AddScoped<IWarehouseStockRepository, WarehouseStockRepository>();
 
 		services.AddScoped<IMuseumItemRepository, MuseumItemRepository>();
 		services.AddScoped<IVillageTourStopRepository, VillageTourStopRepository>();

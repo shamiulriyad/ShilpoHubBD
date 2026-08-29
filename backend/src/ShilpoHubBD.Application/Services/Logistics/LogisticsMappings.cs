@@ -423,4 +423,161 @@ internal static class LogisticsMappings
             })
             .ToList(),
     };
+
+    // ---- Warehouse management -------------------------------------
+
+    public static WarehouseDto ToDto(this Warehouse w, int stockItemCount = 0) => new()
+    {
+        Id = w.Id,
+        Code = w.Code,
+        LogisticsPartnerProfileId = w.LogisticsPartnerProfileId,
+        LogisticsPartnerName = w.Profile?.CompanyName,
+        CreatedByUserId = w.CreatedByUserId,
+        CreatedByName = w.CreatedBy?.FullName,
+        Name = w.Name,
+        Type = w.Type.ToString(),
+        Status = w.Status.ToString(),
+        AddressLine = w.AddressLine,
+        City = w.City,
+        DistrictId = w.DistrictId,
+        DistrictName = w.District?.Name,
+        PostalCode = w.PostalCode,
+        Latitude = w.Latitude,
+        Longitude = w.Longitude,
+        ContactPersonName = w.ContactPersonName,
+        ContactPhone = w.ContactPhone,
+        TotalCapacityUnits = w.TotalCapacityUnits,
+        UsedCapacityUnits = w.UsedCapacityUnits,
+        HasColdChain = w.HasColdChain,
+        HandlesHazardous = w.HandlesHazardous,
+        HandlesReturns = w.HandlesReturns,
+        Notes = w.Notes,
+        ZoneCount = w.Zones.Count,
+        BinCount = w.Bins.Count,
+        StockItemCount = stockItemCount,
+        CreatedAt = w.CreatedAt,
+        UpdatedAt = w.UpdatedAt,
+        Zones = w.Zones
+            .OrderBy(z => z.Code)
+            .Select(z => z.ToDto())
+            .ToList(),
+        Bins = w.Bins
+            .OrderBy(b => b.Code)
+            .Select(b => b.ToDto())
+            .ToList(),
+    };
+
+    public static WarehouseListItemDto ToListItemDto(this Warehouse w, int zoneCount, int binCount) => new()
+    {
+        Id = w.Id,
+        Code = w.Code,
+        Name = w.Name,
+        Type = w.Type.ToString(),
+        Status = w.Status.ToString(),
+        City = w.City,
+        DistrictName = w.District?.Name,
+        TotalCapacityUnits = w.TotalCapacityUnits,
+        UsedCapacityUnits = w.UsedCapacityUnits,
+        HasColdChain = w.HasColdChain,
+        ZoneCount = zoneCount,
+        BinCount = binCount,
+        CreatedAt = w.CreatedAt,
+    };
+
+    public static WarehouseZoneDto ToDto(this WarehouseZone z) => new()
+    {
+        Id = z.Id,
+        Code = z.Code,
+        Name = z.Name,
+        Type = z.Type.ToString(),
+        IsColdChain = z.IsColdChain,
+        CapacityUnits = z.CapacityUnits,
+        IsActive = z.IsActive,
+        Notes = z.Notes,
+    };
+
+    public static WarehouseBinDto ToDto(this WarehouseBin b) => new()
+    {
+        Id = b.Id,
+        WarehouseZoneId = b.WarehouseZoneId,
+        ZoneCode = b.Zone?.Code,
+        Code = b.Code,
+        Label = b.Label,
+        Type = b.Type.ToString(),
+        CapacityUnits = b.CapacityUnits,
+        OccupiedUnits = b.OccupiedUnits,
+        IsPickable = b.IsPickable,
+        IsActive = b.IsActive,
+    };
+
+    public static WarehouseStockItemDto ToDto(this WarehouseStockItem i, IEnumerable<WarehouseStockMovement>? movements = null) => new()
+    {
+        Id = i.Id,
+        WarehouseId = i.WarehouseId,
+        WarehouseCode = i.Warehouse?.Code,
+        WarehouseName = i.Warehouse?.Name,
+        WarehouseBinId = i.WarehouseBinId,
+        BinCode = i.Bin?.Code,
+        ProductId = i.ProductId,
+        ProductName = i.Product?.Name,
+        OwnerUserId = i.OwnerUserId,
+        OwnerName = i.Owner?.FullName,
+        Sku = i.Sku,
+        Description = i.Description,
+        UnitOfMeasure = i.UnitOfMeasure,
+        QuantityOnHand = i.QuantityOnHand,
+        QuantityReserved = i.QuantityReserved,
+        QuantityAvailable = i.QuantityAvailable,
+        BatchNumber = i.BatchNumber,
+        ExpiryDate = i.ExpiryDate,
+        Status = i.Status.ToString(),
+        UnitValue = i.UnitValue,
+        ReceivedAt = i.ReceivedAt,
+        LastMovementAt = i.LastMovementAt,
+        CreatedAt = i.CreatedAt,
+        UpdatedAt = i.UpdatedAt,
+        Movements = (movements ?? Enumerable.Empty<WarehouseStockMovement>())
+            .OrderByDescending(m => m.OccurredAt)
+            .Select(m => m.ToDto())
+            .ToList(),
+    };
+
+    public static WarehouseStockItemListItemDto ToListItemDto(this WarehouseStockItem i) => new()
+    {
+        Id = i.Id,
+        WarehouseId = i.WarehouseId,
+        BinCode = i.Bin?.Code,
+        Sku = i.Sku,
+        Description = i.Description,
+        UnitOfMeasure = i.UnitOfMeasure,
+        QuantityOnHand = i.QuantityOnHand,
+        QuantityReserved = i.QuantityReserved,
+        QuantityAvailable = i.QuantityAvailable,
+        BatchNumber = i.BatchNumber,
+        ExpiryDate = i.ExpiryDate,
+        Status = i.Status.ToString(),
+        ProductName = i.Product?.Name,
+        LastMovementAt = i.LastMovementAt,
+    };
+
+    public static WarehouseStockMovementDto ToDto(this WarehouseStockMovement m) => new()
+    {
+        Id = m.Id,
+        WarehouseId = m.WarehouseId,
+        WarehouseStockItemId = m.WarehouseStockItemId,
+        Type = m.Type.ToString(),
+        Quantity = m.Quantity,
+        QuantityOnHandAfter = m.QuantityOnHandAfter,
+        FromBinId = m.FromBinId,
+        ToBinId = m.ToBinId,
+        Sku = m.Sku,
+        ReferenceType = m.ReferenceType,
+        ReferenceId = m.ReferenceId,
+        Reason = m.Reason,
+        Note = m.Note,
+        PerformedByUserId = m.PerformedByUserId,
+        PerformedByName = m.PerformedBy?.FullName,
+        OccurredAt = m.OccurredAt,
+        CreatedAt = m.CreatedAt,
+    };
 }

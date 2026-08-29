@@ -341,6 +341,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<Shipment> Shipments => Set<Shipment>();
 	public DbSet<ShipmentTrackingEvent> ShipmentTrackingEvents => Set<ShipmentTrackingEvent>();
 	public DbSet<DeliveryAttempt> DeliveryAttempts => Set<DeliveryAttempt>();
+	public DbSet<Warehouse> Warehouses => Set<Warehouse>();
+	public DbSet<WarehouseZone> WarehouseZones => Set<WarehouseZone>();
+	public DbSet<WarehouseBin> WarehouseBins => Set<WarehouseBin>();
+	public DbSet<WarehouseStockItem> WarehouseStockItems => Set<WarehouseStockItem>();
+	public DbSet<WarehouseStockMovement> WarehouseStockMovements => Set<WarehouseStockMovement>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
