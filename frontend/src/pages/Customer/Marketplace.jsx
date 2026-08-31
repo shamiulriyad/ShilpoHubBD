@@ -1,15 +1,29 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, SearchBar, SectionHeader, Badge, CategoryFilter, MarketplaceFilter } from '../../components/ui';
+import { PageHeader, SearchBar, SectionHeader, Badge, CategoryFilter, MarketplaceFilter, AsyncState } from '../../components/ui';
 import { ProductCard, EntityCard, ProducerCard } from '../../components/cards';
-import { products, categories, producers, workshops } from '../../data/mockData';
+import { useCategories } from '../../hooks/useCategories';
+import { useProducts } from '../../hooks/useProducts';
+import { useRecommendedForMe } from '../../hooks/useRecommendations';
+import { useAuth } from '../../hooks/useAuth';
+import { toProductCardItem, toCategoryCardItem } from '../../utils/productAdapters';
+// Producer directory has no backend endpoint yet (no ProducersController) — kept on mock data.
+import { producers, workshops } from '../../data/mockData';
 
 export default function Marketplace() {
+  const { isAuthenticated } = useAuth();
   const liveWorkshops = workshops.filter((w) => w.status === 'live');
-  const [activeCategory, setActiveCategory] = useState('All');
-  const filteredProducts =
-    activeCategory === 'All' ? products : products.filter((p) => p.category === activeCategory);
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
+
+  const categoriesQuery = useCategories();
+  const recommendedQuery = useRecommendedForMe(4);
+  const productsQuery = useProducts({ categoryId: activeCategoryId || undefined, pageSize: 12 });
+
+  const categoryOptions = [
+    { id: null, name: 'All' },
+    ...(categoriesQuery.data || []).map((c) => ({ id: c.id, name: c.name })),
+  ];
 
   return (
     <div>
@@ -40,43 +54,56 @@ export default function Marketplace() {
 
       <SectionHeader eyebrow="Browse" title="Shop by Category" />
       <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        {categories.map((category) => (
-          <EntityCard key={category.id} title={category.name} subtitle={`${category.itemCount} items`} to={routePaths.customerMarketplace} />
-        ))}
+        <AsyncState isLoading={categoriesQuery.isLoading} isError={categoriesQuery.isError} error={categoriesQuery.error}>
+          {categoriesQuery.data?.map((category) => {
+            const item = toCategoryCardItem(category);
+            return (
+              <EntityCard
+                key={item.id}
+                title={item.name}
+                subtitle={`${item.itemCount} items`}
+                to={routePaths.customerMarketplace}
+              />
+            );
+          })}
+        </AsyncState>
       </div>
 
-      <SectionHeader eyebrow="For You" title="Recommended for You" />
-      <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {products.slice(2, 6).map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            to={routePaths.customerProductDetails.replace(':productId', product.id)}
-          />
-        ))}
-      </div>
+      {isAuthenticated && (
+        <>
+          <SectionHeader eyebrow="For You" title="Recommended for You" />
+          <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            <AsyncState isLoading={recommendedQuery.isLoading} isError={recommendedQuery.isError} error={recommendedQuery.error}>
+              {recommendedQuery.data?.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={toProductCardItem(product)}
+                  to={routePaths.customerProductDetails.replace(':productId', product.id)}
+                />
+              ))}
+            </AsyncState>
+          </div>
+        </>
+      )}
 
       <SectionHeader eyebrow="Featured" title="Featured Products" />
       <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
         <MarketplaceFilter className="hidden lg:block" />
         <div>
-          <CategoryFilter
-            className="mb-6"
-            options={['All', ...categories.map((c) => c.name)]}
-            active={activeCategory}
-            onChange={setActiveCategory}
-          />
+          <CategoryFilter className="mb-6" options={categoryOptions} active={activeCategoryId} onChange={setActiveCategoryId} />
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                to={routePaths.customerProductDetails.replace(':productId', product.id)}
-              />
-            ))}
-            {filteredProducts.length === 0 && (
-              <p className="col-span-full text-sm text-body/60">No products in this category yet.</p>
-            )}
+            <AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}>
+              {productsQuery.data?.items.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={toProductCardItem(product)}
+                  to={routePaths.customerProductDetails.replace(':productId', product.id)}
+                />
+              ))}
+              {productsQuery.data?.items.length === 0 && (
+                <p className="col-span-full text-sm text-body/60">No products in this category yet.</p>
+              )}
+            </AsyncState>
           </div>
         </div>
       </div>

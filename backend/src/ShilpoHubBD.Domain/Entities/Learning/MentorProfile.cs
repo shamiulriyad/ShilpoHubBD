@@ -14,8 +14,13 @@ public class MentorProfile
     public int YearsOfExperience { get; set; }
     public bool IsActive { get; set; } = true;
 
+    public string? Location { get; set; }
+    public string? AvailabilityNote { get; set; }
+    public string? PreferredCategory { get; set; }
+
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
     public ICollection<Course> Courses { get; set; } = new List<Course>();
+    public ICollection<MentorSkill> Skills { get; set; } = new List<MentorSkill>();
 }

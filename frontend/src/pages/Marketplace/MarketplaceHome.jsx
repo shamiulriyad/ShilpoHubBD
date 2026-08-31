@@ -1,10 +1,17 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, SearchBar, SectionHeader } from '../../components/ui';
+import { PageHeader, SearchBar, SectionHeader, AsyncState } from '../../components/ui';
 import { ProductCard, EntityCard } from '../../components/cards';
-import { products, categories, producers } from '../../data/mockData';
+import { useCategories } from '../../hooks/useCategories';
+import { useFeaturedProducts } from '../../hooks/useProducts';
+import { toProductCardItem, toCategoryCardItem } from '../../utils/productAdapters';
+// Producer directory has no backend endpoint yet (no ProducersController) — kept on mock data.
+import { producers } from '../../data/mockData';
 
 export default function MarketplaceHome() {
+  const categoriesQuery = useCategories();
+  const featuredQuery = useFeaturedProducts(8);
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <PageHeader
@@ -19,9 +26,19 @@ export default function MarketplaceHome() {
 
       <SectionHeader eyebrow="Browse" title="Shop by Category" />
       <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        {categories.map((category) => (
-          <EntityCard key={category.id} title={category.name} subtitle={`${category.itemCount} items`} to={routePaths.marketplaceCategories} />
-        ))}
+        <AsyncState isLoading={categoriesQuery.isLoading} isError={categoriesQuery.isError} error={categoriesQuery.error}>
+          {categoriesQuery.data?.map((category) => {
+            const item = toCategoryCardItem(category);
+            return (
+              <EntityCard
+                key={item.id}
+                title={item.name}
+                subtitle={`${item.itemCount} items`}
+                to={routePaths.marketplaceCategories}
+              />
+            );
+          })}
+        </AsyncState>
       </div>
 
       <SectionHeader
@@ -34,13 +51,15 @@ export default function MarketplaceHome() {
         }
       />
       <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            to={routePaths.marketplaceProductDetails.replace(':productId', product.id)}
-          />
-        ))}
+        <AsyncState isLoading={featuredQuery.isLoading} isError={featuredQuery.isError} error={featuredQuery.error}>
+          {featuredQuery.data?.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={toProductCardItem(product)}
+              to={routePaths.marketplaceProductDetails.replace(':productId', product.id)}
+            />
+          ))}
+        </AsyncState>
       </div>
 
       <SectionHeader

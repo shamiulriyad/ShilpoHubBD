@@ -19,12 +19,23 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.Property(c => c.UpdatedAt).IsRequired();
 
         builder.HasIndex(c => c.MentorId);
+        builder.HasIndex(c => c.TrainerProfileId);
         builder.HasIndex(c => c.Status);
 
         builder.HasOne(c => c.Mentor)
             .WithMany(m => m.Courses)
             .HasForeignKey(c => c.MentorId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(c => c.TrainerProfile)
+            .WithMany()
+            .HasForeignKey(c => c.TrainerProfileId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(c => c.CourseCategory)
+            .WithMany()
+            .HasForeignKey(c => c.CategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(c => c.Lessons)
             .WithOne(l => l.Course)

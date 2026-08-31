@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { Button, Badge } from '../../components/ui';
-import { orders } from '../../data/mockData';
 
 export default function OrderSuccess() {
-  const order = orders[0];
+  const location = useLocation();
+  const order = location.state?.order;
 
   return (
     <div className="mx-auto max-w-lg py-16 text-center">
@@ -16,27 +16,29 @@ export default function OrderSuccess() {
         Thank you for supporting Bangladesh’s artisans. A confirmation has been sent to your email.
       </p>
 
-      <div className="mt-8 space-y-3 rounded-xl border border-border bg-surface p-5 text-left">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-semibold text-heading">{order.id}</p>
-          <Badge tone="success">{order.status}</Badge>
+      {order && (
+        <div className="mt-8 space-y-3 rounded-xl border border-border bg-surface p-5 text-left">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-semibold text-heading">{order.orderNumber}</p>
+            <Badge tone="success">{order.status}</Badge>
+          </div>
+          <div className="flex justify-between text-sm text-body/70">
+            <span>Items</span>
+            <span>{order.items?.length ?? '—'}</span>
+          </div>
+          <div className="flex justify-between text-sm text-body/70">
+            <span>Order Date</span>
+            <span>{new Date(order.createdAt).toLocaleDateString()}</span>
+          </div>
+          <div className="flex justify-between border-t border-border pt-3 text-sm font-semibold text-heading">
+            <span>Total Paid</span>
+            <span>৳ {order.total.toLocaleString()}</span>
+          </div>
         </div>
-        <div className="flex justify-between text-sm text-body/70">
-          <span>Items</span>
-          <span>{order.items}</span>
-        </div>
-        <div className="flex justify-between text-sm text-body/70">
-          <span>Order Date</span>
-          <span>{order.date}</span>
-        </div>
-        <div className="flex justify-between border-t border-border pt-3 text-sm font-semibold text-heading">
-          <span>Total Paid</span>
-          <span>৳ {order.total.toLocaleString()}</span>
-        </div>
-      </div>
+      )}
 
       <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <Link to={routePaths.customer}>
+        <Link to={routePaths.customerOrders}>
           <Button variant="secondary">View My Orders</Button>
         </Link>
         <Link to={routePaths.customerMarketplace}>

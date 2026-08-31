@@ -10,4 +10,6 @@ public interface IMentorService
     Task<MentorProfileDto> GetMyProfileAsync(Guid userId, CancellationToken cancellationToken);
     Task<MentorProfileDto> GetByIdAsync(Guid mentorId, CancellationToken cancellationToken);
     Task<PagedResult<MentorListItemDto>> GetAllAsync(int page, int pageSize, CancellationToken cancellationToken);
+    Task<MentorProfileDto> AddSkillAsync(Guid userId, AddMentorSkillRequest request, CancellationToken cancellationToken);
+    Task<MentorProfileDto> RemoveSkillAsync(Guid userId, Guid heritageSkillId, CancellationToken cancellationToken);
 }

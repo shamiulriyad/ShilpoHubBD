@@ -16,11 +16,23 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
         builder.Property(r => r.CreatedAt).IsRequired();
         builder.Property(r => r.UpdatedAt).IsRequired();
 
-        builder.HasIndex(r => new { r.ProductId, r.UserId }).IsUnique();
+        builder.HasIndex(r => new { r.ProductId, r.UserId }).IsUnique().HasFilter("\"ProductId\" IS NOT NULL");
+        builder.HasIndex(r => new { r.HeritagePlaceId, r.UserId }).IsUnique().HasFilter("\"HeritagePlaceId\" IS NOT NULL");
+        builder.HasIndex(r => new { r.BookingId, r.UserId }).IsUnique().HasFilter("\"BookingId\" IS NOT NULL");
 
         builder.HasOne(r => r.Product)
             .WithMany()
             .HasForeignKey(r => r.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(r => r.HeritagePlace)
+            .WithMany()
+            .HasForeignKey(r => r.HeritagePlaceId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(r => r.Booking)
+            .WithMany()
+            .HasForeignKey(r => r.BookingId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(r => r.User)

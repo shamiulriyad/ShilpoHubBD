@@ -3,7 +3,9 @@ namespace ShilpoHubBD.Application.DTOs.Reviews;
 public class ReviewDto
 {
     public Guid Id { get; set; }
-    public Guid ProductId { get; set; }
+    public Guid? ProductId { get; set; }
+    public Guid? HeritagePlaceId { get; set; }
+    public Guid? BookingId { get; set; }
     public Guid UserId { get; set; }
     public string ReviewerName { get; set; } = string.Empty;
     public int Rating { get; set; }

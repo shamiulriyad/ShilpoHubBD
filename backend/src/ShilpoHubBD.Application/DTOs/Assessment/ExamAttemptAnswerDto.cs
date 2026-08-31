@@ -1,0 +1,16 @@
+namespace ShilpoHubBD.Application.DTOs.Assessment;
+
+public class ExamAttemptAnswerDto
+{
+    public Guid QuestionId { get; set; }
+    public string QuestionBody { get; set; } = string.Empty;
+    public string QuestionType { get; set; } = string.Empty;
+    public Guid? SelectedOptionId { get; set; }
+    public string? SelectedOptionText { get; set; }
+    public Guid? CorrectOptionId { get; set; }
+    public string? CorrectOptionText { get; set; }
+    public string? EssayAnswerText { get; set; }
+    public bool? IsCorrect { get; set; }
+    public int? PointsAwarded { get; set; }
+    public string? Feedback { get; set; }
+}

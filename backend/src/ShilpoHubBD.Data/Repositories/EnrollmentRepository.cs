@@ -16,6 +16,8 @@ public class EnrollmentRepository : IEnrollmentRepository
     private IQueryable<CourseEnrollment> WithDetails()
         => _context.CourseEnrollments
             .Include(e => e.Course).ThenInclude(c => c.Lessons)
+            .Include(e => e.Course).ThenInclude(c => c.Mentor).ThenInclude(m => m!.User)
+            .Include(e => e.Course).ThenInclude(c => c.TrainerProfile).ThenInclude(t => t!.User)
             .Include(e => e.Apprentice)
             .Include(e => e.LessonProgress).ThenInclude(p => p.Lesson)
             .AsSplitQuery();

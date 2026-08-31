@@ -5,4 +5,5 @@ public enum BadgeType
     District,
     Festival,
     Purchase,
+    CheckIn,
 }

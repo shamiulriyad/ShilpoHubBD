@@ -11,5 +11,6 @@ public class BadgeDto
     public string? DistrictName { get; set; }
     public string? FestivalName { get; set; }
     public int? RequiredPurchaseCount { get; set; }
+    public int? RequiredCheckInCount { get; set; }
     public DateTime CreatedAt { get; set; }
 }

@@ -1,11 +1,15 @@
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, FilterPanel } from '../../components/ui';
+import { PageHeader, FilterPanel, AsyncState } from '../../components/ui';
 import { FestivalCard } from '../../components/cards';
-import { festivals, districts } from '../../data/mockData';
-
-const filterGroups = [{ label: 'District', options: districts.slice(0, 5).map((d) => d.name) }];
+import { useHeritageFestivals } from '../../hooks/useHeritageFestivals';
+import { useDistricts } from '../../hooks/useDistricts';
 
 export default function FestivalDirectory() {
+  const festivalsQuery = useHeritageFestivals({ pageSize: 50 });
+  const districtsQuery = useDistricts();
+
+  const filterGroups = [{ label: 'District', options: (districtsQuery.data || []).slice(0, 8).map((d) => d.name) }];
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <PageHeader
@@ -19,11 +23,19 @@ export default function FestivalDirectory() {
       />
       <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
         <FilterPanel groups={filterGroups} />
-        <div className="grid gap-4 sm:grid-cols-2">
-          {festivals.map((festival) => (
-            <FestivalCard key={festival.id} festival={festival} />
-          ))}
-        </div>
+        <AsyncState isLoading={festivalsQuery.isLoading} isError={festivalsQuery.isError} error={festivalsQuery.error}>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {festivalsQuery.data?.items.map((festival) => (
+              <FestivalCard
+                key={festival.id}
+                festival={{ name: festival.name, date: festival.startDate, district: festival.districtName }}
+              />
+            ))}
+            {festivalsQuery.data?.items.length === 0 && (
+              <p className="col-span-full text-sm text-body/60">No festivals scheduled right now.</p>
+            )}
+          </div>
+        </AsyncState>
       </div>
     </div>
   );

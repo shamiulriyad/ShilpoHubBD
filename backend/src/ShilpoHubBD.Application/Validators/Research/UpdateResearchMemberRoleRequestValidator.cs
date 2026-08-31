@@ -1,0 +1,16 @@
+using FluentValidation;
+using ShilpoHubBD.Application.DTOs.Research;
+using ShilpoHubBD.Domain.Entities.Research;
+
+namespace ShilpoHubBD.Application.Validators.Research;
+
+public class UpdateResearchMemberRoleRequestValidator : AbstractValidator<UpdateResearchMemberRoleRequest>
+{
+    public UpdateResearchMemberRoleRequestValidator()
+    {
+        RuleFor(x => x.Role)
+            .NotEmpty()
+            .Must(r => Enum.TryParse<ResearchRole>(r, true, out _))
+            .WithMessage("Role must be one of: Viewer, Contributor, Researcher, Admin.");
+    }
+}

@@ -4,7 +4,36 @@ import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { ProtectedRoute } from './ProtectedRoute';
 import { routePaths } from './routePaths';
-import { adminSidebarNav, customerSidebarNav } from '../data/navigation';
+import { adminSidebarNav, customerSidebarNav, producerSidebarNav, businessPartnerSidebarNav } from '../data/navigation';
+
+import ProducerDashboard from '../pages/Producer/ProducerDashboard';
+import ProducerContracts from '../pages/Producer/Contracts';
+import ProducerQuotations from '../pages/Producer/Quotations';
+import ProducerManufacturingPartnerships from '../pages/Producer/ManufacturingPartnerships';
+import ProducerDesignCollaborations from '../pages/Producer/DesignCollaborations';
+import ProducerProductDevelopment from '../pages/Producer/ProductDevelopment';
+import ProducerCsrSponsorship from '../pages/Producer/CsrSponsorship';
+import ProducerInvestmentOpportunities from '../pages/Producer/InvestmentOpportunities';
+import ProducerInventory from '../pages/Producer/Inventory';
+import ProducerOrders from '../pages/Producer/Orders';
+import ProducerSustainability from '../pages/Producer/Sustainability';
+import ProducerAiBusinessAssistant from '../pages/Producer/AiBusinessAssistant';
+
+import BusinessPartnerDashboard from '../pages/BusinessPartner/BusinessPartnerDashboard';
+import BusinessPartnerProfile from '../pages/BusinessPartner/Profile';
+import BusinessPartnerContracts from '../pages/BusinessPartner/Contracts';
+import BusinessPartnerQuotations from '../pages/BusinessPartner/Quotations';
+import BusinessPartnerProcurements from '../pages/BusinessPartner/Procurements';
+import BusinessPartnerManufacturingPartnerships from '../pages/BusinessPartner/ManufacturingPartnerships';
+import BusinessPartnerDesignCollaborations from '../pages/BusinessPartner/DesignCollaborations';
+import BusinessPartnerProductDevelopment from '../pages/BusinessPartner/ProductDevelopment';
+import BusinessPartnerSponsorshipMarketplace from '../pages/BusinessPartner/SponsorshipMarketplace';
+import BusinessPartnerInvestmentMarketplace from '../pages/BusinessPartner/InvestmentMarketplace';
+import BusinessPartnerSupplierDiscovery from '../pages/BusinessPartner/SupplierDiscovery';
+import BusinessPartnerSupplierMatching from '../pages/BusinessPartner/SupplierMatching';
+import BusinessPartnerProducerComparison from '../pages/BusinessPartner/ProducerComparison';
+import BusinessPartnerAnalytics from '../pages/BusinessPartner/Analytics';
+import BusinessPartnerAiIntelligence from '../pages/BusinessPartner/AiIntelligence';
 
 import HomePage from '../pages/Home/HomePage';
 
@@ -35,6 +64,11 @@ import FestivalDirectory from '../pages/Tourism/FestivalDirectory';
 import CulturalEvents from '../pages/Tourism/CulturalEvents';
 import VillageExplorer from '../pages/Tourism/VillageExplorer';
 import TourRoutes from '../pages/Tourism/TourRoutes';
+import LocalCuisines from '../pages/Tourism/LocalCuisines';
+import TouristServices from '../pages/Tourism/TouristServices';
+import TouristServiceDetails from '../pages/Tourism/TouristServiceDetails';
+import MyBookings from '../pages/Tourism/MyBookings';
+import AiTourismPlanner from '../pages/Tourism/AiTourismPlanner';
 import TravelPassport from '../pages/Tourism/TravelPassport';
 
 import CourseCatalog from '../pages/Academy/CourseCatalog';
@@ -44,6 +78,12 @@ import Certifications from '../pages/Academy/Certifications';
 import LearningDashboard from '../pages/Academy/LearningDashboard';
 import Certificates from '../pages/Academy/Certificates';
 import Portfolio from '../pages/Academy/Portfolio';
+import LiveClasses from '../pages/Academy/LiveClasses';
+import LiveClassDetails from '../pages/Academy/LiveClassDetails';
+import ExamDetails from '../pages/Academy/ExamDetails';
+import QuizDetails from '../pages/Academy/QuizDetails';
+import AssignmentDetails from '../pages/Academy/AssignmentDetails';
+import SkillAssessments from '../pages/Academy/SkillAssessments';
 
 import InnovationHubHome from '../pages/Research/InnovationHubHome';
 import ResearchWorkspace from '../pages/Research/ResearchWorkspace';
@@ -165,11 +205,18 @@ const router = createBrowserRouter([
       { path: routePaths.tourismVillages, element: <VillageExplorer /> },
       { path: routePaths.tourismRoutes, element: <TourRoutes /> },
       { path: routePaths.tourismPassport, element: <TravelPassport /> },
+      { path: routePaths.tourismCuisines, element: <LocalCuisines /> },
+      { path: routePaths.tourismServices, element: <TouristServices /> },
+      { path: routePaths.tourismServiceDetails, element: <TouristServiceDetails /> },
+      { path: routePaths.tourismBookings, element: <MyBookings /> },
+      { path: routePaths.tourismAiPlanner, element: <AiTourismPlanner /> },
 
       { path: routePaths.academy, element: <CourseCatalog /> },
       { path: routePaths.academyCourseDetails, element: <CourseDetails /> },
       { path: routePaths.academyMentors, element: <Mentors /> },
       { path: routePaths.academyCertifications, element: <Certifications /> },
+      { path: routePaths.academyLiveClasses, element: <LiveClasses /> },
+      { path: routePaths.academyLiveClassDetails, element: <LiveClassDetails /> },
 
       { path: routePaths.research, element: <InnovationHubHome /> },
       { path: routePaths.researchWorkspace, element: <ResearchWorkspace /> },
@@ -216,6 +263,10 @@ const router = createBrowserRouter([
           { path: routePaths.academyLearning, element: <LearningDashboard /> },
           { path: routePaths.academyCertificates, element: <Certificates /> },
           { path: routePaths.academyPortfolio, element: <Portfolio /> },
+          { path: routePaths.academyExamDetails, element: <ExamDetails /> },
+          { path: routePaths.academyQuizDetails, element: <QuizDetails /> },
+          { path: routePaths.academyAssignmentDetails, element: <AssignmentDetails /> },
+          { path: routePaths.academySkillAssessments, element: <SkillAssessments /> },
 
           { path: routePaths.visitor, element: <VisitorPage /> },
           { path: routePaths.artisan, element: <ArtisanPage /> },
@@ -283,6 +334,43 @@ const router = createBrowserRouter([
           { path: routePaths.customerAIFashionMatching, element: <AIFashionMatching /> },
           { path: routePaths.customerAIGiftRecommendation, element: <AIGiftRecommendation /> },
           { path: routePaths.customerAISimilarProducts, element: <AISimilarProducts /> },
+        ],
+      },
+      {
+        element: <DashboardLayout navItems={producerSidebarNav} sidebarTitle="Producer" />,
+        children: [
+          { path: routePaths.producer, element: <ProducerDashboard /> },
+          { path: routePaths.producerContracts, element: <ProducerContracts /> },
+          { path: routePaths.producerQuotations, element: <ProducerQuotations /> },
+          { path: routePaths.producerPartnerships, element: <ProducerManufacturingPartnerships /> },
+          { path: routePaths.producerDesignCollaborations, element: <ProducerDesignCollaborations /> },
+          { path: routePaths.producerProductDevelopment, element: <ProducerProductDevelopment /> },
+          { path: routePaths.producerCsr, element: <ProducerCsrSponsorship /> },
+          { path: routePaths.producerInvestments, element: <ProducerInvestmentOpportunities /> },
+          { path: routePaths.producerInventory, element: <ProducerInventory /> },
+          { path: routePaths.producerOrders, element: <ProducerOrders /> },
+          { path: routePaths.producerSustainability, element: <ProducerSustainability /> },
+          { path: routePaths.producerAiAssistant, element: <ProducerAiBusinessAssistant /> },
+        ],
+      },
+      {
+        element: <DashboardLayout navItems={businessPartnerSidebarNav} sidebarTitle="Business Partner" />,
+        children: [
+          { path: routePaths.businessPartner, element: <BusinessPartnerDashboard /> },
+          { path: routePaths.businessPartnerProfile, element: <BusinessPartnerProfile /> },
+          { path: routePaths.businessPartnerContracts, element: <BusinessPartnerContracts /> },
+          { path: routePaths.businessPartnerQuotations, element: <BusinessPartnerQuotations /> },
+          { path: routePaths.businessPartnerProcurements, element: <BusinessPartnerProcurements /> },
+          { path: routePaths.businessPartnerPartnerships, element: <BusinessPartnerManufacturingPartnerships /> },
+          { path: routePaths.businessPartnerDesignCollaborations, element: <BusinessPartnerDesignCollaborations /> },
+          { path: routePaths.businessPartnerProductDevelopment, element: <BusinessPartnerProductDevelopment /> },
+          { path: routePaths.businessPartnerCsr, element: <BusinessPartnerSponsorshipMarketplace /> },
+          { path: routePaths.businessPartnerInvestments, element: <BusinessPartnerInvestmentMarketplace /> },
+          { path: routePaths.businessPartnerSupplierDiscovery, element: <BusinessPartnerSupplierDiscovery /> },
+          { path: routePaths.businessPartnerSupplierMatching, element: <BusinessPartnerSupplierMatching /> },
+          { path: routePaths.businessPartnerProducerComparison, element: <BusinessPartnerProducerComparison /> },
+          { path: routePaths.businessPartnerAnalytics, element: <BusinessPartnerAnalytics /> },
+          { path: routePaths.businessPartnerAiIntelligence, element: <BusinessPartnerAiIntelligence /> },
         ],
       },
     ],

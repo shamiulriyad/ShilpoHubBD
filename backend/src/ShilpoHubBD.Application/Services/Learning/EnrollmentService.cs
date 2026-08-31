@@ -32,7 +32,7 @@ public class EnrollmentService : IEnrollmentService
             throw new ConflictException("You can only enroll in published courses.");
         }
 
-        if (course.Mentor.UserId == apprenticeUserId)
+        if (AuthorUserId(course) == apprenticeUserId)
         {
             throw new ConflictException("You cannot enroll in your own course.");
         }
@@ -79,7 +79,7 @@ public class EnrollmentService : IEnrollmentService
         var enrollment = await _enrollmentRepository.GetByIdAsync(enrollmentId, cancellationToken)
             ?? throw new NotFoundException("Enrollment not found.");
 
-        if (!isAdmin && enrollment.ApprenticeId != userId && enrollment.Course.Mentor.UserId != userId)
+        if (!isAdmin && enrollment.ApprenticeId != userId && AuthorUserId(enrollment.Course) != userId)
         {
             throw new UnauthorizedAccessException("You do not have permission to view this enrollment.");
         }
@@ -148,11 +148,14 @@ public class EnrollmentService : IEnrollmentService
             var certificate = new TrainingCertificate
             {
                 Id = Guid.NewGuid(),
+                Type = CertificateType.Course,
+                RecipientUserId = enrollment.ApprenticeId,
+                IssuerUserId = AuthorUserId(enrollment.Course),
                 EnrollmentId = enrollment.Id,
                 CertificateNumber = GenerateCertificateNumber(now),
-                CourseTitle = enrollment.Course.Title,
-                ApprenticeName = enrollment.Apprentice.FullName,
-                MentorName = enrollment.Course.Mentor.User.FullName,
+                Title = enrollment.Course.Title,
+                RecipientName = enrollment.Apprentice.FullName,
+                IssuerName = AuthorNameOf(enrollment.Course),
                 IsRevoked = false,
                 IssuedAt = now,
             };
@@ -169,7 +172,7 @@ public class EnrollmentService : IEnrollmentService
         var course = await _courseRepository.GetByIdAsync(courseId, cancellationToken)
             ?? throw new NotFoundException("Course not found.");
 
-        if (course.Mentor.UserId != userId)
+        if (AuthorUserId(course) != userId)
         {
             throw new UnauthorizedAccessException("You do not have permission to manage this course.");
         }
@@ -182,13 +185,19 @@ public class EnrollmentService : IEnrollmentService
         var enrollment = await _enrollmentRepository.GetByIdAsync(enrollmentId, cancellationToken)
             ?? throw new NotFoundException("Enrollment not found.");
 
-        if (enrollment.Course.Mentor.UserId != mentorUserId)
+        if (AuthorUserId(enrollment.Course) != mentorUserId)
         {
             throw new UnauthorizedAccessException("You do not have permission to manage this enrollment.");
         }
 
         return enrollment;
     }
+
+    private static Guid? AuthorUserId(Domain.Entities.Learning.Course course)
+        => course.Mentor?.UserId ?? course.TrainerProfile?.UserId;
+
+    private static string AuthorNameOf(Domain.Entities.Learning.Course course)
+        => course.Mentor?.User.FullName ?? course.TrainerProfile?.User.FullName ?? string.Empty;
 
     private static string GenerateCertificateNumber(DateTime issuedAt)
         => $"SH-TRN-{issuedAt:yyyyMMdd}-{Guid.NewGuid().ToString("N")[..8].ToUpperInvariant()}";
@@ -202,6 +211,7 @@ public class EnrollmentService : IEnrollmentService
         ApprenticeName = enrollment.Apprentice.FullName,
         Status = enrollment.Status.ToString(),
         EnrolledAt = enrollment.EnrolledAt,
+        CompletedAt = enrollment.CompletedAt,
         ProgressPercent = CalculateProgressPercent(enrollment),
     };
 
