@@ -1,6 +1,14 @@
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Button } from '../../components/ui';
-import { notifications } from '../../data/mockData';
+
+// TODO(backend): there is no notifications API yet. Placeholder items until one exists.
+const notifications = [
+  { id: 'notif-1', title: 'New order received', time: '1h ago', read: false },
+  { id: 'notif-2', title: 'Course enrollment confirmed', time: '2h ago', read: false },
+  { id: 'notif-3', title: 'Your listing was approved', time: '5h ago', read: true },
+  { id: 'notif-4', title: 'Festival reminder: Jamdani Mela', time: '1d ago', read: true },
+  { id: 'notif-5', title: 'New message from a producer', time: '2d ago', read: true },
+];
 
 export default function CustomerNotifications() {
   return (

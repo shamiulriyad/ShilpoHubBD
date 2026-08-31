@@ -8,17 +8,26 @@ import { useProducts } from '../../hooks/useProducts';
 import { useRecommendedForMe } from '../../hooks/useRecommendations';
 import { useAuth } from '../../hooks/useAuth';
 import { toProductCardItem, toCategoryCardItem } from '../../utils/productAdapters';
-// Producer directory has no backend endpoint yet (no ProducersController) — kept on mock data.
-import { producers, workshops } from '../../data/mockData';
+
+// TODO(backend): no live-workshop resource yet — placeholder for the "Live Now" banner.
+const liveWorkshop = { id: 'workshop-live', producer: 'Rahima Begum', title: 'Live Jamdani Loom Session' };
 
 export default function Marketplace() {
   const { isAuthenticated } = useAuth();
-  const liveWorkshops = workshops.filter((w) => w.status === 'live');
   const [activeCategoryId, setActiveCategoryId] = useState(null);
 
   const categoriesQuery = useCategories();
   const recommendedQuery = useRecommendedForMe(4);
   const productsQuery = useProducts({ categoryId: activeCategoryId || undefined, pageSize: 12 });
+
+  // Producer directory has no backend endpoint — derive distinct producers from the catalog.
+  const featuredProducers = [
+    ...new Map(
+      (productsQuery.data?.items || [])
+        .filter((p) => p.producerName)
+        .map((p) => [p.producerName, { name: p.producerName, craft: p.categoryName, district: p.districtName }]),
+    ).values(),
+  ].slice(0, 6);
 
   const categoryOptions = [
     { id: null, name: 'All' },
@@ -37,20 +46,18 @@ export default function Marketplace() {
         <SearchBar placeholder="Search products, categories, producers…" />
       </div>
 
-      {liveWorkshops.length > 0 && (
-        <div className="mb-10 flex flex-wrap items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
-          <Badge tone="success">Live Now</Badge>
-          <p className="text-sm text-body/80">
-            {liveWorkshops[0].producer} is streaming {liveWorkshops[0].title.toLowerCase()}.
-          </p>
-          <Link
-            to={routePaths.customerLiveShopping.replace(':workshopId', liveWorkshops[0].id)}
-            className="ml-auto text-sm font-medium text-link hover:underline"
-          >
-            Watch now →
-          </Link>
-        </div>
-      )}
+      <div className="mb-10 flex flex-wrap items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
+        <Badge tone="success">Live Now</Badge>
+        <p className="text-sm text-body/80">
+          {liveWorkshop.producer} is streaming {liveWorkshop.title.toLowerCase()}.
+        </p>
+        <Link
+          to={routePaths.customerLiveShopping.replace(':workshopId', liveWorkshop.id)}
+          className="ml-auto text-sm font-medium text-link hover:underline"
+        >
+          Watch now →
+        </Link>
+      </div>
 
       <SectionHeader eyebrow="Browse" title="Shop by Category" />
       <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -112,12 +119,8 @@ export default function Marketplace() {
         <SectionHeader eyebrow="Community" title="Featured Producers" />
       </div>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        {producers.map((producer) => (
-          <ProducerCard
-            key={producer.id}
-            producer={producer}
-            to={routePaths.customerProducerProfile.replace(':producerId', producer.id)}
-          />
+        {featuredProducers.map((producer) => (
+          <ProducerCard key={producer.name} producer={producer} />
         ))}
       </div>
     </div>

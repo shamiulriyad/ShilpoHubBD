@@ -1,30 +1,77 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { Button, SearchBar, SectionHeader, ChartPlaceholder } from '../../components/ui';
+import { Button, SearchBar, SectionHeader, ChartPlaceholder, AsyncState } from '../../components/ui';
+import { useAuth } from '../../hooks/useAuth';
 import { ProductCard, VillageCard, FestivalCard, CourseCard, StatCard, EntityCard } from '../../components/cards';
-import {
-  heritageStats,
-  districts,
-  villages,
-  crafts,
-  producers,
-  products,
-  festivals,
-  courses,
-  publications,
-  timeline,
-} from '../../data/mockData';
+import { useDistricts } from '../../hooks/useDistricts';
+import { useVillages } from '../../hooks/useVillages';
+import { useFeaturedProducts } from '../../hooks/useProducts';
+import { useHeritageFestivals } from '../../hooks/useHeritageFestivals';
+import { useCourses } from '../../hooks/useCourses';
+import { useResearchPublications } from '../../hooks/useResearchPublications';
+import { toProductCardItem } from '../../utils/productAdapters';
+import { toVillageCardItem } from '../../utils/villageAdapters';
+
+const listOf = (data) => data?.items || data || [];
+
+// TODO(backend): no platform-stats or heritage-timeline endpoint — editorial content.
+const heritageStats = [
+  { label: 'Registered Producers', value: '12,400+' },
+  { label: 'Heritage Villages', value: '640+' },
+  { label: 'Heritage Products', value: '8,900+' },
+  { label: 'Districts Covered', value: '64' },
+];
+
+const timeline = [
+  { year: '1971', label: 'Independence & the revival of national craft identity' },
+  { year: '1985', label: 'First national craft cooperatives established' },
+  { year: '2013', label: 'Jamdani recognized by UNESCO' },
+  { year: '2020', label: 'Digital heritage documentation begins' },
+  { year: '2026', label: 'ShilpoHub national ecosystem launches' },
+];
 
 const exploreHighlights = [
-  { title: 'Districts', subtitle: `${districts.length * 8}+ districts documented`, to: routePaths.exploreDistricts },
+  { title: 'Districts', subtitle: 'Heritage documented by district', to: routePaths.exploreDistricts },
   { title: 'Heritage Villages', subtitle: 'Craft villages across the country', to: routePaths.exploreVillages },
-  { title: 'Crafts', subtitle: `${crafts.length}+ traditional craft disciplines`, to: routePaths.exploreCrafts },
+  { title: 'Crafts', subtitle: 'Traditional craft disciplines', to: routePaths.exploreCrafts },
   { title: 'Festivals', subtitle: 'Seasonal & regional celebrations', to: routePaths.tourismFestivals },
   { title: 'Digital Museum', subtitle: 'Curated heritage collections', to: routePaths.exploreMuseum },
   { title: 'UNESCO Heritage', subtitle: 'Nationally recognized heritage', to: routePaths.exploreUnesco },
 ];
 
+const courseToCardItem = (c) => ({
+  level: c.status || 'Course',
+  title: c.title,
+  mentor: c.authorName,
+  duration: `${c.lessonCount ?? 0} lessons`,
+  enrolled: c.activeEnrollmentCount ?? 0,
+});
+
 export default function HomePage() {
+  const districtsQuery = useDistricts();
+  const villagesQuery = useVillages();
+  const { isAuthenticated } = useAuth();
+  const productsQuery = useFeaturedProducts(6);
+  const festivalsQuery = useHeritageFestivals({ pageSize: 6 });
+  const coursesQuery = useCourses({ pageSize: 3 });
+  // The publications repository requires auth — skip the call for anonymous visitors.
+  const publicationsQuery = useResearchPublications({ pageSize: 3 }, isAuthenticated);
+
+  const districts = listOf(districtsQuery.data);
+  const villages = listOf(villagesQuery.data);
+  const products = productsQuery.data || [];
+  const festivals = listOf(festivalsQuery.data);
+  const courses = listOf(coursesQuery.data);
+  const publications = listOf(publicationsQuery.data);
+
+  const producers = [
+    ...new Map(
+      products
+        .filter((p) => p.producerName)
+        .map((p) => [p.producerName, { name: p.producerName, craft: p.categoryName, district: p.districtName }]),
+    ).values(),
+  ];
+
   return (
     <div>
       {/* 1. Hero */}
@@ -93,13 +140,18 @@ export default function HomePage() {
               </Link>
             }
           />
-          <div className="flex snap-x gap-4 overflow-x-auto pb-2">
-            {products.slice(0, 6).map((product) => (
-              <div key={product.id} className="w-56 shrink-0 snap-start">
-                <ProductCard product={product} to={routePaths.marketplaceProducts} />
-              </div>
-            ))}
-          </div>
+          <AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}>
+            <div className="flex snap-x gap-4 overflow-x-auto pb-2">
+              {products.map((product) => (
+                <div key={product.id} className="w-56 shrink-0 snap-start">
+                  <ProductCard
+                    product={toProductCardItem(product)}
+                    to={routePaths.marketplaceProductDetails.replace(':productId', product.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          </AsyncState>
         </div>
       </section>
 
@@ -118,7 +170,7 @@ export default function HomePage() {
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {producers.map((producer) => (
             <EntityCard
-              key={producer.id}
+              key={producer.name}
               title={producer.name}
               subtitle={producer.craft}
               meta={producer.district}
@@ -167,11 +219,17 @@ export default function HomePage() {
             </Link>
           }
         />
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {villages.map((village) => (
-            <VillageCard key={village.id} village={village} to={routePaths.exploreVillages} />
-          ))}
-        </div>
+        <AsyncState isLoading={villagesQuery.isLoading} isError={villagesQuery.isError} error={villagesQuery.error}>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {villages.slice(0, 6).map((village) => (
+              <VillageCard
+                key={village.id}
+                village={toVillageCardItem(village)}
+                to={routePaths.exploreVillageDetails.replace(':villageId', village.id)}
+              />
+            ))}
+          </div>
+        </AsyncState>
       </section>
 
       {/* 8. Heritage Timeline */}
@@ -201,11 +259,16 @@ export default function HomePage() {
             </Link>
           }
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {festivals.map((festival) => (
-            <FestivalCard key={festival.id} festival={festival} />
-          ))}
-        </div>
+        <AsyncState isLoading={festivalsQuery.isLoading} isError={festivalsQuery.isError} error={festivalsQuery.error}>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {festivals.map((festival) => (
+              <FestivalCard
+                key={festival.id}
+                festival={{ name: festival.name, date: festival.startDate, district: festival.districtName }}
+              />
+            ))}
+          </div>
+        </AsyncState>
       </section>
 
       {/* 10. Heritage Academy */}
@@ -221,11 +284,17 @@ export default function HomePage() {
               </Link>
             }
           />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {courses.slice(0, 3).map((course) => (
-              <CourseCard key={course.id} course={course} to={routePaths.academyCourseDetails.replace(':courseId', course.id)} />
-            ))}
-          </div>
+          <AsyncState isLoading={coursesQuery.isLoading} isError={coursesQuery.isError} error={coursesQuery.error}>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {courses.map((course) => (
+                <CourseCard
+                  key={course.id}
+                  course={courseToCardItem(course)}
+                  to={routePaths.academyCourseDetails.replace(':courseId', course.id)}
+                />
+              ))}
+            </div>
+          </AsyncState>
         </div>
       </section>
 
@@ -244,11 +313,12 @@ export default function HomePage() {
         <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
           <ChartPlaceholder title="Heritage Analytics Preview" type="line" />
           <div className="space-y-3">
-            {publications.slice(0, 3).map((pub) => (
+            {publications.map((pub) => (
               <div key={pub.id} className="rounded-xl border border-border bg-surface p-4">
                 <p className="text-sm font-semibold text-heading">{pub.title}</p>
                 <p className="mt-1 text-xs text-body/60">
-                  {pub.author} · {pub.year}
+                  {pub.authors}
+                  {pub.publishedOn ? ` · ${new Date(pub.publishedOn).getFullYear()}` : ''}
                 </p>
               </div>
             ))}

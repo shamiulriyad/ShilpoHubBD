@@ -43,9 +43,16 @@ export function applyAxiosInterceptors(apiClient) {
         return Promise.reject(error);
       }
 
-      const { refreshToken } = useAuthStore.getState();
+      const { accessToken, refreshToken } = useAuthStore.getState();
       if (!refreshToken) {
-        redirectToLogin();
+        // A 401 with no refresh token. If there was an active session, it's now
+        // unrecoverable, so send the user to log in. If there was never a session
+        // (anonymous visitor hitting an auth-only endpoint, e.g. optional data on a
+        // public page) just surface the error and let the caller handle it — don't
+        // yank the visitor off the page.
+        if (accessToken) {
+          redirectToLogin();
+        }
         return Promise.reject(error);
       }
 

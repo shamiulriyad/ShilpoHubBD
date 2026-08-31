@@ -7,3 +7,11 @@ export function useCategories() {
     queryFn: () => categoriesService.list(),
   });
 }
+
+export function useCategory(id) {
+  return useQuery({
+    queryKey: ['categories', id],
+    queryFn: () => categoriesService.getById(id),
+    enabled: Boolean(id),
+  });
+}

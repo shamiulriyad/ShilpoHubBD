@@ -1,6 +1,26 @@
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, Button } from '../../components/ui';
-import { addresses } from '../../data/mockData';
+
+// TODO(backend): no saved-addresses API yet (checkout takes an inline address).
+// Placeholder entries until an addresses resource exists.
+const addresses = [
+  {
+    id: 'address-1',
+    label: 'Home',
+    name: 'Ayesha Rahman',
+    phone: '+8801700000000',
+    address: 'House 12, Road 4, Dhaka',
+    isDefault: true,
+  },
+  {
+    id: 'address-2',
+    label: 'Office',
+    name: 'Ayesha Rahman',
+    phone: '+8801711111111',
+    address: 'House 13, Road 5, Chattogram',
+    isDefault: false,
+  },
+];
 
 export default function SavedAddresses() {
   return (
