@@ -1,69 +1,76 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { Badge, Button, ChatBox, AsyncState } from '../../components/ui';
 import { LiveShoppingPlayer } from '../../components/media';
-import { useFeaturedProducts } from '../../hooks/useProducts';
-import { toProductCardItem } from '../../utils/productAdapters';
-
-// TODO(backend): no live-workshop resource yet (only per-producer galleries).
-// Placeholder stream + seed chat until a live-commerce API exists.
-const workshop = {
-  id: 'workshop-live',
-  title: 'Live Jamdani Loom Session',
-  producerId: 'producer-1',
-  producer: 'Rahima Begum',
-  craft: 'Jamdani Weaving',
-  status: 'live',
-  viewers: 128,
-};
-
-const seedChat = [
-  { id: 1, from: 'Rashed', text: 'The colors are gorgeous!' },
-  { id: 2, from: 'Mitu', text: 'Is this available in size medium?' },
-  { id: 3, from: 'Producer', text: 'Yes! Taking orders live right now.' },
-];
+import { useLiveEvent, useLiveEventInteractions } from '../../hooks/useLiveEvents';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function LiveShopping() {
-  const featuredQuery = useFeaturedProducts(4);
-  const featured = (featuredQuery.data || []).map(toProductCardItem);
-  const [chat, setChat] = useState(seedChat);
+  const { workshopId } = useParams();
+  const { isAuthenticated } = useAuth();
+  const { data: event, isLoading, isError, error } = useLiveEvent(workshopId);
+  const { addComment } = useLiveEventInteractions(workshopId);
 
-  function sendMessage(text) {
-    setChat((prev) => [...prev, { id: prev.length + 1, from: 'You', text, self: true }]);
-  }
+  const status = (event?.status || '').toLowerCase();
+  const products = event
+    ? [
+        {
+          id: event.productId,
+          name: event.productName,
+          price: event.productPrice,
+          image: event.productImageUrl,
+          category: 'Featured',
+        },
+      ]
+    : [];
+  const chat = (event?.comments || []).map((c) => ({ id: c.id, from: c.authorName, text: c.body }));
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <Badge tone={workshop.status === 'live' ? 'success' : 'secondary'}>
-            {workshop.status === 'live' ? `Live · ${workshop.viewers || 0} watching` : 'Replay'}
-          </Badge>
-          <h1 className="mt-2 text-2xl font-semibold text-heading">{workshop.title}</h1>
-          <Link
-            to={routePaths.customerProducerProfile.replace(':producerId', workshop.producerId)}
-            className="text-sm text-link hover:underline"
-          >
-            {workshop.producer} · {workshop.craft}
-          </Link>
-        </div>
-        <Link to={routePaths.customerWorkshops}>
-          <Button variant="secondary">Back to Gallery</Button>
-        </Link>
-      </div>
+      <AsyncState isLoading={isLoading} isError={isError} error={error} loadingText="Loading live event…">
+        {event && (
+          <>
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <Badge tone={status === 'live' ? 'success' : 'secondary'}>
+                  {status === 'live' ? 'Live now' : status === 'ended' ? 'Replay' : 'Scheduled'}
+                </Badge>
+                <h1 className="mt-2 text-2xl font-semibold text-heading">{event.title}</h1>
+                <Link
+                  to={routePaths.customerProducerProfile.replace(':producerId', event.producerId)}
+                  className="text-sm text-link hover:underline"
+                >
+                  {event.producerName}
+                </Link>
+              </div>
+              <Link to={routePaths.customerWorkshops}>
+                <Button variant="secondary">Back to Gallery</Button>
+              </Link>
+            </div>
 
-      <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <AsyncState isLoading={featuredQuery.isLoading} isError={featuredQuery.isError} error={featuredQuery.error}>
-          <LiveShoppingPlayer
-            workshop={workshop}
-            products={featured}
-            getProductLink={(product) => routePaths.customerProductDetails.replace(':productId', product.id)}
-          />
-        </AsyncState>
+            {event.description && <p className="mb-6 max-w-3xl text-sm text-body/70">{event.description}</p>}
 
-        <ChatBox title="Live Chat" messages={chat} onSend={sendMessage} className="h-[520px]" />
-      </div>
+            <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+              <LiveShoppingPlayer
+                workshop={{ title: event.title, status, viewers: event.purchaseCount }}
+                products={products}
+                getProductLink={(product) =>
+                  routePaths.customerProductDetails.replace(':productId', product.id)
+                }
+              />
+
+              <ChatBox
+                title={`Live Chat · ${event.commentCount} comments`}
+                messages={chat}
+                onSend={
+                  isAuthenticated ? (text) => addComment.mutate(text) : undefined
+                }
+                className="h-[520px]"
+              />
+            </div>
+          </>
+        )}
+      </AsyncState>
     </div>
   );
 }
