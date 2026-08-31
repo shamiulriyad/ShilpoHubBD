@@ -1,24 +1,35 @@
 import { useState } from 'react';
 
-export default function ProductGallery({ productName = 'Product', thumbnailCount = 4 }) {
+export default function ProductGallery({ productName = 'Product', images = [], thumbnailCount = 4 }) {
   const [active, setActive] = useState(0);
+  const hasImages = Array.isArray(images) && images.length > 0;
+  const current = hasImages ? images[Math.min(active, images.length - 1)] : null;
+  const thumbs = hasImages ? images : Array.from({ length: thumbnailCount });
 
   return (
     <div className="space-y-3">
-      <div className="flex aspect-square items-center justify-center rounded-2xl border border-border bg-background text-sm text-body/40">
-        {productName} Image {active + 1}
+      <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-border bg-background text-sm text-body/40">
+        {current ? (
+          <img src={current} alt={`${productName} ${active + 1}`} className="h-full w-full object-cover" />
+        ) : (
+          `${productName} image ${active + 1}`
+        )}
       </div>
       <div className="grid grid-cols-4 gap-3">
-        {Array.from({ length: thumbnailCount }).map((_, i) => (
+        {thumbs.slice(0, hasImages ? images.length : thumbnailCount).map((thumb, i) => (
           <button
-            key={i}
+            key={hasImages ? thumb : i}
             type="button"
             onClick={() => setActive(i)}
-            className={`flex aspect-square items-center justify-center rounded-lg border text-[10px] transition ${
-              active === i ? 'border-primary text-primary' : 'border-border text-body/30 hover:border-primary/40'
+            className={`flex aspect-square items-center justify-center overflow-hidden rounded-lg border text-xs text-body/40 ${
+              active === i ? 'border-primary' : 'border-border'
             }`}
           >
-            Thumb {i + 1}
+            {hasImages ? (
+              <img src={thumb} alt={`${productName} thumbnail ${i + 1}`} className="h-full w-full object-cover" />
+            ) : (
+              i + 1
+            )}
           </button>
         ))}
       </div>

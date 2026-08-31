@@ -5,7 +5,17 @@ import DashboardLayout from '../layouts/DashboardLayout';
 import { ProtectedRoute } from './ProtectedRoute';
 import { RoleBasedRoute } from './RoleBasedRoute';
 import { routePaths } from './routePaths';
-import { adminSidebarNav, customerSidebarNav, producerSidebarNav, businessPartnerSidebarNav } from '../data/navigation';
+import {
+  adminSidebarNav,
+  customerSidebarNav,
+  producerSidebarNav,
+  businessPartnerSidebarNav,
+  touristSidebarNav,
+  academyMemberSidebarNav,
+  innovationHubSidebarNav,
+  logisticsPartnerSidebarNav,
+  governmentNgoSidebarNav,
+} from '../data/navigation';
 
 import ProducerDashboard from '../pages/Producer/ProducerDashboard';
 import ProducerContracts from '../pages/Producer/Contracts';
@@ -274,14 +284,57 @@ const router = createBrowserRouter([
           { path: routePaths.farmer, element: <FarmerPage /> },
           { path: routePaths.retailer, element: <RetailerPage /> },
           { path: routePaths.industryGarments, element: <IndustryGarmentsPage /> },
-          { path: routePaths.tourist, element: <TouristPage /> },
           { path: routePaths.trainerMasterArtisan, element: <TrainerMasterArtisanPage /> },
           { path: routePaths.apprenticeStudent, element: <ApprenticeStudentPage /> },
-          { path: routePaths.government, element: <GovernmentPage /> },
-          { path: routePaths.ngo, element: <NGOPage /> },
-          { path: routePaths.researcher, element: <ResearcherPage /> },
           { path: routePaths.exporter, element: <ExporterPage /> },
-          { path: routePaths.logisticsPartner, element: <LogisticsPartnerPage /> },
+        ],
+      },
+      {
+        element: <RoleBasedRoute allowedRoles={['Tourist', 'SuperAdmin']} />,
+        children: [
+          {
+            element: <DashboardLayout navItems={touristSidebarNav} sidebarTitle="Tourist" />,
+            children: [{ path: routePaths.tourist, element: <TouristPage /> }],
+          },
+        ],
+      },
+      {
+        element: <RoleBasedRoute allowedRoles={['HeritageAcademyMember', 'SuperAdmin']} />,
+        children: [
+          {
+            element: <DashboardLayout navItems={academyMemberSidebarNav} sidebarTitle="Academy" />,
+            children: [{ path: routePaths.academyMember, element: <LearningDashboard /> }],
+          },
+        ],
+      },
+      {
+        element: <RoleBasedRoute allowedRoles={['HeritageInnovationHub', 'SuperAdmin']} />,
+        children: [
+          {
+            element: <DashboardLayout navItems={innovationHubSidebarNav} sidebarTitle="Innovation Hub" />,
+            children: [{ path: routePaths.researcher, element: <ResearcherPage /> }],
+          },
+        ],
+      },
+      {
+        element: <RoleBasedRoute allowedRoles={['LogisticsPartner', 'SuperAdmin']} />,
+        children: [
+          {
+            element: <DashboardLayout navItems={logisticsPartnerSidebarNav} sidebarTitle="Logistics" />,
+            children: [{ path: routePaths.logisticsPartner, element: <LogisticsPartnerPage /> }],
+          },
+        ],
+      },
+      {
+        element: <RoleBasedRoute allowedRoles={['GovernmentNGO', 'SuperAdmin']} />,
+        children: [
+          {
+            element: <DashboardLayout navItems={governmentNgoSidebarNav} sidebarTitle="Government & NGO" />,
+            children: [
+              { path: routePaths.government, element: <GovernmentPage /> },
+              { path: routePaths.ngo, element: <NGOPage /> },
+            ],
+          },
         ],
       },
       {

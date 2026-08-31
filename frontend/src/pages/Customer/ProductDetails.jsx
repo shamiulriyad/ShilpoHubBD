@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Button, Badge, SectionHeader, WishlistButton, AsyncState } from '../../components/ui';
 import { ProductCard, ReviewCard, MaterialTraceabilityCard } from '../../components/cards';
-import { ProductGallery, Product360Viewer } from '../../components/media';
+import { ProductGallery, Product360Viewer, VideoPlayer, TimelineViewer, QRCodeViewer } from '../../components/media';
 import { useProduct } from '../../hooks/useProducts';
 import { useSimilarProducts } from '../../hooks/useRecommendations';
 import { useProductReviews, useReviewMutations } from '../../hooks/useReviews';
@@ -12,9 +12,10 @@ import { useWishlistMutations } from '../../hooks/useWishlist';
 import { useAuth } from '../../hooks/useAuth';
 import { useCraftStory } from '../../hooks/useCraftStories';
 import { useProductTraceability } from '../../hooks/useTraceability';
+import { useVerifyQRCode } from '../../hooks/useQRVerification';
 import { toProductCardItem } from '../../utils/productAdapters';
 
-const tabs = ['Details', 'Craft Story', 'Traceability', 'Reviews'];
+const tabs = ['Details', 'Craft Story', 'Journey', 'Traceability', 'Authenticity', 'Reviews'];
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -22,6 +23,8 @@ export default function ProductDetails() {
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [view360, setView360] = useState(false);
   const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
+  const [qrCode, setQrCode] = useState('');
+  const verifyQr = useVerifyQRCode();
 
   const productQuery = useProduct(productId);
   const product = productQuery.data;
@@ -62,19 +65,33 @@ export default function ProductDetails() {
 
             <div className="grid gap-10 lg:grid-cols-2">
               <div className="space-y-3">
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => setView360((prev) => !prev)}
-                    className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-body hover:bg-background"
-                  >
-                    {view360 ? 'Show Gallery' : 'Show 360° View'}
-                  </button>
-                </div>
-                {view360 ? (
-                  <Product360Viewer productName={product.name} />
+                {product.threeSixtyImageUrls?.length > 0 && (
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => setView360((prev) => !prev)}
+                      className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-body hover:bg-background"
+                    >
+                      {view360 ? 'Show Gallery' : 'Show 360° View'}
+                    </button>
+                  </div>
+                )}
+                {view360 && product.threeSixtyImageUrls?.length > 0 ? (
+                  <Product360Viewer productName={product.name} images={product.threeSixtyImageUrls} />
                 ) : (
-                  <ProductGallery productName={product.name} />
+                  <ProductGallery productName={product.name} images={product.imageUrls} />
+                )}
+
+                {(product.makingProcessVideoUrl || product.videos?.length > 0) && (
+                  <div className="space-y-2 pt-2">
+                    <p className="text-sm font-semibold text-heading">Making Process</p>
+                    {product.makingProcessVideoUrl && (
+                      <VideoPlayer title="How this piece is made" src={product.makingProcessVideoUrl} />
+                    )}
+                    {(product.videos || []).map((video) => (
+                      <VideoPlayer key={video.id || video.url} title={video.title} src={video.url} />
+                    ))}
+                  </div>
                 )}
               </div>
 
@@ -209,6 +226,79 @@ export default function ProductDetails() {
                     </>
                   ) : (
                     <p>Craft story unavailable for this product.</p>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'Journey' && (
+                <div className="max-w-3xl">
+                  {traceability?.timelineEvents?.length > 0 ? (
+                    <TimelineViewer
+                      items={[...traceability.timelineEvents]
+                        .sort((a, b) => a.displayOrder - b.displayOrder)
+                        .map((ev) => ({
+                          marker: ev.eventDate ? new Date(ev.eventDate).getFullYear() : undefined,
+                          title: ev.title,
+                          description: `${ev.description}${ev.location ? ` · ${ev.location}` : ''}`,
+                        }))}
+                    />
+                  ) : (
+                    <p className="text-sm text-body/60">No journey timeline recorded for this product yet.</p>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'Authenticity' && (
+                <div className="max-w-3xl space-y-5">
+                  <div className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-5 sm:flex-row sm:items-center">
+                    <QRCodeViewer value={product.id} label="This product's verification code" />
+                    <div className="flex-1">
+                      <p className="text-sm text-body/70">
+                        Every genuine ShilpoHub piece ships with a unique QR code. Scan it or enter the code
+                        below to confirm this item was made by {product.producerName}.
+                      </p>
+                    </div>
+                  </div>
+
+                  <form
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      if (qrCode.trim()) verifyQr.mutate(qrCode.trim());
+                    }}
+                    className="flex flex-wrap gap-2"
+                  >
+                    <input
+                      value={qrCode}
+                      onChange={(event) => setQrCode(event.target.value)}
+                      placeholder="Enter authenticity code…"
+                      className="min-w-0 flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
+                    />
+                    <Button type="submit" variant="primary" disabled={verifyQr.isPending}>
+                      {verifyQr.isPending ? 'Verifying…' : 'Verify'}
+                    </Button>
+                  </form>
+
+                  {verifyQr.data && (
+                    <div
+                      className={`rounded-xl border p-4 text-sm ${
+                        verifyQr.data.isValid
+                          ? 'border-success/30 bg-success/5 text-success'
+                          : 'border-red-200 bg-red-50 text-red-600'
+                      }`}
+                    >
+                      <p className="font-semibold">
+                        {verifyQr.data.isValid ? '✓ Authentic' : '✕ Could not verify'}
+                      </p>
+                      <p className="mt-1 text-body/70">{verifyQr.data.message}</p>
+                      {verifyQr.data.isValid && (
+                        <p className="mt-1 text-body/60">
+                          {verifyQr.data.productName} · {verifyQr.data.producerName} · {verifyQr.data.district}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {verifyQr.isError && (
+                    <p className="text-sm text-red-600">Verification failed. Check the code and try again.</p>
                   )}
                 </div>
               )}

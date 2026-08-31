@@ -7,7 +7,9 @@ export function toProductCardItem(dto) {
     price: dto.discountPrice ?? dto.price,
     category: dto.categoryName,
     producer: dto.producerName,
+    producerId: dto.producerId,
     district: dto.districtName,
+    image: dto.primaryImageUrl ?? null,
   };
 }
 

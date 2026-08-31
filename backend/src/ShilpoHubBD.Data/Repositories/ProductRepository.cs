@@ -45,6 +45,11 @@ public class ProductRepository : IProductRepository
             products = products.Where(p => p.DistrictId == query.DistrictId.Value);
         }
 
+        if (query.ProducerId.HasValue)
+        {
+            products = products.Where(p => p.ProducerId == query.ProducerId.Value);
+        }
+
         if (query.MinPrice.HasValue)
         {
             products = products.Where(p => p.Price >= query.MinPrice.Value);

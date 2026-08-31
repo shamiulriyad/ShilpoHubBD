@@ -77,88 +77,327 @@ export const userMenu = [
   { label: 'Settings', path: routePaths.dashboardSettings },
 ];
 
+// Generic member workspace (shared /dashboard/* area and role landing pages).
 export const sidebarNav = [
-  { label: 'Dashboard', path: routePaths.dashboard },
-  { label: 'Explore', path: routePaths.dashboardExplore },
-  { label: 'Marketplace', path: routePaths.dashboardMarketplace },
-  { label: 'Tourism', path: routePaths.dashboardTourism },
-  { label: 'Academy', path: routePaths.dashboardAcademy },
-  { label: 'My Learning', path: routePaths.academyLearning },
-  { label: 'Skill Assessments', path: routePaths.academySkillAssessments },
-  { label: 'Certificates', path: routePaths.academyCertificates },
-  { label: 'Portfolio', path: routePaths.academyPortfolio },
-  { label: 'Community', path: routePaths.dashboardCommunity },
-  { label: 'Analytics', path: routePaths.dashboardAnalytics },
-  { label: 'Messages', path: routePaths.dashboardMessages },
-  { label: 'Notifications', path: routePaths.dashboardNotifications },
-  { label: 'Settings', path: routePaths.dashboardSettings },
+  {
+    section: 'Overview',
+    items: [
+      { label: 'Dashboard', path: routePaths.dashboard, icon: '🏠' },
+      { label: 'Analytics', path: routePaths.dashboardAnalytics, icon: '📊' },
+    ],
+  },
+  {
+    section: 'Discover',
+    items: [
+      { label: 'Explore', path: routePaths.dashboardExplore, icon: '🧭' },
+      { label: 'Marketplace', path: routePaths.dashboardMarketplace, icon: '🛍️' },
+      { label: 'Tourism', path: routePaths.dashboardTourism, icon: '🗺️' },
+    ],
+  },
+  {
+    section: 'Learning',
+    items: [
+      { label: 'Academy', path: routePaths.dashboardAcademy, icon: '🎓' },
+      { label: 'My Learning', path: routePaths.academyLearning, icon: '📚' },
+      { label: 'Skill Assessments', path: routePaths.academySkillAssessments, icon: '📝' },
+      { label: 'Certificates', path: routePaths.academyCertificates, icon: '📜' },
+      { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
+    ],
+  },
+  {
+    section: 'Connect',
+    items: [
+      { label: 'Community', path: routePaths.dashboardCommunity, icon: '💬' },
+      { label: 'Messages', path: routePaths.dashboardMessages, icon: '✉️' },
+      { label: 'Notifications', path: routePaths.dashboardNotifications, icon: '🔔' },
+    ],
+  },
+  {
+    section: 'Account',
+    items: [{ label: 'Settings', path: routePaths.dashboardSettings, icon: '⚙️' }],
+  },
 ];
 
+// Grouped ("premium") sidebar for the Customer workspace. Every param-free Customer
+// feature route from backendsetup.md is represented here; product-scoped views
+// (craft/producer story, 360°, QR, traceability, AI interior/fashion/similar) are
+// reached from a product page and intentionally omitted.
 export const customerSidebarNav = [
-  { label: 'Dashboard', path: routePaths.customer },
-  { label: 'Marketplace', path: routePaths.customerMarketplace },
-  { label: 'Workshops', path: routePaths.customerWorkshops },
-  { label: 'Auctions', path: routePaths.customerAuctions },
-  { label: 'Community', path: routePaths.customerCommunity },
-  { label: 'Messages', path: routePaths.customerMessages },
-  { label: 'Following', path: routePaths.customerFollowing },
-  { label: 'Favorite Villages', path: routePaths.customerFavoriteVillages },
-  { label: 'Wishlist', path: routePaths.customerWishlist },
-  { label: 'Cart', path: routePaths.customerCart },
-  { label: 'Order History', path: routePaths.customerOrders },
-  { label: 'Returns', path: routePaths.customerReturns },
-  { label: 'Refunds', path: routePaths.customerRefunds },
-  { label: 'Notifications', path: routePaths.customerNotifications },
-  { label: 'Saved Addresses', path: routePaths.customerAddresses },
-  { label: 'Heritage Collection', path: routePaths.customerHeritageCollection },
-  { label: 'Heritage Passport', path: routePaths.customerHeritagePassport },
-  { label: 'Purchase Analytics', path: routePaths.customerPurchaseAnalytics },
-  { label: 'Impact Dashboard', path: routePaths.customerImpactDashboard },
-  { label: 'Achievements', path: routePaths.customerAchievements },
-  { label: 'Badge Collection', path: routePaths.customerBadges },
-  { label: 'AI Gift Recommendation', path: routePaths.customerAIGiftRecommendation },
+  {
+    section: 'Overview',
+    items: [{ label: 'Dashboard', path: routePaths.customer, icon: '🏠' }],
+  },
+  {
+    section: 'Marketplace',
+    items: [
+      { label: 'Browse Marketplace', path: routePaths.customerMarketplace, icon: '🛍️' },
+      { label: 'Custom Orders', path: routePaths.customerCustomOrder, icon: '✍️' },
+      { label: 'Auctions', path: routePaths.customerAuctions, icon: '🔨' },
+      { label: 'Workshops & Live', path: routePaths.customerWorkshops, icon: '🎥' },
+    ],
+  },
+  {
+    section: 'Shopping',
+    items: [
+      { label: 'Wishlist', path: routePaths.customerWishlist, icon: '🤍' },
+      { label: 'Cart', path: routePaths.customerCart, icon: '🛒' },
+    ],
+  },
+  {
+    section: 'Orders',
+    items: [
+      { label: 'Order History', path: routePaths.customerOrders, icon: '📦' },
+      { label: 'Returns', path: routePaths.customerReturns, icon: '↩️' },
+      { label: 'Refunds', path: routePaths.customerRefunds, icon: '💸' },
+      { label: 'Saved Addresses', path: routePaths.customerAddresses, icon: '📍' },
+      { label: 'Notifications', path: routePaths.customerNotifications, icon: '🔔' },
+    ],
+  },
+  {
+    section: 'Community',
+    items: [
+      { label: 'Community Feed', path: routePaths.customerCommunity, icon: '💬' },
+      { label: 'Discussion Forum', path: routePaths.customerForum, icon: '🗣️' },
+      { label: 'Questions & Answers', path: routePaths.customerQA, icon: '❓' },
+      { label: 'Messages', path: routePaths.customerMessages, icon: '✉️' },
+      { label: 'Following Producers', path: routePaths.customerFollowing, icon: '👥' },
+      { label: 'Favorite Villages', path: routePaths.customerFavoriteVillages, icon: '🏘️' },
+    ],
+  },
+  {
+    section: 'Heritage Passport',
+    items: [
+      { label: 'Heritage Collection', path: routePaths.customerHeritageCollection, icon: '🏺' },
+      { label: 'Heritage Passport', path: routePaths.customerHeritagePassport, icon: '🛂' },
+      { label: 'Achievements', path: routePaths.customerAchievements, icon: '🏅' },
+      { label: 'Badge Collection', path: routePaths.customerBadges, icon: '🎖️' },
+    ],
+  },
+  {
+    section: 'Insights',
+    items: [
+      { label: 'Purchase Analytics', path: routePaths.customerPurchaseAnalytics, icon: '📊' },
+      { label: 'Impact Dashboard', path: routePaths.customerImpactDashboard, icon: '🌱' },
+    ],
+  },
+  {
+    section: 'AI Shopping',
+    items: [{ label: 'Gift Recommendation', path: routePaths.customerAIGiftRecommendation, icon: '🎁' }],
+  },
 ];
 
+// Producer workspace — production, fulfilment, B2B partnerships & growth.
 export const producerSidebarNav = [
-  { label: 'Dashboard', path: routePaths.producer },
-  { label: 'Orders & Fulfillment', path: routePaths.producerOrders },
-  { label: 'Inventory', path: routePaths.producerInventory },
-  { label: 'Contracts', path: routePaths.producerContracts },
-  { label: 'Quotation Requests', path: routePaths.producerQuotations },
-  { label: 'Manufacturing Partnerships', path: routePaths.producerPartnerships },
-  { label: 'Design Collaborations', path: routePaths.producerDesignCollaborations },
-  { label: 'Product Development', path: routePaths.producerProductDevelopment },
-  { label: 'CSR Sponsorship', path: routePaths.producerCsr },
-  { label: 'Investment Opportunities', path: routePaths.producerInvestments },
-  { label: 'Sustainability Profile', path: routePaths.producerSustainability },
-  { label: 'AI Business Assistant', path: routePaths.producerAiAssistant },
+  {
+    section: 'Overview',
+    items: [{ label: 'Dashboard', path: routePaths.producer, icon: '🏠' }],
+  },
+  {
+    section: 'Sell & Fulfil',
+    items: [
+      { label: 'Orders & Fulfillment', path: routePaths.producerOrders, icon: '📦' },
+      { label: 'Inventory', path: routePaths.producerInventory, icon: '🗃️' },
+    ],
+  },
+  {
+    section: 'Partnerships',
+    items: [
+      { label: 'Contracts', path: routePaths.producerContracts, icon: '📄' },
+      { label: 'Quotation Requests', path: routePaths.producerQuotations, icon: '🧾' },
+      { label: 'Manufacturing Partnerships', path: routePaths.producerPartnerships, icon: '🏭' },
+      { label: 'Design Collaborations', path: routePaths.producerDesignCollaborations, icon: '🎨' },
+      { label: 'Product Development', path: routePaths.producerProductDevelopment, icon: '🛠️' },
+    ],
+  },
+  {
+    section: 'Growth',
+    items: [
+      { label: 'CSR Sponsorship', path: routePaths.producerCsr, icon: '🤝' },
+      { label: 'Investment Opportunities', path: routePaths.producerInvestments, icon: '💰' },
+      { label: 'Sustainability Profile', path: routePaths.producerSustainability, icon: '🌱' },
+    ],
+  },
+  {
+    section: 'AI',
+    items: [{ label: 'AI Business Assistant', path: routePaths.producerAiAssistant, icon: '🤖' }],
+  },
 ];
 
+// Business Partner workspace — sourcing, deals, marketplaces & intelligence.
 export const businessPartnerSidebarNav = [
-  { label: 'Dashboard', path: routePaths.businessPartner },
-  { label: 'Company Profile', path: routePaths.businessPartnerProfile },
-  { label: 'Contracts', path: routePaths.businessPartnerContracts },
-  { label: 'Quotations', path: routePaths.businessPartnerQuotations },
-  { label: 'Procurement', path: routePaths.businessPartnerProcurements },
-  { label: 'Manufacturing Partnerships', path: routePaths.businessPartnerPartnerships },
-  { label: 'Design Collaborations', path: routePaths.businessPartnerDesignCollaborations },
-  { label: 'Product Development', path: routePaths.businessPartnerProductDevelopment },
-  { label: 'Sponsorship Marketplace', path: routePaths.businessPartnerCsr },
-  { label: 'Investment Marketplace', path: routePaths.businessPartnerInvestments },
-  { label: 'Supplier Discovery', path: routePaths.businessPartnerSupplierDiscovery },
-  { label: 'Supplier Matching (AI)', path: routePaths.businessPartnerSupplierMatching },
-  { label: 'Compare Producers', path: routePaths.businessPartnerProducerComparison },
-  { label: 'Analytics', path: routePaths.businessPartnerAnalytics },
-  { label: 'AI Intelligence', path: routePaths.businessPartnerAiIntelligence },
+  {
+    section: 'Overview',
+    items: [
+      { label: 'Dashboard', path: routePaths.businessPartner, icon: '🏠' },
+      { label: 'Company Profile', path: routePaths.businessPartnerProfile, icon: '🏢' },
+    ],
+  },
+  {
+    section: 'Sourcing',
+    items: [
+      { label: 'Supplier Discovery', path: routePaths.businessPartnerSupplierDiscovery, icon: '🔍' },
+      { label: 'Supplier Matching (AI)', path: routePaths.businessPartnerSupplierMatching, icon: '🧠' },
+      { label: 'Compare Producers', path: routePaths.businessPartnerProducerComparison, icon: '⚖️' },
+      { label: 'Procurement', path: routePaths.businessPartnerProcurements, icon: '🛒' },
+    ],
+  },
+  {
+    section: 'Deals',
+    items: [
+      { label: 'Contracts', path: routePaths.businessPartnerContracts, icon: '📄' },
+      { label: 'Quotations', path: routePaths.businessPartnerQuotations, icon: '🧾' },
+      { label: 'Manufacturing Partnerships', path: routePaths.businessPartnerPartnerships, icon: '🏭' },
+      { label: 'Design Collaborations', path: routePaths.businessPartnerDesignCollaborations, icon: '🎨' },
+      { label: 'Product Development', path: routePaths.businessPartnerProductDevelopment, icon: '🛠️' },
+    ],
+  },
+  {
+    section: 'Marketplaces',
+    items: [
+      { label: 'Sponsorship Marketplace', path: routePaths.businessPartnerCsr, icon: '🤝' },
+      { label: 'Investment Marketplace', path: routePaths.businessPartnerInvestments, icon: '💰' },
+    ],
+  },
+  {
+    section: 'Intelligence',
+    items: [
+      { label: 'Analytics', path: routePaths.businessPartnerAnalytics, icon: '📊' },
+      { label: 'AI Intelligence', path: routePaths.businessPartnerAiIntelligence, icon: '🤖' },
+    ],
+  },
 ];
 
+// Admin / platform-operations workspace.
 export const adminSidebarNav = [
-  { label: 'Dashboard', path: routePaths.admin },
-  { label: 'User Management', path: routePaths.adminUsers },
-  { label: 'Heritage Management', path: routePaths.adminHeritage },
-  { label: 'Marketplace Monitoring', path: routePaths.adminMarketplace },
-  { label: 'CMS', path: routePaths.adminCms },
-  { label: 'Security Center', path: routePaths.adminSecurity },
+  {
+    section: 'Overview',
+    items: [{ label: 'Dashboard', path: routePaths.admin, icon: '🏠' }],
+  },
+  {
+    section: 'Management',
+    items: [
+      { label: 'User Management', path: routePaths.adminUsers, icon: '👥' },
+      { label: 'Heritage Management', path: routePaths.adminHeritage, icon: '🏺' },
+      { label: 'Marketplace Monitoring', path: routePaths.adminMarketplace, icon: '🛍️' },
+    ],
+  },
+  {
+    section: 'Platform',
+    items: [
+      { label: 'CMS', path: routePaths.adminCms, icon: '📝' },
+      { label: 'Security Center', path: routePaths.adminSecurity, icon: '🛡️' },
+    ],
+  },
+];
+
+// Items every signed-in member shares. Kept in one place so each role sidebar can
+// spread it in without the role-specific groups ever overlapping.
+const generalGroup = {
+  section: 'General',
+  items: [
+    { label: 'Explore Heritage', path: routePaths.explore, icon: '🧭' },
+    { label: 'Messages', path: routePaths.dashboardMessages, icon: '✉️' },
+    { label: 'Notifications', path: routePaths.dashboardNotifications, icon: '🔔' },
+    { label: 'Settings', path: routePaths.dashboardSettings, icon: '⚙️' },
+  ],
+};
+
+// Tourist workspace — heritage travel: discovery, planning, bookings.
+export const touristSidebarNav = [
+  {
+    section: 'Overview',
+    items: [
+      { label: 'Dashboard', path: routePaths.tourist, icon: '🏠' },
+      { label: 'My Bookings', path: routePaths.tourismBookings, icon: '🎫' },
+      { label: 'Travel Passport', path: routePaths.tourismPassport, icon: '🛂' },
+    ],
+  },
+  {
+    section: 'Discover',
+    items: [
+      { label: 'Heritage Map', path: routePaths.tourismMap, icon: '🗺️' },
+      { label: 'Festivals', path: routePaths.tourismFestivals, icon: '🎉' },
+      { label: 'Cultural Events', path: routePaths.tourismEvents, icon: '📅' },
+      { label: 'Tour Routes', path: routePaths.tourismRoutes, icon: '🧳' },
+      { label: 'Village Explorer', path: routePaths.tourismVillages, icon: '🏘️' },
+      { label: 'Local Cuisine', path: routePaths.tourismCuisines, icon: '🍲' },
+      { label: 'Tourist Services', path: routePaths.tourismServices, icon: '🛎️' },
+    ],
+  },
+  {
+    section: 'Plan',
+    items: [{ label: 'AI Trip Planner', path: routePaths.tourismAiPlanner, icon: '🤖' }],
+  },
+  generalGroup,
+];
+
+// Heritage Academy Member workspace — learning, practice, credentials.
+export const academyMemberSidebarNav = [
+  {
+    section: 'Overview',
+    items: [
+      { label: 'My Dashboard', path: routePaths.academyMember, icon: '🏠' },
+      { label: 'Learning Dashboard', path: routePaths.academyLearning, icon: '📈' },
+    ],
+  },
+  {
+    section: 'Learn',
+    items: [
+      { label: 'Course Catalog', path: routePaths.academy, icon: '📚' },
+      { label: 'Mentors', path: routePaths.academyMentors, icon: '🧑‍🏫' },
+      { label: 'Live Classes', path: routePaths.academyLiveClasses, icon: '🎥' },
+      { label: 'Skill Assessments', path: routePaths.academySkillAssessments, icon: '📝' },
+    ],
+  },
+  {
+    section: 'My Progress',
+    items: [
+      { label: 'Certifications', path: routePaths.academyCertifications, icon: '📜' },
+      { label: 'Certificates', path: routePaths.academyCertificates, icon: '🎖️' },
+      { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
+    ],
+  },
+  generalGroup,
+];
+
+// Heritage Innovation Hub workspace — research projects, publications, open data.
+export const innovationHubSidebarNav = [
+  {
+    section: 'Overview',
+    items: [{ label: 'Innovation Hub', path: routePaths.researcher, icon: '🏠' }],
+  },
+  {
+    section: 'Research',
+    items: [
+      { label: 'Research Workspace', path: routePaths.researchWorkspace, icon: '🔬' },
+      { label: 'Publications', path: routePaths.researchPublications, icon: '📄' },
+      { label: 'Heritage Database', path: routePaths.researchHeritageDatabase, icon: '🗄️' },
+    ],
+  },
+  generalGroup,
+];
+
+// Logistics Partner workspace — pickups, warehousing, deliveries.
+// NOTE: the logistics backend (api/logistics/*) exists but dedicated frontend
+// pages/routes do not yet — Operations items land on the dashboard for now.
+export const logisticsPartnerSidebarNav = [
+  {
+    section: 'Overview',
+    items: [{ label: 'Logistics Dashboard', path: routePaths.logisticsPartner, icon: '🏠' }],
+  },
+  generalGroup,
+];
+
+// Government & NGO workspace — heritage programmes and national initiatives.
+export const governmentNgoSidebarNav = [
+  {
+    section: 'Overview',
+    items: [
+      { label: 'Government Dashboard', path: routePaths.government, icon: '🏛️' },
+      { label: 'NGO Programs', path: routePaths.ngo, icon: '🤲' },
+    ],
+  },
+  generalGroup,
 ];
 
 export const footerLinks = {
