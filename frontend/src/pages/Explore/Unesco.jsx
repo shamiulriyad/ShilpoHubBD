@@ -9,11 +9,7 @@ const unescoElements = [
     name: 'Traditional art of Jamdani weaving',
     year: 2013,
     summary:
-<<<<<<< HEAD
       'The fine muslin textile of Dhaka, hand-woven with a supplementary weft technique passed down through generations of weavers.',
-=======
-      'The fine muslin textile of Dhaka, hand-woven on the loom with a supplementary weft technique passed down through generations of weavers.',
->>>>>>> origin/main
   },
   {
     name: 'Baul songs',
@@ -25,31 +21,17 @@ const unescoElements = [
     name: 'Mangal Shobhajatra on Pahela Baishakh',
     year: 2016,
     summary:
-<<<<<<< HEAD
       'The colourful Bengali new-year procession organised by the students and teachers of the Faculty of Fine Arts, University of Dhaka.',
-=======
-      'The colourful new-year procession organised by the students and teachers of the Faculty of Fine Arts, University of Dhaka.',
->>>>>>> origin/main
   },
   {
     name: 'Traditional art of Shital Pati weaving of Sylhet',
     year: 2017,
-<<<<<<< HEAD
     summary: 'The craft of weaving a cool, smooth sitting mat from the slips of a cane known locally as murta.',
-=======
-    summary:
-      'The craft of weaving a cool, smooth sitting mat from the slips of a cane known locally as murta.',
->>>>>>> origin/main
   },
   {
     name: 'Rickshaw and rickshaw painting in Dhaka',
     year: 2023,
-<<<<<<< HEAD
     summary: 'The decorative painting and craftsmanship of Dhaka’s cycle rickshaws, a living urban folk-art tradition.',
-=======
-    summary:
-      'The decorative painting and craftsmanship of Dhaka’s cycle rickshaws, a living urban folk-art tradition.',
->>>>>>> origin/main
   },
 ];
 

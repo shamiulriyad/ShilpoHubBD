@@ -3,6 +3,7 @@ import RootLayout from '../layouts/RootLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { ProtectedRoute } from './ProtectedRoute';
+import { RoleBasedRoute } from './RoleBasedRoute';
 import { routePaths } from './routePaths';
 import { adminSidebarNav, customerSidebarNav, producerSidebarNav, businessPartnerSidebarNav } from '../data/navigation';
 
@@ -284,16 +285,24 @@ const router = createBrowserRouter([
         ],
       },
       {
-        element: <DashboardLayout navItems={adminSidebarNav} sidebarTitle="Admin" />,
+        element: <RoleBasedRoute allowedRoles={['SuperAdmin']} />,
         children: [
-          { path: routePaths.admin, element: <AdminDashboard /> },
-          { path: routePaths.adminUsers, element: <UserManagement /> },
-          { path: routePaths.adminHeritage, element: <HeritageManagement /> },
-          { path: routePaths.adminMarketplace, element: <MarketplaceMonitoring /> },
-          { path: routePaths.adminCms, element: <CMS /> },
-          { path: routePaths.adminSecurity, element: <SecurityCenter /> },
+          {
+            element: <DashboardLayout navItems={adminSidebarNav} sidebarTitle="Admin" />,
+            children: [
+              { path: routePaths.admin, element: <AdminDashboard /> },
+              { path: routePaths.adminUsers, element: <UserManagement /> },
+              { path: routePaths.adminHeritage, element: <HeritageManagement /> },
+              { path: routePaths.adminMarketplace, element: <MarketplaceMonitoring /> },
+              { path: routePaths.adminCms, element: <CMS /> },
+              { path: routePaths.adminSecurity, element: <SecurityCenter /> },
+            ],
+          },
         ],
       },
+      {
+        element: <RoleBasedRoute allowedRoles={['Customer', 'SuperAdmin']} />,
+        children: [
       {
         element: <DashboardLayout navItems={customerSidebarNav} sidebarTitle="Customer" />,
         children: [
@@ -336,6 +345,11 @@ const router = createBrowserRouter([
           { path: routePaths.customerAISimilarProducts, element: <AISimilarProducts /> },
         ],
       },
+        ],
+      },
+      {
+        element: <RoleBasedRoute allowedRoles={['Producer', 'SuperAdmin']} />,
+        children: [
       {
         element: <DashboardLayout navItems={producerSidebarNav} sidebarTitle="Producer" />,
         children: [
@@ -353,6 +367,11 @@ const router = createBrowserRouter([
           { path: routePaths.producerAiAssistant, element: <ProducerAiBusinessAssistant /> },
         ],
       },
+        ],
+      },
+      {
+        element: <RoleBasedRoute allowedRoles={['BusinessPartner', 'SuperAdmin']} />,
+        children: [
       {
         element: <DashboardLayout navItems={businessPartnerSidebarNav} sidebarTitle="Business Partner" />,
         children: [
@@ -371,6 +390,8 @@ const router = createBrowserRouter([
           { path: routePaths.businessPartnerProducerComparison, element: <BusinessPartnerProducerComparison /> },
           { path: routePaths.businessPartnerAnalytics, element: <BusinessPartnerAnalytics /> },
           { path: routePaths.businessPartnerAiIntelligence, element: <BusinessPartnerAiIntelligence /> },
+        ],
+      },
         ],
       },
     ],
