@@ -697,4 +697,176 @@ internal static class LogisticsMappings
         ActorName = e.Actor?.FullName,
         CreatedAt = e.CreatedAt,
     };
+
+    // ---- AI Logistics -----------------------------------------
+
+    public static DeliveryPredictionDto ToDto(this DeliveryPrediction p) => new()
+    {
+        Id = p.Id,
+        LogisticsPartnerProfileId = p.LogisticsPartnerProfileId,
+        ShipmentId = p.ShipmentId,
+        ShipmentTrackingNumber = p.Shipment?.TrackingNumber,
+        GeneratedByUserId = p.GeneratedByUserId,
+        GeneratedByName = p.GeneratedBy?.FullName,
+        Method = p.Method,
+        PredictedDeliveryAt = p.PredictedDeliveryAt,
+        PredictedTransitDays = p.PredictedTransitDays,
+        OnTimeProbability = p.OnTimeProbability,
+        PredictedFailureProbability = p.PredictedFailureProbability,
+        RiskLevel = p.RiskLevel.ToString(),
+        Confidence = p.Confidence.ToString(),
+        Summary = p.Summary,
+        FactorsJson = p.FactorsJson,
+        CreatedAt = p.CreatedAt,
+    };
+
+    public static DeliveryPredictionListItemDto ToListItemDto(this DeliveryPrediction p) => new()
+    {
+        Id = p.Id,
+        ShipmentId = p.ShipmentId,
+        ShipmentTrackingNumber = p.Shipment?.TrackingNumber,
+        PredictedDeliveryAt = p.PredictedDeliveryAt,
+        OnTimeProbability = p.OnTimeProbability,
+        RiskLevel = p.RiskLevel.ToString(),
+        Confidence = p.Confidence.ToString(),
+        CreatedAt = p.CreatedAt,
+    };
+
+    public static DemandForecastDto ToDto(this DemandForecast f) => new()
+    {
+        Id = f.Id,
+        LogisticsPartnerProfileId = f.LogisticsPartnerProfileId,
+        GeneratedByUserId = f.GeneratedByUserId,
+        GeneratedByName = f.GeneratedBy?.FullName,
+        Scope = f.Scope.ToString(),
+        ScopeId = f.ScopeId,
+        ScopeLabel = f.ScopeLabel,
+        Metric = f.Metric,
+        HorizonDays = f.HorizonDays,
+        Granularity = f.Granularity,
+        Method = f.Method,
+        Summary = f.Summary,
+        Confidence = f.Confidence.ToString(),
+        BaselineDailyAverage = f.BaselineDailyAverage,
+        PredictedTotal = f.PredictedTotal,
+        PeriodStart = f.PeriodStart,
+        PeriodEnd = f.PeriodEnd,
+        AssumptionsJson = f.AssumptionsJson,
+        CreatedAt = f.CreatedAt,
+        Points = f.Points
+            .OrderBy(p => p.PeriodDate)
+            .Select(p => new DemandForecastPointDto
+            {
+                PeriodDate = p.PeriodDate,
+                PredictedValue = p.PredictedValue,
+                LowerBound = p.LowerBound,
+                UpperBound = p.UpperBound,
+            })
+            .ToList(),
+    };
+
+    public static DemandForecastListItemDto ToListItemDto(this DemandForecast f) => new()
+    {
+        Id = f.Id,
+        Scope = f.Scope.ToString(),
+        ScopeLabel = f.ScopeLabel,
+        Metric = f.Metric,
+        HorizonDays = f.HorizonDays,
+        PredictedTotal = f.PredictedTotal,
+        Confidence = f.Confidence.ToString(),
+        CreatedAt = f.CreatedAt,
+    };
+
+    public static RouteOptimizationRunDto ToDto(this RouteOptimizationRun r) => new()
+    {
+        Id = r.Id,
+        LogisticsPartnerProfileId = r.LogisticsPartnerProfileId,
+        DeliveryRouteId = r.DeliveryRouteId,
+        DeliveryRouteCode = r.DeliveryRoute?.RouteCode,
+        GeneratedByUserId = r.GeneratedByUserId,
+        GeneratedByName = r.GeneratedBy?.FullName,
+        Status = r.Status.ToString(),
+        Method = r.Method,
+        Objective = r.Objective,
+        Summary = r.Summary,
+        OriginalDistanceKm = r.OriginalDistanceKm,
+        ProposedDistanceKm = r.ProposedDistanceKm,
+        DistanceSavingKm = r.DistanceSavingKm,
+        ProposedDurationMinutes = r.ProposedDurationMinutes,
+        Confidence = r.Confidence.ToString(),
+        AppliedAt = r.AppliedAt,
+        AppliedByUserId = r.AppliedByUserId,
+        CreatedAt = r.CreatedAt,
+        Stops = r.Stops
+            .OrderBy(s => s.ProposedSequence)
+            .Select(s => new RouteOptimizationRunStopDto
+            {
+                RouteStopId = s.RouteStopId,
+                OriginalSequence = s.OriginalSequence,
+                ProposedSequence = s.ProposedSequence,
+                DistanceFromPreviousKm = s.DistanceFromPreviousKm,
+                Label = s.Label,
+            })
+            .ToList(),
+    };
+
+    public static RouteOptimizationRunListItemDto ToListItemDto(this RouteOptimizationRun r) => new()
+    {
+        Id = r.Id,
+        DeliveryRouteId = r.DeliveryRouteId,
+        DeliveryRouteCode = r.DeliveryRoute?.RouteCode,
+        Status = r.Status.ToString(),
+        Objective = r.Objective,
+        DistanceSavingKm = r.DistanceSavingKm,
+        Confidence = r.Confidence.ToString(),
+        CreatedAt = r.CreatedAt,
+    };
+
+    public static WarehouseAllocationRecommendationDto ToDto(this WarehouseAllocationRecommendation r) => new()
+    {
+        Id = r.Id,
+        LogisticsPartnerProfileId = r.LogisticsPartnerProfileId,
+        GeneratedByUserId = r.GeneratedByUserId,
+        GeneratedByName = r.GeneratedBy?.FullName,
+        Objective = r.Objective.ToString(),
+        Sku = r.Sku,
+        Quantity = r.Quantity,
+        RequireColdChain = r.RequireColdChain,
+        DestinationDistrictId = r.DestinationDistrictId,
+        DestinationDistrictName = r.DestinationDistrict?.Name,
+        ShipmentId = r.ShipmentId,
+        ShipmentTrackingNumber = r.Shipment?.TrackingNumber,
+        Method = r.Method,
+        Summary = r.Summary,
+        Confidence = r.Confidence.ToString(),
+        RecommendedWarehouseId = r.RecommendedWarehouseId,
+        RecommendedWarehouseCode = r.RecommendedWarehouseCode ?? r.RecommendedWarehouse?.Code,
+        CreatedAt = r.CreatedAt,
+        Options = r.Options
+            .OrderBy(o => o.Rank)
+            .Select(o => new WarehouseAllocationOptionDto
+            {
+                WarehouseId = o.WarehouseId,
+                WarehouseCode = o.WarehouseCode,
+                WarehouseName = o.WarehouseName,
+                Rank = o.Rank,
+                Score = o.Score,
+                ProjectedUtilizationPercent = o.ProjectedUtilizationPercent,
+                SameDistrictAsDestination = o.SameDistrictAsDestination,
+                Rationale = o.Rationale,
+            })
+            .ToList(),
+    };
+
+    public static WarehouseAllocationRecommendationListItemDto ToListItemDto(this WarehouseAllocationRecommendation r) => new()
+    {
+        Id = r.Id,
+        Objective = r.Objective.ToString(),
+        Sku = r.Sku,
+        RecommendedWarehouseId = r.RecommendedWarehouseId,
+        RecommendedWarehouseCode = r.RecommendedWarehouseCode ?? r.RecommendedWarehouse?.Code,
+        Confidence = r.Confidence.ToString(),
+        OptionCount = r.Options.Count,
+        CreatedAt = r.CreatedAt,
+    };
 }

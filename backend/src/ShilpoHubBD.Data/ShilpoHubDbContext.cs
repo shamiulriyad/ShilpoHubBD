@@ -350,6 +350,13 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<ReturnItem> ReturnItems => Set<ReturnItem>();
 	public DbSet<ReturnInspection> ReturnInspections => Set<ReturnInspection>();
 	public DbSet<ReturnEvent> ReturnEvents => Set<ReturnEvent>();
+	public DbSet<DeliveryPrediction> DeliveryPredictions => Set<DeliveryPrediction>();
+	public DbSet<DemandForecast> LogisticsDemandForecasts => Set<DemandForecast>();
+	public DbSet<DemandForecastPoint> LogisticsDemandForecastPoints => Set<DemandForecastPoint>();
+	public DbSet<RouteOptimizationRun> RouteOptimizationRuns => Set<RouteOptimizationRun>();
+	public DbSet<RouteOptimizationRunStop> RouteOptimizationRunStops => Set<RouteOptimizationRunStop>();
+	public DbSet<WarehouseAllocationRecommendation> WarehouseAllocationRecommendations => Set<WarehouseAllocationRecommendation>();
+	public DbSet<WarehouseAllocationOption> WarehouseAllocationOptions => Set<WarehouseAllocationOption>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
