@@ -3,11 +3,20 @@ import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, Button } from '../../components/ui';
 import { VideoPlayer } from '../../components/media';
-import { workshops } from '../../data/mockData';
 
 const filters = ['All', 'Live', 'Upcoming', 'Past'];
 const statusLabel = { live: 'Live Now', upcoming: 'Upcoming', past: 'Replay' };
 const statusTone = { live: 'success', upcoming: 'secondary', past: 'neutral' };
+
+// TODO(backend): only per-producer workshop galleries exist
+// (`GET /api/producers/{id}/workshop-gallery`) — there is no cross-producer
+// workshop feed yet. Placeholder entries until one exists.
+const workshops = [
+  { id: 'workshop-1', title: 'Live Jamdani Loom Session', producerId: 'producer-1', producer: 'Rahima Begum', craft: 'Jamdani Weaving', status: 'live', scheduledFor: '2026-09-10', viewers: 128 },
+  { id: 'workshop-2', title: 'Nakshi Kantha Stitch Circle', producerId: 'producer-2', producer: 'Abdul Karim', craft: 'Nakshi Kantha', status: 'upcoming', scheduledFor: '2026-09-14', viewers: null },
+  { id: 'workshop-3', title: 'Terracotta Throwing Demo', producerId: 'producer-3', producer: 'Shefali Rani', craft: 'Terracotta Art', status: 'upcoming', scheduledFor: '2026-09-18', viewers: null },
+  { id: 'workshop-4', title: 'Bamboo Weaving Basics', producerId: 'producer-4', producer: 'Motiur Rahman', craft: 'Bamboo Work', status: 'past', scheduledFor: '2026-08-20', viewers: null },
+];
 
 export default function WorkshopGallery() {
   const [filter, setFilter] = useState('All');

@@ -1,39 +1,57 @@
 import { useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Button } from '../../components/ui';
-import { ProductCard, StatCard } from '../../components/cards';
-import { producers, products } from '../../data/mockData';
+import { PageHeader, Button, AsyncState } from '../../components/ui';
+import { StatCard } from '../../components/cards';
+import { useProducerStory } from '../../hooks/useProducerStories';
 
+// NOTE: no producer-profile endpoint yet — this view is built from the producer's
+// heritage story (`GET /api/producer-stories/{producerId}`).
 export default function ProducerDetails() {
   const { producerId } = useParams();
-  const producer = producers.find((p) => p.id === producerId) || producers[0];
+  const { data: story, isLoading, isError, error } = useProducerStory(producerId);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <PageHeader
-        breadcrumbs={[
-          { label: 'Home', path: routePaths.home },
-          { label: 'Explore', path: routePaths.explore },
-          { label: 'Producers', path: routePaths.exploreProducers },
-          { label: producer.name },
-        ]}
-        title={producer.name}
-        description={`${producer.craft} · ${producer.district}`}
-        action={<Button variant="primary">Contact Producer</Button>}
-      />
+      <AsyncState isLoading={isLoading} isError={isError} error={error} loadingText="Loading producer…">
+        {story ? (
+          <>
+            <PageHeader
+              breadcrumbs={[
+                { label: 'Home', path: routePaths.home },
+                { label: 'Explore', path: routePaths.explore },
+                { label: 'Producers', path: routePaths.exploreProducers },
+                { label: story.producerName },
+              ]}
+              title={story.producerName}
+              description={story.quote ? `“${story.quote}”` : undefined}
+              action={<Button variant="primary">Contact Producer</Button>}
+            />
 
-      <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <StatCard label="Rating" value={`★ ${producer.rating}`} />
-        <StatCard label="Products Listed" value="24" />
-        <StatCard label="Years Active" value="12" />
-      </div>
+            <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
+              <StatCard label="Heritage ID" value={story.heritageId || '—'} />
+              <StatCard label="Generations" value={story.generations || '—'} />
+              <StatCard label="Since" value={story.foundingYear ? String(story.foundingYear) : '—'} />
+            </div>
 
-      <p className="mb-3 text-sm font-semibold text-heading">Products by {producer.name}</p>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {products.slice(0, 4).map((product) => (
-          <ProductCard key={product.id} product={product} to={routePaths.marketplaceProductDetails.replace(':productId', product.id)} />
-        ))}
-      </div>
+            {story.chapters?.length > 0 && (
+              <div className="space-y-6">
+                {[...story.chapters]
+                  .sort((a, b) => a.displayOrder - b.displayOrder)
+                  .map((chapter) => (
+                    <section key={chapter.heading}>
+                      <h2 className="mb-2 text-sm font-semibold text-heading">{chapter.heading}</h2>
+                      <p className="max-w-3xl text-sm leading-relaxed text-body/70">{chapter.body}</p>
+                    </section>
+                  ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="py-10 text-center text-sm text-body/60">
+            This producer has not published a profile yet.
+          </p>
+        )}
+      </AsyncState>
     </div>
   );
 }

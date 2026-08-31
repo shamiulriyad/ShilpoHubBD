@@ -1,7 +1,8 @@
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, ChartPlaceholder, SectionHeader } from '../../components/ui';
+import { PageHeader, ChartPlaceholder, SectionHeader, AsyncState } from '../../components/ui';
 import { EntityCard } from '../../components/cards';
-import { publications } from '../../data/mockData';
+import { useResearchPublications } from '../../hooks/useResearchPublications';
+import { useAuth } from '../../hooks/useAuth';
 
 const links = [
   { title: 'Research Workspace', description: 'Ongoing research projects', to: routePaths.researchWorkspace },
@@ -10,6 +11,10 @@ const links = [
 ];
 
 export default function InnovationHubHome() {
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, error } = useResearchPublications({ pageSize: 3 }, isAuthenticated);
+  const publications = data?.items || [];
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <PageHeader
@@ -30,16 +35,20 @@ export default function InnovationHubHome() {
       </div>
 
       <SectionHeader eyebrow="Latest" title="Recent Publications" />
-      <div className="space-y-3">
-        {publications.slice(0, 3).map((pub) => (
-          <div key={pub.id} className="rounded-xl border border-border bg-surface p-4">
-            <p className="text-sm font-semibold text-heading">{pub.title}</p>
-            <p className="mt-1 text-xs text-body/60">
-              {pub.author} · {pub.year}
-            </p>
-          </div>
-        ))}
-      </div>
+      <AsyncState isLoading={isLoading} isError={isError} error={error}>
+        <div className="space-y-3">
+          {publications.map((pub) => (
+            <div key={pub.id} className="rounded-xl border border-border bg-surface p-4">
+              <p className="text-sm font-semibold text-heading">{pub.title}</p>
+              <p className="mt-1 text-xs text-body/60">
+                {pub.authors}
+                {pub.publishedOn ? ` · ${new Date(pub.publishedOn).getFullYear()}` : ''}
+              </p>
+            </div>
+          ))}
+          {publications.length === 0 && <p className="text-sm text-body/60">No publications yet.</p>}
+        </div>
+      </AsyncState>
     </div>
   );
 }

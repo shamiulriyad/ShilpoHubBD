@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge } from '../../components/ui';
-import { newsItems } from '../../data/mockData';
+import { newsItems } from './NewsList';
 
 export default function NewsDetails() {
   const { newsId } = useParams();
@@ -24,9 +24,9 @@ export default function NewsDetails() {
       <div className="mb-8 flex aspect-video items-center justify-center rounded-2xl border border-border bg-surface text-sm text-body/40">
         Article Image Placeholder
       </div>
+      {/* TODO(backend): no News API yet — full article body will come from a content endpoint. */}
       <p className="text-sm leading-relaxed text-body/80">
-        Placeholder article content. This space would contain the full news story, including quotes, images and
-        related links relevant to the ShilpoHub ecosystem.
+        Full article content will be served from the content API once available.
       </p>
     </div>
   );

@@ -1,7 +1,16 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Badge, Pagination } from '../../components/ui';
-import { newsItems } from '../../data/mockData';
+import { PageHeader, Badge } from '../../components/ui';
+
+// TODO(backend): no News API/controller yet. Editorial placeholder list.
+export const newsItems = [
+  { id: 'news-1', title: 'ShilpoHub Launches Digital Museum Initiative', date: '2026-01-12', category: 'Platform' },
+  { id: 'news-2', title: 'Jamdani Village Receives UNESCO Recognition', date: '2026-02-11', category: 'Heritage' },
+  { id: 'news-3', title: 'New Academy Cohort Begins This Month', date: '2026-03-13', category: 'Academy' },
+  { id: 'news-4', title: 'Innovation Hub Publishes Heritage Dataset', date: '2026-04-14', category: 'Research' },
+  { id: 'news-5', title: 'Marketplace Crosses 10,000 Products', date: '2026-05-15', category: 'Marketplace' },
+  { id: 'news-6', title: 'Tourism Board Partners with ShilpoHub', date: '2026-06-16', category: 'Tourism' },
+];
 
 export default function NewsList() {
   return (
@@ -27,9 +36,6 @@ export default function NewsList() {
             <p className="shrink-0 text-xs text-body/50">{item.date}</p>
           </Link>
         ))}
-      </div>
-      <div className="mt-8">
-        <Pagination currentPage={1} totalPages={3} />
       </div>
     </div>
   );

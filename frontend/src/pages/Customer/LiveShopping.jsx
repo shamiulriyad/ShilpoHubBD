@@ -1,9 +1,22 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { Badge, Button, ChatBox } from '../../components/ui';
+import { Badge, Button, ChatBox, AsyncState } from '../../components/ui';
 import { LiveShoppingPlayer } from '../../components/media';
-import { workshops, products } from '../../data/mockData';
+import { useFeaturedProducts } from '../../hooks/useProducts';
+import { toProductCardItem } from '../../utils/productAdapters';
+
+// TODO(backend): no live-workshop resource yet (only per-producer galleries).
+// Placeholder stream + seed chat until a live-commerce API exists.
+const workshop = {
+  id: 'workshop-live',
+  title: 'Live Jamdani Loom Session',
+  producerId: 'producer-1',
+  producer: 'Rahima Begum',
+  craft: 'Jamdani Weaving',
+  status: 'live',
+  viewers: 128,
+};
 
 const seedChat = [
   { id: 1, from: 'Rashed', text: 'The colors are gorgeous!' },
@@ -12,9 +25,8 @@ const seedChat = [
 ];
 
 export default function LiveShopping() {
-  const { workshopId } = useParams();
-  const workshop = workshops.find((w) => w.id === workshopId) || workshops[0];
-  const featured = products.slice(0, 4);
+  const featuredQuery = useFeaturedProducts(4);
+  const featured = (featuredQuery.data || []).map(toProductCardItem);
   const [chat, setChat] = useState(seedChat);
 
   function sendMessage(text) {
@@ -42,18 +54,15 @@ export default function LiveShopping() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <LiveShoppingPlayer
-          workshop={workshop}
-          products={featured}
-          getProductLink={(product) => routePaths.customerProductDetails.replace(':productId', product.id)}
-        />
+        <AsyncState isLoading={featuredQuery.isLoading} isError={featuredQuery.isError} error={featuredQuery.error}>
+          <LiveShoppingPlayer
+            workshop={workshop}
+            products={featured}
+            getProductLink={(product) => routePaths.customerProductDetails.replace(':productId', product.id)}
+          />
+        </AsyncState>
 
-        <ChatBox
-          title="Live Chat"
-          messages={chat}
-          onSend={sendMessage}
-          className="h-[520px]"
-        />
+        <ChatBox title="Live Chat" messages={chat} onSend={sendMessage} className="h-[520px]" />
       </div>
     </div>
   );

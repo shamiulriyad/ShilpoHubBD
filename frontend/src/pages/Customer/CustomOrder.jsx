@@ -1,8 +1,18 @@
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Button } from '../../components/ui';
-import { crafts, producers } from '../../data/mockData';
+import { useCategories } from '../../hooks/useCategories';
+import { useProducts } from '../../hooks/useProducts';
 
 export default function CustomOrder() {
+  const { data: categories } = useCategories();
+  const { data: productPage } = useProducts({ pageSize: 50 });
+
+  const crafts = categories || [];
+  // No producer-directory endpoint yet — offer the producers that appear in the catalog.
+  const producerNames = [
+    ...new Set((productPage?.items || []).map((p) => p.producerName).filter(Boolean)),
+  ].sort();
+
   return (
     <div>
       <PageHeader
@@ -15,6 +25,7 @@ export default function CustomOrder() {
         description="Commission a bespoke piece directly from a heritage producer, made to your specifications."
       />
 
+      {/* TODO(backend): POST /api/custom-orders exists — wire this form's submit to it. */}
       <form onSubmit={(event) => event.preventDefault()} className="grid gap-8 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-6 rounded-xl border border-border bg-surface p-6">
           <div>
@@ -28,8 +39,8 @@ export default function CustomOrder() {
               </select>
               <select className="rounded-md border border-border bg-background px-3 py-2 text-sm">
                 <option>Any producer (we’ll match you)</option>
-                {producers.map((producer) => (
-                  <option key={producer.id}>{producer.name}</option>
+                {producerNames.map((name) => (
+                  <option key={name}>{name}</option>
                 ))}
               </select>
             </div>

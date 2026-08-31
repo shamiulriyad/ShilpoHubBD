@@ -1,6 +1,7 @@
 import { PageHeader, Table, Button, Badge } from '../../components/ui';
-import { newsItems } from '../../data/mockData';
+import { newsItems } from '../News/NewsList';
 
+// TODO(backend): no CMS/News API yet — this manages the editorial placeholder list.
 export default function CMS() {
   return (
     <div>

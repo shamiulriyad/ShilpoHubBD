@@ -3,9 +3,46 @@ import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, AsyncState } from '../../components/ui';
 import { ProducerCard, DiscussionCard } from '../../components/cards';
 import { useDiscussions } from '../../hooks/useDiscussions';
-// No backend controller backs a generic "community post feed" or a producer-suggestion
-// endpoint (there is no ProducersController) — both stay on mock data for now.
-import { communityPosts, producers } from '../../data/mockData';
+
+// TODO(backend): no endpoint backs a generic "community post feed" or a
+// producer-suggestion list (there is no ProducersController). Placeholder content
+// until those APIs exist.
+const communityPosts = [
+  {
+    id: 'post-1',
+    author: 'Rahima Begum',
+    craft: 'Jamdani Weaving',
+    time: '2h ago',
+    content: 'Just finished a new batch of natural dyes for this season’s collection.',
+    likes: 52,
+    comments: 6,
+  },
+  {
+    id: 'post-2',
+    author: 'Abdul Karim',
+    craft: 'Nakshi Kantha',
+    time: '5h ago',
+    content: 'Grateful for all the support from customers this month.',
+    likes: 40,
+    comments: 4,
+  },
+  {
+    id: 'post-3',
+    author: 'Shefali Rani',
+    craft: 'Terracotta Art',
+    time: '1d ago',
+    content: 'Behind the scenes from today’s live session at the workshop.',
+    likes: 64,
+    comments: 8,
+  },
+];
+
+const suggestedProducers = [
+  { id: 'producer-1', name: 'Rahima Begum', craft: 'Jamdani Weaving', district: 'Dhaka' },
+  { id: 'producer-2', name: 'Abdul Karim', craft: 'Nakshi Kantha', district: 'Jashore' },
+  { id: 'producer-3', name: 'Shefali Rani', craft: 'Terracotta Art', district: 'Rajshahi' },
+  { id: 'producer-4', name: 'Motiur Rahman', craft: 'Shital Pati', district: 'Sylhet' },
+];
 
 export default function CommunityFeed() {
   const discussionsQuery = useDiscussions({ pageSize: 3 });
@@ -34,18 +71,13 @@ export default function CommunityFeed() {
             <div key={post.id} className="rounded-xl border border-border bg-surface p-4">
               <div className="flex items-center gap-3">
                 <Link
-                  to={routePaths.customerProducerProfile.replace(':producerId', post.authorId)}
+                  to={routePaths.customerProducerProfile.replace(':producerId', post.id)}
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary"
                 >
                   {post.author.slice(0, 1)}
                 </Link>
                 <div className="min-w-0 flex-1">
-                  <Link
-                    to={routePaths.customerProducerProfile.replace(':producerId', post.authorId)}
-                    className="text-sm font-semibold text-heading hover:underline"
-                  >
-                    {post.author}
-                  </Link>
+                  <p className="text-sm font-semibold text-heading">{post.author}</p>
                   <p className="text-xs text-body/60">
                     {post.craft} · {post.time}
                   </p>
@@ -64,7 +96,7 @@ export default function CommunityFeed() {
           <div className="space-y-4 rounded-xl border border-border bg-surface p-5">
             <p className="text-sm font-semibold text-heading">Producers to Follow</p>
             <div className="grid grid-cols-2 gap-3">
-              {producers.slice(0, 4).map((producer) => (
+              {suggestedProducers.map((producer) => (
                 <ProducerCard
                   key={producer.id}
                   producer={producer}

@@ -1,8 +1,23 @@
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Table, SearchBar } from '../../components/ui';
-import { districts } from '../../data/mockData';
+import { PageHeader, Table, SearchBar, AsyncState } from '../../components/ui';
+import { useDistricts } from '../../hooks/useDistricts';
+import { useVillages } from '../../hooks/useVillages';
 
 export default function HeritageDatabase() {
+  const districtsQuery = useDistricts();
+  const villagesQuery = useVillages();
+
+  const villageCountByDistrict = (villagesQuery.data || []).reduce((acc, v) => {
+    acc[v.districtId] = (acc[v.districtId] || 0) + 1;
+    return acc;
+  }, {});
+
+  const rows = (districtsQuery.data || []).map((d) => ({
+    district: d.name,
+    division: d.division,
+    villages: villageCountByDistrict[d.id] || 0,
+  }));
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <PageHeader
@@ -17,10 +32,13 @@ export default function HeritageDatabase() {
       <div className="mb-6 max-w-xl">
         <SearchBar placeholder="Search the heritage database…" />
       </div>
-      <Table
-        columns={['district', 'villages', 'crafts']}
-        rows={districts.map((d) => ({ district: d.name, villages: d.villages, crafts: d.crafts }))}
-      />
+      <AsyncState
+        isLoading={districtsQuery.isLoading}
+        isError={districtsQuery.isError}
+        error={districtsQuery.error}
+      >
+        <Table columns={['district', 'division', 'villages']} rows={rows} />
+      </AsyncState>
     </div>
   );
 }

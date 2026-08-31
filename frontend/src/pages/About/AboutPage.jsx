@@ -1,7 +1,22 @@
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, SectionHeader } from '../../components/ui';
 import { StatCard } from '../../components/cards';
-import { heritageStats, timeline } from '../../data/mockData';
+
+// TODO(backend): no platform-stats or timeline endpoint — editorial content.
+const heritageStats = [
+  { label: 'Registered Producers', value: '12,400+' },
+  { label: 'Heritage Villages', value: '640+' },
+  { label: 'Heritage Products', value: '8,900+' },
+  { label: 'Districts Covered', value: '64' },
+];
+
+const timeline = [
+  { year: '1971', label: 'Independence & the revival of national craft identity' },
+  { year: '1985', label: 'First national craft cooperatives established' },
+  { year: '2013', label: 'Jamdani recognized by UNESCO' },
+  { year: '2020', label: 'Digital heritage documentation begins' },
+  { year: '2026', label: 'ShilpoHub national ecosystem launches' },
+];
 
 const values = [
   { title: 'Mission', description: 'Preserve and elevate Bangladesh’s heritage crafts through a connected digital ecosystem.' },

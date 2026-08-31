@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, SectionHeader, Badge, Button } from '../../components/ui';
+import { PageHeader, SectionHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { ProductCard, StatCard } from '../../components/cards';
 import { useAuth } from '../../hooks/useAuth';
-import { products, orders, workshops } from '../../data/mockData';
+import { useOrders } from '../../hooks/useOrders';
+import { useWishlist } from '../../hooks/useWishlist';
+import { useFollowedProducers } from '../../hooks/useProducerFollows';
+import { useRecommendedForMe } from '../../hooks/useRecommendations';
+import { toProductCardItem } from '../../utils/productAdapters';
 
 const statusTone = {
   Delivered: 'success',
@@ -11,10 +15,24 @@ const statusTone = {
   Processing: 'secondary',
 };
 
+const asCount = (data) => (Array.isArray(data) ? data.length : data?.items?.length ?? 0);
+
+// TODO(backend): no general "upcoming workshops" endpoint (only per-producer
+// galleries) and no reward-points resource — placeholder content.
+const upcomingWorkshops = [
+  { id: 'workshop-1', title: 'Live Jamdani Loom Session', producer: 'Rahima Begum', craft: 'Jamdani Weaving', status: 'live' },
+  { id: 'workshop-2', title: 'Nakshi Kantha Stitch Circle', producer: 'Abdul Karim', craft: 'Nakshi Kantha', status: 'upcoming' },
+  { id: 'workshop-3', title: 'Terracotta Throwing Demo', producer: 'Shefali Rani', craft: 'Terracotta Art', status: 'upcoming' },
+];
+
 export default function CustomerDashboard() {
-  const { user } = useAuth();
-  const recommended = products.slice(0, 4);
-  const upcomingWorkshops = workshops.filter((w) => w.status !== 'past').slice(0, 3);
+  const { user, isAuthenticated } = useAuth();
+  const ordersQuery = useOrders({ pageSize: 5 }, isAuthenticated);
+  const wishlistQuery = useWishlist(isAuthenticated);
+  const followsQuery = useFollowedProducers();
+  const recommendedQuery = useRecommendedForMe(4);
+
+  const orders = ordersQuery.data?.items || [];
 
   return (
     <div>
@@ -29,10 +47,10 @@ export default function CustomerDashboard() {
       />
 
       <div className="mb-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard label="Orders Placed" value={orders.length} />
-        <StatCard label="Wishlist Items" value="14" />
-        <StatCard label="Favorite Producers" value="5" />
-        <StatCard label="Reward Points" value="320" />
+        <StatCard label="Orders Placed" value={ordersQuery.data?.totalCount ?? 0} />
+        <StatCard label="Wishlist Items" value={asCount(wishlistQuery.data)} />
+        <StatCard label="Following Producers" value={asCount(followsQuery.data)} />
+        <StatCard label="Reward Points" value="—" />
       </div>
 
       <SectionHeader
@@ -45,20 +63,24 @@ export default function CustomerDashboard() {
         }
       />
       <div className="mb-10 divide-y divide-border rounded-xl border border-border bg-surface">
-        {orders.map((order) => (
-          <div key={order.id} className="flex flex-wrap items-center justify-between gap-2 p-4">
-            <div>
-              <p className="text-sm font-medium text-heading">{order.id}</p>
-              <p className="text-xs text-body/60">
-                {order.items} item{order.items > 1 ? 's' : ''} · {order.date}
-              </p>
+        <AsyncState isLoading={ordersQuery.isLoading} isError={ordersQuery.isError} error={ordersQuery.error}>
+          {orders.map((order) => (
+            <div key={order.id} className="flex flex-wrap items-center justify-between gap-2 p-4">
+              <div>
+                <p className="text-sm font-medium text-heading">{order.orderNumber}</p>
+                <p className="text-xs text-body/60">
+                  {order.itemCount} item{order.itemCount > 1 ? 's' : ''} ·{' '}
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <p className="text-sm font-semibold text-primary">৳ {order.total.toLocaleString()}</p>
+                <Badge tone={statusTone[order.status] || 'neutral'}>{order.status}</Badge>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <p className="text-sm font-semibold text-primary">৳ {order.total.toLocaleString()}</p>
-              <Badge tone={statusTone[order.status] || 'neutral'}>{order.status}</Badge>
-            </div>
-          </div>
-        ))}
+          ))}
+          {orders.length === 0 && <p className="p-4 text-sm text-body/60">You haven’t placed any orders yet.</p>}
+        </AsyncState>
       </div>
 
       <SectionHeader
@@ -71,13 +93,15 @@ export default function CustomerDashboard() {
         }
       />
       <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {recommended.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            to={routePaths.customerProductDetails.replace(':productId', product.id)}
-          />
-        ))}
+        <AsyncState isLoading={recommendedQuery.isLoading} isError={recommendedQuery.isError} error={recommendedQuery.error}>
+          {(recommendedQuery.data || []).map((product) => (
+            <ProductCard
+              key={product.id}
+              product={toProductCardItem(product)}
+              to={routePaths.customerProductDetails.replace(':productId', product.id)}
+            />
+          ))}
+        </AsyncState>
       </div>
 
       <SectionHeader
