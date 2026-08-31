@@ -1,45 +1,87 @@
 import { useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader } from '../../components/ui';
-import { EntityCard, ProductCard, StatCard } from '../../components/cards';
-import { crafts, producers, products } from '../../data/mockData';
+import { PageHeader, QueryState } from '../../components/ui';
+import { ProductCard, StatCard } from '../../components/cards';
+import { useCategory, useCraftStoryByCategory, useProducts } from '../../hooks/queries/useCatalog';
+import { mapProduct } from '../../utils/mappers';
 
 export default function CraftDetails() {
   const { craftId } = useParams();
-  const craft = crafts.find((c) => c.id === craftId) || crafts[0];
+  const categoryQuery = useCategory(craftId);
+  const storyQuery = useCraftStoryByCategory(craftId);
+  const productsQuery = useProducts(craftId ? { categoryId: craftId, pageSize: 8 } : {});
+
+  const category = categoryQuery.data;
+  const products = productsQuery.data?.items ?? [];
+  const producerNames = [...new Set(products.map((p) => p.producerName).filter(Boolean))];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <PageHeader
-        breadcrumbs={[
-          { label: 'Home', path: routePaths.home },
-          { label: 'Explore', path: routePaths.explore },
-          { label: 'Crafts', path: routePaths.exploreCrafts },
-          { label: craft.name },
-        ]}
-        title={craft.name}
-        description={`Category: ${craft.category}`}
-      />
+      <QueryState query={categoryQuery} loadingLabel="Loading craft…" emptyLabel="Craft not found.">
+        {(craft) => (
+          <>
+            <PageHeader
+              breadcrumbs={[
+                { label: 'Home', path: routePaths.home },
+                { label: 'Explore', path: routePaths.explore },
+                { label: 'Crafts', path: routePaths.exploreCrafts },
+                { label: craft.name },
+              ]}
+              title={craft.name}
+              description={craft.description || undefined}
+            />
 
-      <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <StatCard label="Active Producers" value={craft.producers} />
-        <StatCard label="Products Listed" value={products.length * 3} />
-        <StatCard label="Category" value={craft.category} />
-      </div>
+            <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
+              <StatCard label="Products Listed" value={productsQuery.data?.totalCount ?? craft.productCount ?? 0} />
+              <StatCard label="Active Producers" value={producerNames.length} />
+              <StatCard
+                label="Practiced Since"
+                value={storyQuery.data?.since ? String(storyQuery.data.since) : '—'}
+              />
+            </div>
 
-      <p className="mb-3 text-sm font-semibold text-heading">Producers</p>
-      <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {producers.map((producer) => (
-          <EntityCard key={producer.id} title={producer.name} subtitle={producer.district} to={routePaths.exploreProducerDetails.replace(':producerId', producer.id)} />
-        ))}
-      </div>
+            {storyQuery.data?.summary && (
+              <p className="mb-10 max-w-3xl text-sm text-body/70">{storyQuery.data.summary}</p>
+            )}
 
-      <p className="mb-3 text-sm font-semibold text-heading">Products</p>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {products.slice(0, 4).map((product) => (
-          <ProductCard key={product.id} product={product} to={routePaths.marketplaceProductDetails.replace(':productId', product.id)} />
-        ))}
-      </div>
+            {producerNames.length > 0 && (
+              <>
+                <p className="mb-3 text-sm font-semibold text-heading">Producers</p>
+                <div className="mb-10 flex flex-wrap gap-2">
+                  {producerNames.map((name) => (
+                    <span
+                      key={name}
+                      className="rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-body/70"
+                    >
+                      {name}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
+
+            <p className="mb-3 text-sm font-semibold text-heading">Products</p>
+            <QueryState
+              query={productsQuery}
+              loadingLabel="Loading products…"
+              emptyLabel="No products listed for this craft yet."
+              isEmpty={(page) => !page?.items?.length}
+            >
+              {(page) => (
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                  {page.items.map((p) => (
+                    <ProductCard
+                      key={p.id}
+                      product={mapProduct(p)}
+                      to={routePaths.marketplaceProductDetails.replace(':productId', p.id)}
+                    />
+                  ))}
+                </div>
+              )}
+            </QueryState>
+          </>
+        )}
+      </QueryState>
     </div>
   );
 }
