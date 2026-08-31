@@ -2,6 +2,7 @@ export { default as Button } from './Button';
 export { default as Badge } from './Badge';
 export { default as SectionHeader } from './SectionHeader';
 export { default as PageHeader } from './PageHeader';
+export { default as QueryState } from './QueryState';
 export { default as SearchBar } from './SearchBar';
 export { default as FilterPanel } from './FilterPanel';
 export { default as Pagination } from './Pagination';
