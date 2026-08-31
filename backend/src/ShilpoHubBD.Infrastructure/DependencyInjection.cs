@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Infrastructure.AIBusiness;
 using ShilpoHubBD.Infrastructure.AIBusinessPartner;
+using ShilpoHubBD.Infrastructure.AILogistics;
 using ShilpoHubBD.Infrastructure.AITourism;
 using ShilpoHubBD.Infrastructure.Email;
 using ShilpoHubBD.Infrastructure.GovForecasting;
@@ -34,6 +35,11 @@ public static class DependencyInjection
         services.AddScoped<IHeritageIntelligenceProvider, RuleBasedHeritageIntelligenceProvider>();
         services.AddScoped<IPolicySimulationProvider, RuleBasedPolicySimulationProvider>();
         services.AddScoped<IGovForecastProvider, RuleBasedGovForecastProvider>();
+
+        services.AddScoped<IDeliveryPredictionProvider, RuleBasedDeliveryPredictionProvider>();
+        services.AddScoped<IAiRouteOptimizationProvider, RuleBasedAiRouteOptimizationProvider>();
+        services.AddScoped<IDemandForecastProvider, RuleBasedDemandForecastProvider>();
+        services.AddScoped<IWarehouseAllocationProvider, RuleBasedWarehouseAllocationProvider>();
 
         return services;
     }
