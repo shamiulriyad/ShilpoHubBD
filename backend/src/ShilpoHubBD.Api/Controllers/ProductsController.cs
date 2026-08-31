@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ShilpoHubBD.Application.DTOs.Common;
 using ShilpoHubBD.Application.DTOs.Marketplace;
 using ShilpoHubBD.Application.Interfaces.Services;
@@ -11,6 +12,7 @@ namespace ShilpoHubBD.Api.Controllers;
 
 [ApiController]
 [Route("api/products")]
+[EnableRateLimiting("read")]
 public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;

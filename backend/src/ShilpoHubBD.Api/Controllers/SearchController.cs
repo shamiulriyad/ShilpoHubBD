@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ShilpoHubBD.Application.DTOs.Common;
 using ShilpoHubBD.Application.DTOs.Marketplace;
 using ShilpoHubBD.Application.Interfaces.Services;
@@ -7,6 +8,7 @@ namespace ShilpoHubBD.Api.Controllers;
 
 [ApiController]
 [Route("api/search")]
+[EnableRateLimiting("read")]
 public class SearchController : ControllerBase
 {
     private readonly ISearchService _searchService;

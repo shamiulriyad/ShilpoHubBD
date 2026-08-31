@@ -1,5 +1,9 @@
+using System.Globalization;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ShilpoHubBD.Api.Hubs;
@@ -133,6 +137,74 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+// Rate limiting — blunts automated scraping/credential-stuffing. Requests are
+// partitioned by authenticated user id when present, otherwise by client IP, so a
+// single anonymous scraper cannot pull the whole catalog and one user cannot starve
+// others. Runs after authentication so the user principal is available for the key.
+static string RatePartitionKey(HttpContext ctx)
+{
+	var userId = ctx.User.FindFirst("sub")?.Value
+		?? ctx.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+	return !string.IsNullOrEmpty(userId)
+		? $"user:{userId}"
+		: $"ip:{ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown"}";
+}
+
+static string RateIpKey(HttpContext ctx) =>
+	$"ip:{ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown"}";
+
+builder.Services.AddRateLimiter(options =>
+{
+	options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+	options.OnRejected = async (context, cancellationToken) =>
+	{
+		if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+		{
+			context.HttpContext.Response.Headers.RetryAfter =
+				((int)retryAfter.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+		}
+
+		context.HttpContext.Response.ContentType = "application/json";
+		await context.HttpContext.Response.WriteAsync(
+			"{\"error\":\"Too many requests. Please slow down and try again shortly.\"}",
+			cancellationToken);
+	};
+
+	// Applies to every endpoint: generous for signed-in users, tight for anonymous callers.
+	options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(ctx =>
+	{
+		var authenticated = ctx.User.Identity?.IsAuthenticated == true;
+		return RateLimitPartition.GetFixedWindowLimiter(RatePartitionKey(ctx), _ =>
+			new FixedWindowRateLimiterOptions
+			{
+				PermitLimit = authenticated ? 300 : 75,
+				Window = TimeSpan.FromMinutes(1),
+			});
+	});
+
+	// Stricter policy for anonymous catalog/list ("browse") endpoints.
+	options.AddPolicy("read", ctx =>
+	{
+		var authenticated = ctx.User.Identity?.IsAuthenticated == true;
+		return RateLimitPartition.GetFixedWindowLimiter(RatePartitionKey(ctx), _ =>
+			new FixedWindowRateLimiterOptions
+			{
+				PermitLimit = authenticated ? 200 : 40,
+				Window = TimeSpan.FromMinutes(1),
+			});
+	});
+
+	// Auth endpoints — always keyed by IP to limit credential stuffing / enumeration.
+	options.AddPolicy("auth", ctx =>
+		RateLimitPartition.GetFixedWindowLimiter(RateIpKey(ctx), _ =>
+			new FixedWindowRateLimiterOptions
+			{
+				PermitLimit = 10,
+				Window = TimeSpan.FromMinutes(1),
+			}));
+});
+
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("Frontend", policy => policy
@@ -158,6 +230,8 @@ app.UseCors("Frontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRateLimiter();
 
 app.MapControllers();
 app.MapHub<MessagingHub>("/hubs/messaging");
