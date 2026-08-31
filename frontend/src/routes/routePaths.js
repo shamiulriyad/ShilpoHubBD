@@ -154,6 +154,7 @@ export const routePaths = {
   businessPartnerAiIntelligence: '/business-partner/ai-intelligence',
 
   // Roles
+  academyMember: '/academy-member',
   visitor: '/visitor',
   artisan: '/artisan',
   farmer: '/farmer',

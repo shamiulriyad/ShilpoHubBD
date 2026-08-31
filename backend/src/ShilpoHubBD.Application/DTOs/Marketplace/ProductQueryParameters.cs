@@ -7,6 +7,7 @@ public class ProductQueryParameters
     public string? Search { get; set; }
     public Guid? CategoryId { get; set; }
     public Guid? DistrictId { get; set; }
+    public Guid? ProducerId { get; set; }
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }
     public ProductSortOption SortBy { get; set; } = ProductSortOption.Newest;

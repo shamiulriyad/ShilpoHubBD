@@ -55,6 +55,7 @@ public class RecommendationService : IRecommendationService
         CategoryName = product.Category.Name,
         DistrictId = product.DistrictId,
         DistrictName = product.District.Name,
+        ProducerId = product.ProducerId,
         ProducerName = product.Producer.FullName,
         AverageRating = product.AverageRating,
         ReviewCount = product.ReviewCount,

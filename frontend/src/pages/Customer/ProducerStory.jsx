@@ -10,9 +10,9 @@ import { toProductCardItem } from '../../utils/productAdapters';
 export default function ProducerStory() {
   const { producerId } = useParams();
   const storyQuery = useProducerStory(producerId);
-  const productsQuery = useProducts({ pageSize: 100 });
+  const productsQuery = useProducts({ producerId, pageSize: 8 });
   const story = storyQuery.data;
-  const producerProducts = (productsQuery.data?.items || []).filter((p) => p.producerId === producerId).slice(0, 4);
+  const producerProducts = (productsQuery.data?.items || []).slice(0, 4);
 
   return (
     <div>

@@ -12,6 +12,7 @@ public class ProductListItemDto
     public string CategoryName { get; set; } = string.Empty;
     public Guid DistrictId { get; set; }
     public string DistrictName { get; set; } = string.Empty;
+    public Guid ProducerId { get; set; }
     public string ProducerName { get; set; } = string.Empty;
     public decimal AverageRating { get; set; }
     public int ReviewCount { get; set; }
