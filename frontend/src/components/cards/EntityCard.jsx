@@ -17,7 +17,15 @@ export default function EntityCard({ title, subtitle, meta, to }) {
     </>
   );
 
+<<<<<<< HEAD
   return to ? (
+=======
+  if (!to) {
+    return <div className={className}>{inner}</div>;
+  }
+
+  return (
+>>>>>>> origin/main
     <Link to={to} className={className}>
       {inner}
     </Link>

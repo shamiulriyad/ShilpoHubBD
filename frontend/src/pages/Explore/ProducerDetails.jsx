@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
+<<<<<<< HEAD
 import { PageHeader, Button, AsyncState } from '../../components/ui';
 import { StatCard } from '../../components/cards';
 import { useProducerStory } from '../../hooks/useProducerStories';
@@ -14,6 +15,26 @@ export default function ProducerDetails() {
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <AsyncState isLoading={isLoading} isError={isError} error={error} loadingText="Loading producer…">
         {story ? (
+=======
+import { PageHeader, Button, QueryState } from '../../components/ui';
+import { StatCard } from '../../components/cards';
+import { useProducerStory } from '../../hooks/queries/useCatalog';
+
+// NOTE: no producer-profile endpoint yet — this view is built from the
+// producer's heritage story (`GET /api/producer-stories/{producerId}`).
+export default function ProducerDetails() {
+  const { producerId } = useParams();
+  const query = useProducerStory(producerId);
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <QueryState
+        query={query}
+        loadingLabel="Loading producer…"
+        emptyLabel="This producer has not published a profile yet."
+      >
+        {(story) => (
+>>>>>>> origin/main
           <>
             <PageHeader
               breadcrumbs={[
@@ -46,12 +67,17 @@ export default function ProducerDetails() {
               </div>
             )}
           </>
+<<<<<<< HEAD
         ) : (
           <p className="py-10 text-center text-sm text-body/60">
             This producer has not published a profile yet.
           </p>
         )}
       </AsyncState>
+=======
+        )}
+      </QueryState>
+>>>>>>> origin/main
     </div>
   );
 }
