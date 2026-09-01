@@ -8,6 +8,12 @@ const links = [
   { title: 'Research Workspace', description: 'Ongoing research projects', to: routePaths.researchWorkspace },
   { title: 'Publications', description: 'Papers, reports & case studies', to: routePaths.researchPublications },
   { title: 'Heritage Database', description: 'Open heritage datasets', to: routePaths.researchHeritageDatabase },
+  { title: 'AI Research Assistant', description: 'Insights, trends, correlations & citations', to: routePaths.researchAiAssistant },
+  { title: 'Field Research', description: 'Surveys, field researchers, responses & evidence', to: routePaths.researchFieldResearch },
+  { title: 'Knowledge Graph', description: 'Curate heritage knowledge nodes & relationships', to: routePaths.researchKnowledgeGraph },
+  { title: 'Preservation Strategies', description: 'Objectives and action plans for heritage preservation', to: routePaths.innovationPreservationStrategies },
+  { title: 'Innovation Experiments', description: 'AI/ML experiments, versions and training runs', to: routePaths.innovationExperiments },
+  { title: 'Innovation Submissions', description: 'Submit heritage innovation ideas for review', to: routePaths.innovationSubmissions },
 ];
 
 export default function InnovationHubHome() {

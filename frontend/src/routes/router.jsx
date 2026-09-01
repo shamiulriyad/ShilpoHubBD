@@ -91,6 +91,7 @@ import Certificates from '../pages/Academy/Certificates';
 import Portfolio from '../pages/Academy/Portfolio';
 import LearningRoadmap from '../pages/Academy/LearningRoadmap';
 import MentorshipRequests from '../pages/Academy/MentorshipRequests';
+import MentorMatching from '../pages/Academy/MentorMatching';
 import LiveClasses from '../pages/Academy/LiveClasses';
 import LiveClassDetails from '../pages/Academy/LiveClassDetails';
 import ExamDetails from '../pages/Academy/ExamDetails';
@@ -100,6 +101,12 @@ import SkillAssessments from '../pages/Academy/SkillAssessments';
 
 import InnovationHubHome from '../pages/Research/InnovationHubHome';
 import ResearchWorkspace from '../pages/Research/ResearchWorkspace';
+import ResearchAiAssistant from '../pages/Research/ResearchAiAssistant';
+import FieldResearch from '../pages/Research/FieldResearch';
+import KnowledgeGraph from '../pages/Research/KnowledgeGraph';
+import PreservationStrategies from '../pages/Research/PreservationStrategies';
+import InnovationExperiments from '../pages/Research/InnovationExperiments';
+import HeritageInnovationSubmissions from '../pages/Research/HeritageInnovationSubmissions';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -175,6 +182,7 @@ import IndustryGarmentsPage from '../pages/IndustryGarments/IndustryGarmentsPage
 import TouristPage from '../pages/Tourist/TouristPage';
 import TrainerMasterArtisanPage from '../pages/TrainerMasterArtisan/TrainerMasterArtisanPage';
 import ApprenticeshipPrograms from '../pages/TrainerMasterArtisan/ApprenticeshipPrograms';
+import MyApprenticeships from '../pages/ApprenticeStudent/MyApprenticeships';
 import ApprenticeStudentPage from '../pages/ApprenticeStudent/ApprenticeStudentPage';
 import GovernmentPage from '../pages/Government/GovernmentPage';
 import NGOPage from '../pages/NGO/NGOPage';
@@ -242,6 +250,12 @@ const router = createBrowserRouter([
 
       { path: routePaths.research, element: <InnovationHubHome /> },
       { path: routePaths.researchWorkspace, element: <ResearchWorkspace /> },
+      { path: routePaths.researchAiAssistant, element: <ResearchAiAssistant /> },
+      { path: routePaths.researchFieldResearch, element: <FieldResearch /> },
+      { path: routePaths.researchKnowledgeGraph, element: <KnowledgeGraph /> },
+      { path: routePaths.innovationPreservationStrategies, element: <PreservationStrategies /> },
+      { path: routePaths.innovationExperiments, element: <InnovationExperiments /> },
+      { path: routePaths.innovationSubmissions, element: <HeritageInnovationSubmissions /> },
       { path: routePaths.researchPublications, element: <Publications /> },
       { path: routePaths.researchHeritageDatabase, element: <HeritageDatabase /> },
 
@@ -287,6 +301,7 @@ const router = createBrowserRouter([
           { path: routePaths.academyPortfolio, element: <Portfolio /> },
           { path: routePaths.academyRoadmap, element: <LearningRoadmap /> },
           { path: routePaths.academyMentorshipRequests, element: <MentorshipRequests /> },
+          { path: routePaths.academyMentorMatching, element: <MentorMatching /> },
           { path: routePaths.academyExamDetails, element: <ExamDetails /> },
           { path: routePaths.academyQuizDetails, element: <QuizDetails /> },
           { path: routePaths.academyAssignmentDetails, element: <AssignmentDetails /> },
@@ -300,6 +315,7 @@ const router = createBrowserRouter([
           { path: routePaths.trainerMasterArtisan, element: <TrainerMasterArtisanPage /> },
           { path: routePaths.trainerMasterArtisanPrograms, element: <ApprenticeshipPrograms /> },
           { path: routePaths.apprenticeStudent, element: <ApprenticeStudentPage /> },
+          { path: routePaths.apprenticeStudentMyApprenticeships, element: <MyApprenticeships /> },
           { path: routePaths.exporter, element: <ExporterPage /> },
         ],
       },

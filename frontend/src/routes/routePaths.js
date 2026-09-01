@@ -48,6 +48,7 @@ export const routePaths = {
   academyPortfolio: '/academy/portfolio',
   academyRoadmap: '/academy/roadmap',
   academyMentorshipRequests: '/academy/mentorship-requests',
+  academyMentorMatching: '/academy/mentor-matching',
   academyExamDetails: '/academy/exams/:examId',
   academyQuizDetails: '/academy/quizzes/:quizId',
   academyAssignmentDetails: '/academy/assignments/:assignmentId',
@@ -60,6 +61,12 @@ export const routePaths = {
   researchWorkspace: '/research/workspace',
   researchPublications: '/research/publications',
   researchHeritageDatabase: '/research/heritage-database',
+  researchAiAssistant: '/research/ai-assistant',
+  researchFieldResearch: '/research/field-research',
+  researchKnowledgeGraph: '/research/knowledge-graph',
+  innovationPreservationStrategies: '/research/preservation-strategies',
+  innovationExperiments: '/research/experiments',
+  innovationSubmissions: '/research/submissions',
 
   // Content
   news: '/news',
@@ -166,6 +173,7 @@ export const routePaths = {
   trainerMasterArtisan: '/trainer-master-artisan',
   trainerMasterArtisanPrograms: '/trainer-master-artisan/programs',
   apprenticeStudent: '/apprentice-student',
+  apprenticeStudentMyApprenticeships: '/apprentice-student/my-apprenticeships',
   government: '/government',
   ngo: '/ngo',
   researcher: '/researcher',

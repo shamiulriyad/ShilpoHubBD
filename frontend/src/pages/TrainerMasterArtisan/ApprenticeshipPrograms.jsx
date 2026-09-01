@@ -2,6 +2,24 @@ import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useHeritageSkills } from '../../hooks/useHeritageSkills';
 import { useMyApprenticeshipPrograms, useApprenticeshipProgram, useApprenticeshipProgramMutations } from '../../hooks/useApprenticeshipPrograms';
+import { useApprenticeEnrollmentsByProgram } from '../../hooks/useApprenticeEnrollments';
+
+function EnrollmentsRoster({ programId }) {
+  const enrollmentsQuery = useApprenticeEnrollmentsByProgram(programId);
+  const enrollments = enrollmentsQuery.data || [];
+
+  return (
+    <div>
+      <h4 className="mb-2 text-sm font-semibold text-heading">Enrolled Apprentices ({enrollments.length})</h4>
+      <div className="space-y-1 text-xs text-body/60">
+        {enrollments.map((e) => (
+          <p key={e.id}>{e.apprenticeName} — {e.status} · {e.progressPercent}% complete</p>
+        ))}
+        {enrollments.length === 0 && <p>No apprentices enrolled yet.</p>}
+      </div>
+    </div>
+  );
+}
 
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const types = ['Apprenticeship', 'Workshop', 'Internship', 'Fellowship'];
@@ -59,6 +77,8 @@ function ProgramDetail({ id }) {
           <Button type="submit" variant="secondary" size="sm" disabled={addMilestone.isPending}>Add</Button>
         </form>
       </div>
+
+      <EnrollmentsRoster programId={id} />
     </div>
   );
 }
