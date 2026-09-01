@@ -179,6 +179,7 @@ import ResearcherPage from '../pages/Researcher/ResearcherPage';
 import ExporterPage from '../pages/Exporter/ExporterPage';
 import LogisticsPartnerPage from '../pages/LogisticsPartner/LogisticsPartnerPage';
 import LogisticsPartnerProfile from '../pages/LogisticsPartner/Profile';
+import LogisticsPartnerWarehouses from '../pages/LogisticsPartner/Warehouses';
 
 import UnauthorizedPage from '../pages/UnauthorizedPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -325,6 +326,7 @@ const router = createBrowserRouter([
             children: [
               { path: routePaths.logisticsPartner, element: <LogisticsPartnerPage /> },
               { path: routePaths.logisticsPartnerProfile, element: <LogisticsPartnerProfile /> },
+              { path: routePaths.logisticsPartnerWarehouses, element: <LogisticsPartnerWarehouses /> },
             ],
           },
         ],
