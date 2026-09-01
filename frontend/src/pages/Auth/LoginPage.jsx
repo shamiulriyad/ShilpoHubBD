@@ -5,7 +5,12 @@ import { routePaths } from '../../routes/routePaths';
 import { Button } from '../../components/ui';
 import { authService } from '../../services/authService';
 import { useAuthStore } from '../../stores/useAuthStore';
-import { roleHomePath } from '../../utils/roles';
+import { resolveActiveRole, roleHomePath } from '../../utils/roles';
+
+const isAuthRoute = (path) =>
+  ['/login', '/register', '/forgot-password', '/reset-password', '/unauthorized'].some((p) =>
+    path.startsWith(p),
+  );
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -17,7 +22,12 @@ export default function LoginPage() {
     mutationFn: authService.login,
     onSuccess: (data) => {
       useAuthStore.getState().setSession(data);
-      navigate(location.state?.from?.pathname || roleHomePath(data.activeRole), { replace: true });
+      // Redirect to wherever the user was headed before being bounced to login,
+      // otherwise to their own role's dashboard. Never a hard-coded default.
+      const roleHome = roleHomePath(resolveActiveRole(data.roles ?? [], data.activeRole));
+      const from = location.state?.from?.pathname;
+      const target = from && !isAuthRoute(from) ? from : roleHome;
+      navigate(target, { replace: true });
     },
   });
 

@@ -430,6 +430,21 @@ export const governmentNgoSidebarNav = [
   generalGroup,
 ];
 
+// Backend role name -> the sidebar + workspace title that role should always see,
+// on ANY dashboard route (role landing pages AND the shared /dashboard/* shell).
+// DashboardLayout falls back to this whenever a route doesn't pass navItems.
+export const roleSidebars = {
+  Customer: { nav: customerSidebarNav, title: 'Customer' },
+  Producer: { nav: producerSidebarNav, title: 'Producer' },
+  BusinessPartner: { nav: businessPartnerSidebarNav, title: 'Business Partner' },
+  Tourist: { nav: touristSidebarNav, title: 'Tourist' },
+  HeritageAcademyMember: { nav: academyMemberSidebarNav, title: 'Academy' },
+  HeritageInnovationHub: { nav: innovationHubSidebarNav, title: 'Innovation Hub' },
+  GovernmentNGO: { nav: governmentNgoSidebarNav, title: 'Government & NGO' },
+  LogisticsPartner: { nav: logisticsPartnerSidebarNav, title: 'Logistics' },
+  SuperAdmin: { nav: adminSidebarNav, title: 'Admin' },
+};
+
 export const footerLinks = {
   about: [
     { label: 'About ShilpoHub', path: routePaths.about },
