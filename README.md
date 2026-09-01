@@ -2,6 +2,8 @@
 
 A marketplace connecting Bangladeshi heritage artisans and producers directly with customers. Monorepo with a React 19 + Vite frontend, an ASP.NET Core 8 Web API backend, a Supabase PostgreSQL database, and Supabase Storage integration.
 
+Supabase is used purely as the hosted PostgreSQL instance (accessed directly via EF Core / Npgsql) and object storage. Authentication is a self-contained system in the API — JWT + BCrypt, with users stored in the app's own `public."Users"` table, not Supabase Auth. See [backend/README.md](backend/README.md#where-auth-data-lives).
+
 ## Repository Layout
 
 - `frontend/` - React application
