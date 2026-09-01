@@ -185,6 +185,7 @@ import ApprenticeshipPrograms from '../pages/TrainerMasterArtisan/Apprenticeship
 import MyApprenticeships from '../pages/ApprenticeStudent/MyApprenticeships';
 import ApprenticeStudentPage from '../pages/ApprenticeStudent/ApprenticeStudentPage';
 import GovernmentPage from '../pages/Government/GovernmentPage';
+import GovReportsForecasts from '../pages/Government/GovReportsForecasts';
 import NGOPage from '../pages/NGO/NGOPage';
 import ResearcherPage from '../pages/Researcher/ResearcherPage';
 import ExporterPage from '../pages/Exporter/ExporterPage';
@@ -372,6 +373,7 @@ const router = createBrowserRouter([
             element: <DashboardLayout navItems={governmentNgoSidebarNav} sidebarTitle="Government & NGO" />,
             children: [
               { path: routePaths.government, element: <GovernmentPage /> },
+              { path: routePaths.governmentReportsForecasts, element: <GovReportsForecasts /> },
               { path: routePaths.ngo, element: <NGOPage /> },
             ],
           },
