@@ -104,6 +104,7 @@ export const sidebarNav = [
       { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
       { label: 'Learning Roadmap', path: routePaths.academyRoadmap, icon: '🧭' },
       { label: 'Mentorship Requests', path: routePaths.academyMentorshipRequests, icon: '🤝' },
+      { label: 'AI Mentor Matching', path: routePaths.academyMentorMatching, icon: '🎯' },
     ],
   },
   {
@@ -359,6 +360,7 @@ export const academyMemberSidebarNav = [
       { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
       { label: 'Learning Roadmap', path: routePaths.academyRoadmap, icon: '🧭' },
       { label: 'Mentorship Requests', path: routePaths.academyMentorshipRequests, icon: '🤝' },
+      { label: 'AI Mentor Matching', path: routePaths.academyMentorMatching, icon: '🎯' },
     ],
   },
   generalGroup,
