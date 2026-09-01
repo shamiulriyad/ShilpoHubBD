@@ -103,6 +103,7 @@ import ResearchWorkspace from '../pages/Research/ResearchWorkspace';
 import ResearchAiAssistant from '../pages/Research/ResearchAiAssistant';
 import FieldResearch from '../pages/Research/FieldResearch';
 import KnowledgeGraph from '../pages/Research/KnowledgeGraph';
+import PreservationStrategies from '../pages/Research/PreservationStrategies';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -248,6 +249,7 @@ const router = createBrowserRouter([
       { path: routePaths.researchAiAssistant, element: <ResearchAiAssistant /> },
       { path: routePaths.researchFieldResearch, element: <FieldResearch /> },
       { path: routePaths.researchKnowledgeGraph, element: <KnowledgeGraph /> },
+      { path: routePaths.innovationPreservationStrategies, element: <PreservationStrategies /> },
       { path: routePaths.researchPublications, element: <Publications /> },
       { path: routePaths.researchHeritageDatabase, element: <HeritageDatabase /> },
 

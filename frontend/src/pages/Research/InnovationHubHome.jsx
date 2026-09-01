@@ -11,6 +11,7 @@ const links = [
   { title: 'AI Research Assistant', description: 'Insights, trends, correlations & citations', to: routePaths.researchAiAssistant },
   { title: 'Field Research', description: 'Surveys, field researchers, responses & evidence', to: routePaths.researchFieldResearch },
   { title: 'Knowledge Graph', description: 'Curate heritage knowledge nodes & relationships', to: routePaths.researchKnowledgeGraph },
+  { title: 'Preservation Strategies', description: 'Objectives and action plans for heritage preservation', to: routePaths.innovationPreservationStrategies },
 ];
 
 export default function InnovationHubHome() {
