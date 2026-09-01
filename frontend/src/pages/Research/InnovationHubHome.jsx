@@ -12,6 +12,7 @@ const links = [
   { title: 'Field Research', description: 'Surveys, field researchers, responses & evidence', to: routePaths.researchFieldResearch },
   { title: 'Knowledge Graph', description: 'Curate heritage knowledge nodes & relationships', to: routePaths.researchKnowledgeGraph },
   { title: 'Preservation Strategies', description: 'Objectives and action plans for heritage preservation', to: routePaths.innovationPreservationStrategies },
+  { title: 'Innovation Experiments', description: 'AI/ML experiments, versions and training runs', to: routePaths.innovationExperiments },
 ];
 
 export default function InnovationHubHome() {
