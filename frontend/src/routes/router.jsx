@@ -174,6 +174,7 @@ import RetailerPage from '../pages/Retailer/RetailerPage';
 import IndustryGarmentsPage from '../pages/IndustryGarments/IndustryGarmentsPage';
 import TouristPage from '../pages/Tourist/TouristPage';
 import TrainerMasterArtisanPage from '../pages/TrainerMasterArtisan/TrainerMasterArtisanPage';
+import ApprenticeshipPrograms from '../pages/TrainerMasterArtisan/ApprenticeshipPrograms';
 import ApprenticeStudentPage from '../pages/ApprenticeStudent/ApprenticeStudentPage';
 import GovernmentPage from '../pages/Government/GovernmentPage';
 import NGOPage from '../pages/NGO/NGOPage';
@@ -297,6 +298,7 @@ const router = createBrowserRouter([
           { path: routePaths.retailer, element: <RetailerPage /> },
           { path: routePaths.industryGarments, element: <IndustryGarmentsPage /> },
           { path: routePaths.trainerMasterArtisan, element: <TrainerMasterArtisanPage /> },
+          { path: routePaths.trainerMasterArtisanPrograms, element: <ApprenticeshipPrograms /> },
           { path: routePaths.apprenticeStudent, element: <ApprenticeStudentPage /> },
           { path: routePaths.exporter, element: <ExporterPage /> },
         ],

@@ -164,6 +164,7 @@ export const routePaths = {
   industryGarments: '/industry-garments',
   tourist: '/tourist',
   trainerMasterArtisan: '/trainer-master-artisan',
+  trainerMasterArtisanPrograms: '/trainer-master-artisan/programs',
   apprenticeStudent: '/apprentice-student',
   government: '/government',
   ngo: '/ngo',
