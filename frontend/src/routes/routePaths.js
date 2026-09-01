@@ -171,6 +171,7 @@ export const routePaths = {
   logisticsPartnerProfile: '/logistics-partner/profile',
   logisticsPartnerWarehouses: '/logistics-partner/warehouses',
   logisticsPartnerShipments: '/logistics-partner/shipments',
+  logisticsPartnerStock: '/logistics-partner/warehouse-stock',
 
   // Admin
   admin: '/admin',
