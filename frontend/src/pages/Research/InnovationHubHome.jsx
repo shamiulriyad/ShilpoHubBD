@@ -10,6 +10,7 @@ const links = [
   { title: 'Heritage Database', description: 'Open heritage datasets', to: routePaths.researchHeritageDatabase },
   { title: 'AI Research Assistant', description: 'Insights, trends, correlations & citations', to: routePaths.researchAiAssistant },
   { title: 'Field Research', description: 'Surveys, field researchers, responses & evidence', to: routePaths.researchFieldResearch },
+  { title: 'Knowledge Graph', description: 'Curate heritage knowledge nodes & relationships', to: routePaths.researchKnowledgeGraph },
 ];
 
 export default function InnovationHubHome() {

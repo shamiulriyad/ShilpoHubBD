@@ -102,6 +102,7 @@ import InnovationHubHome from '../pages/Research/InnovationHubHome';
 import ResearchWorkspace from '../pages/Research/ResearchWorkspace';
 import ResearchAiAssistant from '../pages/Research/ResearchAiAssistant';
 import FieldResearch from '../pages/Research/FieldResearch';
+import KnowledgeGraph from '../pages/Research/KnowledgeGraph';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -246,6 +247,7 @@ const router = createBrowserRouter([
       { path: routePaths.researchWorkspace, element: <ResearchWorkspace /> },
       { path: routePaths.researchAiAssistant, element: <ResearchAiAssistant /> },
       { path: routePaths.researchFieldResearch, element: <FieldResearch /> },
+      { path: routePaths.researchKnowledgeGraph, element: <KnowledgeGraph /> },
       { path: routePaths.researchPublications, element: <Publications /> },
       { path: routePaths.researchHeritageDatabase, element: <HeritageDatabase /> },
 

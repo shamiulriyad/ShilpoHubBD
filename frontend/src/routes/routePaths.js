@@ -62,6 +62,7 @@ export const routePaths = {
   researchHeritageDatabase: '/research/heritage-database',
   researchAiAssistant: '/research/ai-assistant',
   researchFieldResearch: '/research/field-research',
+  researchKnowledgeGraph: '/research/knowledge-graph',
 
   // Content
   news: '/news',
