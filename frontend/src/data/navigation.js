@@ -412,6 +412,7 @@ export const governmentNgoSidebarNav = [
       { label: 'Government Dashboard', path: routePaths.government, icon: '🏛️' },
       { label: 'Reports & Forecasts', path: routePaths.governmentReportsForecasts, icon: '📈' },
       { label: 'Policy & Compliance', path: routePaths.governmentPolicyCompliance, icon: '⚖️' },
+      { label: 'Complaints & Monitoring', path: routePaths.governmentComplaintsMonitoring, icon: '🚨' },
       { label: 'NGO Programs', path: routePaths.ngo, icon: '🤲' },
     ],
   },

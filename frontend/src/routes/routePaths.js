@@ -177,6 +177,7 @@ export const routePaths = {
   government: '/government',
   governmentReportsForecasts: '/government/reports-forecasts',
   governmentPolicyCompliance: '/government/policy-compliance',
+  governmentComplaintsMonitoring: '/government/complaints-monitoring',
   ngo: '/ngo',
   researcher: '/researcher',
   exporter: '/exporter',
