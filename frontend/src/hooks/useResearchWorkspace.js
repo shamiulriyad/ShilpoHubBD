@@ -70,6 +70,14 @@ export function useResearchMilestones(projectId) {
   });
 }
 
+export function useProjectPublications(projectId) {
+  return useQuery({
+    queryKey: ['research-project-publications', projectId],
+    queryFn: () => researchWorkspaceService.listProjectPublications(projectId),
+    enabled: Boolean(projectId),
+  });
+}
+
 export function useResearchWorkItemMutations(projectId) {
   const queryClient = useQueryClient();
   const invalidate = (key) => queryClient.invalidateQueries({ queryKey: [key, projectId] });
@@ -100,6 +108,19 @@ export function useResearchWorkItemMutations(projectId) {
     removeMilestone: useMutation({
       mutationFn: (milestoneId) => researchWorkspaceService.removeMilestone(projectId, milestoneId),
       onSuccess: () => invalidate('research-milestones'),
+    }),
+
+    createPublication: useMutation({
+      mutationFn: (payload) => researchWorkspaceService.createPublication(projectId, payload),
+      onSuccess: () => invalidate('research-project-publications'),
+    }),
+    updatePublication: useMutation({
+      mutationFn: ({ publicationId, payload }) => researchWorkspaceService.updatePublication(projectId, publicationId, payload),
+      onSuccess: () => invalidate('research-project-publications'),
+    }),
+    removePublication: useMutation({
+      mutationFn: (publicationId) => researchWorkspaceService.removePublication(projectId, publicationId),
+      onSuccess: () => invalidate('research-project-publications'),
     }),
   };
 }
