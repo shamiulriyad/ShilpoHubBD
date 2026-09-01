@@ -185,6 +185,7 @@ import LogisticsPartnerWarehouseStock from '../pages/LogisticsPartner/WarehouseS
 import LogisticsPartnerPickupRequests from '../pages/LogisticsPartner/PickupRequests';
 import LogisticsPartnerReturns from '../pages/LogisticsPartner/Returns';
 import LogisticsPartnerDeliveryRoutes from '../pages/LogisticsPartner/DeliveryRoutes';
+import LogisticsPartnerAiLogisticsTools from '../pages/LogisticsPartner/AiLogisticsTools';
 
 import UnauthorizedPage from '../pages/UnauthorizedPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -337,6 +338,7 @@ const router = createBrowserRouter([
               { path: routePaths.logisticsPartnerPickups, element: <LogisticsPartnerPickupRequests /> },
               { path: routePaths.logisticsPartnerReturns, element: <LogisticsPartnerReturns /> },
               { path: routePaths.logisticsPartnerRoutes, element: <LogisticsPartnerDeliveryRoutes /> },
+              { path: routePaths.logisticsPartnerAiTools, element: <LogisticsPartnerAiLogisticsTools /> },
             ],
           },
         ],

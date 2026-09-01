@@ -392,6 +392,7 @@ export const logisticsPartnerSidebarNav = [
       { label: 'Pickup Requests', path: routePaths.logisticsPartnerPickups, icon: '🚚' },
       { label: 'Returns', path: routePaths.logisticsPartnerReturns, icon: '↩️' },
       { label: 'Delivery Routes', path: routePaths.logisticsPartnerRoutes, icon: '🗺️' },
+      { label: 'AI Logistics Tools', path: routePaths.logisticsPartnerAiTools, icon: '🤖' },
     ],
   },
   generalGroup,

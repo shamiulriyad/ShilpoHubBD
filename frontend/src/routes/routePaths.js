@@ -175,6 +175,7 @@ export const routePaths = {
   logisticsPartnerPickups: '/logistics-partner/pickup-requests',
   logisticsPartnerReturns: '/logistics-partner/returns',
   logisticsPartnerRoutes: '/logistics-partner/routes',
+  logisticsPartnerAiTools: '/logistics-partner/ai-tools',
 
   // Admin
   admin: '/admin',
