@@ -17,6 +17,17 @@ export function useLiveEvent(id) {
   });
 }
 
+export function useMyLiveEventMutations() {
+  const queryClient = useQueryClient();
+  const invalidate = () => queryClient.invalidateQueries({ queryKey: ['live-events'] });
+
+  return {
+    create: useMutation({ mutationFn: (payload) => liveEventsService.create(payload), onSuccess: invalidate }),
+    start: useMutation({ mutationFn: (id) => liveEventsService.start(id), onSuccess: invalidate }),
+    end: useMutation({ mutationFn: (id) => liveEventsService.end(id), onSuccess: invalidate }),
+  };
+}
+
 export function useLiveEventInteractions(id) {
   const queryClient = useQueryClient();
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ['live-events', id] });
