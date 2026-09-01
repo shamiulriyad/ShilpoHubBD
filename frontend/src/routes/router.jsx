@@ -91,6 +91,7 @@ import Certificates from '../pages/Academy/Certificates';
 import Portfolio from '../pages/Academy/Portfolio';
 import LearningRoadmap from '../pages/Academy/LearningRoadmap';
 import MentorshipRequests from '../pages/Academy/MentorshipRequests';
+import JobBoard from '../pages/Dashboard/JobBoard';
 import MentorMatching from '../pages/Academy/MentorMatching';
 import LiveClasses from '../pages/Academy/LiveClasses';
 import LiveClassDetails from '../pages/Academy/LiveClassDetails';
@@ -305,6 +306,7 @@ const router = createBrowserRouter([
           { path: routePaths.academyPortfolio, element: <Portfolio /> },
           { path: routePaths.academyRoadmap, element: <LearningRoadmap /> },
           { path: routePaths.academyMentorshipRequests, element: <MentorshipRequests /> },
+          { path: routePaths.dashboardJobs, element: <JobBoard /> },
           { path: routePaths.academyMentorMatching, element: <MentorMatching /> },
           { path: routePaths.academyExamDetails, element: <ExamDetails /> },
           { path: routePaths.academyQuizDetails, element: <QuizDetails /> },

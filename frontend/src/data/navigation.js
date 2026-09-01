@@ -108,6 +108,12 @@ export const sidebarNav = [
     ],
   },
   {
+    section: 'Careers',
+    items: [
+      { label: 'Job Board', path: routePaths.dashboardJobs, icon: '💼' },
+    ],
+  },
+  {
     section: 'Connect',
     items: [
       { label: 'Community', path: routePaths.dashboardCommunity, icon: '💬' },

@@ -85,6 +85,7 @@ export const routePaths = {
   dashboardMarketplace: '/dashboard/marketplace',
   dashboardTourism: '/dashboard/tourism',
   dashboardAcademy: '/dashboard/academy',
+  dashboardJobs: '/dashboard/jobs',
   dashboardCommunity: '/dashboard/community',
   dashboardAnalytics: '/dashboard/analytics',
   dashboardMessages: '/dashboard/messages',
