@@ -102,6 +102,7 @@ export const sidebarNav = [
       { label: 'Skill Assessments', path: routePaths.academySkillAssessments, icon: '📝' },
       { label: 'Certificates', path: routePaths.academyCertificates, icon: '📜' },
       { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
+      { label: 'Learning Roadmap', path: routePaths.academyRoadmap, icon: '🧭' },
     ],
   },
   {
@@ -355,6 +356,7 @@ export const academyMemberSidebarNav = [
       { label: 'Certifications', path: routePaths.academyCertifications, icon: '📜' },
       { label: 'Certificates', path: routePaths.academyCertificates, icon: '🎖️' },
       { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
+      { label: 'Learning Roadmap', path: routePaths.academyRoadmap, icon: '🧭' },
     ],
   },
   generalGroup,
