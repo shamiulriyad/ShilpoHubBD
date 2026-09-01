@@ -140,7 +140,6 @@ import MarketplaceMonitoring from '../pages/Admin/MarketplaceMonitoring';
 import CMS from '../pages/Admin/CMS';
 import SecurityCenter from '../pages/Admin/SecurityCenter';
 
-import VisitorPage from '../pages/Visitor/VisitorPage';
 import CustomerDashboard from '../pages/Customer/CustomerDashboard';
 import CustomerMarketplace from '../pages/Customer/Marketplace';
 import CustomerProductDetails from '../pages/Customer/ProductDetails';
@@ -178,10 +177,6 @@ import AIInteriorPreview from '../pages/Customer/AIInteriorPreview';
 import AIFashionMatching from '../pages/Customer/AIFashionMatching';
 import AIGiftRecommendation from '../pages/Customer/AIGiftRecommendation';
 import AISimilarProducts from '../pages/Customer/AISimilarProducts';
-import ArtisanPage from '../pages/Artisan/ArtisanPage';
-import FarmerPage from '../pages/Farmer/FarmerPage';
-import RetailerPage from '../pages/Retailer/RetailerPage';
-import IndustryGarmentsPage from '../pages/IndustryGarments/IndustryGarmentsPage';
 import TouristPage from '../pages/Tourist/TouristPage';
 import TrainerMasterArtisanPage from '../pages/TrainerMasterArtisan/TrainerMasterArtisanPage';
 import ApprenticeshipPrograms from '../pages/TrainerMasterArtisan/ApprenticeshipPrograms';
@@ -195,7 +190,6 @@ import ComplaintsMonitoring from '../pages/Government/ComplaintsMonitoring';
 import Funding from '../pages/Government/Funding';
 import NGOPage from '../pages/NGO/NGOPage';
 import ResearcherPage from '../pages/Researcher/ResearcherPage';
-import ExporterPage from '../pages/Exporter/ExporterPage';
 import LogisticsPartnerPage from '../pages/LogisticsPartner/LogisticsPartnerPage';
 import LogisticsPartnerProfile from '../pages/LogisticsPartner/Profile';
 import LogisticsPartnerWarehouses from '../pages/LogisticsPartner/Warehouses';
@@ -317,17 +311,11 @@ const router = createBrowserRouter([
           { path: routePaths.academyAssignmentDetails, element: <AssignmentDetails /> },
           { path: routePaths.academySkillAssessments, element: <SkillAssessments /> },
 
-          { path: routePaths.visitor, element: <VisitorPage /> },
-          { path: routePaths.artisan, element: <ArtisanPage /> },
-          { path: routePaths.farmer, element: <FarmerPage /> },
-          { path: routePaths.retailer, element: <RetailerPage /> },
-          { path: routePaths.industryGarments, element: <IndustryGarmentsPage /> },
           { path: routePaths.trainerMasterArtisan, element: <TrainerMasterArtisanPage /> },
           { path: routePaths.trainerMasterArtisanPrograms, element: <ApprenticeshipPrograms /> },
           { path: routePaths.apprenticeStudent, element: <ApprenticeStudentPage /> },
           { path: routePaths.apprenticeStudentMyApprenticeships, element: <MyApprenticeships /> },
           { path: routePaths.apprenticeStudentBrowsePrograms, element: <BrowsePrograms /> },
-          { path: routePaths.exporter, element: <ExporterPage /> },
         ],
       },
       {
