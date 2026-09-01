@@ -103,6 +103,7 @@ export const sidebarNav = [
       { label: 'Certificates', path: routePaths.academyCertificates, icon: '📜' },
       { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
       { label: 'Learning Roadmap', path: routePaths.academyRoadmap, icon: '🧭' },
+      { label: 'Mentorship Requests', path: routePaths.academyMentorshipRequests, icon: '🤝' },
     ],
   },
   {
@@ -357,6 +358,7 @@ export const academyMemberSidebarNav = [
       { label: 'Certificates', path: routePaths.academyCertificates, icon: '🎖️' },
       { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
       { label: 'Learning Roadmap', path: routePaths.academyRoadmap, icon: '🧭' },
+      { label: 'Mentorship Requests', path: routePaths.academyMentorshipRequests, icon: '🤝' },
     ],
   },
   generalGroup,

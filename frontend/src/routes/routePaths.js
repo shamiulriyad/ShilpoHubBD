@@ -47,6 +47,7 @@ export const routePaths = {
   academyCertificates: '/academy/certificates',
   academyPortfolio: '/academy/portfolio',
   academyRoadmap: '/academy/roadmap',
+  academyMentorshipRequests: '/academy/mentorship-requests',
   academyExamDetails: '/academy/exams/:examId',
   academyQuizDetails: '/academy/quizzes/:quizId',
   academyAssignmentDetails: '/academy/assignments/:assignmentId',
