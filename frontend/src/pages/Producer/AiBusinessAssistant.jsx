@@ -21,6 +21,9 @@ export default function AiBusinessAssistant() {
   const tools = useAiBusinessTools();
   const [priceForm, setPriceForm] = useState({ categoryId: '', estimatedCost: '', desiredMarginPercent: '' });
   const [descForm, setDescForm] = useState({ productName: '', categoryName: '', keywords: '' });
+  const [translateForm, setTranslateForm] = useState({ text: '', targetLanguage: 'bn' });
+  const [demandForm, setDemandForm] = useState({ productId: '', horizonWeeks: 4 });
+  const [productionForm, setProductionForm] = useState({ productId: '', targetQuantity: '', dailyProductionCapacity: '', leadTimeDays: 1 });
 
   return (
     <div>
@@ -62,6 +65,49 @@ export default function AiBusinessAssistant() {
           <p className="text-xs text-body/60">Predicts monthly demand scores across the year.</p>
           <Button variant="primary" onClick={() => tools.predictSeasonalTrend.mutate({})} disabled={tools.predictSeasonalTrend.isPending}>
             Predict Trend
+          </Button>
+        </ToolCard>
+
+        <ToolCard title="Listing Translator" result={tools.translate.data} mutation={tools.translate}>
+          <textarea rows={2} placeholder="Text to translate" value={translateForm.text} onChange={(e) => setTranslateForm((p) => ({ ...p, text: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <select value={translateForm.targetLanguage} onChange={(e) => setTranslateForm((p) => ({ ...p, targetLanguage: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm">
+            <option value="bn">Bengali</option>
+            <option value="en">English</option>
+          </select>
+          <Button variant="primary" onClick={() => tools.translate.mutate(translateForm)} disabled={!translateForm.text || tools.translate.isPending}>
+            Translate
+          </Button>
+        </ToolCard>
+
+        <ToolCard title="Demand Forecast" result={tools.forecastDemand.data} mutation={tools.forecastDemand}>
+          <input placeholder="Product ID" value={demandForm.productId} onChange={(e) => setDemandForm((p) => ({ ...p, productId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input type="number" min="1" placeholder="Horizon (weeks)" value={demandForm.horizonWeeks} onChange={(e) => setDemandForm((p) => ({ ...p, horizonWeeks: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <Button
+            variant="primary"
+            onClick={() => tools.forecastDemand.mutate({ productId: demandForm.productId, horizonWeeks: Number(demandForm.horizonWeeks) || 4 })}
+            disabled={!demandForm.productId || tools.forecastDemand.isPending}
+          >
+            Forecast Demand
+          </Button>
+        </ToolCard>
+
+        <ToolCard title="Production Planner" result={tools.planProduction.data} mutation={tools.planProduction}>
+          <input placeholder="Product ID" value={productionForm.productId} onChange={(e) => setProductionForm((p) => ({ ...p, productId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <div className="grid grid-cols-2 gap-2">
+            <input type="number" min="1" placeholder="Target quantity" value={productionForm.targetQuantity} onChange={(e) => setProductionForm((p) => ({ ...p, targetQuantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input type="number" min="1" placeholder="Daily capacity" value={productionForm.dailyProductionCapacity} onChange={(e) => setProductionForm((p) => ({ ...p, dailyProductionCapacity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          </div>
+          <Button
+            variant="primary"
+            onClick={() => tools.planProduction.mutate({
+              productId: productionForm.productId,
+              targetQuantity: Number(productionForm.targetQuantity) || 0,
+              dailyProductionCapacity: Number(productionForm.dailyProductionCapacity) || 1,
+              leadTimeDays: Number(productionForm.leadTimeDays) || 1,
+            })}
+            disabled={!productionForm.productId || !productionForm.targetQuantity || tools.planProduction.isPending}
+          >
+            Plan Production
           </Button>
         </ToolCard>
       </div>
