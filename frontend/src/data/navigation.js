@@ -387,6 +387,7 @@ export const logisticsPartnerSidebarNav = [
       { label: 'Logistics Dashboard', path: routePaths.logisticsPartner, icon: '🏠' },
       { label: 'Company Profile', path: routePaths.logisticsPartnerProfile, icon: '🏢' },
       { label: 'Warehouses', path: routePaths.logisticsPartnerWarehouses, icon: '🏭' },
+      { label: 'Shipments', path: routePaths.logisticsPartnerShipments, icon: '📦' },
     ],
   },
   generalGroup,
