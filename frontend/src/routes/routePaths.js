@@ -65,6 +65,7 @@ export const routePaths = {
   researchKnowledgeGraph: '/research/knowledge-graph',
   innovationPreservationStrategies: '/research/preservation-strategies',
   innovationExperiments: '/research/experiments',
+  innovationSubmissions: '/research/submissions',
 
   // Content
   news: '/news',
