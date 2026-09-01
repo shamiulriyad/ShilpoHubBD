@@ -4,11 +4,13 @@ import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import {
   useResearchProjects, useResearchProject, useResearchProjectMutations, useResearchActivity,
   useResearchPapers, useResearchNotes, useResearchTasks, useResearchMilestones, useResearchWorkItemMutations,
+  useProjectPublications,
 } from '../../hooks/useResearchWorkspace';
 
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const statusTone = { Planning: 'neutral', Active: 'primary', InProgress: 'primary', Review: 'secondary', Completed: 'success', Archived: 'neutral' };
-const tabs = ['Overview', 'Papers', 'Notes', 'Tasks', 'Milestones', 'Members'];
+const tabs = ['Overview', 'Papers', 'Notes', 'Tasks', 'Milestones', 'Publications', 'Members'];
+const publicationTypes = ['JournalArticle', 'ConferencePaper', 'Report', 'CaseStudy', 'Preprint', 'Other'];
 
 function OverviewTab({ project }) {
   const activityQuery = useResearchActivity(project.id, 20);
@@ -193,6 +195,47 @@ function MilestonesTab({ projectId }) {
   );
 }
 
+function PublicationsTab({ projectId }) {
+  const publicationsQuery = useProjectPublications(projectId);
+  const { createPublication, removePublication } = useResearchWorkItemMutations(projectId);
+  const [form, setForm] = useState({ title: '', authors: '', type: 'JournalArticle', venue: '', isPublic: false });
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    if (!form.title || !form.authors) return;
+    createPublication.mutate(form, { onSuccess: () => setForm({ title: '', authors: '', type: 'JournalArticle', venue: '', isPublic: false }) });
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleAdd} className="mb-3 grid gap-2 sm:grid-cols-2">
+        <input placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+        <input placeholder="Authors" value={form.authors} onChange={(e) => setForm((p) => ({ ...p, authors: e.target.value }))} className={inputClass} />
+        <select value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
+          {publicationTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+        </select>
+        <input placeholder="Venue" value={form.venue} onChange={(e) => setForm((p) => ({ ...p, venue: e.target.value }))} className={inputClass} />
+        <label className="flex items-center gap-2 text-sm text-body/70">
+          <input type="checkbox" checked={form.isPublic} onChange={(e) => setForm((p) => ({ ...p, isPublic: e.target.checked }))} /> Publish to public repository
+        </label>
+        <Button type="submit" variant="secondary" size="sm" className="sm:col-span-2" disabled={createPublication.isPending}>Add Publication</Button>
+      </form>
+      <div className="space-y-2">
+        {(publicationsQuery.data || []).map((p) => (
+          <div key={p.id} className="flex items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-sm">
+            <div>
+              <p className="font-medium text-heading">{p.title}</p>
+              <p className="text-xs text-body/60">{p.authors} · {p.type}{p.venue ? ` · ${p.venue}` : ''}{p.isPublic ? ' · Public' : ''}</p>
+            </div>
+            <button type="button" onClick={() => removePublication.mutate(p.id)} className="text-xs text-danger hover:underline">Remove</button>
+          </div>
+        ))}
+        {(publicationsQuery.data || []).length === 0 && <p className="text-sm text-body/60">No publications yet.</p>}
+      </div>
+    </div>
+  );
+}
+
 function MembersTab({ project }) {
   const { addMember, removeMember } = useResearchProjectMutations();
   const [form, setForm] = useState({ userId: '', role: 'Contributor' });
@@ -260,6 +303,7 @@ function ProjectDetail({ id }) {
       {tab === 'Notes' && <NotesTab projectId={id} />}
       {tab === 'Tasks' && <TasksTab projectId={id} />}
       {tab === 'Milestones' && <MilestonesTab projectId={id} />}
+      {tab === 'Publications' && <PublicationsTab projectId={id} />}
       {tab === 'Members' && <MembersTab project={project} />}
     </div>
   );
