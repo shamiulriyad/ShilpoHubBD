@@ -29,6 +29,7 @@ import ProducerInventory from '../pages/Producer/Inventory';
 import ProducerOrders from '../pages/Producer/Orders';
 import ProducerSustainability from '../pages/Producer/Sustainability';
 import ProducerAiBusinessAssistant from '../pages/Producer/AiBusinessAssistant';
+import ProducerLiveShoppingManager from '../pages/Producer/LiveShoppingManager';
 
 import BusinessPartnerDashboard from '../pages/BusinessPartner/BusinessPartnerDashboard';
 import BusinessPartnerProfile from '../pages/BusinessPartner/Profile';
@@ -91,6 +92,7 @@ import Certificates from '../pages/Academy/Certificates';
 import Portfolio from '../pages/Academy/Portfolio';
 import LearningRoadmap from '../pages/Academy/LearningRoadmap';
 import MentorshipRequests from '../pages/Academy/MentorshipRequests';
+import JobBoard from '../pages/Dashboard/JobBoard';
 import MentorMatching from '../pages/Academy/MentorMatching';
 import LiveClasses from '../pages/Academy/LiveClasses';
 import LiveClassDetails from '../pages/Academy/LiveClassDetails';
@@ -107,6 +109,7 @@ import KnowledgeGraph from '../pages/Research/KnowledgeGraph';
 import PreservationStrategies from '../pages/Research/PreservationStrategies';
 import InnovationExperiments from '../pages/Research/InnovationExperiments';
 import HeritageInnovationSubmissions from '../pages/Research/HeritageInnovationSubmissions';
+import InnovationPrototypes from '../pages/Research/InnovationPrototypes';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -183,8 +186,13 @@ import TouristPage from '../pages/Tourist/TouristPage';
 import TrainerMasterArtisanPage from '../pages/TrainerMasterArtisan/TrainerMasterArtisanPage';
 import ApprenticeshipPrograms from '../pages/TrainerMasterArtisan/ApprenticeshipPrograms';
 import MyApprenticeships from '../pages/ApprenticeStudent/MyApprenticeships';
+import BrowsePrograms from '../pages/ApprenticeStudent/BrowsePrograms';
 import ApprenticeStudentPage from '../pages/ApprenticeStudent/ApprenticeStudentPage';
 import GovernmentPage from '../pages/Government/GovernmentPage';
+import GovReportsForecasts from '../pages/Government/GovReportsForecasts';
+import PolicyCompliance from '../pages/Government/PolicyCompliance';
+import ComplaintsMonitoring from '../pages/Government/ComplaintsMonitoring';
+import Funding from '../pages/Government/Funding';
 import NGOPage from '../pages/NGO/NGOPage';
 import ResearcherPage from '../pages/Researcher/ResearcherPage';
 import ExporterPage from '../pages/Exporter/ExporterPage';
@@ -256,6 +264,7 @@ const router = createBrowserRouter([
       { path: routePaths.innovationPreservationStrategies, element: <PreservationStrategies /> },
       { path: routePaths.innovationExperiments, element: <InnovationExperiments /> },
       { path: routePaths.innovationSubmissions, element: <HeritageInnovationSubmissions /> },
+      { path: routePaths.innovationPrototypes, element: <InnovationPrototypes /> },
       { path: routePaths.researchPublications, element: <Publications /> },
       { path: routePaths.researchHeritageDatabase, element: <HeritageDatabase /> },
 
@@ -301,6 +310,7 @@ const router = createBrowserRouter([
           { path: routePaths.academyPortfolio, element: <Portfolio /> },
           { path: routePaths.academyRoadmap, element: <LearningRoadmap /> },
           { path: routePaths.academyMentorshipRequests, element: <MentorshipRequests /> },
+          { path: routePaths.dashboardJobs, element: <JobBoard /> },
           { path: routePaths.academyMentorMatching, element: <MentorMatching /> },
           { path: routePaths.academyExamDetails, element: <ExamDetails /> },
           { path: routePaths.academyQuizDetails, element: <QuizDetails /> },
@@ -316,6 +326,7 @@ const router = createBrowserRouter([
           { path: routePaths.trainerMasterArtisanPrograms, element: <ApprenticeshipPrograms /> },
           { path: routePaths.apprenticeStudent, element: <ApprenticeStudentPage /> },
           { path: routePaths.apprenticeStudentMyApprenticeships, element: <MyApprenticeships /> },
+          { path: routePaths.apprenticeStudentBrowsePrograms, element: <BrowsePrograms /> },
           { path: routePaths.exporter, element: <ExporterPage /> },
         ],
       },
@@ -372,6 +383,10 @@ const router = createBrowserRouter([
             element: <DashboardLayout navItems={governmentNgoSidebarNav} sidebarTitle="Government & NGO" />,
             children: [
               { path: routePaths.government, element: <GovernmentPage /> },
+              { path: routePaths.governmentReportsForecasts, element: <GovReportsForecasts /> },
+              { path: routePaths.governmentPolicyCompliance, element: <PolicyCompliance /> },
+              { path: routePaths.governmentComplaintsMonitoring, element: <ComplaintsMonitoring /> },
+              { path: routePaths.governmentFunding, element: <Funding /> },
               { path: routePaths.ngo, element: <NGOPage /> },
             ],
           },
@@ -458,6 +473,7 @@ const router = createBrowserRouter([
           { path: routePaths.producerOrders, element: <ProducerOrders /> },
           { path: routePaths.producerSustainability, element: <ProducerSustainability /> },
           { path: routePaths.producerAiAssistant, element: <ProducerAiBusinessAssistant /> },
+          { path: routePaths.producerLiveShopping, element: <ProducerLiveShoppingManager /> },
         ],
       },
         ],

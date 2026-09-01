@@ -67,6 +67,7 @@ export const routePaths = {
   innovationPreservationStrategies: '/research/preservation-strategies',
   innovationExperiments: '/research/experiments',
   innovationSubmissions: '/research/submissions',
+  innovationPrototypes: '/research/prototypes',
 
   // Content
   news: '/news',
@@ -85,6 +86,7 @@ export const routePaths = {
   dashboardMarketplace: '/dashboard/marketplace',
   dashboardTourism: '/dashboard/tourism',
   dashboardAcademy: '/dashboard/academy',
+  dashboardJobs: '/dashboard/jobs',
   dashboardCommunity: '/dashboard/community',
   dashboardAnalytics: '/dashboard/analytics',
   dashboardMessages: '/dashboard/messages',
@@ -144,6 +146,7 @@ export const routePaths = {
   producerOrders: '/producer/orders',
   producerSustainability: '/producer/sustainability',
   producerAiAssistant: '/producer/ai-assistant',
+  producerLiveShopping: '/producer/live-shopping',
 
   // Business Partner dashboard (backend role: BusinessPartner)
   businessPartner: '/business-partner',
@@ -174,7 +177,12 @@ export const routePaths = {
   trainerMasterArtisanPrograms: '/trainer-master-artisan/programs',
   apprenticeStudent: '/apprentice-student',
   apprenticeStudentMyApprenticeships: '/apprentice-student/my-apprenticeships',
+  apprenticeStudentBrowsePrograms: '/apprentice-student/programs',
   government: '/government',
+  governmentReportsForecasts: '/government/reports-forecasts',
+  governmentPolicyCompliance: '/government/policy-compliance',
+  governmentComplaintsMonitoring: '/government/complaints-monitoring',
+  governmentFunding: '/government/funding',
   ngo: '/ngo',
   researcher: '/researcher',
   exporter: '/exporter',

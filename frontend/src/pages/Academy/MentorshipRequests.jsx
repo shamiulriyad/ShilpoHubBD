@@ -3,9 +3,36 @@ import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useMentors } from '../../hooks/useMentors';
 import { useHeritageSkills } from '../../hooks/useHeritageSkills';
 import { useMyMentorshipRequestsAsLearner, useMyMentorshipRequestsAsMentor, useMentorshipRequestMutations } from '../../hooks/useMentorshipRequests';
+import { useSubmitMentorFeedback } from '../../hooks/useMentorFeedback';
 
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const statusTone = { Pending: 'secondary', Accepted: 'primary', Rejected: 'neutral', Completed: 'success' };
+
+function FeedbackForm({ learnerUserId }) {
+  const submitFeedback = useSubmitMentorFeedback();
+  const [message, setMessage] = useState('');
+  const [rating, setRating] = useState(5);
+  const [sent, setSent] = useState(false);
+
+  if (sent) return <p className="mt-2 text-xs text-success">Feedback submitted.</p>;
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!message) return;
+        submitFeedback.mutate({ learnerUserId, message, rating: Number(rating) }, { onSuccess: () => setSent(true) });
+      }}
+      className="mt-2 flex flex-wrap gap-2"
+    >
+      <input placeholder="Feedback for learner" value={message} onChange={(e) => setMessage(e.target.value)} className={`${inputClass} flex-1`} />
+      <select value={rating} onChange={(e) => setRating(e.target.value)} className={inputClass}>
+        {[5, 4, 3, 2, 1].map((r) => <option key={r} value={r}>{r}★</option>)}
+      </select>
+      <Button type="submit" variant="secondary" size="sm" disabled={submitFeedback.isPending}>Send Feedback</Button>
+    </form>
+  );
+}
 
 export default function MentorshipRequests() {
   const [tab, setTab] = useState('learner');
@@ -80,6 +107,7 @@ export default function MentorshipRequests() {
                   )}
                 </div>
               </div>
+              {tab === 'mentor' && ['Accepted', 'Completed'].includes(r.status) && <FeedbackForm learnerUserId={r.learnerUserId} />}
             </div>
           ))}
           {items.length === 0 && <p className="text-sm text-body/60">No mentorship requests {tab === 'learner' ? 'sent' : 'received'} yet.</p>}

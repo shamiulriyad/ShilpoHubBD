@@ -3,6 +3,33 @@ import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useHeritageSkills } from '../../hooks/useHeritageSkills';
 import { useMyApprenticeshipPrograms, useApprenticeshipProgram, useApprenticeshipProgramMutations } from '../../hooks/useApprenticeshipPrograms';
 import { useApprenticeEnrollmentsByProgram } from '../../hooks/useApprenticeEnrollments';
+import { useProgramApplicationsByProgram, useProgramApplicationMutations } from '../../hooks/useProgramApplications';
+
+function ApplicationsReview({ programId }) {
+  const applicationsQuery = useProgramApplicationsByProgram(programId);
+  const { accept, reject } = useProgramApplicationMutations();
+  const applications = applicationsQuery.data || [];
+
+  return (
+    <div>
+      <h4 className="mb-2 text-sm font-semibold text-heading">Applications ({applications.length})</h4>
+      <div className="space-y-1 text-xs text-body/60">
+        {applications.map((a) => (
+          <div key={a.id} className="flex items-center justify-between rounded-lg border border-border px-3 py-2">
+            <span>{a.applicantName} — {a.status}</span>
+            {a.status === 'Submitted' && (
+              <div className="flex gap-2">
+                <button type="button" onClick={() => accept.mutate({ id: a.id, payload: {} })} className="text-primary hover:underline">Accept</button>
+                <button type="button" onClick={() => reject.mutate({ id: a.id, payload: {} })} className="text-danger hover:underline">Reject</button>
+              </div>
+            )}
+          </div>
+        ))}
+        {applications.length === 0 && <p>No applications yet.</p>}
+      </div>
+    </div>
+  );
+}
 
 function EnrollmentsRoster({ programId }) {
   const enrollmentsQuery = useApprenticeEnrollmentsByProgram(programId);
@@ -78,7 +105,10 @@ function ProgramDetail({ id }) {
         </form>
       </div>
 
-      <EnrollmentsRoster programId={id} />
+      <ApplicationsReview programId={id} />
+      <div className="mt-4">
+        <EnrollmentsRoster programId={id} />
+      </div>
     </div>
   );
 }

@@ -14,6 +14,7 @@ const links = [
   { title: 'Preservation Strategies', description: 'Objectives and action plans for heritage preservation', to: routePaths.innovationPreservationStrategies },
   { title: 'Innovation Experiments', description: 'AI/ML experiments, versions and training runs', to: routePaths.innovationExperiments },
   { title: 'Innovation Submissions', description: 'Submit heritage innovation ideas for review', to: routePaths.innovationSubmissions },
+  { title: 'Innovation Prototypes', description: 'Iterations, test cases and issue tracking', to: routePaths.innovationPrototypes },
 ];
 
 export default function InnovationHubHome() {

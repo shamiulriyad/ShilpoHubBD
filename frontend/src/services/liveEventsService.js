@@ -5,6 +5,9 @@ import apiClient from './apiClient';
 export const liveEventsService = {
   list: (params) => apiClient.get('/live-events', { params }).then((res) => res.data),
   getById: (id) => apiClient.get(`/live-events/${id}`).then((res) => res.data),
+  create: (payload) => apiClient.post('/live-events', payload).then((res) => res.data),
+  start: (id) => apiClient.post(`/live-events/${id}/start`, {}).then((res) => res.data),
+  end: (id) => apiClient.post(`/live-events/${id}/end`, {}).then((res) => res.data),
   addComment: (id, body) => apiClient.post(`/live-events/${id}/comments`, { body }).then((res) => res.data),
   addReaction: (id, type) => apiClient.post(`/live-events/${id}/reactions`, { type }).then((res) => res.data),
   buyDuringLive: (id, payload) => apiClient.post(`/live-events/${id}/buy`, payload).then((res) => res.data),

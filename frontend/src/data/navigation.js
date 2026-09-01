@@ -108,6 +108,12 @@ export const sidebarNav = [
     ],
   },
   {
+    section: 'Careers',
+    items: [
+      { label: 'Job Board', path: routePaths.dashboardJobs, icon: '💼' },
+    ],
+  },
+  {
     section: 'Connect',
     items: [
       { label: 'Community', path: routePaths.dashboardCommunity, icon: '💬' },
@@ -223,6 +229,10 @@ export const producerSidebarNav = [
   {
     section: 'AI',
     items: [{ label: 'AI Business Assistant', path: routePaths.producerAiAssistant, icon: '🤖' }],
+  },
+  {
+    section: 'Marketing',
+    items: [{ label: 'Live Shopping', path: routePaths.producerLiveShopping, icon: '📡' }],
   },
 ];
 
@@ -410,6 +420,10 @@ export const governmentNgoSidebarNav = [
     section: 'Overview',
     items: [
       { label: 'Government Dashboard', path: routePaths.government, icon: '🏛️' },
+      { label: 'Reports & Forecasts', path: routePaths.governmentReportsForecasts, icon: '📈' },
+      { label: 'Policy & Compliance', path: routePaths.governmentPolicyCompliance, icon: '⚖️' },
+      { label: 'Complaints & Monitoring', path: routePaths.governmentComplaintsMonitoring, icon: '🚨' },
+      { label: 'Funding & Grants', path: routePaths.governmentFunding, icon: '💰' },
       { label: 'NGO Programs', path: routePaths.ngo, icon: '🤲' },
     ],
   },
