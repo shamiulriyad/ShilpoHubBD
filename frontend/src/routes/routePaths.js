@@ -168,6 +168,7 @@ export const routePaths = {
   researcher: '/researcher',
   exporter: '/exporter',
   logisticsPartner: '/logistics-partner',
+  logisticsPartnerProfile: '/logistics-partner/profile',
 
   // Admin
   admin: '/admin',

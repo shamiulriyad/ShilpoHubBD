@@ -178,6 +178,7 @@ import NGOPage from '../pages/NGO/NGOPage';
 import ResearcherPage from '../pages/Researcher/ResearcherPage';
 import ExporterPage from '../pages/Exporter/ExporterPage';
 import LogisticsPartnerPage from '../pages/LogisticsPartner/LogisticsPartnerPage';
+import LogisticsPartnerProfile from '../pages/LogisticsPartner/Profile';
 
 import UnauthorizedPage from '../pages/UnauthorizedPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -321,7 +322,10 @@ const router = createBrowserRouter([
         children: [
           {
             element: <DashboardLayout navItems={logisticsPartnerSidebarNav} sidebarTitle="Logistics" />,
-            children: [{ path: routePaths.logisticsPartner, element: <LogisticsPartnerPage /> }],
+            children: [
+              { path: routePaths.logisticsPartner, element: <LogisticsPartnerPage /> },
+              { path: routePaths.logisticsPartnerProfile, element: <LogisticsPartnerProfile /> },
+            ],
           },
         ],
       },

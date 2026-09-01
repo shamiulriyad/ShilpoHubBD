@@ -383,7 +383,10 @@ export const innovationHubSidebarNav = [
 export const logisticsPartnerSidebarNav = [
   {
     section: 'Overview',
-    items: [{ label: 'Logistics Dashboard', path: routePaths.logisticsPartner, icon: '🏠' }],
+    items: [
+      { label: 'Logistics Dashboard', path: routePaths.logisticsPartner, icon: '🏠' },
+      { label: 'Company Profile', path: routePaths.logisticsPartnerProfile, icon: '🏢' },
+    ],
   },
   generalGroup,
 ];
