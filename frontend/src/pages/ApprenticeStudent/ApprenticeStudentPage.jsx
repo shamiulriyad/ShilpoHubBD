@@ -19,12 +19,20 @@ export default function ApprenticeStudentPage() {
           { title: 'Portfolio', description: 'Showcase your craft projects' },
         ]}
       />
-      <Link
-        to={routePaths.apprenticeStudentMyApprenticeships}
-        className="mt-4 inline-block rounded-xl border border-border bg-surface p-4 text-sm font-medium text-heading transition hover:shadow-md"
-      >
-        My Apprenticeships →
-      </Link>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Link
+          to={routePaths.apprenticeStudentMyApprenticeships}
+          className="inline-block rounded-xl border border-border bg-surface p-4 text-sm font-medium text-heading transition hover:shadow-md"
+        >
+          My Apprenticeships →
+        </Link>
+        <Link
+          to={routePaths.apprenticeStudentBrowsePrograms}
+          className="inline-block rounded-xl border border-border bg-surface p-4 text-sm font-medium text-heading transition hover:shadow-md"
+        >
+          Browse Programs →
+        </Link>
+      </div>
     </div>
   );
 }

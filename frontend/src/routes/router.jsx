@@ -184,6 +184,7 @@ import TouristPage from '../pages/Tourist/TouristPage';
 import TrainerMasterArtisanPage from '../pages/TrainerMasterArtisan/TrainerMasterArtisanPage';
 import ApprenticeshipPrograms from '../pages/TrainerMasterArtisan/ApprenticeshipPrograms';
 import MyApprenticeships from '../pages/ApprenticeStudent/MyApprenticeships';
+import BrowsePrograms from '../pages/ApprenticeStudent/BrowsePrograms';
 import ApprenticeStudentPage from '../pages/ApprenticeStudent/ApprenticeStudentPage';
 import GovernmentPage from '../pages/Government/GovernmentPage';
 import GovReportsForecasts from '../pages/Government/GovReportsForecasts';
@@ -322,6 +323,7 @@ const router = createBrowserRouter([
           { path: routePaths.trainerMasterArtisanPrograms, element: <ApprenticeshipPrograms /> },
           { path: routePaths.apprenticeStudent, element: <ApprenticeStudentPage /> },
           { path: routePaths.apprenticeStudentMyApprenticeships, element: <MyApprenticeships /> },
+          { path: routePaths.apprenticeStudentBrowsePrograms, element: <BrowsePrograms /> },
           { path: routePaths.exporter, element: <ExporterPage /> },
         ],
       },
