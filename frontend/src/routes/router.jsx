@@ -108,6 +108,7 @@ import KnowledgeGraph from '../pages/Research/KnowledgeGraph';
 import PreservationStrategies from '../pages/Research/PreservationStrategies';
 import InnovationExperiments from '../pages/Research/InnovationExperiments';
 import HeritageInnovationSubmissions from '../pages/Research/HeritageInnovationSubmissions';
+import InnovationPrototypes from '../pages/Research/InnovationPrototypes';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -262,6 +263,7 @@ const router = createBrowserRouter([
       { path: routePaths.innovationPreservationStrategies, element: <PreservationStrategies /> },
       { path: routePaths.innovationExperiments, element: <InnovationExperiments /> },
       { path: routePaths.innovationSubmissions, element: <HeritageInnovationSubmissions /> },
+      { path: routePaths.innovationPrototypes, element: <InnovationPrototypes /> },
       { path: routePaths.researchPublications, element: <Publications /> },
       { path: routePaths.researchHeritageDatabase, element: <HeritageDatabase /> },
 
