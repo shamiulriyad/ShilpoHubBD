@@ -188,6 +188,7 @@ import GovernmentPage from '../pages/Government/GovernmentPage';
 import GovReportsForecasts from '../pages/Government/GovReportsForecasts';
 import PolicyCompliance from '../pages/Government/PolicyCompliance';
 import ComplaintsMonitoring from '../pages/Government/ComplaintsMonitoring';
+import Funding from '../pages/Government/Funding';
 import NGOPage from '../pages/NGO/NGOPage';
 import ResearcherPage from '../pages/Researcher/ResearcherPage';
 import ExporterPage from '../pages/Exporter/ExporterPage';
@@ -378,6 +379,7 @@ const router = createBrowserRouter([
               { path: routePaths.governmentReportsForecasts, element: <GovReportsForecasts /> },
               { path: routePaths.governmentPolicyCompliance, element: <PolicyCompliance /> },
               { path: routePaths.governmentComplaintsMonitoring, element: <ComplaintsMonitoring /> },
+              { path: routePaths.governmentFunding, element: <Funding /> },
               { path: routePaths.ngo, element: <NGOPage /> },
             ],
           },
