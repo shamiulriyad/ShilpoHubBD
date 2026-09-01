@@ -390,6 +390,7 @@ export const logisticsPartnerSidebarNav = [
       { label: 'Shipments', path: routePaths.logisticsPartnerShipments, icon: '📦' },
       { label: 'Warehouse Stock', path: routePaths.logisticsPartnerStock, icon: '📊' },
       { label: 'Pickup Requests', path: routePaths.logisticsPartnerPickups, icon: '🚚' },
+      { label: 'Returns', path: routePaths.logisticsPartnerReturns, icon: '↩️' },
     ],
   },
   generalGroup,
