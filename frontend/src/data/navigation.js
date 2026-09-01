@@ -230,6 +230,10 @@ export const producerSidebarNav = [
     section: 'AI',
     items: [{ label: 'AI Business Assistant', path: routePaths.producerAiAssistant, icon: '🤖' }],
   },
+  {
+    section: 'Marketing',
+    items: [{ label: 'Live Shopping', path: routePaths.producerLiveShopping, icon: '📡' }],
+  },
 ];
 
 // Business Partner workspace — sourcing, deals, marketplaces & intelligence.

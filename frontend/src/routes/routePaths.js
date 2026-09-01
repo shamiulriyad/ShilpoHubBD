@@ -146,6 +146,7 @@ export const routePaths = {
   producerOrders: '/producer/orders',
   producerSustainability: '/producer/sustainability',
   producerAiAssistant: '/producer/ai-assistant',
+  producerLiveShopping: '/producer/live-shopping',
 
   // Business Partner dashboard (backend role: BusinessPartner)
   businessPartner: '/business-partner',

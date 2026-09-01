@@ -29,6 +29,7 @@ import ProducerInventory from '../pages/Producer/Inventory';
 import ProducerOrders from '../pages/Producer/Orders';
 import ProducerSustainability from '../pages/Producer/Sustainability';
 import ProducerAiBusinessAssistant from '../pages/Producer/AiBusinessAssistant';
+import ProducerLiveShoppingManager from '../pages/Producer/LiveShoppingManager';
 
 import BusinessPartnerDashboard from '../pages/BusinessPartner/BusinessPartnerDashboard';
 import BusinessPartnerProfile from '../pages/BusinessPartner/Profile';
@@ -472,6 +473,7 @@ const router = createBrowserRouter([
           { path: routePaths.producerOrders, element: <ProducerOrders /> },
           { path: routePaths.producerSustainability, element: <ProducerSustainability /> },
           { path: routePaths.producerAiAssistant, element: <ProducerAiBusinessAssistant /> },
+          { path: routePaths.producerLiveShopping, element: <ProducerLiveShoppingManager /> },
         ],
       },
         ],
