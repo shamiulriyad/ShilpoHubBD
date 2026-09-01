@@ -167,11 +167,6 @@ export const routePaths = {
 
   // Roles
   academyMember: '/academy-member',
-  visitor: '/visitor',
-  artisan: '/artisan',
-  farmer: '/farmer',
-  retailer: '/retailer',
-  industryGarments: '/industry-garments',
   tourist: '/tourist',
   trainerMasterArtisan: '/trainer-master-artisan',
   trainerMasterArtisanPrograms: '/trainer-master-artisan/programs',
@@ -185,7 +180,6 @@ export const routePaths = {
   governmentFunding: '/government/funding',
   ngo: '/ngo',
   researcher: '/researcher',
-  exporter: '/exporter',
   logisticsPartner: '/logistics-partner',
   logisticsPartnerProfile: '/logistics-partner/profile',
   logisticsPartnerWarehouses: '/logistics-partner/warehouses',
