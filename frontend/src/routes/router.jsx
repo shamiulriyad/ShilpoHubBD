@@ -100,6 +100,7 @@ import SkillAssessments from '../pages/Academy/SkillAssessments';
 
 import InnovationHubHome from '../pages/Research/InnovationHubHome';
 import ResearchWorkspace from '../pages/Research/ResearchWorkspace';
+import ResearchAiAssistant from '../pages/Research/ResearchAiAssistant';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -242,6 +243,7 @@ const router = createBrowserRouter([
 
       { path: routePaths.research, element: <InnovationHubHome /> },
       { path: routePaths.researchWorkspace, element: <ResearchWorkspace /> },
+      { path: routePaths.researchAiAssistant, element: <ResearchAiAssistant /> },
       { path: routePaths.researchPublications, element: <Publications /> },
       { path: routePaths.researchHeritageDatabase, element: <HeritageDatabase /> },
 

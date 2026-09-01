@@ -8,6 +8,7 @@ const links = [
   { title: 'Research Workspace', description: 'Ongoing research projects', to: routePaths.researchWorkspace },
   { title: 'Publications', description: 'Papers, reports & case studies', to: routePaths.researchPublications },
   { title: 'Heritage Database', description: 'Open heritage datasets', to: routePaths.researchHeritageDatabase },
+  { title: 'AI Research Assistant', description: 'Insights, trends, correlations & citations', to: routePaths.researchAiAssistant },
 ];
 
 export default function InnovationHubHome() {
