@@ -9,6 +9,7 @@ const links = [
   { title: 'Publications', description: 'Papers, reports & case studies', to: routePaths.researchPublications },
   { title: 'Heritage Database', description: 'Open heritage datasets', to: routePaths.researchHeritageDatabase },
   { title: 'AI Research Assistant', description: 'Insights, trends, correlations & citations', to: routePaths.researchAiAssistant },
+  { title: 'Field Research', description: 'Surveys, field researchers, responses & evidence', to: routePaths.researchFieldResearch },
 ];
 
 export default function InnovationHubHome() {
