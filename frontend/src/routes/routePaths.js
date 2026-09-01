@@ -176,6 +176,7 @@ export const routePaths = {
   apprenticeStudentMyApprenticeships: '/apprentice-student/my-apprenticeships',
   government: '/government',
   governmentReportsForecasts: '/government/reports-forecasts',
+  governmentPolicyCompliance: '/government/policy-compliance',
   ngo: '/ngo',
   researcher: '/researcher',
   exporter: '/exporter',

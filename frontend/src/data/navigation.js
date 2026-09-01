@@ -411,6 +411,7 @@ export const governmentNgoSidebarNav = [
     items: [
       { label: 'Government Dashboard', path: routePaths.government, icon: '🏛️' },
       { label: 'Reports & Forecasts', path: routePaths.governmentReportsForecasts, icon: '📈' },
+      { label: 'Policy & Compliance', path: routePaths.governmentPolicyCompliance, icon: '⚖️' },
       { label: 'NGO Programs', path: routePaths.ngo, icon: '🤲' },
     ],
   },
