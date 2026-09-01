@@ -102,6 +102,8 @@ export const sidebarNav = [
       { label: 'Skill Assessments', path: routePaths.academySkillAssessments, icon: '📝' },
       { label: 'Certificates', path: routePaths.academyCertificates, icon: '📜' },
       { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
+      { label: 'Learning Roadmap', path: routePaths.academyRoadmap, icon: '🧭' },
+      { label: 'Mentorship Requests', path: routePaths.academyMentorshipRequests, icon: '🤝' },
     ],
   },
   {
@@ -355,6 +357,8 @@ export const academyMemberSidebarNav = [
       { label: 'Certifications', path: routePaths.academyCertifications, icon: '📜' },
       { label: 'Certificates', path: routePaths.academyCertificates, icon: '🎖️' },
       { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
+      { label: 'Learning Roadmap', path: routePaths.academyRoadmap, icon: '🧭' },
+      { label: 'Mentorship Requests', path: routePaths.academyMentorshipRequests, icon: '🤝' },
     ],
   },
   generalGroup,
@@ -383,7 +387,17 @@ export const innovationHubSidebarNav = [
 export const logisticsPartnerSidebarNav = [
   {
     section: 'Overview',
-    items: [{ label: 'Logistics Dashboard', path: routePaths.logisticsPartner, icon: '🏠' }],
+    items: [
+      { label: 'Logistics Dashboard', path: routePaths.logisticsPartner, icon: '🏠' },
+      { label: 'Company Profile', path: routePaths.logisticsPartnerProfile, icon: '🏢' },
+      { label: 'Warehouses', path: routePaths.logisticsPartnerWarehouses, icon: '🏭' },
+      { label: 'Shipments', path: routePaths.logisticsPartnerShipments, icon: '📦' },
+      { label: 'Warehouse Stock', path: routePaths.logisticsPartnerStock, icon: '📊' },
+      { label: 'Pickup Requests', path: routePaths.logisticsPartnerPickups, icon: '🚚' },
+      { label: 'Returns', path: routePaths.logisticsPartnerReturns, icon: '↩️' },
+      { label: 'Delivery Routes', path: routePaths.logisticsPartnerRoutes, icon: '🗺️' },
+      { label: 'AI Logistics Tools', path: routePaths.logisticsPartnerAiTools, icon: '🤖' },
+    ],
   },
   generalGroup,
 ];

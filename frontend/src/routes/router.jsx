@@ -89,6 +89,8 @@ import Certifications from '../pages/Academy/Certifications';
 import LearningDashboard from '../pages/Academy/LearningDashboard';
 import Certificates from '../pages/Academy/Certificates';
 import Portfolio from '../pages/Academy/Portfolio';
+import LearningRoadmap from '../pages/Academy/LearningRoadmap';
+import MentorshipRequests from '../pages/Academy/MentorshipRequests';
 import LiveClasses from '../pages/Academy/LiveClasses';
 import LiveClassDetails from '../pages/Academy/LiveClassDetails';
 import ExamDetails from '../pages/Academy/ExamDetails';
@@ -172,12 +174,21 @@ import RetailerPage from '../pages/Retailer/RetailerPage';
 import IndustryGarmentsPage from '../pages/IndustryGarments/IndustryGarmentsPage';
 import TouristPage from '../pages/Tourist/TouristPage';
 import TrainerMasterArtisanPage from '../pages/TrainerMasterArtisan/TrainerMasterArtisanPage';
+import ApprenticeshipPrograms from '../pages/TrainerMasterArtisan/ApprenticeshipPrograms';
 import ApprenticeStudentPage from '../pages/ApprenticeStudent/ApprenticeStudentPage';
 import GovernmentPage from '../pages/Government/GovernmentPage';
 import NGOPage from '../pages/NGO/NGOPage';
 import ResearcherPage from '../pages/Researcher/ResearcherPage';
 import ExporterPage from '../pages/Exporter/ExporterPage';
 import LogisticsPartnerPage from '../pages/LogisticsPartner/LogisticsPartnerPage';
+import LogisticsPartnerProfile from '../pages/LogisticsPartner/Profile';
+import LogisticsPartnerWarehouses from '../pages/LogisticsPartner/Warehouses';
+import LogisticsPartnerShipments from '../pages/LogisticsPartner/Shipments';
+import LogisticsPartnerWarehouseStock from '../pages/LogisticsPartner/WarehouseStock';
+import LogisticsPartnerPickupRequests from '../pages/LogisticsPartner/PickupRequests';
+import LogisticsPartnerReturns from '../pages/LogisticsPartner/Returns';
+import LogisticsPartnerDeliveryRoutes from '../pages/LogisticsPartner/DeliveryRoutes';
+import LogisticsPartnerAiLogisticsTools from '../pages/LogisticsPartner/AiLogisticsTools';
 
 import UnauthorizedPage from '../pages/UnauthorizedPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -274,6 +285,8 @@ const router = createBrowserRouter([
           { path: routePaths.academyLearning, element: <LearningDashboard /> },
           { path: routePaths.academyCertificates, element: <Certificates /> },
           { path: routePaths.academyPortfolio, element: <Portfolio /> },
+          { path: routePaths.academyRoadmap, element: <LearningRoadmap /> },
+          { path: routePaths.academyMentorshipRequests, element: <MentorshipRequests /> },
           { path: routePaths.academyExamDetails, element: <ExamDetails /> },
           { path: routePaths.academyQuizDetails, element: <QuizDetails /> },
           { path: routePaths.academyAssignmentDetails, element: <AssignmentDetails /> },
@@ -285,6 +298,7 @@ const router = createBrowserRouter([
           { path: routePaths.retailer, element: <RetailerPage /> },
           { path: routePaths.industryGarments, element: <IndustryGarmentsPage /> },
           { path: routePaths.trainerMasterArtisan, element: <TrainerMasterArtisanPage /> },
+          { path: routePaths.trainerMasterArtisanPrograms, element: <ApprenticeshipPrograms /> },
           { path: routePaths.apprenticeStudent, element: <ApprenticeStudentPage /> },
           { path: routePaths.exporter, element: <ExporterPage /> },
         ],
@@ -321,7 +335,17 @@ const router = createBrowserRouter([
         children: [
           {
             element: <DashboardLayout navItems={logisticsPartnerSidebarNav} sidebarTitle="Logistics" />,
-            children: [{ path: routePaths.logisticsPartner, element: <LogisticsPartnerPage /> }],
+            children: [
+              { path: routePaths.logisticsPartner, element: <LogisticsPartnerPage /> },
+              { path: routePaths.logisticsPartnerProfile, element: <LogisticsPartnerProfile /> },
+              { path: routePaths.logisticsPartnerWarehouses, element: <LogisticsPartnerWarehouses /> },
+              { path: routePaths.logisticsPartnerShipments, element: <LogisticsPartnerShipments /> },
+              { path: routePaths.logisticsPartnerStock, element: <LogisticsPartnerWarehouseStock /> },
+              { path: routePaths.logisticsPartnerPickups, element: <LogisticsPartnerPickupRequests /> },
+              { path: routePaths.logisticsPartnerReturns, element: <LogisticsPartnerReturns /> },
+              { path: routePaths.logisticsPartnerRoutes, element: <LogisticsPartnerDeliveryRoutes /> },
+              { path: routePaths.logisticsPartnerAiTools, element: <LogisticsPartnerAiLogisticsTools /> },
+            ],
           },
         ],
       },
