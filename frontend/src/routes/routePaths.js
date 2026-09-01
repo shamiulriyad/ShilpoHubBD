@@ -173,6 +173,7 @@ export const routePaths = {
   trainerMasterArtisan: '/trainer-master-artisan',
   trainerMasterArtisanPrograms: '/trainer-master-artisan/programs',
   apprenticeStudent: '/apprentice-student',
+  apprenticeStudentMyApprenticeships: '/apprentice-student/my-apprenticeships',
   government: '/government',
   ngo: '/ngo',
   researcher: '/researcher',

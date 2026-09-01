@@ -182,6 +182,7 @@ import IndustryGarmentsPage from '../pages/IndustryGarments/IndustryGarmentsPage
 import TouristPage from '../pages/Tourist/TouristPage';
 import TrainerMasterArtisanPage from '../pages/TrainerMasterArtisan/TrainerMasterArtisanPage';
 import ApprenticeshipPrograms from '../pages/TrainerMasterArtisan/ApprenticeshipPrograms';
+import MyApprenticeships from '../pages/ApprenticeStudent/MyApprenticeships';
 import ApprenticeStudentPage from '../pages/ApprenticeStudent/ApprenticeStudentPage';
 import GovernmentPage from '../pages/Government/GovernmentPage';
 import NGOPage from '../pages/NGO/NGOPage';
@@ -314,6 +315,7 @@ const router = createBrowserRouter([
           { path: routePaths.trainerMasterArtisan, element: <TrainerMasterArtisanPage /> },
           { path: routePaths.trainerMasterArtisanPrograms, element: <ApprenticeshipPrograms /> },
           { path: routePaths.apprenticeStudent, element: <ApprenticeStudentPage /> },
+          { path: routePaths.apprenticeStudentMyApprenticeships, element: <MyApprenticeships /> },
           { path: routePaths.exporter, element: <ExporterPage /> },
         ],
       },
