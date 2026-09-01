@@ -5,6 +5,7 @@ import { routePaths } from '../../routes/routePaths';
 import { Button } from '../../components/ui';
 import { authService } from '../../services/authService';
 import { useAuthStore } from '../../stores/useAuthStore';
+import { roleHomePath } from '../../utils/roles';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function LoginPage() {
     mutationFn: authService.login,
     onSuccess: (data) => {
       useAuthStore.getState().setSession(data);
-      navigate(location.state?.from?.pathname || routePaths.dashboard, { replace: true });
+      navigate(location.state?.from?.pathname || roleHomePath(data.activeRole), { replace: true });
     },
   });
 
