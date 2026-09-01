@@ -45,4 +45,12 @@ export const researchWorkspaceService = {
     apiClient.put(`/research/projects/${projectId}/milestones/${milestoneId}`, payload).then((res) => res.data),
   removeMilestone: (projectId, milestoneId) =>
     apiClient.delete(`/research/projects/${projectId}/milestones/${milestoneId}`).then((res) => res.data),
+
+  // Publications (project-scoped management; browse-only repository lives in researchPublicationsService)
+  listProjectPublications: (projectId) => apiClient.get(`/research/projects/${projectId}/publications`).then((res) => res.data),
+  createPublication: (projectId, payload) => apiClient.post(`/research/projects/${projectId}/publications`, payload).then((res) => res.data),
+  updatePublication: (projectId, publicationId, payload) =>
+    apiClient.put(`/research/projects/${projectId}/publications/${publicationId}`, payload).then((res) => res.data),
+  removePublication: (projectId, publicationId) =>
+    apiClient.delete(`/research/projects/${projectId}/publications/${publicationId}`).then((res) => res.data),
 };
