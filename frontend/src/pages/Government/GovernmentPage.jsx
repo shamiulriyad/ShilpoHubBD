@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { PageHeader, Button } from '../../components/ui';
 import { DashboardCard } from '../../components/cards';
 import { useNationalOverview, useDistrictRankings, useDashboardSnapshots, useNationalDashboardMutations } from '../../hooks/useNationalDashboard';
+import { useHeritageIndexRecords, useComputeHeritageIndex } from '../../hooks/useHeritageIntelligence';
 
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const rankingMetrics = ['sales', 'producers', 'products', 'villages', 'orders'];
+const indexTypes = ['HeritageRiskIndex', 'LivingHeritageIndex', 'CraftHealthScore', 'VillageSurvivalIndex', 'YouthParticipation', 'ClimateRiskAnalysis'];
 
 export default function GovernmentPage() {
   const [metric, setMetric] = useState('sales');
@@ -14,6 +16,9 @@ export default function GovernmentPage() {
   const { captureSnapshot } = useNationalDashboardMutations();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ label: '', period: 'Monthly', periodStart: '', periodEnd: '', notes: '' });
+  const heritageIndexQuery = useHeritageIndexRecords({ pageSize: 10 });
+  const computeIndex = useComputeHeritageIndex();
+  const [indexType, setIndexType] = useState('HeritageRiskIndex');
 
   const overview = overviewQuery.data;
 
@@ -107,6 +112,29 @@ export default function GovernmentPage() {
             ))}
             {(snapshotsQuery.data?.items || []).length === 0 && <p className="text-sm text-body/60">No snapshots captured yet.</p>}
           </div>
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <h3 className="text-sm font-semibold text-heading">Heritage Intelligence Index</h3>
+          <div className="flex gap-2">
+            <select value={indexType} onChange={(e) => setIndexType(e.target.value)} className={inputClass}>
+              {indexTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+            <Button variant="primary" disabled={computeIndex.isPending} onClick={() => computeIndex.mutate({ indexType, scope: 'National' })}>
+              {computeIndex.isPending ? 'Computing…' : 'Compute Index'}
+            </Button>
+          </div>
+        </div>
+        <div className="space-y-1">
+          {(heritageIndexQuery.data?.items || []).map((r) => (
+            <div key={r.id} className="flex items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-sm">
+              <span>{r.indexType} · {r.scopeLabel}</span>
+              <span className="font-medium text-primary">{r.score.toFixed(1)} ({r.rating})</span>
+            </div>
+          ))}
+          {(heritageIndexQuery.data?.items || []).length === 0 && <p className="text-sm text-body/60">No heritage index scores computed yet.</p>}
         </div>
       </div>
     </div>
