@@ -5,7 +5,7 @@ import { routePaths } from '../../routes/routePaths';
 import { Button } from '../../components/ui';
 import { authService } from '../../services/authService';
 import { useAuthStore } from '../../stores/useAuthStore';
-import { roleHomePath } from '../../utils/roles';
+import { resolveActiveRole, roleHomePath } from '../../utils/roles';
 import { ACCOUNT_TYPES } from './accountTypes';
 
 export default function RegisterPage() {
@@ -22,7 +22,7 @@ export default function RegisterPage() {
     mutationFn: authService.register,
     onSuccess: (data) => {
       useAuthStore.getState().setSession(data);
-      navigate(roleHomePath(data.activeRole), { replace: true });
+      navigate(roleHomePath(resolveActiveRole(data.roles ?? [], data.activeRole)), { replace: true });
     },
     onError: (error) => {
       const errors = error?.response?.data?.errors;

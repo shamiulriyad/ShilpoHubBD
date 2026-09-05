@@ -4,12 +4,21 @@ import Sidebar from '../components/layout/Sidebar';
 import NotificationPanel from '../components/layout/NotificationPanel';
 import ProfileDropdown from '../components/layout/ProfileDropdown';
 import SearchBar from '../components/ui/SearchBar';
-import { sidebarNav } from '../data/navigation';
+import { sidebarNav, roleSidebars } from '../data/navigation';
 import { routePaths } from '../routes/routePaths';
+import { useAuth } from '../hooks/useAuth';
 
-export default function DashboardLayout({ navItems = sidebarNav, sidebarTitle = 'Workspace' }) {
+export default function DashboardLayout({ navItems, sidebarTitle }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const { activeRole } = useAuth();
+
+  // A route may pin a specific sidebar (role landing areas do). Otherwise the
+  // sidebar is driven by the signed-in user's role, so the shared /dashboard/*
+  // shell shows each role its own navigation instead of one generic menu.
+  const roleConfig = activeRole ? roleSidebars[activeRole] : null;
+  const items = navItems ?? roleConfig?.nav ?? sidebarNav;
+  const title = sidebarTitle ?? roleConfig?.title ?? 'Workspace';
 
   return (
     <div className="min-h-screen bg-background">
@@ -44,7 +53,7 @@ export default function DashboardLayout({ navItems = sidebarNav, sidebarTitle = 
 
       <div className="mx-auto flex max-w-[1600px] items-start gap-6 px-4 py-6 lg:px-6">
         <div className={`${sidebarOpen ? 'block' : 'hidden'} w-full lg:block lg:w-auto`}>
-          <Sidebar items={navItems} title={sidebarTitle} />
+          <Sidebar items={items} title={title} />
         </div>
         <main className="min-w-0 flex-1">
           <Outlet />
