@@ -13,11 +13,11 @@ export default function Navbar() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 lg:px-8">
-        <Link to={routePaths.home} className="flex shrink-0 items-center gap-2 text-xl font-bold text-title">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-base text-surface">
-            SH
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-surface/90 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 lg:px-8">
+        <Link to={routePaths.home} className="flex shrink-0 items-center gap-3 text-xl font-bold tracking-[-0.04em] text-title">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-title text-sm font-bold tracking-tight text-surface shadow-[0_7px_18px_rgba(23,59,53,0.25)]">
+            শি
           </span>
           ShilpoHub
         </Link>
@@ -28,8 +28,8 @@ export default function Navbar() {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-1 rounded-md px-3.5 py-2.5 text-base font-medium text-body hover:bg-background hover:text-heading ${
-                    isActive ? 'text-primary' : ''
+                  `flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-semibold text-body/75 transition hover:bg-primary-soft hover:text-heading ${
+                    isActive ? 'bg-primary-soft text-primary' : ''
                   }`
                 }
               >
@@ -61,7 +61,7 @@ export default function Navbar() {
 
         <button
           type="button"
-          className="rounded-md border border-border p-2.5 text-lg text-body lg:hidden"
+          className="rounded-xl border border-border bg-surface p-2.5 text-lg text-body shadow-sm lg:hidden"
           onClick={() => setMobileOpen((open) => !open)}
           aria-label="Toggle menu"
           aria-expanded={mobileOpen}
@@ -71,7 +71,7 @@ export default function Navbar() {
       </div>
 
       {activeMenu && (
-        <div onMouseEnter={() => setActiveMenu(activeMenu)} onMouseLeave={() => setActiveMenu(null)}>
+        <div className="border-t border-border/70 bg-surface/95 shadow-xl" onMouseEnter={() => setActiveMenu(activeMenu)} onMouseLeave={() => setActiveMenu(null)}>
           <MegaMenu menu={megaMenus[activeMenu]} />
         </div>
       )}
