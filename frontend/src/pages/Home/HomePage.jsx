@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { Button, SearchBar, SectionHeader, ChartPlaceholder, AsyncState } from '../../components/ui';
@@ -11,6 +12,7 @@ import { useCourses } from '../../hooks/useCourses';
 import { useResearchPublications } from '../../hooks/useResearchPublications';
 import { toProductCardItem } from '../../utils/productAdapters';
 import { toVillageCardItem } from '../../utils/villageAdapters';
+import BangladeshMap from '../../components/media/BangladeshMap';
 
 const listOf = (data) => data?.items || data || [];
 
@@ -48,6 +50,7 @@ const courseToCardItem = (c) => ({
 });
 
 export default function HomePage() {
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
   const districtsQuery = useDistricts();
   const villagesQuery = useVillages();
   const { isAuthenticated } = useAuth();
@@ -196,18 +199,14 @@ export default function HomePage() {
             description="Select a district to explore its villages, crafts and producers."
           />
           <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-            <div className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-3xl border border-title/10 bg-title text-sm text-surface/70 shadow-[0_18px_38px_rgba(23,59,53,0.16)]">
-              <span className="absolute left-[18%] top-[22%] h-3 w-3 rounded-full bg-[#F3C79D] ring-8 ring-[#F3C79D]/15" />
-              <span className="absolute left-[48%] top-[43%] h-3 w-3 rounded-full bg-[#F3C79D] ring-8 ring-[#F3C79D]/15" />
-              <span className="absolute right-[20%] bottom-[22%] h-3 w-3 rounded-full bg-[#F3C79D] ring-8 ring-[#F3C79D]/15" />
-              <p className="relative rounded-full border border-surface/20 bg-surface/10 px-5 py-2 text-xs font-semibold backdrop-blur">Explore the heritage map →</p>
-            </div>
+            <BangladeshMap selectedDistrict={selectedDistrict?.name} />
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 lg:grid-cols-1">
               {districts.map((district) => (
                 <button
                   key={district.id}
                   type="button"
-                  className="rounded-lg border border-border bg-background px-3 py-2 text-left text-sm text-body hover:border-primary hover:text-primary"
+                  onClick={() => setSelectedDistrict(district)}
+                  className={`rounded-lg border px-3 py-2 text-left text-sm transition ${selectedDistrict?.id === district.id ? 'border-primary bg-primary-soft font-semibold text-primary' : 'border-border bg-background text-body hover:border-primary hover:text-primary'}`}
                 >
                   {district.name}
                 </button>
