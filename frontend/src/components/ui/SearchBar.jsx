@@ -11,9 +11,9 @@ export default function SearchBar({ placeholder = 'Search…', size = 'md', clas
         event.preventDefault();
         onSubmit?.(value);
       }}
-      className={`flex w-full items-center gap-2 rounded-full border border-border bg-surface px-4 shadow-sm ${sizes[size] || sizes.md} ${className}`}
+      className={`flex w-full items-center gap-3 rounded-full border border-border bg-surface px-5 shadow-[0_12px_32px_rgba(23,59,53,0.09)] transition focus-within:border-primary/50 focus-within:ring-4 focus-within:ring-primary/10 ${sizes[size] || sizes.md} ${className}`}
     >
-      <span aria-hidden="true" className="text-body/50">⌕</span>
+      <span aria-hidden="true" className="text-lg text-primary">⌕</span>
       <input
         type="search"
         placeholder={placeholder}
@@ -23,7 +23,7 @@ export default function SearchBar({ placeholder = 'Search…', size = 'md', clas
       />
       <button
         type="submit"
-        className="shrink-0 rounded-full bg-primary px-4 py-1.5 text-xs font-medium text-surface hover:bg-primary/90"
+        className="shrink-0 rounded-full bg-title px-4 py-2 text-xs font-semibold text-surface transition hover:bg-primary"
       >
         Search
       </button>
