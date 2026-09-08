@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { Button, SearchBar, SectionHeader, ChartPlaceholder, AsyncState } from '../../components/ui';
@@ -11,6 +12,7 @@ import { useCourses } from '../../hooks/useCourses';
 import { useResearchPublications } from '../../hooks/useResearchPublications';
 import { toProductCardItem } from '../../utils/productAdapters';
 import { toVillageCardItem } from '../../utils/villageAdapters';
+import BangladeshMap from '../../components/media/BangladeshMap';
 
 const listOf = (data) => data?.items || data || [];
 
@@ -48,6 +50,7 @@ const courseToCardItem = (c) => ({
 });
 
 export default function HomePage() {
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
   const districtsQuery = useDistricts();
   const villagesQuery = useVillages();
   const { isAuthenticated } = useAuth();
@@ -73,34 +76,41 @@ export default function HomePage() {
   ];
 
   return (
-    <div>
+    <div className="premium-shell overflow-hidden">
       {/* 1. Hero */}
-      <section className="border-b border-border bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-16 text-center lg:px-8 lg:py-24">
-          <p className="text-xs font-semibold uppercase tracking-wide text-primary">National Heritage Ecosystem</p>
-          <h1 className="mx-auto mt-3 max-w-3xl text-3xl font-bold text-heading sm:text-4xl lg:text-5xl">
-            Discover, Learn and Trade Bangladesh's Living Heritage
+      <section className="relative isolate overflow-hidden border-b border-border bg-title">
+        <div className="absolute inset-0 opacity-70 [background-image:radial-gradient(circle_at_14%_16%,rgba(217,155,61,.35),transparent_22rem),radial-gradient(circle_at_86%_84%,rgba(168,79,45,.45),transparent_25rem)]" />
+        <div className="absolute -right-32 top-8 h-80 w-80 rounded-full border border-surface/15" />
+        <div className="absolute -right-16 top-24 h-56 w-56 rounded-full border border-surface/10" />
+        <div className="relative mx-auto max-w-7xl px-4 py-20 text-center lg:px-8 lg:py-28">
+          <p className="inline-flex rounded-full border border-surface/20 bg-surface/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F6D5AA]">Bangladesh's National Heritage Ecosystem</p>
+          <h1 className="mx-auto mt-5 max-w-4xl text-4xl font-bold tracking-[-0.055em] text-surface sm:text-5xl lg:text-7xl">
+            Heritage, made <span className="text-[#F3C79D]">living.</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-body/70">
-            ShilpoHub connects artisans, farmers, producers, customers, tourists, researchers and institutions
-            around one shared heritage ecosystem.
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-surface/75 sm:text-lg">
+            Discover authentic Bangladeshi craft, meet the people behind it, and help safeguard the traditions that shape us.
           </p>
           <div className="mx-auto mt-8 max-w-xl">
             <SearchBar size="lg" placeholder="Search districts, crafts, products, festivals…" />
           </div>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <Link to={routePaths.explore}>
               <Button variant="primary">Explore Heritage</Button>
             </Link>
             <Link to={routePaths.marketplace}>
-              <Button variant="secondary">Visit Marketplace</Button>
+              <Button variant="secondary" className="border-surface/25 bg-surface/10 text-surface hover:bg-surface hover:text-title">Visit Marketplace</Button>
             </Link>
+          </div>
+          <div className="mx-auto mt-12 grid max-w-2xl grid-cols-3 divide-x divide-surface/15 rounded-2xl border border-surface/15 bg-surface/[.06] px-3 py-4 text-left backdrop-blur-sm">
+            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">64</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Districts</p></div>
+            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">640+</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Villages</p></div>
+            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">12.4K</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Producers</p></div>
           </div>
         </div>
       </section>
 
       {/* 2. Heritage Statistics */}
-      <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {heritageStats.map((stat) => (
             <StatCard key={stat.label} label={stat.label} value={stat.value} />
@@ -109,7 +119,7 @@ export default function HomePage() {
       </section>
 
       {/* 3. Explore Bangladesh Heritage */}
-      <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <SectionHeader
           eyebrow="Explore"
           title="Explore Bangladesh Heritage"
@@ -128,7 +138,7 @@ export default function HomePage() {
       </section>
 
       {/* 4. Featured Heritage Products */}
-      <section className="bg-surface py-12">
+      <section className="border-y border-border/70 bg-surface py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Marketplace"
@@ -156,7 +166,7 @@ export default function HomePage() {
       </section>
 
       {/* 5. Featured Producers */}
-      <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <SectionHeader
           eyebrow="Community"
           title="Featured Producers"
@@ -181,7 +191,7 @@ export default function HomePage() {
       </section>
 
       {/* 6. Interactive Bangladesh Map */}
-      <section className="bg-surface py-12">
+      <section className="border-y border-border/70 bg-surface py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Heritage Map"
@@ -189,15 +199,14 @@ export default function HomePage() {
             description="Select a district to explore its villages, crafts and producers."
           />
           <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-            <div className="flex aspect-[16/10] items-center justify-center rounded-2xl border border-dashed border-border bg-background text-sm text-body/40">
-              Interactive Map Placeholder
-            </div>
+            <BangladeshMap selectedDistrict={selectedDistrict?.name} />
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 lg:grid-cols-1">
               {districts.map((district) => (
                 <button
                   key={district.id}
                   type="button"
-                  className="rounded-lg border border-border bg-background px-3 py-2 text-left text-sm text-body hover:border-primary hover:text-primary"
+                  onClick={() => setSelectedDistrict(district)}
+                  className={`rounded-lg border px-3 py-2 text-left text-sm transition ${selectedDistrict?.id === district.id ? 'border-primary bg-primary-soft font-semibold text-primary' : 'border-border bg-background text-body hover:border-primary hover:text-primary'}`}
                 >
                   {district.name}
                 </button>
@@ -208,7 +217,7 @@ export default function HomePage() {
       </section>
 
       {/* 7. Heritage Villages */}
-      <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <SectionHeader
           eyebrow="Explore"
           title="Heritage Villages"
@@ -233,12 +242,12 @@ export default function HomePage() {
       </section>
 
       {/* 8. Heritage Timeline */}
-      <section className="bg-surface py-12">
+      <section className="border-y border-border/70 bg-surface py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader eyebrow="History" title="Heritage Timeline" description="Milestones in the national heritage movement." />
           <div className="grid gap-4 sm:grid-cols-5">
             {timeline.map((item) => (
-              <div key={item.year} className="rounded-xl border border-border bg-background p-4">
+              <div key={item.year} className="relative rounded-2xl border border-border bg-background p-5 transition hover:-translate-y-1 hover:border-primary/30">
                 <p className="text-lg font-bold text-primary">{item.year}</p>
                 <p className="mt-1 text-xs text-body/70">{item.label}</p>
               </div>
@@ -248,7 +257,7 @@ export default function HomePage() {
       </section>
 
       {/* 9. Festivals & Events */}
-      <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <SectionHeader
           eyebrow="Tourism"
           title="Festivals & Events"
@@ -272,7 +281,7 @@ export default function HomePage() {
       </section>
 
       {/* 10. Heritage Academy */}
-      <section className="bg-surface py-12">
+      <section className="border-y border-border/70 bg-surface py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Academy"
@@ -299,7 +308,7 @@ export default function HomePage() {
       </section>
 
       {/* 11. Innovation Hub */}
-      <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <SectionHeader
           eyebrow="Innovation Hub"
           title="Innovation Hub"
@@ -327,9 +336,10 @@ export default function HomePage() {
       </section>
 
       {/* 12. Call To Action */}
-      <section className="bg-title py-16 text-surface">
+      <section className="relative overflow-hidden bg-title py-20 text-surface">
         <div className="mx-auto max-w-7xl px-4 text-center lg:px-8">
-          <h2 className="text-2xl font-semibold sm:text-3xl">Join the ShilpoHub Ecosystem</h2>
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#F3C79D]">One living ecosystem</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] sm:text-4xl">Join the ShilpoHub Ecosystem</h2>
           <p className="mx-auto mt-2 max-w-xl text-sm text-surface/80">
             Whichever role you play in heritage — there's a place for you here.
           </p>
@@ -339,7 +349,7 @@ export default function HomePage() {
               { label: 'Join as Customer', desc: 'Discover and shop authentic heritage products' },
               { label: 'Join as Business Partner', desc: 'Partner with ShilpoHub on distribution & growth' },
             ].map((cta) => (
-              <div key={cta.label} className="rounded-xl border border-surface/20 bg-surface/10 p-6 text-left">
+              <div key={cta.label} className="rounded-2xl border border-surface/15 bg-surface/[.08] p-6 text-left backdrop-blur-sm transition hover:-translate-y-1 hover:bg-surface/[.13]">
                 <p className="text-sm font-semibold">{cta.label}</p>
                 <p className="mt-1 text-xs text-surface/70">{cta.desc}</p>
                 <Link to={routePaths.register} className="mt-4 inline-block text-xs font-medium underline">

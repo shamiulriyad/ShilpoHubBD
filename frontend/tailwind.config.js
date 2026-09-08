@@ -3,16 +3,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#F8F3EB',
-        surface: '#FFFDFC',
-        title: '#2E5E4E',
-        heading: '#2E5E4E',
-        body: '#2B2B2B',
-        primary: '#A64B2A',
-        secondary: '#D4A017',
-        link: '#2C6E91',
-        border: '#D9CDBB',
-        success: '#4D7C5A',
+        // Neutral scale — does 90% of the work (text, backgrounds, borders)
+        background: '#F8F5EF',
+        surface:    '#FFFEFB',
+        border:     '#E7DED0',
+        muted:      '#746F67',
+        body:       '#373832',
+        title:      '#173B35',
+        heading:    '#173B35',
+
+        // Single brand color — this IS ShilpoHub. Everything else defers to it.
+        primary:       '#A84F2D',
+        'primary-dark':'#843A20',
+        'primary-soft':'#F8E9E2',
+
+        // Functional colors — used sparingly, only for their specific job
+        link:    '#1E6056',
+        success: '#32735D',
+        error:   '#B3432B',
       },
     },
   },
