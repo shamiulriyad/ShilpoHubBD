@@ -16,13 +16,7 @@ export function RoleBasedRoute({ allowedRoles = [] }) {
   }
 
   if (!hasAnyRole(allowedRoles)) {
-    return (
-      <Navigate
-        to={routePaths.unauthorized}
-        replace
-        state={{ from: location.pathname }}
-      />
-    );
+    return <Navigate to={routePaths.unauthorized} replace state={{ from: location.pathname }} />;
   }
 
   return <Outlet />;

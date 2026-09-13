@@ -113,8 +113,6 @@ import InnovationPrototypes from '../pages/Research/InnovationPrototypes';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
-import NewsList from '../pages/News/NewsList';
-import NewsDetails from '../pages/News/NewsDetails';
 import AboutPage from '../pages/About/AboutPage';
 import LoginPage from '../pages/Auth/LoginPage';
 import RegisterPage from '../pages/Auth/RegisterPage';
@@ -127,9 +125,7 @@ import DashboardMarketplace from '../pages/Dashboard/DashboardMarketplace';
 import DashboardTourism from '../pages/Dashboard/DashboardTourism';
 import DashboardAcademy from '../pages/Dashboard/DashboardAcademy';
 import DashboardCommunity from '../pages/Dashboard/DashboardCommunity';
-import DashboardAnalytics from '../pages/Dashboard/DashboardAnalytics';
 import DashboardMessages from '../pages/Dashboard/DashboardMessages';
-import DashboardNotifications from '../pages/Dashboard/DashboardNotifications';
 import DashboardSettings from '../pages/Dashboard/DashboardSettings';
 import DashboardProfile from '../pages/Dashboard/DashboardProfile';
 
@@ -137,8 +133,6 @@ import AdminDashboard from '../pages/Admin/AdminDashboard';
 import UserManagement from '../pages/Admin/UserManagement';
 import HeritageManagement from '../pages/Admin/HeritageManagement';
 import MarketplaceMonitoring from '../pages/Admin/MarketplaceMonitoring';
-import CMS from '../pages/Admin/CMS';
-import SecurityCenter from '../pages/Admin/SecurityCenter';
 
 import CustomerDashboard from '../pages/Customer/CustomerDashboard';
 import CustomerMarketplace from '../pages/Customer/Marketplace';
@@ -165,8 +159,6 @@ import OrderHistory from '../pages/Customer/OrderHistory';
 import OrderDetails from '../pages/Customer/OrderDetails';
 import Returns from '../pages/Customer/Returns';
 import Refunds from '../pages/Customer/Refunds';
-import CustomerNotifications from '../pages/Customer/CustomerNotifications';
-import SavedAddresses from '../pages/Customer/SavedAddresses';
 import HeritageCollection from '../pages/Customer/HeritageCollection';
 import PurchaseAnalytics from '../pages/Customer/PurchaseAnalytics';
 import ImpactDashboard from '../pages/Customer/ImpactDashboard';
@@ -202,10 +194,12 @@ import LogisticsPartnerAiLogisticsTools from '../pages/LogisticsPartner/AiLogist
 
 import UnauthorizedPage from '../pages/UnauthorizedPage';
 import NotFoundPage from '../pages/NotFoundPage';
+import RouteErrorPage from '../pages/RouteErrorPage';
 
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
+    errorElement: <RouteErrorPage />,
     children: [
       { path: routePaths.home, element: <HomePage /> },
 
@@ -225,9 +219,6 @@ const router = createBrowserRouter([
       { path: routePaths.marketplaceProducts, element: <ProductListing /> },
       { path: routePaths.marketplaceProductDetails, element: <ProductDetails /> },
       { path: routePaths.marketplaceCategories, element: <Categories /> },
-      { path: routePaths.marketplaceWishlist, element: <Wishlist /> },
-      { path: routePaths.marketplaceCart, element: <Cart /> },
-      { path: routePaths.marketplaceCheckout, element: <Checkout /> },
       { path: routePaths.marketplaceAuctions, element: <Auctions /> },
 
       { path: routePaths.tourism, element: <TourismHome /> },
@@ -236,11 +227,9 @@ const router = createBrowserRouter([
       { path: routePaths.tourismEvents, element: <CulturalEvents /> },
       { path: routePaths.tourismVillages, element: <VillageExplorer /> },
       { path: routePaths.tourismRoutes, element: <TourRoutes /> },
-      { path: routePaths.tourismPassport, element: <TravelPassport /> },
       { path: routePaths.tourismCuisines, element: <LocalCuisines /> },
       { path: routePaths.tourismServices, element: <TouristServices /> },
       { path: routePaths.tourismServiceDetails, element: <TouristServiceDetails /> },
-      { path: routePaths.tourismBookings, element: <MyBookings /> },
       { path: routePaths.tourismAiPlanner, element: <AiTourismPlanner /> },
 
       { path: routePaths.academy, element: <CourseCatalog /> },
@@ -251,20 +240,35 @@ const router = createBrowserRouter([
       { path: routePaths.academyLiveClassDetails, element: <LiveClassDetails /> },
 
       { path: routePaths.research, element: <InnovationHubHome /> },
-      { path: routePaths.researchWorkspace, element: <ResearchWorkspace /> },
-      { path: routePaths.researchAiAssistant, element: <ResearchAiAssistant /> },
-      { path: routePaths.researchFieldResearch, element: <FieldResearch /> },
-      { path: routePaths.researchKnowledgeGraph, element: <KnowledgeGraph /> },
-      { path: routePaths.innovationPreservationStrategies, element: <PreservationStrategies /> },
-      { path: routePaths.innovationExperiments, element: <InnovationExperiments /> },
-      { path: routePaths.innovationSubmissions, element: <HeritageInnovationSubmissions /> },
-      { path: routePaths.innovationPrototypes, element: <InnovationPrototypes /> },
-      { path: routePaths.researchPublications, element: <Publications /> },
-      { path: routePaths.researchHeritageDatabase, element: <HeritageDatabase /> },
 
-      { path: routePaths.news, element: <NewsList /> },
-      { path: routePaths.newsDetails, element: <NewsDetails /> },
       { path: routePaths.about, element: <AboutPage /> },
+
+
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: routePaths.marketplaceWishlist, element: <Wishlist /> },
+          { path: routePaths.marketplaceCart, element: <Cart /> },
+          { path: routePaths.marketplaceCheckout, element: <Checkout /> },
+          { path: routePaths.tourismPassport, element: <TravelPassport /> },
+          { path: routePaths.tourismBookings, element: <MyBookings /> },
+          { path: routePaths.researchWorkspace, element: <ResearchWorkspace /> },
+          { path: routePaths.researchAiAssistant, element: <ResearchAiAssistant /> },
+          { path: routePaths.researchFieldResearch, element: <FieldResearch /> },
+          { path: routePaths.innovationPreservationStrategies, element: <PreservationStrategies /> },
+          { path: routePaths.innovationExperiments, element: <InnovationExperiments /> },
+          { path: routePaths.innovationSubmissions, element: <HeritageInnovationSubmissions /> },
+          { path: routePaths.innovationPrototypes, element: <InnovationPrototypes /> },
+          { path: routePaths.researchPublications, element: <Publications /> },
+        ],
+      },
+      {
+        element: <RoleBasedRoute allowedRoles={['HeritageInnovationHub', 'GovernmentNGO', 'SuperAdmin']} />,
+        children: [
+          { path: routePaths.researchKnowledgeGraph, element: <KnowledgeGraph /> },
+          { path: routePaths.researchHeritageDatabase, element: <HeritageDatabase /> },
+        ],
+      },
 
       { path: routePaths.unauthorized, element: <UnauthorizedPage /> },
       { path: routePaths.notFound, element: <NotFoundPage /> },
@@ -273,6 +277,7 @@ const router = createBrowserRouter([
 
   {
     element: <AuthLayout />,
+    errorElement: <RouteErrorPage />,
     children: [
       { path: routePaths.login, element: <LoginPage /> },
       { path: routePaths.register, element: <RegisterPage /> },
@@ -283,6 +288,7 @@ const router = createBrowserRouter([
 
   {
     element: <ProtectedRoute />,
+    errorElement: <RouteErrorPage />,
     children: [
       {
         element: <DashboardLayout />,
@@ -293,9 +299,7 @@ const router = createBrowserRouter([
           { path: routePaths.dashboardTourism, element: <DashboardTourism /> },
           { path: routePaths.dashboardAcademy, element: <DashboardAcademy /> },
           { path: routePaths.dashboardCommunity, element: <DashboardCommunity /> },
-          { path: routePaths.dashboardAnalytics, element: <DashboardAnalytics /> },
           { path: routePaths.dashboardMessages, element: <DashboardMessages /> },
-          { path: routePaths.dashboardNotifications, element: <DashboardNotifications /> },
           { path: routePaths.dashboardSettings, element: <DashboardSettings /> },
           { path: routePaths.dashboardProfile, element: <DashboardProfile /> },
 
@@ -390,8 +394,6 @@ const router = createBrowserRouter([
               { path: routePaths.adminUsers, element: <UserManagement /> },
               { path: routePaths.adminHeritage, element: <HeritageManagement /> },
               { path: routePaths.adminMarketplace, element: <MarketplaceMonitoring /> },
-              { path: routePaths.adminCms, element: <CMS /> },
-              { path: routePaths.adminSecurity, element: <SecurityCenter /> },
             ],
           },
         ],
@@ -427,8 +429,6 @@ const router = createBrowserRouter([
           { path: routePaths.customerOrderDetails, element: <OrderDetails /> },
           { path: routePaths.customerReturns, element: <Returns /> },
           { path: routePaths.customerRefunds, element: <Refunds /> },
-          { path: routePaths.customerNotifications, element: <CustomerNotifications /> },
-          { path: routePaths.customerAddresses, element: <SavedAddresses /> },
           { path: routePaths.customerHeritageCollection, element: <HeritageCollection /> },
           { path: routePaths.customerPurchaseAnalytics, element: <PurchaseAnalytics /> },
           { path: routePaths.customerImpactDashboard, element: <ImpactDashboard /> },
