@@ -10,23 +10,23 @@ export const useAuthStore = create(
       user: null,
       roles: [],
       activeRole: null,
-      // Flipped to true once persisted state has been read back from storage,
-      // so route guards can wait instead of bouncing to /login on a refresh.
-      hasHydrated: false,
+      storageHydrated: false,
+      sessionReady: false,
 
       setSession: (authResponse) => {
-        const roles = authResponse.roles ?? [];
+        const roles = authResponse?.roles ?? [];
         set({
-          accessToken: authResponse.accessToken,
-          refreshToken: authResponse.refreshToken,
-          user: {
-            id: authResponse.userId,
-            email: authResponse.email,
-            fullName: authResponse.fullName,
-          },
+          accessToken: authResponse?.accessToken ?? null,
+          refreshToken: authResponse?.refreshToken ?? null,
+          user: authResponse
+            ? {
+                id: authResponse.userId,
+                email: authResponse.email,
+                fullName: authResponse.fullName,
+              }
+            : null,
           roles,
-          // Persist the *effective* role so every consumer reads one value.
-          activeRole: resolveActiveRole(roles, authResponse.activeRole ?? null),
+          activeRole: resolveActiveRole(roles, authResponse?.activeRole ?? null),
         });
       },
 
@@ -40,13 +40,13 @@ export const useAuthStore = create(
         });
       },
 
-      // Called once after persisted state is read back: mark hydration complete
-      // and normalise a legacy session persisted with activeRole: null.
-      finishHydration: () =>
+      markStorageHydrated: () =>
         set((state) => ({
-          hasHydrated: true,
+          storageHydrated: true,
           activeRole: resolveActiveRole(state.roles ?? [], state.activeRole),
         })),
+
+      finishSessionBootstrap: () => set({ sessionReady: true }),
 
       hasRole: (role) => get().roles.includes(role),
       hasAnyRole: (allowed = []) => {
@@ -63,10 +63,8 @@ export const useAuthStore = create(
         roles: state.roles,
         activeRole: state.activeRole,
       }),
-      // Runs synchronously for localStorage — guards can rely on hasHydrated
-      // being true by first render.
       onRehydrateStorage: () => (state) => {
-        state?.finishHydration?.();
+        state?.markStorageHydrated?.();
       },
     },
   ),
