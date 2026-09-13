@@ -36,12 +36,12 @@ export default function Quotations() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required type="date" value={form.requiredDeliveryDate} onChange={(e) => setForm((p) => ({ ...p, requiredDeliveryDate: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Producer IDs (comma separated)" value={form.producerIds} onChange={(e) => setForm((p) => ({ ...p, producerIds: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Required Delivery Date" required type="date" value={form.requiredDeliveryDate} onChange={(e) => setForm((p) => ({ ...p, requiredDeliveryDate: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Producer IDs" required placeholder="Producer IDs (comma separated)" value={form.producerIds} onChange={(e) => setForm((p) => ({ ...p, producerIds: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <div className="grid gap-3 sm:grid-cols-2">
-            <input required placeholder="Product name" value={form.productName} onChange={(e) => setForm((p) => ({ ...p, productName: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            <input required type="number" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Product name" required placeholder="Product name" value={form.productName} onChange={(e) => setForm((p) => ({ ...p, productName: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Quantity" required type="number" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
           </div>
           <Button type="submit" variant="primary" disabled={create.isPending}>Send RFQ</Button>
         </form>

@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+import OptionalCardLink from './OptionalCardLink';
 import Badge from '../ui/Badge';
 
 export default function ProducerCard({ producer, to }) {
   return (
-    <Link
-      to={to || '#'}
+    <OptionalCardLink
+      to={to}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface transition hover:shadow-md"
     >
       <div className="flex aspect-[4/3] items-center justify-center bg-background text-xs text-body/40">
@@ -18,6 +18,6 @@ export default function ProducerCard({ producer, to }) {
         <p className="text-xs text-body/60">{producer.craft}</p>
         <p className="text-xs text-body/50">{producer.district}</p>
       </div>
-    </Link>
+    </OptionalCardLink>
   );
 }

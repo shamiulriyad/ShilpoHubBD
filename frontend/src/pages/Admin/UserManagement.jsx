@@ -51,14 +51,14 @@ export default function UserManagement() {
 
       <SectionHeader eyebrow="Access Control" title="Assign / Remove a Role" />
       <form onSubmit={handleAssign} className="flex flex-wrap gap-2 rounded-xl border border-border bg-surface p-4">
-        <input
+        <input aria-label="User ID"
           required
           placeholder="User ID"
           value={roleForm.userId}
           onChange={(event) => setRoleForm((prev) => ({ ...prev, userId: event.target.value }))}
           className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
         />
-        <select
+        <select aria-label="Role"
           value={roleForm.role}
           onChange={(event) => setRoleForm((prev) => ({ ...prev, role: event.target.value }))}
           className="rounded-md border border-border bg-background px-3 py-2 text-sm"

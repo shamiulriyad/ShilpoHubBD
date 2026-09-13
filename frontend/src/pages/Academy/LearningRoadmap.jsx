@@ -70,8 +70,8 @@ export default function LearningRoadmap() {
         ) : (
           <form onSubmit={handleCreate} className="grid gap-3 rounded-xl border border-border bg-surface p-6 sm:grid-cols-2">
             <p className="text-sm text-body/60 sm:col-span-2">No active roadmap yet. Set a goal to generate one.</p>
-            <input required placeholder="Goal (e.g. Become a master weaver)" value={form.goal} onChange={(e) => setForm((p) => ({ ...p, goal: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-            <select value={form.targetHeritageSkillId} onChange={(e) => setForm((p) => ({ ...p, targetHeritageSkillId: e.target.value }))} className={inputClass}>
+            <input aria-label="Goal" required placeholder="Goal (e.g. Become a master weaver)" value={form.goal} onChange={(e) => setForm((p) => ({ ...p, goal: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+            <select aria-label="Target Heritage Skill Id" value={form.targetHeritageSkillId} onChange={(e) => setForm((p) => ({ ...p, targetHeritageSkillId: e.target.value }))} className={inputClass}>
               <option value="">Target skill (optional)</option>
               {(skillsQuery.data || []).map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>

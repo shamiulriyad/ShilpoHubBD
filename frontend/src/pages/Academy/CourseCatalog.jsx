@@ -7,14 +7,21 @@ import { useCourseCategories } from '../../hooks/useCourseCategories';
 
 export default function CourseCatalog() {
   const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('');
   const categoriesQuery = useCourseCategories();
-  const coursesQuery = useCourses({ pageSize: 24 });
+  const coursesQuery = useCourses({ pageSize: 50, category: category || undefined });
 
-  const courses = (coursesQuery.data?.items || []).filter((c) =>
-    search ? c.title.toLowerCase().includes(search.toLowerCase()) : true,
+  const courses = (coursesQuery.data?.items || []).filter((course) =>
+    search ? course.title?.toLowerCase().includes(search.toLowerCase()) : true,
   );
 
-  const filterGroups = [{ label: 'Category', options: (categoriesQuery.data || []).map((c) => c.name) }];
+  const filterGroups = [
+    {
+      key: 'category',
+      label: 'Category',
+      options: (categoriesQuery.data || []).map((item) => ({ label: item.name, value: item.name })),
+    },
+  ];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
@@ -26,8 +33,13 @@ export default function CourseCatalog() {
       <div className="mb-6 max-w-xl">
         <SearchBar placeholder="Search courses…" value={search} onChange={(event) => setSearch(event.target.value)} />
       </div>
-      <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-        <FilterPanel groups={filterGroups} />
+      <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
+        <FilterPanel
+          groups={filterGroups}
+          values={{ category }}
+          onChange={(_key, value, checked) => setCategory(checked ? value : '')}
+          onClear={() => setCategory('')}
+        />
         <AsyncState isLoading={coursesQuery.isLoading} isError={coursesQuery.isError} error={coursesQuery.error}>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {courses.map((course) => (
@@ -43,7 +55,9 @@ export default function CourseCatalog() {
                 to={routePaths.academyCourseDetails.replace(':courseId', course.id)}
               />
             ))}
-            {courses.length === 0 && <p className="col-span-full text-sm text-body/60">No published courses match your search.</p>}
+            {courses.length === 0 && (
+              <p className="col-span-full text-sm text-body/60">No published courses match your filters.</p>
+            )}
           </div>
         </AsyncState>
       </div>

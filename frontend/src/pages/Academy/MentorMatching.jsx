@@ -31,17 +31,17 @@ export default function MentorMatching() {
       <PageHeader title="AI Mentor Matching" description="Find the best-matched mentors for your learning goals, skill and location." />
 
       <form onSubmit={handleSearch} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-        <select value={form.heritageSkillId} onChange={(e) => setForm((p) => ({ ...p, heritageSkillId: e.target.value }))} className={inputClass}>
+        <select aria-label="Heritage Skill Id" value={form.heritageSkillId} onChange={(e) => setForm((p) => ({ ...p, heritageSkillId: e.target.value }))} className={inputClass}>
           <option value="">Any skill</option>
           {(skillsQuery.data || []).map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
         </select>
-        <select value={form.minSkillLevel} onChange={(e) => setForm((p) => ({ ...p, minSkillLevel: e.target.value }))} className={inputClass}>
+        <select aria-label="Min Skill Level" value={form.minSkillLevel} onChange={(e) => setForm((p) => ({ ...p, minSkillLevel: e.target.value }))} className={inputClass}>
           <option value="">Any level</option>
           {skillLevels.map((l) => <option key={l} value={l}>{l}</option>)}
         </select>
-        <input placeholder="Learning goal keyword" value={form.learningGoalKeyword} onChange={(e) => setForm((p) => ({ ...p, learningGoalKeyword: e.target.value }))} className={inputClass} />
-        <input placeholder="Location" value={form.location} onChange={(e) => setForm((p) => ({ ...p, location: e.target.value }))} className={inputClass} />
-        <input type="number" min="0" placeholder="Min years of experience" value={form.minYearsOfExperience} onChange={(e) => setForm((p) => ({ ...p, minYearsOfExperience: e.target.value }))} className={inputClass} />
+        <input aria-label="Learning goal keyword" placeholder="Learning goal keyword" value={form.learningGoalKeyword} onChange={(e) => setForm((p) => ({ ...p, learningGoalKeyword: e.target.value }))} className={inputClass} />
+        <input aria-label="Location" placeholder="Location" value={form.location} onChange={(e) => setForm((p) => ({ ...p, location: e.target.value }))} className={inputClass} />
+        <input aria-label="Min years of experience" type="number" min="0" placeholder="Min years of experience" value={form.minYearsOfExperience} onChange={(e) => setForm((p) => ({ ...p, minYearsOfExperience: e.target.value }))} className={inputClass} />
         <Button type="submit" variant="primary" disabled={match.isPending}>{match.isPending ? 'Matching…' : 'Find Mentors'}</Button>
       </form>
 

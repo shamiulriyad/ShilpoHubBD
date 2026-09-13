@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, SectionHeader, BidForm, AsyncState } from '../../components/ui';
 import { useAuction, useAuctions, usePlaceBid } from '../../hooks/useAuctions';
+import SafeImage from '../../components/media/SafeImage';
 
 function formatTimeRemaining(seconds) {
   if (seconds <= 0) return 'Closed';
@@ -37,7 +38,7 @@ export default function AuctionDetails() {
             <div className="grid gap-10 lg:grid-cols-2">
               <div className="flex aspect-square items-center justify-center rounded-2xl border border-border bg-background text-sm text-body/40">
                 {auction.productImageUrl ? (
-                  <img src={auction.productImageUrl} alt={auction.title} className="h-full w-full rounded-2xl object-cover" />
+                  <SafeImage src={auction.productImageUrl} alt={auction.title} className="h-full w-full rounded-2xl object-cover" />
                 ) : (
                   'Item Image'
                 )}

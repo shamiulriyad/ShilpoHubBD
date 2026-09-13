@@ -8,7 +8,6 @@ export const mainNav = [
   { label: 'Academy', path: routePaths.academy, menu: 'academy' },
   { label: 'Innovation Hub', path: routePaths.research, menu: 'research' },
   { label: 'About', path: routePaths.about },
-  { label: 'News', path: routePaths.news },
 ];
 
 export const megaMenus = {
@@ -72,7 +71,6 @@ export const megaMenus = {
 export const userMenu = [
   { label: 'Profile', path: routePaths.dashboardProfile },
   { label: 'Dashboard', path: routePaths.dashboard },
-  { label: 'Notifications', path: routePaths.dashboardNotifications },
   { label: 'Messages', path: routePaths.dashboardMessages },
   { label: 'Settings', path: routePaths.dashboardSettings },
 ];
@@ -83,7 +81,6 @@ export const sidebarNav = [
     section: 'Overview',
     items: [
       { label: 'Dashboard', path: routePaths.dashboard, icon: '🏠' },
-      { label: 'Analytics', path: routePaths.dashboardAnalytics, icon: '📊' },
     ],
   },
   {
@@ -118,7 +115,6 @@ export const sidebarNav = [
     items: [
       { label: 'Community', path: routePaths.dashboardCommunity, icon: '💬' },
       { label: 'Messages', path: routePaths.dashboardMessages, icon: '✉️' },
-      { label: 'Notifications', path: routePaths.dashboardNotifications, icon: '🔔' },
     ],
   },
   {
@@ -158,8 +154,6 @@ export const customerSidebarNav = [
       { label: 'Order History', path: routePaths.customerOrders, icon: '📦' },
       { label: 'Returns', path: routePaths.customerReturns, icon: '↩️' },
       { label: 'Refunds', path: routePaths.customerRefunds, icon: '💸' },
-      { label: 'Saved Addresses', path: routePaths.customerAddresses, icon: '📍' },
-      { label: 'Notifications', path: routePaths.customerNotifications, icon: '🔔' },
     ],
   },
   {
@@ -294,13 +288,6 @@ export const adminSidebarNav = [
       { label: 'Marketplace Monitoring', path: routePaths.adminMarketplace, icon: '🛍️' },
     ],
   },
-  {
-    section: 'Platform',
-    items: [
-      { label: 'CMS', path: routePaths.adminCms, icon: '📝' },
-      { label: 'Security Center', path: routePaths.adminSecurity, icon: '🛡️' },
-    ],
-  },
 ];
 
 // Items every signed-in member shares. Kept in one place so each role sidebar can
@@ -310,7 +297,6 @@ const generalGroup = {
   items: [
     { label: 'Explore Heritage', path: routePaths.explore, icon: '🧭' },
     { label: 'Messages', path: routePaths.dashboardMessages, icon: '✉️' },
-    { label: 'Notifications', path: routePaths.dashboardNotifications, icon: '🔔' },
     { label: 'Settings', path: routePaths.dashboardSettings, icon: '⚙️' },
   ],
 };
@@ -393,9 +379,7 @@ export const innovationHubSidebarNav = [
   generalGroup,
 ];
 
-// Logistics Partner workspace — pickups, warehousing, deliveries.
-// NOTE: the logistics backend (api/logistics/*) exists but dedicated frontend
-// pages/routes do not yet — Operations items land on the dashboard for now.
+// Logistics Partner workspace — pickups, warehousing and deliveries.
 export const logisticsPartnerSidebarNav = [
   {
     section: 'Overview',
@@ -465,20 +449,6 @@ export const footerLinks = {
   resources: [
     { label: 'Academy', path: routePaths.academy },
     { label: 'Innovation Hub', path: routePaths.research },
-    { label: 'News', path: routePaths.news },
     { label: 'Tourism Events', path: routePaths.tourismEvents },
   ],
-  support: [
-    { label: 'Contact', path: routePaths.about },
-    { label: 'FAQ', path: routePaths.about },
-    { label: 'Privacy Policy', path: routePaths.about },
-    { label: 'Terms & Conditions', path: routePaths.about },
-  ],
 };
-
-export const socialLinks = [
-  { label: 'Facebook', href: '#' },
-  { label: 'Instagram', href: '#' },
-  { label: 'YouTube', href: '#' },
-  { label: 'LinkedIn', href: '#' },
-];

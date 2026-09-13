@@ -58,21 +58,21 @@ export default function DiscussionForum() {
 
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input
+          <input aria-label="Title"
             required
             placeholder="Title"
             value={form.title}
             onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
-          <input
+          <input aria-label="Category"
             required
             placeholder="Category (e.g. Shipping, Authenticity)"
             value={form.category}
             onChange={(event) => setForm((prev) => ({ ...prev, category: event.target.value }))}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
-          <textarea
+          <textarea aria-label="What's on your mind?"
             required
             rows={3}
             placeholder="What's on your mind?"

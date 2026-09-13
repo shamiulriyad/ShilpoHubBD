@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, Button, SectionHeader, AsyncState } from '../../components/ui';
 import { useOrder, useOrderTracking, useOrderMutations } from '../../hooks/useOrders';
+import SafeImage from '../../components/media/SafeImage';
 
 const statusTone = {
   Delivered: 'success',
@@ -77,7 +78,7 @@ export default function OrderDetails() {
                         <div className="flex items-center gap-3">
                           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-background text-[10px] text-body/40">
                             {item.productImageUrl ? (
-                              <img src={item.productImageUrl} alt="" className="h-full w-full rounded-lg object-cover" />
+                              <SafeImage src={item.productImageUrl} alt="" className="h-full w-full rounded-lg object-cover" />
                             ) : (
                               'Item'
                             )}
@@ -131,7 +132,7 @@ export default function OrderDetails() {
                   )}
                   {canReturn(order.status) && (
                     <div className="space-y-2 rounded-xl border border-border bg-surface p-4">
-                      <textarea
+                      <textarea aria-label="Reason for return"
                         placeholder="Reason for return…"
                         value={returnReason}
                         onChange={(event) => setReturnReason(event.target.value)}

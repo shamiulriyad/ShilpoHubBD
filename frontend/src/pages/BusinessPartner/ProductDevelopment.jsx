@@ -7,14 +7,17 @@ import { useDistricts } from '../../hooks/useDistricts';
 const statusTone = { Requested: 'secondary', Active: 'primary', Declined: 'neutral', Approved: 'success', Converted: 'success', Cancelled: 'neutral' };
 
 function ProjectPanel({ id }) {
-  const { data: project } = useDevelopmentProject(id);
+  const projectQuery = useDevelopmentProject(id);
+  const project = projectQuery.data;
   const { addComment, decidePrototype, convertToProduct } = useProductDevelopmentMutations();
   const [comment, setComment] = useState('');
   const categoriesQuery = useCategories();
   const districtsQuery = useDistricts();
   const [convertForm, setConvertForm] = useState({ categoryId: '', districtId: '', price: '', initialStock: '' });
 
-  if (!project) return null;
+  if (projectQuery.isLoading) return <p className="mt-4 border-t border-border pt-4 text-sm text-body/60">Loading details…</p>;
+  if (projectQuery.isError) return <p role="alert" className="mt-4 rounded-lg border border-danger/30 bg-danger/5 p-3 text-sm text-danger">Unable to load this project.</p>;
+  if (!project) return <p className="mt-4 text-sm text-body/60">This project is unavailable.</p>;
 
   return (
     <div className="mt-4 space-y-3 border-t border-border pt-4">
@@ -24,7 +27,7 @@ function ProjectPanel({ id }) {
         ))}
       </div>
       <div className="flex gap-2">
-        <input placeholder="Add a comment…" value={comment} onChange={(e) => setComment(e.target.value)} className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
+        <input aria-label="Add a comment" placeholder="Add a comment…" value={comment} onChange={(e) => setComment(e.target.value)} className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
         <Button variant="secondary" onClick={() => { addComment.mutate({ id: project.id, content: comment }); setComment(''); }}>Comment</Button>
       </div>
 
@@ -42,16 +45,16 @@ function ProjectPanel({ id }) {
         <div className="space-y-2 rounded-lg border border-border bg-background p-3">
           <p className="text-sm font-semibold text-heading">Convert to Product</p>
           <div className="grid gap-2 sm:grid-cols-2">
-            <select value={convertForm.categoryId} onChange={(e) => setConvertForm((p) => ({ ...p, categoryId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+            <select aria-label="Category Id" value={convertForm.categoryId} onChange={(e) => setConvertForm((p) => ({ ...p, categoryId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
               <option value="">Category</option>
               {(categoriesQuery.data || []).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
-            <select value={convertForm.districtId} onChange={(e) => setConvertForm((p) => ({ ...p, districtId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+            <select aria-label="District Id" value={convertForm.districtId} onChange={(e) => setConvertForm((p) => ({ ...p, districtId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
               <option value="">District</option>
               {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
             </select>
-            <input type="number" placeholder="Price" value={convertForm.price} onChange={(e) => setConvertForm((p) => ({ ...p, price: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            <input type="number" placeholder="Initial stock" value={convertForm.initialStock} onChange={(e) => setConvertForm((p) => ({ ...p, initialStock: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Price" type="number" placeholder="Price" value={convertForm.price} onChange={(e) => setConvertForm((p) => ({ ...p, price: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Initial stock" type="number" placeholder="Initial stock" value={convertForm.initialStock} onChange={(e) => setConvertForm((p) => ({ ...p, initialStock: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
           </div>
           <Button
             variant="primary"
@@ -89,10 +92,10 @@ export default function ProductDevelopment() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <textarea required rows={2} placeholder="Business requirements" value={form.businessRequirements} onChange={(e) => setForm((p) => ({ ...p, businessRequirements: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <textarea required rows={2} placeholder="Product specifications" value={form.productSpecifications} onChange={(e) => setForm((p) => ({ ...p, productSpecifications: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Producer ID" required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <textarea aria-label="Business requirements" required rows={2} placeholder="Business requirements" value={form.businessRequirements} onChange={(e) => setForm((p) => ({ ...p, businessRequirements: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <textarea aria-label="Product specifications" required rows={2} placeholder="Product specifications" value={form.productSpecifications} onChange={(e) => setForm((p) => ({ ...p, productSpecifications: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button type="submit" variant="primary" disabled={create.isPending}>Send Request</Button>
         </form>
       )}

@@ -4,6 +4,7 @@ import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useProduct } from '../../hooks/useProducts';
 import { useInteriorPreview } from '../../hooks/useAiShopping';
+import SafeImage from '../../components/media/SafeImage';
 
 const roomTypes = ['Living Room', 'Bedroom', 'Dining Room', 'Office'];
 
@@ -74,7 +75,7 @@ export default function AIInteriorPreview() {
               <p className="mb-4 text-sm font-semibold text-heading">Preview</p>
               <div className="flex aspect-video items-center justify-center rounded-lg border border-dashed border-border bg-background/40 text-center text-xs text-body/40">
                 {result?.previewImageUrl?.startsWith('http') ? (
-                  <img src={result.previewImageUrl} alt="AI room preview" className="h-full w-full rounded-lg object-cover" />
+                  <SafeImage src={result.previewImageUrl} alt="AI room preview" className="h-full w-full rounded-lg object-cover" />
                 ) : result ? (
                   result.description
                 ) : (

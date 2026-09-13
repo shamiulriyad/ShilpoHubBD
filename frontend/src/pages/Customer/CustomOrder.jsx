@@ -72,7 +72,7 @@ export default function CustomOrder() {
         <div className="space-y-6 rounded-xl border border-border bg-surface p-6">
           <div>
             <p className="mb-3 text-sm font-semibold text-heading">Reference Product & Producer</p>
-            <select
+            <select aria-label="Product Id"
               required
               value={form.productId}
               onChange={setField('productId')}
@@ -95,14 +95,14 @@ export default function CustomOrder() {
           <div>
             <p className="mb-3 text-sm font-semibold text-heading">Order Details</p>
             <div className="grid gap-4">
-              <input
+              <input aria-label="Item title"
                 required
                 value={form.title}
                 onChange={setField('title')}
                 placeholder="Item title (e.g. Custom Jamdani Saree)"
                 className="rounded-md border border-border bg-background px-3 py-2 text-sm"
               />
-              <textarea
+              <textarea aria-label="Describe colors, size, materials and any inspiration references"
                 required
                 value={form.specifications}
                 onChange={setField('specifications')}
@@ -111,7 +111,7 @@ export default function CustomOrder() {
                 className="rounded-md border border-border bg-background px-3 py-2 text-sm"
               />
               <div className="grid gap-4 sm:grid-cols-2">
-                <input
+                <input aria-label="Budget"
                   type="number"
                   min="0"
                   value={form.budget}
@@ -119,7 +119,7 @@ export default function CustomOrder() {
                   placeholder="Budget (৳)"
                   className="rounded-md border border-border bg-background px-3 py-2 text-sm"
                 />
-                <input
+                <input aria-label="Deadline"
                   type="date"
                   value={form.deadline}
                   onChange={setField('deadline')}

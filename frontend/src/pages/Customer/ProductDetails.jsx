@@ -267,7 +267,7 @@ export default function ProductDetails() {
                     }}
                     className="flex flex-wrap gap-2"
                   >
-                    <input
+                    <input aria-label="Enter authenticity code"
                       value={qrCode}
                       onChange={(event) => setQrCode(event.target.value)}
                       placeholder="Enter authenticity code…"
@@ -326,7 +326,7 @@ export default function ProductDetails() {
                 <div className="max-w-3xl space-y-4">
                   {isAuthenticated && (
                     <form onSubmit={handleSubmitReview} className="space-y-3 rounded-xl border border-border bg-surface p-4">
-                      <select
+                      <select aria-label="Rating"
                         value={newReview.rating}
                         onChange={(event) => setNewReview((prev) => ({ ...prev, rating: event.target.value }))}
                         className="rounded-md border border-border bg-background px-3 py-2 text-sm"
@@ -337,7 +337,7 @@ export default function ProductDetails() {
                           </option>
                         ))}
                       </select>
-                      <textarea
+                      <textarea aria-label="Share your experience with this product"
                         required
                         rows={3}
                         placeholder="Share your experience with this product…"

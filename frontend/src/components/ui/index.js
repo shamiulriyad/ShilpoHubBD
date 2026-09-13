@@ -7,7 +7,6 @@ export { default as SearchBar } from './SearchBar';
 export { default as FilterPanel } from './FilterPanel';
 export { default as Pagination } from './Pagination';
 export { default as Table } from './Table';
-export { default as ChartPlaceholder } from './ChartPlaceholder';
 export { default as MarketplaceFilter } from './MarketplaceFilter';
 export { default as CategoryFilter } from './CategoryFilter';
 export { default as WishlistButton } from './WishlistButton';
@@ -20,3 +19,6 @@ export { default as AnalyticsChart } from './AnalyticsChart';
 export { default as AsyncState } from './AsyncState';
 export { default as StatusTimeline } from './StatusTimeline';
 export { default as MilestoneList } from './MilestoneList';
+
+export { default as GlobalFeedback } from './GlobalFeedback';
+export { default as QueryStatusBanner } from './QueryStatusBanner';

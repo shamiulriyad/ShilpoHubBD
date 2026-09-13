@@ -5,11 +5,14 @@ import { useMyDesignCollaborations, useDesignCollaborationMutations, useDesignCo
 const statusTone = { Invited: 'secondary', Active: 'primary', Declined: 'neutral', Completed: 'success', Cancelled: 'neutral' };
 
 function ProjectPanel({ id }) {
-  const { data: project } = useDesignCollaboration(id);
+  const projectQuery = useDesignCollaboration(id);
+  const project = projectQuery.data;
   const { addComment, decideRevision, complete, cancel } = useDesignCollaborationMutations();
   const [comment, setComment] = useState('');
 
-  if (!project) return null;
+  if (projectQuery.isLoading) return <p className="mt-4 border-t border-border pt-4 text-sm text-body/60">Loading details…</p>;
+  if (projectQuery.isError) return <p role="alert" className="mt-4 rounded-lg border border-danger/30 bg-danger/5 p-3 text-sm text-danger">Unable to load this project.</p>;
+  if (!project) return <p className="mt-4 text-sm text-body/60">This project is unavailable.</p>;
 
   return (
     <div className="mt-4 space-y-3 border-t border-border pt-4">
@@ -19,7 +22,7 @@ function ProjectPanel({ id }) {
         ))}
       </div>
       <div className="flex gap-2">
-        <input placeholder="Add a comment…" value={comment} onChange={(e) => setComment(e.target.value)} className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
+        <input aria-label="Add a comment" placeholder="Add a comment…" value={comment} onChange={(e) => setComment(e.target.value)} className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
         <Button variant="secondary" onClick={() => { addComment.mutate({ id: project.id, content: comment }); setComment(''); }}>Comment</Button>
       </div>
 
@@ -68,9 +71,9 @@ export default function DesignCollaborations() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <textarea required rows={3} placeholder="Design requirements" value={form.designRequirements} onChange={(e) => setForm((p) => ({ ...p, designRequirements: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Producer ID" required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <textarea aria-label="Design requirements" required rows={3} placeholder="Design requirements" value={form.designRequirements} onChange={(e) => setForm((p) => ({ ...p, designRequirements: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button type="submit" variant="primary" disabled={create.isPending}>Send Invite</Button>
         </form>
       )}

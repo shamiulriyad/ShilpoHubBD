@@ -31,7 +31,7 @@ export default function AiIntelligence() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <ToolCard title="Supplier Ranking" mutation={tools.rankSuppliers}>
-          <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm">
+          <select aria-label="Category Id" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm">
             <option value="">Any category</option>
             {(categoriesQuery.data || []).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
@@ -41,14 +41,14 @@ export default function AiIntelligence() {
         </ToolCard>
 
         <ToolCard title="Quality Prediction" mutation={tools.predictQuality}>
-          <input placeholder="Producer ID" value={producerId} onChange={(e) => setProducerId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Producer ID" placeholder="Producer ID" value={producerId} onChange={(e) => setProducerId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button variant="primary" onClick={() => tools.predictQuality.mutate(producerId)} disabled={!producerId || tools.predictQuality.isPending}>
             Predict Quality
           </Button>
         </ToolCard>
 
         <ToolCard title="Price Forecast" mutation={tools.forecastPrice}>
-          <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm">
+          <select aria-label="Category Id" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm">
             <option value="">Select category</option>
             {(categoriesQuery.data || []).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
@@ -58,15 +58,15 @@ export default function AiIntelligence() {
         </ToolCard>
 
         <ToolCard title="Delivery Prediction" mutation={tools.predictDelivery}>
-          <input placeholder="Producer ID" value={producerId} onChange={(e) => setProducerId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input type="number" placeholder="Quantity (optional)" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Producer ID" placeholder="Producer ID" value={producerId} onChange={(e) => setProducerId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Quantity" type="number" placeholder="Quantity (optional)" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button variant="primary" onClick={() => tools.predictDelivery.mutate({ producerId, quantity: quantity ? Number(quantity) : undefined })} disabled={!producerId || tools.predictDelivery.isPending}>
             Predict Delivery
           </Button>
         </ToolCard>
 
         <ToolCard title="Risk Assessment" mutation={tools.assessRisk}>
-          <input placeholder="Producer ID" value={producerId} onChange={(e) => setProducerId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Producer ID" placeholder="Producer ID" value={producerId} onChange={(e) => setProducerId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button variant="primary" onClick={() => tools.assessRisk.mutate(producerId)} disabled={!producerId || tools.assessRisk.isPending}>
             Assess Risk
           </Button>

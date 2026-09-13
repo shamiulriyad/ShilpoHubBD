@@ -51,7 +51,7 @@ export default function QuestionsAnswers() {
 
       <div className="mb-6 max-w-sm">
         <label className="mb-1.5 block text-sm font-medium text-body/70">Choose a product to view its Q&amp;A</label>
-        <select
+        <select aria-label="Product Id"
           value={productId}
           onChange={(event) => setSearchParams(event.target.value ? { productId: event.target.value } : {})}
           className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
@@ -67,7 +67,7 @@ export default function QuestionsAnswers() {
 
       {productId && showAsk && (
         <form onSubmit={handleAsk} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <textarea
+          <textarea aria-label="What would you like to know about this product?"
             required
             rows={3}
             placeholder="What would you like to know about this product?"

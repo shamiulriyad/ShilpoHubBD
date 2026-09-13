@@ -31,14 +31,14 @@ export default function ManufacturingPartnerships() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <textarea required rows={2} placeholder="Product requirements" value={form.productRequirements} onChange={(e) => setForm((p) => ({ ...p, productRequirements: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <textarea required rows={2} placeholder="Manufacturing specifications" value={form.manufacturingSpecifications} onChange={(e) => setForm((p) => ({ ...p, manufacturingSpecifications: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Producer ID" required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <textarea aria-label="Product requirements" required rows={2} placeholder="Product requirements" value={form.productRequirements} onChange={(e) => setForm((p) => ({ ...p, productRequirements: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <textarea aria-label="Manufacturing specifications" required rows={2} placeholder="Manufacturing specifications" value={form.manufacturingSpecifications} onChange={(e) => setForm((p) => ({ ...p, manufacturingSpecifications: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <div className="grid gap-3 sm:grid-cols-3">
-            <input required type="number" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            <input required type="date" value={form.timelineStartDate} onChange={(e) => setForm((p) => ({ ...p, timelineStartDate: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            <input required type="date" value={form.timelineEndDate} onChange={(e) => setForm((p) => ({ ...p, timelineEndDate: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Quantity" required type="number" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Timeline Start Date" required type="date" value={form.timelineStartDate} onChange={(e) => setForm((p) => ({ ...p, timelineStartDate: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Timeline End Date" required type="date" value={form.timelineEndDate} onChange={(e) => setForm((p) => ({ ...p, timelineEndDate: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
           </div>
           <Button type="submit" variant="primary" disabled={create.isPending}>Send Request</Button>
         </form>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SafeImage from './SafeImage';
 
 export default function ProductGallery({ productName = 'Product', images = [], thumbnailCount = 4 }) {
   const [active, setActive] = useState(0);
@@ -10,7 +11,7 @@ export default function ProductGallery({ productName = 'Product', images = [], t
     <div className="space-y-3">
       <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-border bg-background text-sm text-body/40">
         {current ? (
-          <img src={current} alt={`${productName} ${active + 1}`} className="h-full w-full object-cover" />
+          <SafeImage src={current} alt={`${productName} ${active + 1}`} className="h-full w-full object-cover" />
         ) : (
           `${productName} image ${active + 1}`
         )}
@@ -26,7 +27,7 @@ export default function ProductGallery({ productName = 'Product', images = [], t
             }`}
           >
             {hasImages ? (
-              <img src={thumb} alt={`${productName} thumbnail ${i + 1}`} className="h-full w-full object-cover" />
+              <SafeImage src={thumb} alt={`${productName} thumbnail ${i + 1}`} className="h-full w-full object-cover" />
             ) : (
               i + 1
             )}

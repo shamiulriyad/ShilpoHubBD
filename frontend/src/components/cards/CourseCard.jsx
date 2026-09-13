@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+import OptionalCardLink from './OptionalCardLink';
 import Badge from '../ui/Badge';
 
 export default function CourseCard({ course, to }) {
   return (
-    <Link
-      to={to || '#'}
+    <OptionalCardLink
+      to={to}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface transition hover:shadow-md"
     >
       <div className="flex aspect-video items-center justify-center bg-background text-xs text-body/40">
@@ -19,6 +19,6 @@ export default function CourseCard({ course, to }) {
           <span>{course.enrolled} enrolled</span>
         </div>
       </div>
-    </Link>
+    </OptionalCardLink>
   );
 }

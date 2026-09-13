@@ -36,13 +36,13 @@ export default function Procurements() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required type="date" value={form.deliveryDeadline} onChange={(e) => setForm((p) => ({ ...p, deliveryDeadline: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Producer ID" required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Delivery Deadline" required type="date" value={form.deliveryDeadline} onChange={(e) => setForm((p) => ({ ...p, deliveryDeadline: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <div className="grid gap-3 sm:grid-cols-3">
-            <input required placeholder="Product ID" value={form.productId} onChange={(e) => setForm((p) => ({ ...p, productId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            <input required type="number" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            <input required type="number" placeholder="Unit price" value={form.unitPrice} onChange={(e) => setForm((p) => ({ ...p, unitPrice: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Product ID" required placeholder="Product ID" value={form.productId} onChange={(e) => setForm((p) => ({ ...p, productId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Quantity" required type="number" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Unit price" required type="number" placeholder="Unit price" value={form.unitPrice} onChange={(e) => setForm((p) => ({ ...p, unitPrice: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
           </div>
           <Button type="submit" variant="primary" disabled={create.isPending}>Create Request</Button>
         </form>

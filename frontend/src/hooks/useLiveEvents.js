@@ -9,6 +9,14 @@ export function useLiveEvents(params = {}) {
   });
 }
 
+export function useMyLiveEvents(params = {}) {
+  return useQuery({
+    queryKey: ['live-events', 'mine', params],
+    queryFn: () => liveEventsService.mine(params),
+    placeholderData: (previousData) => previousData,
+  });
+}
+
 export function useLiveEvent(id) {
   return useQuery({
     queryKey: ['live-events', id],

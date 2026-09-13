@@ -129,6 +129,5 @@ export const ACCOUNT_TYPES = [
     label: 'Government & NGO',
     description: 'Manage heritage programs and national initiatives.',
     Icon: GovernmentNGOIcon,
-    approvalRequired: true,
   },
 ];

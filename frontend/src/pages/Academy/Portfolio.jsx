@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageHeader, Button, Badge } from '../../components/ui';
 import { useMyPortfolio, usePortfolioMutations } from '../../hooks/usePortfolio';
+import SafeImage from '../../components/media/SafeImage';
 
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const visibilities = ['Public', 'Private'];
@@ -36,7 +37,8 @@ export default function Portfolio() {
   };
 
   if (portfolioQuery.isLoading) return <p className="py-10 text-center text-sm text-body/60">Loading…</p>;
-  if (!portfolio) return null;
+  if (portfolioQuery.isError) return <p role="alert" className="rounded-lg border border-danger/30 bg-danger/5 p-4 text-sm text-danger">Unable to load your portfolio. Please try again.</p>;
+  if (!portfolio) return <p className="rounded-lg border border-border bg-surface p-4 text-sm text-body/60">Your portfolio is currently unavailable.</p>;
 
   return (
     <div>
@@ -47,11 +49,11 @@ export default function Portfolio() {
       />
 
       <form onSubmit={handleSaveHeadline} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-        <input placeholder="Headline" value={headlineForm.headline} onChange={(e) => setHeadlineForm((p) => ({ ...p, headline: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-        <textarea rows={2} placeholder="Summary" value={headlineForm.summary} onChange={(e) => setHeadlineForm((p) => ({ ...p, summary: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+        <input aria-label="Headline" placeholder="Headline" value={headlineForm.headline} onChange={(e) => setHeadlineForm((p) => ({ ...p, headline: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+        <textarea aria-label="Summary" rows={2} placeholder="Summary" value={headlineForm.summary} onChange={(e) => setHeadlineForm((p) => ({ ...p, summary: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
         <div className="flex items-center gap-2">
           <span className="text-xs text-body/60">Visibility:</span>
-          <select
+          <select aria-label="Visibility"
             value={portfolio.visibility}
             onChange={(e) => updateVisibility.mutate({ visibility: e.target.value })}
             className={inputClass}
@@ -64,11 +66,11 @@ export default function Portfolio() {
 
       {showForm && (
         <form onSubmit={handleAddProject} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Title" value={project.title} onChange={(e) => setProject((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea required rows={2} placeholder="Description" value={project.description} onChange={(e) => setProject((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <input placeholder="Image URL" value={project.imageUrl} onChange={(e) => setProject((p) => ({ ...p, imageUrl: e.target.value }))} className={inputClass} />
-          <input placeholder="Project URL" value={project.projectUrl} onChange={(e) => setProject((p) => ({ ...p, projectUrl: e.target.value }))} className={inputClass} />
-          <input type="date" value={project.completedAt} onChange={(e) => setProject((p) => ({ ...p, completedAt: e.target.value }))} className={inputClass} />
+          <input aria-label="Title" required placeholder="Title" value={project.title} onChange={(e) => setProject((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Description" required rows={2} placeholder="Description" value={project.description} onChange={(e) => setProject((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Image URL" placeholder="Image URL" value={project.imageUrl} onChange={(e) => setProject((p) => ({ ...p, imageUrl: e.target.value }))} className={inputClass} />
+          <input aria-label="Project URL" placeholder="Project URL" value={project.projectUrl} onChange={(e) => setProject((p) => ({ ...p, projectUrl: e.target.value }))} className={inputClass} />
+          <input aria-label="Completed At" type="date" value={project.completedAt} onChange={(e) => setProject((p) => ({ ...p, completedAt: e.target.value }))} className={inputClass} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={addProject.isPending}>
             {addProject.isPending ? 'Adding…' : 'Add Project'}
           </Button>
@@ -78,7 +80,7 @@ export default function Portfolio() {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {portfolio.projects.map((p) => (
           <div key={p.id} className="relative flex flex-col justify-end rounded-xl border border-border bg-surface p-3 text-xs">
-            {p.imageUrl && <img src={p.imageUrl} alt={p.title} className="mb-2 aspect-square w-full rounded-lg object-cover" />}
+            {p.imageUrl && <SafeImage src={p.imageUrl} alt={p.title} className="mb-2 aspect-square w-full rounded-lg object-cover" />}
             <p className="font-medium text-heading">{p.title}</p>
             <p className="line-clamp-2 text-body/60">{p.description}</p>
             <button type="button" onClick={() => removeProject.mutate(p.id)} className="mt-2 self-start text-danger hover:underline">Remove</button>

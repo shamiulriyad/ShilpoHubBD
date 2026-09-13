@@ -63,7 +63,7 @@ export default function ExamDetails() {
                 {i + 1}. {question.body} <span className="text-xs font-normal text-body/50">({question.points} pts)</span>
               </p>
               {question.questionType === 'Essay' ? (
-                <textarea
+                <textarea aria-label="Write your answer"
                   rows={4}
                   value={answers[question.id] || ''}
                   onChange={(event) => setAnswer(question.id, event.target.value)}

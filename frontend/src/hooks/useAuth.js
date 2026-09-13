@@ -1,5 +1,6 @@
 import { useAuthStore } from '../stores/useAuthStore';
 import { authService } from '../services/authService';
+import { queryClient } from '../lib/queryClient';
 import { resolveActiveRole, roleHomePath, roleLabel } from '../utils/roles';
 
 /**
@@ -17,13 +18,10 @@ export function useAuth() {
   const setSession = useAuthStore((s) => s.setSession);
   const clearSession = useAuthStore((s) => s.clearSession);
 
-  // `activeRole` is already normalised in the store; resolve again defensively
-  // so a stale/legacy value can never leak a null role to the UI.
   const role = resolveActiveRole(roles ?? [], storedActiveRole);
-  const isAuthenticated = Boolean(accessToken);
+  const isAuthenticated = Boolean(accessToken && user);
 
   return {
-    // identity
     user: user
       ? { ...user, name: user.fullName, role, roleLabel: role ? roleLabel(role) : null }
       : null,
@@ -32,25 +30,30 @@ export function useAuth() {
     isAuthenticated,
     isHydrated: hasHydrated,
 
-    // role checks
     hasRole: (r) => (roles ?? []).includes(r),
     hasAnyRole: (allowed = []) =>
       allowed.length === 0 || allowed.some((r) => (roles ?? []).includes(r)),
 
-    // where this user belongs
     homePath: role ? roleHomePath(role) : null,
 
-    // actions
     switchRole: async (nextRole) => {
       const data = await authService.switchRole(nextRole);
+      queryClient.clear();
       setSession(data);
       return data;
     },
-    logout: () => {
-      if (refreshToken) {
-        authService.logout(refreshToken).catch(() => {});
-      }
+    logout: async () => {
+      const tokenToRevoke = refreshToken;
       clearSession();
+      queryClient.clear();
+
+      if (!tokenToRevoke) return;
+
+      try {
+        await authService.logout(tokenToRevoke);
+      } catch {
+        // Local logout is authoritative for the client; server-side revocation is best effort.
+      }
     },
   };
 }

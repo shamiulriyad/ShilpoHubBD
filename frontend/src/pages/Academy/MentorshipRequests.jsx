@@ -25,8 +25,8 @@ function FeedbackForm({ learnerUserId }) {
       }}
       className="mt-2 flex flex-wrap gap-2"
     >
-      <input placeholder="Feedback for learner" value={message} onChange={(e) => setMessage(e.target.value)} className={`${inputClass} flex-1`} />
-      <select value={rating} onChange={(e) => setRating(e.target.value)} className={inputClass}>
+      <input aria-label="Feedback for learner" placeholder="Feedback for learner" value={message} onChange={(e) => setMessage(e.target.value)} className={`${inputClass} flex-1`} />
+      <select aria-label="Rating" value={rating} onChange={(e) => setRating(e.target.value)} className={inputClass}>
         {[5, 4, 3, 2, 1].map((r) => <option key={r} value={r}>{r}★</option>)}
       </select>
       <Button type="submit" variant="secondary" size="sm" disabled={submitFeedback.isPending}>Send Feedback</Button>
@@ -70,15 +70,15 @@ export default function MentorshipRequests() {
 
       {showForm && tab === 'learner' && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <select required value={form.mentorProfileId} onChange={(e) => setForm((p) => ({ ...p, mentorProfileId: e.target.value }))} className={inputClass}>
+          <select aria-label="Mentor Profile Id" required value={form.mentorProfileId} onChange={(e) => setForm((p) => ({ ...p, mentorProfileId: e.target.value }))} className={inputClass}>
             <option value="">Select mentor</option>
             {(mentorsQuery.data?.items || []).map((m) => <option key={m.id} value={m.id}>{m.name || m.fullName}</option>)}
           </select>
-          <select value={form.heritageSkillId} onChange={(e) => setForm((p) => ({ ...p, heritageSkillId: e.target.value }))} className={inputClass}>
+          <select aria-label="Heritage Skill Id" value={form.heritageSkillId} onChange={(e) => setForm((p) => ({ ...p, heritageSkillId: e.target.value }))} className={inputClass}>
             <option value="">Skill (optional)</option>
             {(skillsQuery.data || []).map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
-          <textarea required rows={3} placeholder="Message" value={form.message} onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Message" required rows={3} placeholder="Message" value={form.message} onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={create.isPending}>
             {create.isPending ? 'Sending…' : 'Send Request'}
           </Button>

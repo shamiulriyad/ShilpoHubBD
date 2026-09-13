@@ -1,89 +1,124 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Badge, Button } from '../../components/ui';
-import { VideoPlayer } from '../../components/media';
+import { PageHeader, Badge, AsyncState, Pagination } from '../../components/ui';
+import { useLiveEvents } from '../../hooks/useLiveEvents';
+import SafeImage from '../../components/media/SafeImage';
 
-const filters = ['All', 'Live', 'Upcoming', 'Past'];
-const statusLabel = { live: 'Live Now', upcoming: 'Upcoming', past: 'Replay' };
-const statusTone = { live: 'success', upcoming: 'secondary', past: 'neutral' };
-
-// TODO(backend): only per-producer workshop galleries exist
-// (`GET /api/producers/{id}/workshop-gallery`) — there is no cross-producer
-// workshop feed yet. Placeholder entries until one exists.
-const workshops = [
-  { id: 'workshop-1', title: 'Live Jamdani Loom Session', producerId: 'producer-1', producer: 'Rahima Begum', craft: 'Jamdani Weaving', status: 'live', scheduledFor: '2026-09-10', viewers: 128 },
-  { id: 'workshop-2', title: 'Nakshi Kantha Stitch Circle', producerId: 'producer-2', producer: 'Abdul Karim', craft: 'Nakshi Kantha', status: 'upcoming', scheduledFor: '2026-09-14', viewers: null },
-  { id: 'workshop-3', title: 'Terracotta Throwing Demo', producerId: 'producer-3', producer: 'Shefali Rani', craft: 'Terracotta Art', status: 'upcoming', scheduledFor: '2026-09-18', viewers: null },
-  { id: 'workshop-4', title: 'Bamboo Weaving Basics', producerId: 'producer-4', producer: 'Motiur Rahman', craft: 'Bamboo Work', status: 'past', scheduledFor: '2026-08-20', viewers: null },
+const filters = [
+  { label: 'All', status: undefined },
+  { label: 'Live', status: 'Live' },
+  { label: 'Upcoming', status: 'Scheduled' },
+  { label: 'Past', status: 'Ended' },
 ];
 
+const statusMeta = {
+  Live: { label: 'Live now', tone: 'success', action: 'Join live' },
+  Scheduled: { label: 'Upcoming', tone: 'secondary', action: 'View details' },
+  Ended: { label: 'Ended', tone: 'neutral', action: 'View summary' },
+  Cancelled: { label: 'Cancelled', tone: 'neutral', action: null },
+};
+
 export default function WorkshopGallery() {
-  const [filter, setFilter] = useState('All');
-  const visible = workshops.filter((w) => filter === 'All' || w.status === filter.toLowerCase());
+  const [filter, setFilter] = useState(filters[0]);
+  const [page, setPage] = useState(1);
+  const eventsQuery = useLiveEvents({ status: filter.status, page, pageSize: 12 });
+  const events = eventsQuery.data?.items || [];
+
+  const selectFilter = (nextFilter) => {
+    setFilter(nextFilter);
+    setPage(1);
+  };
 
   return (
     <div>
       <PageHeader
-        breadcrumbs={[{ label: 'Dashboard', path: routePaths.customer }, { label: 'Workshops' }]}
-        title="Live Workshop Commerce"
-        description="Watch artisans at work and shop directly from live and recorded workshop streams."
+        breadcrumbs={[{ label: 'Dashboard', path: routePaths.customer }, { label: 'Live Shopping' }]}
+        title="Live Shopping Events"
+        description="Browse real scheduled, active and completed live-commerce events from ShilpoHub producers."
       />
 
-      <div className="mb-8 flex flex-wrap gap-2">
+      <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter live shopping events">
         {filters.map((item) => (
           <button
-            key={item}
+            key={item.label}
             type="button"
-            onClick={() => setFilter(item)}
+            onClick={() => selectFilter(item)}
+            aria-pressed={filter.label === item.label}
             className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
-              filter === item ? 'border-primary bg-primary text-surface' : 'border-border bg-surface text-body hover:bg-background'
+              filter.label === item.label
+                ? 'border-primary bg-primary text-surface'
+                : 'border-border bg-surface text-body hover:bg-background'
             }`}
           >
-            {item}
+            {item.label}
           </button>
         ))}
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {visible.map((workshop) => (
-          <div key={workshop.id} className="overflow-hidden rounded-xl border border-border bg-surface">
-            <VideoPlayer
-              title={workshop.title}
-              live={workshop.status === 'live'}
-              viewers={workshop.viewers}
-              bordered={false}
-            />
-            <div className="space-y-2 p-4">
-              <Badge tone={statusTone[workshop.status]}>
-                {statusLabel[workshop.status]}
-                {workshop.status === 'live' && workshop.viewers ? ` · ${workshop.viewers} watching` : ''}
-              </Badge>
-              <p className="text-sm font-semibold text-heading">{workshop.title}</p>
-              <p className="text-xs text-body/60">
-                {workshop.craft} · {workshop.scheduledFor}
-              </p>
-              <Link
-                to={routePaths.customerProducerProfile.replace(':producerId', workshop.producerId)}
-                className="block text-xs text-link hover:underline"
-              >
-                by {workshop.producer}
-              </Link>
-              {workshop.status === 'upcoming' ? (
-                <Button variant="secondary" className="mt-2 w-full">
-                  Set Reminder
-                </Button>
-              ) : (
-                <Link to={routePaths.customerLiveShopping.replace(':workshopId', workshop.id)}>
-                  <Button variant={workshop.status === 'live' ? 'primary' : 'secondary'} className="mt-2 w-full">
-                    {workshop.status === 'live' ? 'Join Live' : 'Watch Replay'}
-                  </Button>
-                </Link>
-              )}
-            </div>
+      <AsyncState isLoading={eventsQuery.isLoading} isError={eventsQuery.isError} error={eventsQuery.error} loadingText="Loading live shopping events…">
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {events.map((event) => {
+            const meta = statusMeta[event.status] || { label: event.status || 'Unknown', tone: 'neutral', action: 'View details' };
+            return (
+              <article key={event.id} className="overflow-hidden rounded-xl border border-border bg-surface">
+                <div className="aspect-[16/9] overflow-hidden bg-background">
+                  {event.productImageUrl ? (
+                    <SafeImage src={event.productImageUrl} alt="" className="h-full w-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center px-4 text-center text-sm text-body/50">{event.productName}</div>
+                  )}
+                </div>
+                <div className="space-y-3 p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <Badge tone={meta.tone}>{meta.label}</Badge>
+                    {event.reactionCount > 0 && <span className="text-xs text-body/50">{event.reactionCount} reactions</span>}
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-semibold text-heading">{event.title}</h2>
+                    <p className="mt-1 text-xs text-body/60">
+                      {new Date(event.scheduledStartAt).toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                    <Link
+                      to={routePaths.customerProducerProfile.replace(':producerId', event.producerId)}
+                      className="text-link hover:underline"
+                    >
+                      {event.producerName}
+                    </Link>
+                    <Link
+                      to={routePaths.customerProductDetails.replace(':productId', event.productId)}
+                      className="text-link hover:underline"
+                    >
+                      {event.productName}
+                    </Link>
+                  </div>
+                  {meta.action && (
+                    <Link
+                      to={routePaths.customerLiveShopping.replace(':workshopId', event.id)}
+                      className="inline-flex w-full items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-surface transition hover:bg-primary-dark"
+                    >
+                      {meta.action}
+                    </Link>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+        {events.length === 0 && (
+          <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center text-sm text-body/60">
+            No {filter.label.toLowerCase()} live shopping events are available.
           </div>
-        ))}
-      </div>
+        )}
+      </AsyncState>
+
+      {(eventsQuery.data?.totalPages || 0) > 1 && (
+        <div className="mt-8">
+          <Pagination currentPage={page} totalPages={eventsQuery.data.totalPages} onPageChange={setPage} />
+        </div>
+      )}
     </div>
   );
 }

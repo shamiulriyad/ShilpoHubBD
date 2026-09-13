@@ -12,7 +12,8 @@ function EnrollmentMilestones({ id }) {
 
   const enrollment = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-2 text-xs text-body/60">Loading milestones…</p>;
-  if (!enrollment) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!enrollment) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   return (
     <div className="mt-3 space-y-2 border-t border-border pt-3">

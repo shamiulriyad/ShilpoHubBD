@@ -53,25 +53,25 @@ export default function Profile() {
         <p className="py-10 text-center text-sm text-body/60">Loading…</p>
       ) : (
         <form onSubmit={handleSubmit} className="grid gap-4 rounded-xl border border-border bg-surface p-6 sm:grid-cols-2">
-          <select value={form.businessType} onChange={set('businessType')} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+          <select aria-label="Business Type" value={form.businessType} onChange={set('businessType')} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
             {businessTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <select value={form.businessSize} onChange={set('businessSize')} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+          <select aria-label="Business Size" value={form.businessSize} onChange={set('businessSize')} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
             {businessSizes.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
-          <input required placeholder="Company name" value={form.companyName} onChange={set('companyName')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Registration number" value={form.registrationNumber} onChange={set('registrationNumber')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Industry" value={form.industry} onChange={set('industry')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <select value={form.districtId} onChange={set('districtId')} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+          <input aria-label="Company name" required placeholder="Company name" value={form.companyName} onChange={set('companyName')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Registration number" required placeholder="Registration number" value={form.registrationNumber} onChange={set('registrationNumber')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Industry" required placeholder="Industry" value={form.industry} onChange={set('industry')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <select aria-label="District Id" value={form.districtId} onChange={set('districtId')} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
             <option value="">Select district</option>
             {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
-          <input required placeholder="City" value={form.city} onChange={set('city')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Address line" value={form.addressLine} onChange={set('addressLine')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Contact person name" value={form.contactPersonName} onChange={set('contactPersonName')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Contact phone" value={form.contactPhone} onChange={set('contactPhone')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required type="email" placeholder="Contact email" value={form.contactEmail} onChange={set('contactEmail')} className="rounded-md border border-border bg-background px-3 py-2 text-sm sm:col-span-2" />
-          <textarea required rows={3} placeholder="Company description" value={form.companyDescription} onChange={set('companyDescription')} className="rounded-md border border-border bg-background px-3 py-2 text-sm sm:col-span-2" />
+          <input aria-label="City" required placeholder="City" value={form.city} onChange={set('city')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Address line" required placeholder="Address line" value={form.addressLine} onChange={set('addressLine')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Contact person name" required placeholder="Contact person name" value={form.contactPersonName} onChange={set('contactPersonName')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Contact phone" required placeholder="Contact phone" value={form.contactPhone} onChange={set('contactPhone')} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Contact email" required type="email" placeholder="Contact email" value={form.contactEmail} onChange={set('contactEmail')} className="rounded-md border border-border bg-background px-3 py-2 text-sm sm:col-span-2" />
+          <textarea aria-label="Company description" required rows={3} placeholder="Company description" value={form.companyDescription} onChange={set('companyDescription')} className="rounded-md border border-border bg-background px-3 py-2 text-sm sm:col-span-2" />
 
           <div className="sm:col-span-2">
             <p className="mb-2 text-sm font-medium text-body/70">Preferred product categories</p>

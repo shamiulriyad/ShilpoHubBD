@@ -18,7 +18,7 @@ export default function ProducerComparison() {
       <PageHeader title="Compare Producers" description="Compare producers side by side on price, quality, delivery and certifications." />
 
       <form onSubmit={handleSubmit} className="mb-8 flex gap-2">
-        <input
+        <input aria-label="Producer IDs"
           required
           placeholder="Producer IDs (comma separated)"
           value={producerIds}

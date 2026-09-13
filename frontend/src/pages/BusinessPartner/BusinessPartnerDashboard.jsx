@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader } from '../../components/ui';
+import { PageHeader, QueryStatusBanner } from '../../components/ui';
 import { DashboardCard } from '../../components/cards';
 import { useSpendingAnalytics, useProcurementAnalytics } from '../../hooks/useBusinessPartnerAnalytics';
 import { useMyContracts } from '../../hooks/useContracts';
@@ -15,6 +15,7 @@ export default function BusinessPartnerDashboard() {
   return (
     <div>
       <PageHeader title="Business Partner Dashboard" description="Manage supply relationships, procurement and analytics." />
+      <QueryStatusBanner queries={[spendingQuery, procurementQuery, contractsQuery, quotationsQuery]} />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <DashboardCard title="Total Spent" description="All time">

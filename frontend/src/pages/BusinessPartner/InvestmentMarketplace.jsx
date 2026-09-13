@@ -39,8 +39,8 @@ export default function InvestmentMarketplace() {
 
               {proposingId === opp.id ? (
                 <div className="mt-3 space-y-2">
-                  <input type="number" placeholder="Investment amount (৳)" onChange={(e) => setForm((p) => ({ ...p, investmentAmount: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-                  <textarea rows={2} placeholder="Message (optional)" onChange={(e) => setForm((p) => ({ ...p, proposalMessage: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+                  <input aria-label="Investment amount" type="number" placeholder="Investment amount (৳)" onChange={(e) => setForm((p) => ({ ...p, investmentAmount: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+                  <textarea aria-label="Message" rows={2} placeholder="Message (optional)" onChange={(e) => setForm((p) => ({ ...p, proposalMessage: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
                   <Button variant="primary" onClick={() => handleSubmit(opp.id)} disabled={submitProposal.isPending}>Submit Proposal</Button>
                 </div>
               ) : (

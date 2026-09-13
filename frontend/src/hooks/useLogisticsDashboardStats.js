@@ -15,6 +15,7 @@ export function useLogisticsDashboardStats() {
 
   return {
     profile,
+    queries: [profile, warehouses, activeShipments, pendingPickups, openReturns, activeRoutes],
     stats: {
       warehouseCount: warehouses.data?.totalCount,
       activeShipmentCount: activeShipments.data?.totalCount,

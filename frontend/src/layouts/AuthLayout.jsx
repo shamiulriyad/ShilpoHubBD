@@ -1,9 +1,15 @@
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { routePaths } from '../routes/routePaths';
+import { useAuth } from '../hooks/useAuth';
 
 export default function AuthLayout() {
   const location = useLocation();
+  const { isAuthenticated, homePath } = useAuth();
   const isRegister = location.pathname === routePaths.register;
+
+  if (isAuthenticated) {
+    return <Navigate to={homePath || routePaths.dashboard} replace />;
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -15,7 +21,7 @@ export default function AuthLayout() {
           ShilpoHub
         </Link>
         <div
-          className={`w-full rounded-2xl border border-border bg-surface p-8 shadow-sm transition-[max-width] ${
+          className={`w-full rounded-2xl border border-border bg-surface p-6 shadow-sm transition-[max-width] sm:p-8 ${
             isRegister ? 'max-w-3xl' : 'max-w-md'
           }`}
         >

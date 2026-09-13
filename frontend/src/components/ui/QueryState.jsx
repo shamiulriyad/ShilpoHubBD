@@ -1,3 +1,5 @@
+import { getApiErrorMessage } from '../../utils/apiError';
+
 /**
  * Renders the right UI for a react-query result: loading, error (with retry),
  * empty, or the children once data has arrived.
@@ -32,7 +34,7 @@ export default function QueryState({
     return (
       <div className="flex flex-col items-center gap-3 rounded-xl border border-border bg-surface px-4 py-16 text-center">
         <p className="text-sm text-body/70">{errorLabel}</p>
-        {error?.message && <p className="text-xs text-body/40">{error.message}</p>}
+        <p className="max-w-xl text-xs text-body/50">{getApiErrorMessage(error, errorLabel)}</p>
         <button
           type="button"
           onClick={() => refetch()}

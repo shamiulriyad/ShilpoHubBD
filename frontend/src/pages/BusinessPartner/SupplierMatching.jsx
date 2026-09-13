@@ -23,13 +23,13 @@ export default function SupplierMatching() {
       <PageHeader title="Supplier Matching" description="Get a ranked list of producers matched to your requirements." action={<Badge tone="primary">AI Powered</Badge>} />
 
       <form onSubmit={handleSubmit} className="mb-8 grid gap-3 rounded-xl border border-border bg-surface p-5 sm:grid-cols-2">
-        <select value={form.categoryId} onChange={(e) => setForm((p) => ({ ...p, categoryId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+        <select aria-label="Category Id" value={form.categoryId} onChange={(e) => setForm((p) => ({ ...p, categoryId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
           <option value="">Any category</option>
           {(categoriesQuery.data || []).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
-        <input placeholder="Product keyword" value={form.productKeyword} onChange={(e) => setForm((p) => ({ ...p, productKeyword: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-        <input type="number" placeholder="Quantity needed" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-        <input type="number" placeholder="Max budget per unit (৳)" value={form.maxBudgetPerUnit} onChange={(e) => setForm((p) => ({ ...p, maxBudgetPerUnit: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+        <input aria-label="Product keyword" placeholder="Product keyword" value={form.productKeyword} onChange={(e) => setForm((p) => ({ ...p, productKeyword: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+        <input aria-label="Quantity needed" type="number" placeholder="Quantity needed" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+        <input aria-label="Max budget per unit" type="number" placeholder="Max budget per unit (৳)" value={form.maxBudgetPerUnit} onChange={(e) => setForm((p) => ({ ...p, maxBudgetPerUnit: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
         <Button type="submit" variant="primary" className="sm:col-span-2" disabled={match.isPending}>
           {match.isPending ? 'Matching…' : 'Find Matches'}
         </Button>
