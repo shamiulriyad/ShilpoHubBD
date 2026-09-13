@@ -33,7 +33,7 @@ function BrowseTab() {
               <Badge>{p.activeEnrollmentCount} enrolled</Badge>
             </div>
             <div className="mt-2 flex gap-2">
-              <input placeholder="Why are you a good fit?" value={message[p.id] || ''} onChange={(e) => setMessage((m) => ({ ...m, [p.id]: e.target.value }))} className={`${inputClass} flex-1`} />
+              <input aria-label="Why are you a good fit?" placeholder="Why are you a good fit?" value={message[p.id] || ''} onChange={(e) => setMessage((m) => ({ ...m, [p.id]: e.target.value }))} className={`${inputClass} flex-1`} />
               <Button size="sm" variant="primary" disabled={apply.isPending} onClick={() => apply.mutate({ programId: p.id, message: message[p.id] || '' })}>
                 Apply
               </Button>

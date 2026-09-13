@@ -46,7 +46,7 @@ export default function AssignmentDetails() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-border bg-surface p-6">
-            <textarea
+            <textarea aria-label="Write your submission"
               required
               rows={6}
               placeholder="Write your submission…"
@@ -54,7 +54,7 @@ export default function AssignmentDetails() {
               onChange={(event) => setForm((prev) => ({ ...prev, submissionText: event.target.value }))}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
             />
-            <input
+            <input aria-label="Attachment URL"
               placeholder="Attachment URL (optional)"
               value={form.attachmentUrl}
               onChange={(event) => setForm((prev) => ({ ...prev, attachmentUrl: event.target.value }))}

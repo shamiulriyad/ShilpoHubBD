@@ -10,7 +10,7 @@ import ProfileDropdown from './ProfileDropdown';
 export default function Navbar() {
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, homePath } = useAuth();
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-surface/90 backdrop-blur-xl">
@@ -77,13 +77,13 @@ export default function Navbar() {
       )}
 
       {mobileOpen && (
-        <MobileMenu isAuthenticated={isAuthenticated} onNavigate={() => setMobileOpen(false)} />
+        <MobileMenu isAuthenticated={isAuthenticated} homePath={homePath} onNavigate={() => setMobileOpen(false)} />
       )}
     </header>
   );
 }
 
-function MobileMenu({ isAuthenticated, onNavigate }) {
+function MobileMenu({ isAuthenticated, homePath, onNavigate }) {
   return (
     <div className="border-t border-border bg-surface px-4 py-4 lg:hidden">
       <nav className="space-y-1">
@@ -124,7 +124,7 @@ function MobileMenu({ isAuthenticated, onNavigate }) {
 
       <div className="mt-4 flex gap-2 border-t border-border pt-4">
         {isAuthenticated ? (
-          <Link to={routePaths.dashboard} onClick={onNavigate} className="w-full">
+          <Link to={homePath || routePaths.dashboard} onClick={onNavigate} className="w-full">
             <Button variant="primary" size="lg" className="w-full">
               Go to Dashboard
             </Button>

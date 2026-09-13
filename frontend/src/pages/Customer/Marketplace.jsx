@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, SearchBar, SectionHeader, Badge, CategoryFilter, MarketplaceFilter, AsyncState } from '../../components/ui';
+import { priceRangeToQuery } from '../../components/ui/MarketplaceFilter';
 import { ProductCard, EntityCard, ProducerCard } from '../../components/cards';
 import { useCategories } from '../../hooks/useCategories';
 import { useProducts } from '../../hooks/useProducts';
@@ -13,13 +14,30 @@ import { toProductCardItem, toCategoryCardItem } from '../../utils/productAdapte
 
 export default function Marketplace() {
   const { isAuthenticated } = useAuth();
-  const [activeCategoryId, setActiveCategoryId] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeCategoryId, setActiveCategoryIdState] = useState(searchParams.get('categoryId') || null);
+
+  const setActiveCategoryId = (value) => {
+    const nextValue = value || null;
+    setActiveCategoryIdState(nextValue);
+    const nextParams = new URLSearchParams(searchParams);
+    if (nextValue) nextParams.set('categoryId', nextValue);
+    else nextParams.delete('categoryId');
+    setSearchParams(nextParams, { replace: true });
+  };
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [districtId, setDistrictId] = useState('');
+  const [priceRange, setPriceRange] = useState('');
 
   const categoriesQuery = useCategories();
   const recommendedQuery = useRecommendedForMe(4);
-  const productsQuery = useProducts({ categoryId: activeCategoryId || undefined, pageSize: 12 });
+  const productsQuery = useProducts({
+    categoryId: activeCategoryId || undefined,
+    districtId: districtId || undefined,
+    ...priceRangeToQuery(priceRange),
+    pageSize: 12,
+  });
   const liveEventsQuery = useLiveEvents({ pageSize: 5 });
   const searchResults = useSearch(searchQuery);
 
@@ -120,7 +138,7 @@ export default function Marketplace() {
                     key={item.id}
                     title={item.name}
                     subtitle={`${item.itemCount} items`}
-                    to={routePaths.customerMarketplace}
+                    to={`${routePaths.customerMarketplace}?categoryId=${item.id}`}
                   />
                 );
               })}
@@ -146,7 +164,21 @@ export default function Marketplace() {
 
           <SectionHeader eyebrow="Featured" title="Featured Products" />
           <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
-            <MarketplaceFilter className="hidden lg:block" />
+            <MarketplaceFilter
+              className="hidden lg:block"
+              values={{ categoryId: activeCategoryId, districtId, priceRange }}
+              onChange={(key, value, checked) => {
+                const nextValue = checked ? value : '';
+                if (key === 'categoryId') setActiveCategoryId(nextValue || null);
+                if (key === 'districtId') setDistrictId(nextValue);
+                if (key === 'priceRange') setPriceRange(nextValue);
+              }}
+              onClear={() => {
+                setActiveCategoryId(null);
+                setDistrictId('');
+                setPriceRange('');
+              }}
+            />
             <div>
               <CategoryFilter className="mb-6" options={categoryOptions} active={activeCategoryId} onChange={setActiveCategoryId} />
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">

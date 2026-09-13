@@ -37,9 +37,9 @@ export default function HeritageManagement() {
         <div>
           <SectionHeader eyebrow="Heritage Villages" title="Villages" />
           <form onSubmit={handleAddVillage} className="mb-4 flex flex-wrap gap-2 rounded-xl border border-border bg-surface p-4">
-            <input required placeholder="Village name" value={villageForm.name} onChange={(e) => setVillageForm((p) => ({ ...p, name: e.target.value }))} className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            <input required placeholder="Craft" value={villageForm.craft} onChange={(e) => setVillageForm((p) => ({ ...p, craft: e.target.value }))} className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            <select required value={villageForm.districtId} onChange={(e) => setVillageForm((p) => ({ ...p, districtId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+            <input aria-label="Village name" required placeholder="Village name" value={villageForm.name} onChange={(e) => setVillageForm((p) => ({ ...p, name: e.target.value }))} className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Craft" required placeholder="Craft" value={villageForm.craft} onChange={(e) => setVillageForm((p) => ({ ...p, craft: e.target.value }))} className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <select aria-label="District Id" required value={villageForm.districtId} onChange={(e) => setVillageForm((p) => ({ ...p, districtId: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
               <option value="">District</option>
               {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
             </select>
@@ -60,7 +60,7 @@ export default function HeritageManagement() {
         <div>
           <SectionHeader eyebrow="Verification" title="Producer Heritage Identity" description="Look up a producer's heritage identity submission by their user ID and verify or reject it." />
           <div className="mb-4 flex gap-2">
-            <input
+            <input aria-label="Producer ID"
               placeholder="Producer ID"
               value={producerId}
               onChange={(event) => setProducerId(event.target.value)}

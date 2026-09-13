@@ -68,7 +68,7 @@ export default function LiveClassDetails() {
             <p className="mb-3 text-sm font-semibold text-heading">Q&A</p>
             {isAuthenticated && liveClass.status === 'Live' && (isRegistered || isInstructor) && (
               <form onSubmit={handleAsk} className="mb-4 flex gap-2">
-                <input
+                <input aria-label="Ask a question"
                   required
                   placeholder="Ask a question…"
                   value={question}

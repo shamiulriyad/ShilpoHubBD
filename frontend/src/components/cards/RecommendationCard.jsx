@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+import OptionalCardLink from './OptionalCardLink';
 import Badge from '../ui/Badge';
 
 export default function RecommendationCard({ product, reason, matchScore, to }) {
   return (
-    <Link
-      to={to || '#'}
+    <OptionalCardLink
+      to={to}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface transition hover:shadow-md"
     >
       <div className="flex aspect-[4/3] items-center justify-center bg-background text-xs text-body/40">
@@ -22,6 +22,6 @@ export default function RecommendationCard({ product, reason, matchScore, to }) 
         {reason && <p className="text-xs italic text-body/50">{reason}</p>}
         <p className="mt-auto text-sm font-semibold text-primary">৳ {product.price?.toLocaleString()}</p>
       </div>
-    </Link>
+    </OptionalCardLink>
   );
 }

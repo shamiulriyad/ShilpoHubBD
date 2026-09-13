@@ -84,14 +84,14 @@ export default function HeritagePassport() {
 
       <SectionHeader eyebrow="Memories" title="Travel Journal" />
       <form onSubmit={handleAddEntry} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-        <input
+        <input aria-label="Entry title"
           required
           placeholder="Entry title"
           value={entry.title}
           onChange={(event) => setEntry((prev) => ({ ...prev, title: event.target.value }))}
           className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
         />
-        <textarea
+        <textarea aria-label="Write about your visit"
           required
           rows={3}
           placeholder="Write about your visit…"
@@ -99,7 +99,7 @@ export default function HeritagePassport() {
           onChange={(event) => setEntry((prev) => ({ ...prev, content: event.target.value }))}
           className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
         />
-        <input
+        <input aria-label="Photo URL"
           placeholder="Photo URL (optional)"
           value={entry.photoUrl}
           onChange={(event) => setEntry((prev) => ({ ...prev, photoUrl: event.target.value }))}

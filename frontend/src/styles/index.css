@@ -2,28 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-background: #F8F5EF;
-  --color-surface: #FFFEFB;
-  --color-title: #173B35;
-  --color-heading: #173B35;
-  --color-body: #373832;
-  --color-primary: #A84F2D;
-  --color-secondary: #D99B3D;
-  --color-link: #1E6056;
-  --color-border: #E7DED0;
-  --color-success: #32735D;
+:root,
+[data-theme='light'] {
+  --color-background: 248 245 239;
+  --color-surface: 255 254 251;
+  --color-border: 231 222 208;
+  --color-muted: 116 111 103;
+  --color-body: 55 56 50;
+  --color-title: 23 59 53;
+  --color-heading: 23 59 53;
+  --color-primary: 168 79 45;
+  --color-primary-dark: 132 58 32;
+  --color-primary-soft: 248 233 226;
+  --color-link: 30 96 86;
+  --color-success: 50 115 93;
+  --color-error: 179 67 43;
+}
+
+[data-theme='dark'] {
+  --color-background: 20 27 25;
+  --color-surface: 29 38 35;
+  --color-border: 65 78 73;
+  --color-muted: 177 177 166;
+  --color-body: 226 226 216;
+  --color-title: 241 238 229;
+  --color-heading: 241 238 229;
+  --color-primary: 222 131 93;
+  --color-primary-dark: 236 151 112;
+  --color-primary-soft: 62 46 40;
+  --color-link: 115 195 181;
+  --color-success: 110 190 159;
+  --color-error: 240 126 105;
 }
 
 html,
 body,
 #root {
-  height: 100%;
+  min-height: 100%;
+}
+
+html {
+  background: rgb(var(--color-background));
 }
 
 @layer base {
   body {
-    @apply bg-background text-body;
+    @apply m-0 bg-background text-body antialiased;
+    min-width: 320px;
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     text-rendering: optimizeLegibility;
   }
@@ -34,22 +59,52 @@ body,
   h4,
   h5,
   h6 {
-    @apply text-heading font-semibold;
+    @apply font-semibold text-heading;
   }
 
   a {
     @apply text-link;
   }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-primary));
+    outline-offset: 2px;
+  }
 }
 
 @layer base {
-  ::selection { background: #F3CCB8; color: #173B35; }
-  * { -webkit-tap-highlight-color: transparent; }
+  ::selection {
+    background: rgb(var(--color-primary-soft));
+    color: rgb(var(--color-title));
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 @layer components {
-  .premium-shell { background: radial-gradient(circle at 15% 0%, rgba(217, 155, 61, .13), transparent 25rem), #F8F5EF; }
-  .premium-card { @apply rounded-2xl border border-border bg-surface shadow-[0_12px_30px_rgba(45,44,36,0.06)]; }
-  .eyebrow { @apply inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-primary; }
-  .eyebrow::before { content: ''; @apply h-px w-6 bg-primary; }
+  .premium-shell {
+    background: radial-gradient(circle at 15% 0%, rgb(var(--color-secondary, 217 155 61) / 0.13), transparent 25rem), rgb(var(--color-background));
+  }
+
+  .premium-card {
+    @apply rounded-2xl border border-border bg-surface shadow-[0_12px_30px_rgba(45,44,36,0.06)];
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-primary;
+  }
+
+  .eyebrow::before {
+    content: '';
+    @apply h-px w-6 bg-primary;
+  }
 }

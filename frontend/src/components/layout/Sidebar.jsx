@@ -21,11 +21,12 @@ function writeCollapsed(next) {
   }
 }
 
-function NavItem({ item }) {
+function NavItem({ item, onNavigate }) {
   return (
     <NavLink
       to={item.path}
       end
+      onClick={onNavigate}
       className={({ isActive }) =>
         `group relative flex items-center gap-2.5 rounded-lg py-2 pl-3 pr-2 text-sm font-medium transition-colors ${
           isActive
@@ -59,17 +60,17 @@ function NavItem({ item }) {
   );
 }
 
-function FlatNav({ items }) {
+function FlatNav({ items, onNavigate }) {
   return (
     <nav className="space-y-1">
       {items.map((item) => (
-        <NavItem key={item.label} item={item} />
+        <NavItem key={item.label} item={item} onNavigate={onNavigate} />
       ))}
     </nav>
   );
 }
 
-function GroupedNav({ groups }) {
+function GroupedNav({ groups, onNavigate }) {
   const [collapsed, setCollapsed] = useState(readCollapsed);
 
   const toggle = (section) => {
@@ -99,7 +100,7 @@ function GroupedNav({ groups }) {
             {!isCollapsed && (
               <div className="space-y-1">
                 {group.items.map((item) => (
-                  <NavItem key={item.label} item={item} />
+                  <NavItem key={item.label} item={item} onNavigate={onNavigate} />
                 ))}
               </div>
             )}
@@ -110,7 +111,7 @@ function GroupedNav({ groups }) {
   );
 }
 
-export default function Sidebar({ items = [], title = 'Menu', className = '' }) {
+export default function Sidebar({ items = [], title = 'Menu', className = '', onNavigate }) {
   const grouped = items.length > 0 && Array.isArray(items[0]?.items);
   const { activeRole } = useAuth();
 
@@ -130,7 +131,7 @@ export default function Sidebar({ items = [], title = 'Menu', className = '' }) 
         </div>
       </div>
 
-      {grouped ? <GroupedNav groups={items} /> : <FlatNav items={items} />}
+      {grouped ? <GroupedNav groups={items} onNavigate={onNavigate} /> : <FlatNav items={items} onNavigate={onNavigate} />}
     </aside>
   );
 }

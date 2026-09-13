@@ -27,7 +27,7 @@ export default function Certifications() {
       />
 
       <form onSubmit={handleSubmit} className="mb-6 flex gap-2">
-        <input
+        <input aria-label="Enter certificate number"
           required
           placeholder="Enter certificate number"
           value={certificateNumber}

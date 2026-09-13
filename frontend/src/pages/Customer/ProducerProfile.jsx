@@ -9,6 +9,7 @@ import { useWorkshopGallery } from '../../hooks/useWorkshopGallery';
 import { useHeritageIdentity } from '../../hooks/useHeritageIdentity';
 import { useProducerFollowMutations, useFollowedProducers } from '../../hooks/useProducerFollows';
 import { toProductCardItem } from '../../utils/productAdapters';
+import SafeImage from '../../components/media/SafeImage';
 
 const byOrder = (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
 
@@ -179,7 +180,7 @@ export default function ProducerProfile() {
                     {item.mediaType === 'Video' ? (
                       <video src={item.mediaUrl} className="h-full w-full object-cover" controls />
                     ) : (
-                      <img src={item.mediaUrl} alt={item.caption || ''} className="h-full w-full object-cover" />
+                      <SafeImage src={item.mediaUrl} alt={item.caption || ''} className="h-full w-full object-cover" />
                     )}
                   </div>
                   {item.caption && <p className="p-2 text-xs text-body/60">{item.caption}</p>}

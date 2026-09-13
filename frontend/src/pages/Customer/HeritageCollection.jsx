@@ -55,7 +55,7 @@ export default function HeritageCollection() {
       />
 
       <form onSubmit={handleScan} className="mb-6 flex flex-wrap gap-2">
-        <input
+        <input aria-label="Enter product scan code"
           required
           placeholder="Enter product scan code"
           value={code}

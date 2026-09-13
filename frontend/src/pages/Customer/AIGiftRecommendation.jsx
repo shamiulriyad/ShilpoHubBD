@@ -63,7 +63,7 @@ export default function AIGiftRecommendation() {
             </div>
           </div>
 
-          <input
+          <input aria-label="Budget range"
             type="number"
             placeholder="Budget range (৳)"
             value={budget}

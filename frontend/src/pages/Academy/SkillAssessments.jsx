@@ -29,7 +29,7 @@ export default function SkillAssessments() {
       />
 
       <div className="mb-10 flex flex-wrap gap-3 rounded-xl border border-border bg-surface p-5">
-        <select
+        <select aria-label="Selected Skill Id"
           value={selectedSkillId}
           onChange={(event) => setSelectedSkillId(event.target.value)}
           className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"

@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+import OptionalCardLink from './OptionalCardLink';
 import Badge from '../ui/Badge';
 
 export default function AuctionCard({ auction, to }) {
   return (
-    <Link
-      to={to || '#'}
+    <OptionalCardLink
+      to={to}
       className="group flex flex-col rounded-xl border border-border bg-surface p-4 transition hover:shadow-md"
     >
       <div className="mb-3 flex aspect-square items-center justify-center rounded-lg bg-background text-xs text-body/40">
@@ -18,6 +18,6 @@ export default function AuctionCard({ auction, to }) {
         {auction.producer} · {auction.bidsCount} bids
       </p>
       <p className="mt-2 text-lg font-semibold text-primary">৳ {auction.currentBid.toLocaleString()}</p>
-    </Link>
+    </OptionalCardLink>
   );
 }

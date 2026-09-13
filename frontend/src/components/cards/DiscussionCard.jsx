@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+import OptionalCardLink from './OptionalCardLink';
 import Badge from '../ui/Badge';
 
 export default function DiscussionCard({ thread, to }) {
   return (
-    <Link
-      to={to || '#'}
+    <OptionalCardLink
+      to={to}
       className="group flex flex-col gap-2 rounded-xl border border-border bg-surface p-4 transition hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-2">
@@ -17,6 +17,6 @@ export default function DiscussionCard({ thread, to }) {
         {thread.views != null && <span>{thread.views} views</span>}
         {thread.lastActivity && <span>{thread.lastActivity}</span>}
       </div>
-    </Link>
+    </OptionalCardLink>
   );
 }

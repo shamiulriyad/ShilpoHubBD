@@ -19,13 +19,13 @@ export default function SupplierDiscovery() {
       <PageHeader title="Supplier Discovery" description="Search verified heritage producers by craft, price and rating." />
 
       <div className="mb-6 flex flex-wrap gap-3">
-        <input
+        <input aria-label="Search producers, workshops"
           placeholder="Search producers, workshops…"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
         />
-        <select value={categoryId} onChange={(event) => setCategoryId(event.target.value)} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+        <select aria-label="Category Id" value={categoryId} onChange={(event) => setCategoryId(event.target.value)} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
           <option value="">All categories</option>
           {(categoriesQuery.data || []).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>

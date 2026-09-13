@@ -1,5 +1,6 @@
 import { PageHeader, Button, Badge, AsyncState } from '../../components/ui';
 import { useMyTrainingCertificates } from '../../hooks/useTrainingCertificates';
+import { API_BASE_URL } from '../../config/runtime';
 
 export default function Certificates() {
   const { data, isLoading, isError, error } = useMyTrainingCertificates();
@@ -19,7 +20,7 @@ export default function Certificates() {
                 </p>
                 {cert.isRevoked && <Badge tone="neutral">Revoked</Badge>}
               </div>
-              <a href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/training-certificates/${cert.id}/download`} target="_blank" rel="noreferrer">
+              <a href={`${API_BASE_URL}/training-certificates/${cert.id}/download`} target="_blank" rel="noreferrer">
                 <Button variant="secondary">Download</Button>
               </a>
             </div>

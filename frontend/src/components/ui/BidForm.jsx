@@ -13,7 +13,7 @@ export default function BidForm({ currentBid, onSubmit, step = 200 }) {
       }}
       className="flex gap-2"
     >
-      <input
+      <input aria-label="Amount"
         value={amount}
         onChange={(event) => setAmount(event.target.value)}
         placeholder={`৳ ${(currentBid + step).toLocaleString()} or more`}

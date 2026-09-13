@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SafeImage from './SafeImage';
 
 export default function Product360Viewer({ productName = 'Product', images = [] }) {
   const frames = Array.isArray(images) ? images : [];
@@ -18,7 +19,7 @@ export default function Product360Viewer({ productName = 'Product', images = [] 
     <div className="space-y-3">
       <div className="flex aspect-square flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border border-border bg-background text-sm text-body/40">
         {hasFrames ? (
-          <img src={frames[frame]} alt={`${productName} 360° frame ${frame + 1}`} className="h-full w-full object-cover" />
+          <SafeImage src={frames[frame]} alt={`${productName} 360° frame ${frame + 1}`} className="h-full w-full object-cover" />
         ) : (
           <>
             <span>360° view of {productName}</span>

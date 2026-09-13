@@ -7,6 +7,7 @@ import { useOrders } from '../../hooks/useOrders';
 import { useWishlist } from '../../hooks/useWishlist';
 import { useFollowedProducers } from '../../hooks/useProducerFollows';
 import { useRecommendedForMe } from '../../hooks/useRecommendations';
+import { useLiveEvents } from '../../hooks/useLiveEvents';
 import { toProductCardItem } from '../../utils/productAdapters';
 
 const statusTone = {
@@ -17,22 +18,16 @@ const statusTone = {
 
 const asCount = (data) => (Array.isArray(data) ? data.length : data?.items?.length ?? 0);
 
-// TODO(backend): no general "upcoming workshops" endpoint (only per-producer
-// galleries) and no reward-points resource — placeholder content.
-const upcomingWorkshops = [
-  { id: 'workshop-1', title: 'Live Jamdani Loom Session', producer: 'Rahima Begum', craft: 'Jamdani Weaving', status: 'live' },
-  { id: 'workshop-2', title: 'Nakshi Kantha Stitch Circle', producer: 'Abdul Karim', craft: 'Nakshi Kantha', status: 'upcoming' },
-  { id: 'workshop-3', title: 'Terracotta Throwing Demo', producer: 'Shefali Rani', craft: 'Terracotta Art', status: 'upcoming' },
-];
-
 export default function CustomerDashboard() {
   const { user, isAuthenticated } = useAuth();
   const ordersQuery = useOrders({ pageSize: 5 }, isAuthenticated);
   const wishlistQuery = useWishlist(isAuthenticated);
   const followsQuery = useFollowedProducers();
   const recommendedQuery = useRecommendedForMe(4);
+  const liveEventsQuery = useLiveEvents({ pageSize: 3 });
 
   const orders = ordersQuery.data?.items || [];
+  const liveEvents = liveEventsQuery.data?.items || [];
 
   return (
     <div>
@@ -46,19 +41,18 @@ export default function CustomerDashboard() {
         }
       />
 
-      <div className="mb-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="mb-10 grid gap-4 sm:grid-cols-3">
         <StatCard label="Orders Placed" value={ordersQuery.data?.totalCount ?? 0} />
         <StatCard label="Wishlist Items" value={asCount(wishlistQuery.data)} />
         <StatCard label="Following Producers" value={asCount(followsQuery.data)} />
-        <StatCard label="Reward Points" value="—" />
       </div>
 
       <SectionHeader
         eyebrow="Orders"
         title="Recent Orders"
         action={
-          <Link to={routePaths.customerCart} className="text-sm font-medium text-link hover:underline">
-            View cart →
+          <Link to={routePaths.customerOrders} className="text-sm font-medium text-link hover:underline">
+            View orders →
           </Link>
         }
       />
@@ -113,19 +107,24 @@ export default function CustomerDashboard() {
           </Link>
         }
       />
-      <div className="grid gap-4 sm:grid-cols-3">
-        {upcomingWorkshops.map((workshop) => (
-          <div key={workshop.id} className="rounded-xl border border-border bg-surface p-4">
-            <Badge tone={workshop.status === 'live' ? 'success' : 'secondary'}>
-              {workshop.status === 'live' ? 'Live Now' : 'Upcoming'}
-            </Badge>
-            <p className="mt-3 text-sm font-semibold text-heading">{workshop.title}</p>
-            <p className="text-xs text-body/60">
-              {workshop.producer} · {workshop.craft}
-            </p>
-          </div>
-        ))}
-      </div>
+      <AsyncState isLoading={liveEventsQuery.isLoading} isError={liveEventsQuery.isError} error={liveEventsQuery.error}>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {liveEvents.map((event) => (
+            <Link
+              key={event.id}
+              to={routePaths.customerLiveShopping.replace(':workshopId', event.id)}
+              className="rounded-xl border border-border bg-surface p-4 transition hover:border-primary/30 hover:shadow-sm"
+            >
+              <Badge tone={event.status === 'Live' ? 'success' : event.status === 'Scheduled' ? 'secondary' : 'neutral'}>
+                {event.status === 'Live' ? 'Live Now' : event.status}
+              </Badge>
+              <p className="mt-3 text-sm font-semibold text-heading">{event.title}</p>
+              <p className="mt-1 text-xs text-body/60">{event.producerName} · {event.productName}</p>
+            </Link>
+          ))}
+          {liveEvents.length === 0 && <p className="text-sm text-body/60">No live shopping events are available yet.</p>}
+        </div>
+      </AsyncState>
     </div>
   );
 }
