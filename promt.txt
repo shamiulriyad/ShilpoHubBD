@@ -1,0 +1,38 @@
+I have an upcoming viva for my ASP.NET Core .NET project. I want to learn everything about my project deeply so that I cannot get stuck in the viva.
+
+I will provide my complete project source code. Analyze my actual code and prepare a complete **.NET Project Viva Preparation PDF**.
+
+Cover everything:
+
+1. **Complete Project Understanding** — Architecture, folder structure, frontend → backend → database flow, all functionalities, user roles, and complete project workflow.
+2. **Code Explanation** — Every Controller, function, Service, DTO, Model, Entity, Interface, Middleware, and important line of code. Explain what it does, why it is used, how it works, and what happens internally.
+3. **Controller Deep Dive** — Every Controller function, GET/POST/PUT/DELETE, routing, ApiController, IActionResult, ActionResult, Ok, Created, BadRequest, NotFound, FromBody, FromRoute, FromQuery, and complete request-response flow.
+4. **C# Fundamentals** — OOP, Class, Object, Constructor, Interface, Abstract Class, Inheritance, Encapsulation, Polymorphism, Static, Access Modifiers, Generics, Exception Handling, Collections, LINQ, Lambda, IEnumerable, IQueryable.
+5. **ASP.NET Core** — .NET, Web API, MVC, Dependency Injection, Service Lifetimes, Middleware, Program.cs, appsettings.json, Use/Map/Run, CORS, Swagger, Logging, DTO, Entity, Repository, Service Layer, Clean Architecture.
+6. **Async/Await Deep Dive** — async, await, Task, Task, synchronous vs asynchronous, blocking vs non-blocking, multithreading, deadlock, ConfigureAwait, ToListAsync, FirstOrDefaultAsync, SaveChangesAsync, missing await, async void.
+7. **Entity Framework Core & Database** — DbContext, DbSet, CRUD, LINQ, Include, ThenInclude, Primary Key, Foreign Key, Relationships, Navigation Properties, Tracking, AsNoTracking, Migrations, Code First, Database First, SQL vs LINQ, N+1 Problem, Transactions, Concurrency, Tables, Joins, Normalization, Indexes, Constraints.
+8. **Authentication & Authorization** — JWT, Login/Register, Password Hashing, Claims, Roles, Authorize, AllowAnonymous, Authentication vs Authorization, Token Flow.
+9. **Functionality-Based Viva** — For every feature explain the complete flow and create questions about which Controller, DTO, Service, database operation, response, error handling, and why each approach was used.
+10. **Complete Viva Question Bank** — Beginner to advanced, code-specific, tricky, and scenario-based questions. For every question give:
+
+- Short viva-ready answer
+- Detailed explanation
+- My project example
+- Possible follow-up question and answer
+
+11. **Mock Viva** — Ask one question at a time, wait for my answer, evaluate it, correct mistakes, and ask follow-up questions like a real examiner.
+12. **Preparation Plan** — Tell me what to learn first, what to understand practically, and what to revise before the viva.
+
+**Important:**
+
+- Use my actual project code. Never assume missing features.
+- Explain in simple Bangla/Banglish with English technical terms.
+- Do not skip any important function or Controller.
+- Make me understand every important line and complete workflow.
+- Be strict like a real viva examiner.
+
+### Final Task
+
+Create a professional, well-organized **PDF study resource** containing all explanations, code examples, viva questions and answers, tricky questions, and revision checklist.
+
+Start by analyzing my project structure and then teach me step by step.

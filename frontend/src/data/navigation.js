@@ -110,6 +110,7 @@ export const sidebarNav = [
       { label: 'Job Board', path: routePaths.dashboardJobs, icon: '💼' },
     ],
   },
+  
   {
     section: 'Connect',
     items: [
