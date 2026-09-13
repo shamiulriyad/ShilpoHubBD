@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { Button, SearchBar, SectionHeader, ChartPlaceholder, AsyncState } from '../../components/ui';
+import { Button, SearchBar, SectionHeader, AsyncState } from '../../components/ui';
 import { useAuth } from '../../hooks/useAuth';
 import { ProductCard, VillageCard, FestivalCard, CourseCard, StatCard, EntityCard } from '../../components/cards';
 import { useDistricts } from '../../hooks/useDistricts';
 import { useVillages } from '../../hooks/useVillages';
-import { useFeaturedProducts } from '../../hooks/useProducts';
+import { useFeaturedProducts, useProducts } from '../../hooks/useProducts';
 import { useHeritageFestivals } from '../../hooks/useHeritageFestivals';
 import { useCourses } from '../../hooks/useCourses';
 import { useResearchPublications } from '../../hooks/useResearchPublications';
@@ -15,22 +15,6 @@ import { toVillageCardItem } from '../../utils/villageAdapters';
 import BangladeshMap from '../../components/media/BangladeshMap';
 
 const listOf = (data) => data?.items || data || [];
-
-// TODO(backend): no platform-stats or heritage-timeline endpoint — editorial content.
-const heritageStats = [
-  { label: 'Registered Producers', value: '12,400+' },
-  { label: 'Heritage Villages', value: '640+' },
-  { label: 'Heritage Products', value: '8,900+' },
-  { label: 'Districts Covered', value: '64' },
-];
-
-const timeline = [
-  { year: '1971', label: 'Independence & the revival of national craft identity' },
-  { year: '1985', label: 'First national craft cooperatives established' },
-  { year: '2013', label: 'Jamdani recognized by UNESCO' },
-  { year: '2020', label: 'Digital heritage documentation begins' },
-  { year: '2026', label: 'ShilpoHub national ecosystem launches' },
-];
 
 const exploreHighlights = [
   { title: 'Districts', subtitle: 'Heritage documented by district', to: routePaths.exploreDistricts },
@@ -50,11 +34,14 @@ const courseToCardItem = (c) => ({
 });
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [searchInput, setSearchInput] = useState('');
   const districtsQuery = useDistricts();
   const villagesQuery = useVillages();
   const { isAuthenticated } = useAuth();
   const productsQuery = useFeaturedProducts(6);
+  const productCountQuery = useProducts({ pageSize: 1 });
   const festivalsQuery = useHeritageFestivals({ pageSize: 6 });
   const coursesQuery = useCourses({ pageSize: 3 });
   // The publications repository requires auth — skip the call for anonymous visitors.
@@ -66,6 +53,12 @@ export default function HomePage() {
   const festivals = listOf(festivalsQuery.data);
   const courses = listOf(coursesQuery.data);
   const publications = listOf(publicationsQuery.data);
+  const heritageStats = [
+    { label: 'Districts in Directory', value: districtsQuery.isLoading ? '…' : districts.length },
+    { label: 'Heritage Villages', value: villagesQuery.isLoading ? '…' : villages.length },
+    { label: 'Marketplace Products', value: productCountQuery.isLoading ? '…' : productCountQuery.data?.totalCount ?? 0 },
+    { label: 'Featured Products', value: productsQuery.isLoading ? '…' : products.length },
+  ];
 
   const producers = [
     ...new Map(
@@ -91,7 +84,16 @@ export default function HomePage() {
             Discover authentic Bangladeshi craft, meet the people behind it, and help safeguard the traditions that shape us.
           </p>
           <div className="mx-auto mt-8 max-w-xl">
-            <SearchBar size="lg" placeholder="Search districts, crafts, products, festivals…" />
+            <SearchBar
+              size="lg"
+              placeholder="Search heritage products…"
+              value={searchInput}
+              onChange={(event) => setSearchInput(event.target.value)}
+              onSubmit={(value) => {
+                const query = (value || '').trim();
+                navigate(query ? `${routePaths.marketplaceProducts}?search=${encodeURIComponent(query)}` : routePaths.marketplaceProducts);
+              }}
+            />
           </div>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <Link to={routePaths.explore}>
@@ -102,9 +104,9 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="mx-auto mt-12 grid max-w-2xl grid-cols-3 divide-x divide-surface/15 rounded-2xl border border-surface/15 bg-surface/[.06] px-3 py-4 text-left backdrop-blur-sm">
-            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">64</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Districts</p></div>
-            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">640+</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Villages</p></div>
-            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">12.4K</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Producers</p></div>
+            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">{districtsQuery.isLoading ? '…' : districts.length}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Districts</p></div>
+            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">{villagesQuery.isLoading ? '…' : villages.length}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Villages</p></div>
+            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">{productCountQuery.isLoading ? '…' : productCountQuery.data?.totalCount ?? 0}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Products</p></div>
           </div>
         </div>
       </section>
@@ -241,21 +243,6 @@ export default function HomePage() {
         </AsyncState>
       </section>
 
-      {/* 8. Heritage Timeline */}
-      <section className="border-y border-border/70 bg-surface py-16">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <SectionHeader eyebrow="History" title="Heritage Timeline" description="Milestones in the national heritage movement." />
-          <div className="grid gap-4 sm:grid-cols-5">
-            {timeline.map((item) => (
-              <div key={item.year} className="relative rounded-2xl border border-border bg-background p-5 transition hover:-translate-y-1 hover:border-primary/30">
-                <p className="text-lg font-bold text-primary">{item.year}</p>
-                <p className="mt-1 text-xs text-body/70">{item.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 9. Festivals & Events */}
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <SectionHeader
@@ -312,27 +299,34 @@ export default function HomePage() {
         <SectionHeader
           eyebrow="Innovation Hub"
           title="Innovation Hub"
-          description="Research, publications and open heritage analytics."
+          description="Research tools, publications and heritage data for the ShilpoHub ecosystem."
           action={
             <Link to={routePaths.research} className="text-sm font-medium text-link hover:underline">
               Visit Innovation Hub →
             </Link>
           }
         />
-        <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
-          <ChartPlaceholder title="Heritage Analytics Preview" type="line" />
-          <div className="space-y-3">
-            {publications.map((pub) => (
-              <div key={pub.id} className="rounded-xl border border-border bg-surface p-4">
-                <p className="text-sm font-semibold text-heading">{pub.title}</p>
-                <p className="mt-1 text-xs text-body/60">
-                  {pub.authors}
-                  {pub.publishedOn ? ` · ${new Date(pub.publishedOn).getFullYear()}` : ''}
-                </p>
-              </div>
-            ))}
+        {isAuthenticated ? (
+          <AsyncState isLoading={publicationsQuery.isLoading} isError={publicationsQuery.isError} error={publicationsQuery.error}>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {publications.map((pub) => (
+                <div key={pub.id} className="rounded-xl border border-border bg-surface p-4">
+                  <p className="text-sm font-semibold text-heading">{pub.title}</p>
+                  <p className="mt-1 text-xs text-body/60">
+                    {pub.authors}
+                    {pub.publishedOn ? ` · ${new Date(pub.publishedOn).getFullYear()}` : ''}
+                  </p>
+                </div>
+              ))}
+              {publications.length === 0 && <p className="text-sm text-body/60">No publications are available yet.</p>}
+            </div>
+          </AsyncState>
+        ) : (
+          <div className="rounded-xl border border-border bg-surface p-5 text-sm text-body/70">
+            The research repository is available to signed-in members.{' '}
+            <Link to={routePaths.login} className="font-medium text-link hover:underline">Sign in to browse publications →</Link>
           </div>
-        </div>
+        )}
       </section>
 
       {/* 12. Call To Action */}
