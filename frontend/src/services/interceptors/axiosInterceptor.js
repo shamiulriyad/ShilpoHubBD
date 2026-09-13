@@ -1,23 +1,32 @@
 import axios from 'axios';
+import { API_BASE_URL, API_TIMEOUT_MS } from '../../config/runtime';
+import { queryClient } from '../../lib/queryClient';
 import { useAuthStore } from '../../stores/useAuthStore';
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
-
-// Plain instance (no interceptors) used only for the refresh call itself,
-// so a failed refresh can't recursively trigger this same response interceptor.
-const refreshClient = axios.create({ baseURL });
+const refreshClient = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: API_TIMEOUT_MS,
+  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+});
 
 let isRefreshing = false;
 let refreshQueue = [];
 
-function flushQueue(newAccessToken) {
-  refreshQueue.forEach((resolveWithToken) => resolveWithToken(newAccessToken));
+function flushQueue(error, newAccessToken = null) {
+  refreshQueue.forEach(({ resolve, reject }) => {
+    if (error) reject(error);
+    else resolve(newAccessToken);
+  });
   refreshQueue = [];
 }
 
 function redirectToLogin() {
   useAuthStore.getState().clearSession();
-  window.location.assign('/login');
+  queryClient.clear();
+
+  if (window.location.pathname !== '/login') {
+    window.location.replace('/login?reason=session-expired');
+  }
 }
 
 export function applyAxiosInterceptors(apiClient) {
@@ -25,6 +34,7 @@ export function applyAxiosInterceptors(apiClient) {
     const token = useAuthStore.getState().accessToken;
 
     if (token) {
+      config.headers = config.headers ?? {};
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -39,30 +49,27 @@ export function applyAxiosInterceptors(apiClient) {
         config?.url?.includes(path),
       );
 
-      if (response?.status !== 401 || isAuthCall || config._retry) {
+      if (response?.status !== 401 || isAuthCall || !config || config._retry) {
         return Promise.reject(error);
       }
 
       const { accessToken, refreshToken } = useAuthStore.getState();
       if (!refreshToken) {
-        // A 401 with no refresh token. If there was an active session, it's now
-        // unrecoverable, so send the user to log in. If there was never a session
-        // (anonymous visitor hitting an auth-only endpoint, e.g. optional data on a
-        // public page) just surface the error and let the caller handle it — don't
-        // yank the visitor off the page.
-        if (accessToken) {
-          redirectToLogin();
-        }
+        if (accessToken) redirectToLogin();
         return Promise.reject(error);
       }
 
       config._retry = true;
 
       if (isRefreshing) {
-        return new Promise((resolve) => {
-          refreshQueue.push((newAccessToken) => {
-            config.headers.Authorization = `Bearer ${newAccessToken}`;
-            resolve(apiClient(config));
+        return new Promise((resolve, reject) => {
+          refreshQueue.push({
+            resolve: (newAccessToken) => {
+              config.headers = config.headers ?? {};
+              config.headers.Authorization = `Bearer ${newAccessToken}`;
+              resolve(apiClient(config));
+            },
+            reject,
           });
         });
       }
@@ -71,11 +78,12 @@ export function applyAxiosInterceptors(apiClient) {
       try {
         const { data } = await refreshClient.post('/auth/refresh', { refreshToken });
         useAuthStore.getState().setSession(data);
-        flushQueue(data.accessToken);
+        flushQueue(null, data.accessToken);
+        config.headers = config.headers ?? {};
         config.headers.Authorization = `Bearer ${data.accessToken}`;
         return apiClient(config);
       } catch (refreshError) {
-        refreshQueue = [];
+        flushQueue(refreshError);
         redirectToLogin();
         return Promise.reject(refreshError);
       } finally {
