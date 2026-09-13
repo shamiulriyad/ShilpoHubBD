@@ -70,8 +70,6 @@ export const routePaths = {
   innovationPrototypes: '/research/prototypes',
 
   // Content
-  news: '/news',
-  newsDetails: '/news/:newsId',
   about: '/about',
 
   // Auth
@@ -88,9 +86,7 @@ export const routePaths = {
   dashboardAcademy: '/dashboard/academy',
   dashboardJobs: '/dashboard/jobs',
   dashboardCommunity: '/dashboard/community',
-  dashboardAnalytics: '/dashboard/analytics',
   dashboardMessages: '/dashboard/messages',
-  dashboardNotifications: '/dashboard/notifications',
   dashboardSettings: '/dashboard/settings',
   dashboardProfile: '/dashboard/profile',
 
@@ -120,8 +116,6 @@ export const routePaths = {
   customerOrderDetails: '/customer/orders/:orderId',
   customerReturns: '/customer/returns',
   customerRefunds: '/customer/refunds',
-  customerNotifications: '/customer/notifications',
-  customerAddresses: '/customer/addresses',
   customerHeritageCollection: '/customer/heritage-collection',
   customerPurchaseAnalytics: '/customer/purchase-analytics',
   customerImpactDashboard: '/customer/impact',
@@ -195,8 +189,6 @@ export const routePaths = {
   adminUsers: '/admin/users',
   adminHeritage: '/admin/heritage',
   adminMarketplace: '/admin/marketplace',
-  adminCms: '/admin/cms',
-  adminSecurity: '/admin/security',
 
   unauthorized: '/unauthorized',
   notFound: '*',

@@ -64,7 +64,8 @@ function ProgramDetail({ id }) {
 
   const program = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!program) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!program) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   const handleAddMilestone = (event) => {
     event.preventDefault();
@@ -99,8 +100,8 @@ function ProgramDetail({ id }) {
           {program.milestones.length === 0 && <p>No milestones yet.</p>}
         </div>
         <form onSubmit={handleAddMilestone} className="flex flex-wrap gap-2">
-          <input placeholder="Milestone title" value={milestone.title} onChange={(e) => setMilestone((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-          <input placeholder="Description" value={milestone.description} onChange={(e) => setMilestone((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} flex-1`} />
+          <input aria-label="Milestone title" placeholder="Milestone title" value={milestone.title} onChange={(e) => setMilestone((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+          <input aria-label="Description" placeholder="Description" value={milestone.description} onChange={(e) => setMilestone((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} flex-1`} />
           <Button type="submit" variant="secondary" size="sm" disabled={addMilestone.isPending}>Add</Button>
         </form>
       </div>
@@ -148,23 +149,23 @@ export default function ApprenticeshipPrograms() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <select value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
+          <select aria-label="Type" value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
             {types.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <select value={form.heritageSkillId} onChange={(e) => setForm((p) => ({ ...p, heritageSkillId: e.target.value }))} className={inputClass}>
+          <select aria-label="Heritage Skill Id" value={form.heritageSkillId} onChange={(e) => setForm((p) => ({ ...p, heritageSkillId: e.target.value }))} className={inputClass}>
             <option value="">Skill (optional)</option>
             {(skillsQuery.data || []).map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <input placeholder="Location" value={form.location} onChange={(e) => setForm((p) => ({ ...p, location: e.target.value }))} className={inputClass} />
-          <input type="number" min="1" placeholder="Duration (weeks)" value={form.durationWeeks} onChange={(e) => setForm((p) => ({ ...p, durationWeeks: e.target.value }))} className={inputClass} />
-          <input type="number" min="1" placeholder="Capacity" value={form.capacity} onChange={(e) => setForm((p) => ({ ...p, capacity: e.target.value }))} className={inputClass} />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Description" required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Location" placeholder="Location" value={form.location} onChange={(e) => setForm((p) => ({ ...p, location: e.target.value }))} className={inputClass} />
+          <input aria-label="Duration" type="number" min="1" placeholder="Duration (weeks)" value={form.durationWeeks} onChange={(e) => setForm((p) => ({ ...p, durationWeeks: e.target.value }))} className={inputClass} />
+          <input aria-label="Capacity" type="number" min="1" placeholder="Capacity" value={form.capacity} onChange={(e) => setForm((p) => ({ ...p, capacity: e.target.value }))} className={inputClass} />
           <div className="grid grid-cols-2 gap-3">
-            <input type="date" value={form.startDate} onChange={(e) => setForm((p) => ({ ...p, startDate: e.target.value }))} className={inputClass} />
-            <input type="date" value={form.endDate} onChange={(e) => setForm((p) => ({ ...p, endDate: e.target.value }))} className={inputClass} />
+            <input aria-label="Start Date" type="date" value={form.startDate} onChange={(e) => setForm((p) => ({ ...p, startDate: e.target.value }))} className={inputClass} />
+            <input aria-label="End Date" type="date" value={form.endDate} onChange={(e) => setForm((p) => ({ ...p, endDate: e.target.value }))} className={inputClass} />
           </div>
-          <textarea rows={2} placeholder="Eligibility requirements" value={form.eligibilityRequirements} onChange={(e) => setForm((p) => ({ ...p, eligibilityRequirements: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Eligibility requirements" rows={2} placeholder="Eligibility requirements" value={form.eligibilityRequirements} onChange={(e) => setForm((p) => ({ ...p, eligibilityRequirements: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={create.isPending}>
             {create.isPending ? 'Creating…' : 'Create Program'}
           </Button>

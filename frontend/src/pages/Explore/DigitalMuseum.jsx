@@ -1,6 +1,7 @@
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, QueryState } from '../../components/ui';
 import { useFeaturedProducts } from '../../hooks/queries/useCatalog';
+import SafeImage from '../../components/media/SafeImage';
 
 export default function DigitalMuseum() {
   const query = useFeaturedProducts(16);
@@ -26,7 +27,7 @@ export default function DigitalMuseum() {
                 className="group overflow-hidden rounded-xl border border-border bg-surface transition hover:shadow-md"
               >
                 {item.primaryImageUrl ? (
-                  <img
+                  <SafeImage
                     src={item.primaryImageUrl}
                     alt={item.name}
                     className="aspect-square w-full object-cover"

@@ -64,9 +64,9 @@ export default function InvestmentOpportunities() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <textarea required rows={3} placeholder="Project description" value={form.projectDescription} onChange={(e) => setForm((p) => ({ ...p, projectDescription: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required type="number" placeholder="Funding requirement (৳)" value={form.fundingRequirement} onChange={(e) => setForm((p) => ({ ...p, fundingRequirement: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <textarea aria-label="Project description" required rows={3} placeholder="Project description" value={form.projectDescription} onChange={(e) => setForm((p) => ({ ...p, projectDescription: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Funding requirement" required type="number" placeholder="Funding requirement (৳)" value={form.fundingRequirement} onChange={(e) => setForm((p) => ({ ...p, fundingRequirement: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button type="submit" variant="primary" disabled={create.isPending}>Create</Button>
         </form>
       )}

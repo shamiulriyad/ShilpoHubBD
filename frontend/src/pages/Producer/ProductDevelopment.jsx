@@ -48,7 +48,7 @@ export default function ProductDevelopment() {
                     ))}
                   </div>
                   <div className="flex gap-2">
-                    <input
+                    <input aria-label="Add a comment"
                       placeholder="Add a comment…"
                       value={comment}
                       onChange={(event) => setComment(event.target.value)}
@@ -61,7 +61,7 @@ export default function ProductDevelopment() {
 
                   {project.status === 'Active' && (
                     <div className="flex gap-2">
-                      <input
+                      <input aria-label="Describe this prototype"
                         placeholder="Describe this prototype…"
                         value={prototypeDesc}
                         onChange={(event) => setPrototypeDesc(event.target.value)}

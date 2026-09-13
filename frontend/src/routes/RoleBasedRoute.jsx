@@ -1,17 +1,14 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { routePaths } from './routePaths';
 import { useAuth } from '../hooks/useAuth';
+import FullPageLoader from '../components/ui/FullPageLoader';
 
-/**
- * Gates a branch of the route tree to specific backend roles.
- * `allowedRoles` are exact backend role names (see utils/roles ROLES).
- */
 export function RoleBasedRoute({ allowedRoles = [] }) {
   const { isAuthenticated, isHydrated, hasAnyRole } = useAuth();
   const location = useLocation();
 
   if (!isHydrated) {
-    return null;
+    return <FullPageLoader label="Checking your access…" />;
   }
 
   if (!isAuthenticated) {
@@ -19,9 +16,7 @@ export function RoleBasedRoute({ allowedRoles = [] }) {
   }
 
   if (!hasAnyRole(allowedRoles)) {
-    return (
-      <Navigate to={routePaths.unauthorized} replace state={{ from: location.pathname }} />
-    );
+    return <Navigate to={routePaths.unauthorized} replace state={{ from: location.pathname }} />;
   }
 
   return <Outlet />;

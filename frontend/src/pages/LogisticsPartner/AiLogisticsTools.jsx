@@ -26,7 +26,7 @@ function PredictionsTab() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-2">
-        <select value={shipmentId} onChange={(e) => setShipmentId(e.target.value)} className={inputClass}>
+        <select aria-label="Shipment Id" value={shipmentId} onChange={(e) => setShipmentId(e.target.value)} className={inputClass}>
           <option value="">Select shipment…</option>
           {(shipmentsQuery.data?.items || []).map((s) => <option key={s.id} value={s.id}>{s.trackingNumber}</option>)}
         </select>
@@ -64,11 +64,11 @@ function RouteOptimizationTab() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-2">
-        <select value={routeId} onChange={(e) => setRouteId(e.target.value)} className={inputClass}>
+        <select aria-label="Route Id" value={routeId} onChange={(e) => setRouteId(e.target.value)} className={inputClass}>
           <option value="">Select route…</option>
           {(routesQuery.data?.items || []).map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
         </select>
-        <select value={objective} onChange={(e) => setObjective(e.target.value)} className={inputClass}>
+        <select aria-label="Objective" value={objective} onChange={(e) => setObjective(e.target.value)} className={inputClass}>
           {['proximity', 'balanced', 'capacity', 'coldchain', 'cost'].map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
         <Button variant="primary" disabled={!routeId || optimizeRoute.isPending} onClick={() => optimizeRoute.mutate({ deliveryRouteId: routeId, objective })}>
@@ -108,11 +108,11 @@ function DemandForecastTab() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-2">
-        <select value={scope} onChange={(e) => setScope(e.target.value)} className={inputClass}>
+        <select aria-label="Scope" value={scope} onChange={(e) => setScope(e.target.value)} className={inputClass}>
           {['Network', 'District', 'Warehouse'].map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
-        <input placeholder="Metric (e.g. shipments)" value={metric} onChange={(e) => setMetric(e.target.value)} className={inputClass} />
-        <input type="number" min="1" value={horizonDays} onChange={(e) => setHorizonDays(e.target.value)} className={`${inputClass} w-24`} />
+        <input aria-label="Metric" placeholder="Metric (e.g. shipments)" value={metric} onChange={(e) => setMetric(e.target.value)} className={inputClass} />
+        <input aria-label="Horizon Days" type="number" min="1" value={horizonDays} onChange={(e) => setHorizonDays(e.target.value)} className={`${inputClass} w-24`} />
         <Button variant="primary" disabled={forecastDemand.isPending} onClick={() => forecastDemand.mutate({ scope, metric, horizonDays: Number(horizonDays) })}>
           {forecastDemand.isPending ? 'Forecasting…' : 'Run Forecast'}
         </Button>
@@ -142,12 +142,12 @@ function WarehouseAllocationTab() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-2">
-        <select value={form.objective} onChange={(e) => setForm((p) => ({ ...p, objective: e.target.value }))} className={inputClass}>
+        <select aria-label="Objective" value={form.objective} onChange={(e) => setForm((p) => ({ ...p, objective: e.target.value }))} className={inputClass}>
           {['balanced', 'proximity', 'capacity', 'coldchain', 'cost'].map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
-        <input placeholder="SKU (optional)" value={form.sku} onChange={(e) => setForm((p) => ({ ...p, sku: e.target.value }))} className={inputClass} />
-        <input type="number" min="0" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className={`${inputClass} w-24`} />
-        <select value={form.destinationDistrictId} onChange={(e) => setForm((p) => ({ ...p, destinationDistrictId: e.target.value }))} className={inputClass}>
+        <input aria-label="SKU" placeholder="SKU (optional)" value={form.sku} onChange={(e) => setForm((p) => ({ ...p, sku: e.target.value }))} className={inputClass} />
+        <input aria-label="Quantity" type="number" min="0" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className={`${inputClass} w-24`} />
+        <select aria-label="Destination District Id" value={form.destinationDistrictId} onChange={(e) => setForm((p) => ({ ...p, destinationDistrictId: e.target.value }))} className={inputClass}>
           <option value="">Destination district</option>
           {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
         </select>

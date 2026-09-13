@@ -56,8 +56,8 @@ function PapersTab({ projectId }) {
   return (
     <div>
       <form onSubmit={handleAdd} className="mb-3 flex flex-wrap gap-2">
-        <input placeholder="Paper title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-        <input placeholder="Abstract" value={form.abstract} onChange={(e) => setForm((p) => ({ ...p, abstract: e.target.value }))} className={`${inputClass} flex-1`} />
+        <input aria-label="Paper title" placeholder="Paper title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+        <input aria-label="Abstract" placeholder="Abstract" value={form.abstract} onChange={(e) => setForm((p) => ({ ...p, abstract: e.target.value }))} className={`${inputClass} flex-1`} />
         <Button type="submit" variant="secondary" size="sm" disabled={createPaper.isPending}>Add</Button>
       </form>
       <div className="space-y-2">
@@ -90,8 +90,8 @@ function NotesTab({ projectId }) {
   return (
     <div>
       <form onSubmit={handleAdd} className="mb-3 space-y-2">
-        <input placeholder="Note title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} w-full`} />
-        <textarea rows={2} placeholder="Content" value={form.content} onChange={(e) => setForm((p) => ({ ...p, content: e.target.value }))} className={`${inputClass} w-full`} />
+        <input aria-label="Note title" placeholder="Note title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} w-full`} />
+        <textarea aria-label="Content" rows={2} placeholder="Content" value={form.content} onChange={(e) => setForm((p) => ({ ...p, content: e.target.value }))} className={`${inputClass} w-full`} />
         <Button type="submit" variant="secondary" size="sm" disabled={createNote.isPending}>Add Note</Button>
       </form>
       <div className="space-y-2">
@@ -126,11 +126,11 @@ function TasksTab({ projectId }) {
   return (
     <div>
       <form onSubmit={handleAdd} className="mb-3 flex flex-wrap gap-2">
-        <input placeholder="Task title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-        <select value={form.priority} onChange={(e) => setForm((p) => ({ ...p, priority: e.target.value }))} className={inputClass}>
+        <input aria-label="Task title" placeholder="Task title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+        <select aria-label="Priority" value={form.priority} onChange={(e) => setForm((p) => ({ ...p, priority: e.target.value }))} className={inputClass}>
           {['Low', 'Medium', 'High', 'Urgent'].map((p) => <option key={p} value={p}>{p}</option>)}
         </select>
-        <select value={form.milestoneId} onChange={(e) => setForm((p) => ({ ...p, milestoneId: e.target.value }))} className={inputClass}>
+        <select aria-label="Milestone Id" value={form.milestoneId} onChange={(e) => setForm((p) => ({ ...p, milestoneId: e.target.value }))} className={inputClass}>
           <option value="">No milestone</option>
           {(milestones || []).map((m) => <option key={m.id} value={m.id}>{m.title}</option>)}
         </select>
@@ -175,8 +175,8 @@ function MilestonesTab({ projectId }) {
   return (
     <div>
       <form onSubmit={handleAdd} className="mb-3 flex flex-wrap gap-2">
-        <input placeholder="Milestone title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-        <input type="date" value={form.targetDate} onChange={(e) => setForm((p) => ({ ...p, targetDate: e.target.value }))} className={inputClass} />
+        <input aria-label="Milestone title" placeholder="Milestone title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+        <input aria-label="Target Date" type="date" value={form.targetDate} onChange={(e) => setForm((p) => ({ ...p, targetDate: e.target.value }))} className={inputClass} />
         <Button type="submit" variant="secondary" size="sm" disabled={createMilestone.isPending}>Add</Button>
       </form>
       <div className="space-y-2">
@@ -209,12 +209,12 @@ function PublicationsTab({ projectId }) {
   return (
     <div>
       <form onSubmit={handleAdd} className="mb-3 grid gap-2 sm:grid-cols-2">
-        <input placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-        <input placeholder="Authors" value={form.authors} onChange={(e) => setForm((p) => ({ ...p, authors: e.target.value }))} className={inputClass} />
-        <select value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
+        <input aria-label="Title" placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+        <input aria-label="Authors" placeholder="Authors" value={form.authors} onChange={(e) => setForm((p) => ({ ...p, authors: e.target.value }))} className={inputClass} />
+        <select aria-label="Type" value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
           {publicationTypes.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
-        <input placeholder="Venue" value={form.venue} onChange={(e) => setForm((p) => ({ ...p, venue: e.target.value }))} className={inputClass} />
+        <input aria-label="Venue" placeholder="Venue" value={form.venue} onChange={(e) => setForm((p) => ({ ...p, venue: e.target.value }))} className={inputClass} />
         <label className="flex items-center gap-2 text-sm text-body/70">
           <input type="checkbox" checked={form.isPublic} onChange={(e) => setForm((p) => ({ ...p, isPublic: e.target.checked }))} /> Publish to public repository
         </label>
@@ -259,8 +259,8 @@ function MembersTab({ project }) {
         ))}
       </div>
       <form onSubmit={handleAdd} className="flex flex-wrap gap-2">
-        <input placeholder="User ID" value={form.userId} onChange={(e) => setForm((p) => ({ ...p, userId: e.target.value }))} className={`${inputClass} flex-1`} />
-        <select value={form.role} onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))} className={inputClass}>
+        <input aria-label="User ID" placeholder="User ID" value={form.userId} onChange={(e) => setForm((p) => ({ ...p, userId: e.target.value }))} className={`${inputClass} flex-1`} />
+        <select aria-label="Role" value={form.role} onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))} className={inputClass}>
           {['Contributor', 'CoInvestigator', 'Reviewer'].map((r) => <option key={r} value={r}>{r}</option>)}
         </select>
         <Button type="submit" variant="secondary" size="sm" disabled={addMember.isPending}>Add Member</Button>
@@ -276,7 +276,8 @@ function ProjectDetail({ id }) {
 
   const project = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!project) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!project) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   return (
     <div className="mt-4 border-t border-border pt-4">
@@ -285,7 +286,7 @@ function ProjectDetail({ id }) {
           <p className="text-sm font-semibold text-heading">{project.title}</p>
           <p className="text-xs text-body/60">{project.discipline || 'General'} · {project.institution || 'Independent'} · My role: {project.myRole}</p>
         </div>
-        <select value={project.status} onChange={(e) => updateStatus.mutate({ id, payload: { status: e.target.value } })} className={inputClass}>
+        <select aria-label="Status" value={project.status} onChange={(e) => updateStatus.mutate({ id, payload: { status: e.target.value } })} className={inputClass}>
           {['Planning', 'Active', 'Review', 'Completed', 'Archived'].map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
       </div>
@@ -340,9 +341,9 @@ export default function ResearchWorkspace() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea required rows={2} placeholder="Summary" value={form.summary} onChange={(e) => setForm((p) => ({ ...p, summary: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <input placeholder="Discipline" value={form.discipline} onChange={(e) => setForm((p) => ({ ...p, discipline: e.target.value }))} className={inputClass} />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Summary" required rows={2} placeholder="Summary" value={form.summary} onChange={(e) => setForm((p) => ({ ...p, summary: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Discipline" placeholder="Discipline" value={form.discipline} onChange={(e) => setForm((p) => ({ ...p, discipline: e.target.value }))} className={inputClass} />
           <Button type="submit" variant="primary" disabled={create.isPending}>{create.isPending ? 'Creating…' : 'Create Project'}</Button>
         </form>
       )}

@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Badge } from '../../components/ui';
+import { PageHeader, Badge, QueryStatusBanner } from '../../components/ui';
 import { DashboardCard } from '../../components/cards';
 import { useLogisticsDashboardStats } from '../../hooks/useLogisticsDashboardStats';
 
 const verificationTone = { Verified: 'success', Pending: 'secondary', Rejected: 'neutral', Suspended: 'neutral' };
 
 export default function LogisticsPartnerPage() {
-  const { profile, stats } = useLogisticsDashboardStats();
+  const { profile, stats, queries } = useLogisticsDashboardStats();
 
   return (
     <div>
@@ -20,6 +20,7 @@ export default function LogisticsPartnerPage() {
           </Badge>
         )}
       />
+      <QueryStatusBanner queries={queries} />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
         <DashboardCard title="Warehouses" description="Storage facilities">

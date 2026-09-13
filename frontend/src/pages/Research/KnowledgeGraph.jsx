@@ -11,7 +11,8 @@ function NodeNeighbors({ id }) {
   const graph = neighborsQuery.data;
 
   if (neighborsQuery.isLoading) return <p className="py-2 text-xs text-body/60">Loading neighbors…</p>;
-  if (!graph) return null;
+  if (neighborsQuery.isError) return <p role="alert" className="py-2 text-xs text-danger">Unable to load relationships for this node.</p>;
+  if (!graph) return <p className="py-2 text-xs text-body/60">Relationship data is unavailable.</p>;
 
   return (
     <div className="mt-3 space-y-1 text-xs text-body/70">
@@ -57,21 +58,21 @@ export default function KnowledgeGraph() {
       <PageHeader title="Knowledge Graph" description="Curate heritage knowledge nodes and relationships, and explore connections." />
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <select value={filters.nodeType} onChange={(e) => setFilters((p) => ({ ...p, nodeType: e.target.value }))} className={inputClass}>
+        <select aria-label="Node Type" value={filters.nodeType} onChange={(e) => setFilters((p) => ({ ...p, nodeType: e.target.value }))} className={inputClass}>
           <option value="">All types</option>
           {nodeTypes.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
-        <input placeholder="Search" value={filters.search} onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))} className={inputClass} />
+        <input aria-label="Search" placeholder="Search" value={filters.search} onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))} className={inputClass} />
         <Button variant="primary" onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'New Node'}</Button>
       </div>
 
       {showForm && (
         <form onSubmit={handleCreateNode} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <select value={nodeForm.nodeType} onChange={(e) => setNodeForm((p) => ({ ...p, nodeType: e.target.value }))} className={inputClass}>
+          <select aria-label="Node Type" value={nodeForm.nodeType} onChange={(e) => setNodeForm((p) => ({ ...p, nodeType: e.target.value }))} className={inputClass}>
             {nodeTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <input required placeholder="Label" value={nodeForm.label} onChange={(e) => setNodeForm((p) => ({ ...p, label: e.target.value }))} className={inputClass} />
-          <textarea rows={2} placeholder="Description" value={nodeForm.description} onChange={(e) => setNodeForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Label" required placeholder="Label" value={nodeForm.label} onChange={(e) => setNodeForm((p) => ({ ...p, label: e.target.value }))} className={inputClass} />
+          <textarea aria-label="Description" rows={2} placeholder="Description" value={nodeForm.description} onChange={(e) => setNodeForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={createNode.isPending}>{createNode.isPending ? 'Creating…' : 'Create Node'}</Button>
         </form>
       )}
@@ -79,12 +80,12 @@ export default function KnowledgeGraph() {
       <div className="mb-6 rounded-xl border border-border bg-surface p-4">
         <p className="mb-2 text-sm font-semibold text-heading">Link two nodes</p>
         <form onSubmit={handleCreateRelationship} className="flex flex-wrap gap-2">
-          <select value={relForm.sourceNodeId} onChange={(e) => setRelForm((p) => ({ ...p, sourceNodeId: e.target.value }))} className={inputClass}>
+          <select aria-label="Source Node Id" value={relForm.sourceNodeId} onChange={(e) => setRelForm((p) => ({ ...p, sourceNodeId: e.target.value }))} className={inputClass}>
             <option value="">Source node</option>
             {nodes.map((n) => <option key={n.id} value={n.id}>{n.label}</option>)}
           </select>
-          <input placeholder="Relationship type (e.g. LocatedIn)" value={relForm.relationshipType} onChange={(e) => setRelForm((p) => ({ ...p, relationshipType: e.target.value }))} className={inputClass} />
-          <select value={relForm.targetNodeId} onChange={(e) => setRelForm((p) => ({ ...p, targetNodeId: e.target.value }))} className={inputClass}>
+          <input aria-label="Relationship type" placeholder="Relationship type (e.g. LocatedIn)" value={relForm.relationshipType} onChange={(e) => setRelForm((p) => ({ ...p, relationshipType: e.target.value }))} className={inputClass} />
+          <select aria-label="Target Node Id" value={relForm.targetNodeId} onChange={(e) => setRelForm((p) => ({ ...p, targetNodeId: e.target.value }))} className={inputClass}>
             <option value="">Target node</option>
             {nodes.map((n) => <option key={n.id} value={n.id}>{n.label}</option>)}
           </select>
@@ -95,11 +96,11 @@ export default function KnowledgeGraph() {
       <div className="mb-6 rounded-xl border border-border bg-surface p-4">
         <p className="mb-2 text-sm font-semibold text-heading">Find shortest path</p>
         <div className="flex flex-wrap gap-2">
-          <select value={pathForm.sourceNodeId} onChange={(e) => setPathForm((p) => ({ ...p, sourceNodeId: e.target.value }))} className={inputClass}>
+          <select aria-label="Source Node Id" value={pathForm.sourceNodeId} onChange={(e) => setPathForm((p) => ({ ...p, sourceNodeId: e.target.value }))} className={inputClass}>
             <option value="">From</option>
             {nodes.map((n) => <option key={n.id} value={n.id}>{n.label}</option>)}
           </select>
-          <select value={pathForm.targetNodeId} onChange={(e) => setPathForm((p) => ({ ...p, targetNodeId: e.target.value }))} className={inputClass}>
+          <select aria-label="Target Node Id" value={pathForm.targetNodeId} onChange={(e) => setPathForm((p) => ({ ...p, targetNodeId: e.target.value }))} className={inputClass}>
             <option value="">To</option>
             {nodes.map((n) => <option key={n.id} value={n.id}>{n.label}</option>)}
           </select>

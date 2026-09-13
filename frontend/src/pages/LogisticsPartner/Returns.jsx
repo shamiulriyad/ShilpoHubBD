@@ -24,7 +24,8 @@ function ReturnDetail({ id }) {
 
   const ret = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!ret) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!ret) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   const events = ret.events.map((e) => ({ status: e.toStatus || e.type, note: e.note, createdAt: e.createdAt }));
 
@@ -54,7 +55,7 @@ function ReturnDetail({ id }) {
         )}
         {!['Requested', 'Rejected', 'Closed', 'Cancelled'].includes(ret.status) && (
           <div className="flex items-center gap-1">
-            <select value={statusChoice} onChange={(e) => setStatusChoice(e.target.value)} className={inputClass}>
+            <select aria-label="Status Choice" value={statusChoice} onChange={(e) => setStatusChoice(e.target.value)} className={inputClass}>
               <option value="">Advance status…</option>
               {advanceStatuses.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
@@ -67,13 +68,13 @@ function ReturnDetail({ id }) {
         <div className="rounded-lg border border-border p-3">
           <p className="mb-2 text-xs font-medium text-body/60">Record inspection</p>
           <div className="flex flex-wrap gap-2">
-            <select value={inspection.overallCondition} onChange={(e) => setInspection((p) => ({ ...p, overallCondition: e.target.value }))} className={inputClass}>
+            <select aria-label="Overall Condition" value={inspection.overallCondition} onChange={(e) => setInspection((p) => ({ ...p, overallCondition: e.target.value }))} className={inputClass}>
               {conditions.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
-            <select value={inspection.recommendedResolution} onChange={(e) => setInspection((p) => ({ ...p, recommendedResolution: e.target.value }))} className={inputClass}>
+            <select aria-label="Recommended Resolution" value={inspection.recommendedResolution} onChange={(e) => setInspection((p) => ({ ...p, recommendedResolution: e.target.value }))} className={inputClass}>
               {resolutions.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
-            <input placeholder="Summary" value={inspection.summary} onChange={(e) => setInspection((p) => ({ ...p, summary: e.target.value }))} className={`${inputClass} flex-1`} />
+            <input aria-label="Summary" placeholder="Summary" value={inspection.summary} onChange={(e) => setInspection((p) => ({ ...p, summary: e.target.value }))} className={`${inputClass} flex-1`} />
             <Button size="sm" variant="secondary" disabled={recordInspection.isPending} onClick={() => recordInspection.mutate({ id, payload: { ...inspection, itemAssessments: [] } })}>
               Save Inspection
             </Button>
@@ -91,8 +92,8 @@ function ReturnDetail({ id }) {
         <div className="rounded-lg border border-border p-3">
           <p className="mb-2 text-xs font-medium text-body/60">Record refund</p>
           <div className="flex flex-wrap gap-2">
-            <input type="number" min="0" placeholder="Amount (৳)" value={refund.refundAmount} onChange={(e) => setRefund((p) => ({ ...p, refundAmount: e.target.value }))} className={`${inputClass} w-32`} />
-            <input placeholder="Method" value={refund.refundMethod} onChange={(e) => setRefund((p) => ({ ...p, refundMethod: e.target.value }))} className={inputClass} />
+            <input aria-label="Amount" type="number" min="0" placeholder="Amount (৳)" value={refund.refundAmount} onChange={(e) => setRefund((p) => ({ ...p, refundAmount: e.target.value }))} className={`${inputClass} w-32`} />
+            <input aria-label="Method" placeholder="Method" value={refund.refundMethod} onChange={(e) => setRefund((p) => ({ ...p, refundMethod: e.target.value }))} className={inputClass} />
             <Button
               size="sm"
               variant="secondary"
@@ -141,21 +142,21 @@ export default function Returns() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <select value={form.reason} onChange={(e) => setForm((p) => ({ ...p, reason: e.target.value }))} className={inputClass}>
+          <select aria-label="Reason" value={form.reason} onChange={(e) => setForm((p) => ({ ...p, reason: e.target.value }))} className={inputClass}>
             {reasons.map((r) => <option key={r} value={r}>{r}</option>)}
           </select>
-          <input placeholder="Reason detail" value={form.reasonDetail} onChange={(e) => setForm((p) => ({ ...p, reasonDetail: e.target.value }))} className={inputClass} />
-          <input required placeholder="Customer name" value={form.customerName} onChange={(e) => setForm((p) => ({ ...p, customerName: e.target.value }))} className={inputClass} />
-          <input required placeholder="Customer phone" value={form.customerPhone} onChange={(e) => setForm((p) => ({ ...p, customerPhone: e.target.value }))} className={inputClass} />
-          <input placeholder="Pickup address" value={form.pickupAddressLine} onChange={(e) => setForm((p) => ({ ...p, pickupAddressLine: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <input placeholder="Pickup city" value={form.pickupCity} onChange={(e) => setForm((p) => ({ ...p, pickupCity: e.target.value }))} className={inputClass} />
+          <input aria-label="Reason detail" placeholder="Reason detail" value={form.reasonDetail} onChange={(e) => setForm((p) => ({ ...p, reasonDetail: e.target.value }))} className={inputClass} />
+          <input aria-label="Customer name" required placeholder="Customer name" value={form.customerName} onChange={(e) => setForm((p) => ({ ...p, customerName: e.target.value }))} className={inputClass} />
+          <input aria-label="Customer phone" required placeholder="Customer phone" value={form.customerPhone} onChange={(e) => setForm((p) => ({ ...p, customerPhone: e.target.value }))} className={inputClass} />
+          <input aria-label="Pickup address" placeholder="Pickup address" value={form.pickupAddressLine} onChange={(e) => setForm((p) => ({ ...p, pickupAddressLine: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Pickup city" placeholder="Pickup city" value={form.pickupCity} onChange={(e) => setForm((p) => ({ ...p, pickupCity: e.target.value }))} className={inputClass} />
 
           <div className="sm:col-span-2">
             <p className="mb-1 text-xs font-medium text-body/60">Items</p>
             {items.map((it, idx) => (
               <div key={idx} className="mb-2 flex gap-2">
-                <input placeholder="Description" value={it.description} onChange={(e) => setItems((p) => p.map((x, i) => i === idx ? { ...x, description: e.target.value } : x))} className={`${inputClass} flex-1`} />
-                <input type="number" min="1" value={it.quantity} onChange={(e) => setItems((p) => p.map((x, i) => i === idx ? { ...x, quantity: Number(e.target.value) } : x))} className={`${inputClass} w-20`} />
+                <input aria-label="Description" placeholder="Description" value={it.description} onChange={(e) => setItems((p) => p.map((x, i) => i === idx ? { ...x, description: e.target.value } : x))} className={`${inputClass} flex-1`} />
+                <input aria-label="Quantity" type="number" min="1" value={it.quantity} onChange={(e) => setItems((p) => p.map((x, i) => i === idx ? { ...x, quantity: Number(e.target.value) } : x))} className={`${inputClass} w-20`} />
               </div>
             ))}
             <button type="button" onClick={() => setItems((p) => [...p, { description: '', quantity: 1 }])} className="text-xs text-primary hover:underline">+ Add item</button>

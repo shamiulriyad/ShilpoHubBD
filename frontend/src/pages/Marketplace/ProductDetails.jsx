@@ -7,6 +7,7 @@ import { useCartMutations } from '../../hooks/useCart';
 import { useWishlistMutations } from '../../hooks/useWishlist';
 import { useAuth } from '../../hooks/useAuth';
 import { toProductCardItem } from '../../utils/productAdapters';
+import SafeImage from '../../components/media/SafeImage';
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -38,7 +39,7 @@ export default function ProductDetails() {
               <div className="space-y-3">
                 <div className="flex aspect-square items-center justify-center rounded-2xl border border-border bg-background text-sm text-body/40">
                   {product.imageUrls?.[0] ? (
-                    <img src={product.imageUrls[0]} alt={product.name} className="h-full w-full rounded-2xl object-cover" />
+                    <SafeImage src={product.imageUrls[0]} alt={product.name} className="h-full w-full rounded-2xl object-cover" />
                   ) : (
                     'Product Image'
                   )}
@@ -46,7 +47,7 @@ export default function ProductDetails() {
                 <div className="grid grid-cols-4 gap-3">
                   {(product.imageUrls?.slice(1, 5).length ? product.imageUrls.slice(1, 5) : Array.from({ length: 4 })).map((url, i) => (
                     <div key={i} className="flex aspect-square items-center justify-center rounded-lg border border-border bg-background text-[10px] text-body/30">
-                      {url ? <img src={url} alt="" className="h-full w-full rounded-lg object-cover" /> : 'Thumb'}
+                      {url ? <SafeImage src={url} alt="" className="h-full w-full rounded-lg object-cover" /> : 'Thumb'}
                     </div>
                   ))}
                 </div>

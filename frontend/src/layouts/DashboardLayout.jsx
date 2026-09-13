@@ -9,6 +9,7 @@ import { useAuth } from '../hooks/useAuth';
 export default function DashboardLayout({ navItems, sidebarTitle }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { activeRole } = useAuth();
+
   const roleConfig = activeRole ? roleSidebars[activeRole] : null;
   const items = navItems ?? roleConfig?.nav ?? sidebarNav;
   const title = sidebarTitle ?? roleConfig?.title ?? 'Workspace';
@@ -45,7 +46,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
           aria-label="Close workspace navigation"
         />
       )}
-      <div className="mx-auto flex max-w-[1600px] items-start gap-6 px-4 py-6 lg:px-6">
+
       <div className="mx-auto flex max-w-[1600px] items-start gap-6 px-4 py-6 lg:px-6">
         <div
           id="workspace-sidebar"

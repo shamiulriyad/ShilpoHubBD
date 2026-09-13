@@ -62,7 +62,8 @@ function WarehouseDetail({ id }) {
   };
 
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading warehouse…</p>;
-  if (!warehouse) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!warehouse) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   return (
     <div className="mt-4 grid gap-4 border-t border-border pt-4 sm:grid-cols-2">
@@ -84,12 +85,12 @@ function WarehouseDetail({ id }) {
           {warehouse.zones.length === 0 && <p className="text-xs text-body/50">No zones yet.</p>}
         </div>
         <form onSubmit={handleAddZone} className="flex flex-wrap gap-2">
-          <input placeholder="Code" value={zoneForm.code} onChange={(e) => setZoneForm((p) => ({ ...p, code: e.target.value }))} className={`${inputClass} w-24`} />
-          <input placeholder="Name" value={zoneForm.name} onChange={(e) => setZoneForm((p) => ({ ...p, name: e.target.value }))} className={`${inputClass} w-32`} />
-          <select value={zoneForm.type} onChange={(e) => setZoneForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
+          <input aria-label="Code" placeholder="Code" value={zoneForm.code} onChange={(e) => setZoneForm((p) => ({ ...p, code: e.target.value }))} className={`${inputClass} w-24`} />
+          <input aria-label="Name" placeholder="Name" value={zoneForm.name} onChange={(e) => setZoneForm((p) => ({ ...p, name: e.target.value }))} className={`${inputClass} w-32`} />
+          <select aria-label="Type" value={zoneForm.type} onChange={(e) => setZoneForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
             {zoneTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <input type="number" placeholder="Capacity" value={zoneForm.capacityUnits} onChange={(e) => setZoneForm((p) => ({ ...p, capacityUnits: e.target.value }))} className={`${inputClass} w-24`} />
+          <input aria-label="Capacity" type="number" placeholder="Capacity" value={zoneForm.capacityUnits} onChange={(e) => setZoneForm((p) => ({ ...p, capacityUnits: e.target.value }))} className={`${inputClass} w-24`} />
           <Button type="submit" variant="secondary" size="sm" disabled={addZone.isPending}>Add Zone</Button>
         </form>
       </div>
@@ -112,15 +113,15 @@ function WarehouseDetail({ id }) {
           {warehouse.bins.length === 0 && <p className="text-xs text-body/50">No bins yet.</p>}
         </div>
         <form onSubmit={handleAddBin} className="flex flex-wrap gap-2">
-          <input placeholder="Code" value={binForm.code} onChange={(e) => setBinForm((p) => ({ ...p, code: e.target.value }))} className={`${inputClass} w-24`} />
-          <select value={binForm.warehouseZoneId} onChange={(e) => setBinForm((p) => ({ ...p, warehouseZoneId: e.target.value }))} className={inputClass}>
+          <input aria-label="Code" placeholder="Code" value={binForm.code} onChange={(e) => setBinForm((p) => ({ ...p, code: e.target.value }))} className={`${inputClass} w-24`} />
+          <select aria-label="Warehouse Zone Id" value={binForm.warehouseZoneId} onChange={(e) => setBinForm((p) => ({ ...p, warehouseZoneId: e.target.value }))} className={inputClass}>
             <option value="">No zone</option>
             {warehouse.zones.map((z) => <option key={z.id} value={z.id}>{z.code}</option>)}
           </select>
-          <select value={binForm.type} onChange={(e) => setBinForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
+          <select aria-label="Type" value={binForm.type} onChange={(e) => setBinForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
             {binTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <input type="number" placeholder="Capacity" value={binForm.capacityUnits} onChange={(e) => setBinForm((p) => ({ ...p, capacityUnits: e.target.value }))} className={`${inputClass} w-24`} />
+          <input aria-label="Capacity" type="number" placeholder="Capacity" value={binForm.capacityUnits} onChange={(e) => setBinForm((p) => ({ ...p, capacityUnits: e.target.value }))} className={`${inputClass} w-24`} />
           <Button type="submit" variant="secondary" size="sm" disabled={addBin.isPending}>Add Bin</Button>
         </form>
       </div>
@@ -156,20 +157,20 @@ export default function Warehouses() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Warehouse name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={inputClass} />
-          <select value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
+          <input aria-label="Warehouse name" required placeholder="Warehouse name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={inputClass} />
+          <select aria-label="Type" value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
             {warehouseTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <input required placeholder="Address line" value={form.addressLine} onChange={(e) => setForm((p) => ({ ...p, addressLine: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <input required placeholder="City" value={form.city} onChange={(e) => setForm((p) => ({ ...p, city: e.target.value }))} className={inputClass} />
-          <select value={form.districtId} onChange={(e) => setForm((p) => ({ ...p, districtId: e.target.value }))} className={inputClass}>
+          <input aria-label="Address line" required placeholder="Address line" value={form.addressLine} onChange={(e) => setForm((p) => ({ ...p, addressLine: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="City" required placeholder="City" value={form.city} onChange={(e) => setForm((p) => ({ ...p, city: e.target.value }))} className={inputClass} />
+          <select aria-label="District Id" value={form.districtId} onChange={(e) => setForm((p) => ({ ...p, districtId: e.target.value }))} className={inputClass}>
             <option value="">Select district</option>
             {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
-          <input placeholder="Postal code" value={form.postalCode} onChange={(e) => setForm((p) => ({ ...p, postalCode: e.target.value }))} className={inputClass} />
-          <input type="number" min="0" placeholder="Total capacity units" value={form.totalCapacityUnits} onChange={(e) => setForm((p) => ({ ...p, totalCapacityUnits: e.target.value }))} className={inputClass} />
-          <input placeholder="Contact person" value={form.contactPersonName} onChange={(e) => setForm((p) => ({ ...p, contactPersonName: e.target.value }))} className={inputClass} />
-          <input placeholder="Contact phone" value={form.contactPhone} onChange={(e) => setForm((p) => ({ ...p, contactPhone: e.target.value }))} className={inputClass} />
+          <input aria-label="Postal code" placeholder="Postal code" value={form.postalCode} onChange={(e) => setForm((p) => ({ ...p, postalCode: e.target.value }))} className={inputClass} />
+          <input aria-label="Total capacity units" type="number" min="0" placeholder="Total capacity units" value={form.totalCapacityUnits} onChange={(e) => setForm((p) => ({ ...p, totalCapacityUnits: e.target.value }))} className={inputClass} />
+          <input aria-label="Contact person" placeholder="Contact person" value={form.contactPersonName} onChange={(e) => setForm((p) => ({ ...p, contactPersonName: e.target.value }))} className={inputClass} />
+          <input aria-label="Contact phone" placeholder="Contact phone" value={form.contactPhone} onChange={(e) => setForm((p) => ({ ...p, contactPhone: e.target.value }))} className={inputClass} />
           <div className="flex flex-wrap gap-4 sm:col-span-2">
             <label className="flex items-center gap-2 text-sm text-body/70">
               <input type="checkbox" checked={form.hasColdChain} onChange={(e) => setForm((p) => ({ ...p, hasColdChain: e.target.checked }))} />

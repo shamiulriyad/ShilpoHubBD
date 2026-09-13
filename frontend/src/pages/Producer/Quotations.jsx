@@ -62,20 +62,20 @@ export default function Quotations() {
                     ))}
                   </ul>
                   <div className="grid gap-3 sm:grid-cols-3">
-                    <input
+                    <input aria-label="Total price"
                       type="number"
                       placeholder="Total price (৳)"
                       value={form.totalPrice}
                       onChange={(event) => setForm((prev) => ({ ...prev, totalPrice: event.target.value }))}
                       className="rounded-md border border-border bg-background px-3 py-2 text-sm"
                     />
-                    <input
+                    <input aria-label="Estimated Delivery Date"
                       type="date"
                       value={form.estimatedDeliveryDate}
                       onChange={(event) => setForm((prev) => ({ ...prev, estimatedDeliveryDate: event.target.value }))}
                       className="rounded-md border border-border bg-background px-3 py-2 text-sm"
                     />
-                    <input
+                    <input aria-label="Notes"
                       placeholder="Notes"
                       value={form.notes}
                       onChange={(event) => setForm((prev) => ({ ...prev, notes: event.target.value }))}

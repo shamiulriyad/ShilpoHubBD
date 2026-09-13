@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader } from '../../components/ui';
+import { PageHeader, QueryStatusBanner } from '../../components/ui';
 import { DashboardCard } from '../../components/cards';
 import { useProducerOrderItems, useProducerRevenue } from '../../hooks/useProducerOrders';
 import { useLowStockProducts } from '../../hooks/useInventory';
@@ -17,6 +17,7 @@ export default function ProducerDashboard() {
   return (
     <div>
       <PageHeader title="Producer Dashboard" description="Manage your business operations, orders and partnerships." />
+      <QueryStatusBanner queries={[pendingOrdersQuery, revenueQuery, lowStockQuery, contractsQuery, quotationsQuery]} />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <DashboardCard title="Pending Orders" description="Awaiting your response">

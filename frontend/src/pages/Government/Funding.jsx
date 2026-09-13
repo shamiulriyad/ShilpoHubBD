@@ -31,12 +31,12 @@ function ProgramsTab() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Program name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <select value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
+          <input aria-label="Program name" required placeholder="Program name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <select aria-label="Type" value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputClass}>
             {programTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <input required type="number" min="0" placeholder="Total budget (৳)" value={form.totalBudget} onChange={(e) => setForm((p) => ({ ...p, totalBudget: e.target.value }))} className={inputClass} />
-          <textarea required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Total budget" required type="number" min="0" placeholder="Total budget (৳)" value={form.totalBudget} onChange={(e) => setForm((p) => ({ ...p, totalBudget: e.target.value }))} className={inputClass} />
+          <textarea aria-label="Description" required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={createProgram.isPending}>Create Program</Button>
         </form>
       )}
@@ -77,7 +77,8 @@ function ApplicationDetail({ id }) {
 
   const app = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-2 text-xs text-body/60">Loading…</p>;
-  if (!app) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!app) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   return (
     <div className="mt-3 space-y-3 border-t border-border pt-3 text-xs">
@@ -92,7 +93,7 @@ function ApplicationDetail({ id }) {
 
       {['Submitted', 'UnderReview'].includes(app.status) && (
         <div className="flex flex-wrap items-end gap-2">
-          <input type="number" min="0" placeholder="Approved amount (৳)" value={approvedAmount} onChange={(e) => setApprovedAmount(e.target.value)} className={`${inputClass} w-40`} />
+          <input aria-label="Approved amount" type="number" min="0" placeholder="Approved amount (৳)" value={approvedAmount} onChange={(e) => setApprovedAmount(e.target.value)} className={`${inputClass} w-40`} />
           <Button size="sm" variant="primary" disabled={decideApplication.isPending} onClick={() => decideApplication.mutate({ id, payload: { outcome: 'Approved', approvedAmount: Number(approvedAmount) || app.requestedAmount } })}>
             Approve
           </Button>
@@ -104,8 +105,8 @@ function ApplicationDetail({ id }) {
 
       {app.status === 'Approved' && (
         <div className="flex flex-wrap items-end gap-2">
-          <input type="number" min="0" placeholder="Disbursement amount" value={disbursement.amount} onChange={(e) => setDisbursement((p) => ({ ...p, amount: e.target.value }))} className={`${inputClass} w-40`} />
-          <input type="date" value={disbursement.scheduledFor} onChange={(e) => setDisbursement((p) => ({ ...p, scheduledFor: e.target.value }))} className={inputClass} />
+          <input aria-label="Disbursement amount" type="number" min="0" placeholder="Disbursement amount" value={disbursement.amount} onChange={(e) => setDisbursement((p) => ({ ...p, amount: e.target.value }))} className={`${inputClass} w-40`} />
+          <input aria-label="Scheduled For" type="date" value={disbursement.scheduledFor} onChange={(e) => setDisbursement((p) => ({ ...p, scheduledFor: e.target.value }))} className={inputClass} />
           <Button
             size="sm"
             variant="secondary"

@@ -15,7 +15,8 @@ function StrategyDetail({ id }) {
 
   const strategy = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!strategy) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!strategy) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   const handleAddObjective = (e) => {
     e.preventDefault();
@@ -49,7 +50,7 @@ function StrategyDetail({ id }) {
           {strategy.objectives.length === 0 && <p className="text-xs text-body/50">No objectives yet.</p>}
         </div>
         <form onSubmit={handleAddObjective} className="flex gap-2">
-          <input placeholder="Objective title" value={objTitle} onChange={(e) => setObjTitle(e.target.value)} className={`${inputClass} flex-1`} />
+          <input aria-label="Objective title" placeholder="Objective title" value={objTitle} onChange={(e) => setObjTitle(e.target.value)} className={`${inputClass} flex-1`} />
           <Button type="submit" variant="secondary" size="sm" disabled={addObjective.isPending}>Add</Button>
         </form>
       </div>
@@ -72,8 +73,8 @@ function StrategyDetail({ id }) {
           {strategy.actions.length === 0 && <p className="text-xs text-body/50">No actions yet.</p>}
         </div>
         <form onSubmit={handleAddAction} className="flex flex-wrap gap-2">
-          <input placeholder="Action title" value={actionForm.title} onChange={(e) => setActionForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-          <select value={actionForm.objectiveId} onChange={(e) => setActionForm((p) => ({ ...p, objectiveId: e.target.value }))} className={inputClass}>
+          <input aria-label="Action title" placeholder="Action title" value={actionForm.title} onChange={(e) => setActionForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+          <select aria-label="Objective Id" value={actionForm.objectiveId} onChange={(e) => setActionForm((p) => ({ ...p, objectiveId: e.target.value }))} className={inputClass}>
             <option value="">No objective</option>
             {strategy.objectives.map((o) => <option key={o.id} value={o.id}>{o.title}</option>)}
           </select>
@@ -108,10 +109,10 @@ export default function PreservationStrategies() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea required rows={2} placeholder="Heritage problem" value={form.heritageProblem} onChange={(e) => setForm((p) => ({ ...p, heritageProblem: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea required rows={2} placeholder="Proposed solution" value={form.proposedSolution} onChange={(e) => setForm((p) => ({ ...p, proposedSolution: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea rows={2} placeholder="Expected impact" value={form.expectedImpact} onChange={(e) => setForm((p) => ({ ...p, expectedImpact: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Heritage problem" required rows={2} placeholder="Heritage problem" value={form.heritageProblem} onChange={(e) => setForm((p) => ({ ...p, heritageProblem: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Proposed solution" required rows={2} placeholder="Proposed solution" value={form.proposedSolution} onChange={(e) => setForm((p) => ({ ...p, proposedSolution: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Expected impact" rows={2} placeholder="Expected impact" value={form.expectedImpact} onChange={(e) => setForm((p) => ({ ...p, expectedImpact: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={create.isPending}>{create.isPending ? 'Creating…' : 'Create Strategy'}</Button>
         </form>
       )}

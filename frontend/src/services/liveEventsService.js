@@ -4,6 +4,7 @@ import apiClient from './apiClient';
 // plus authenticated interactions (comment / react / buy).
 export const liveEventsService = {
   list: (params) => apiClient.get('/live-events', { params }).then((res) => res.data),
+  mine: (params) => apiClient.get('/live-events/mine', { params }).then((res) => res.data),
   getById: (id) => apiClient.get(`/live-events/${id}`).then((res) => res.data),
   create: (payload) => apiClient.post('/live-events', payload).then((res) => res.data),
   start: (id) => apiClient.post(`/live-events/${id}/start`, {}).then((res) => res.data),

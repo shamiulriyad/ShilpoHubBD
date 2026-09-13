@@ -30,14 +30,14 @@ function ComplaintsTab() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <select value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))} className={inputClass}>
+          <select aria-label="Category" value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))} className={inputClass}>
             {complaintCategories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <select value={form.priority} onChange={(e) => setForm((p) => ({ ...p, priority: e.target.value }))} className={inputClass}>
+          <select aria-label="Priority" value={form.priority} onChange={(e) => setForm((p) => ({ ...p, priority: e.target.value }))} className={inputClass}>
             {priorities.map((p) => <option key={p} value={p}>{p}</option>)}
           </select>
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Description" required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={createComplaint.isPending}>Log Complaint</Button>
         </form>
       )}
@@ -120,6 +120,7 @@ function MonitoringTab() {
                 <Badge tone={flagSeverityTone[f.severity] || 'neutral'}>{f.severity}</Badge>
                 {f.status === 'Open' && (
                   <select
+                    aria-label="Update monitoring flag status"
                     onChange={(e) => e.target.value && updateMonitoringFlagStatus.mutate({ id: f.id, payload: { status: e.target.value } })}
                     className={inputClass}
                     defaultValue=""

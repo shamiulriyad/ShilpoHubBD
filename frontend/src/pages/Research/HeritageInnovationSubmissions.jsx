@@ -18,7 +18,8 @@ function SubmissionDetail({ id }) {
 
   const submission = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!submission) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!submission) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   return (
     <div className="mt-4 space-y-4 border-t border-border pt-4">
@@ -48,7 +49,7 @@ function SubmissionDetail({ id }) {
           {submission.teamMembers.length === 0 && <p className="text-xs text-body/50">No team members yet.</p>}
         </div>
         <div className="flex gap-2">
-          <input placeholder="User ID" value={memberId} onChange={(e) => setMemberId(e.target.value)} className={`${inputClass} flex-1`} />
+          <input aria-label="User ID" placeholder="User ID" value={memberId} onChange={(e) => setMemberId(e.target.value)} className={`${inputClass} flex-1`} />
           <Button
             size="sm"
             variant="secondary"
@@ -69,10 +70,10 @@ function SubmissionDetail({ id }) {
             ))}
           </div>
           <div className="flex flex-wrap gap-2">
-            <select value={review.decision} onChange={(e) => setReview((p) => ({ ...p, decision: e.target.value }))} className={inputClass}>
+            <select aria-label="Decision" value={review.decision} onChange={(e) => setReview((p) => ({ ...p, decision: e.target.value }))} className={inputClass}>
               {decisions.map((d) => <option key={d} value={d}>{d}</option>)}
             </select>
-            <input placeholder="Comments" value={review.comments} onChange={(e) => setReview((p) => ({ ...p, comments: e.target.value }))} className={`${inputClass} flex-1`} />
+            <input aria-label="Comments" placeholder="Comments" value={review.comments} onChange={(e) => setReview((p) => ({ ...p, comments: e.target.value }))} className={`${inputClass} flex-1`} />
             <Button size="sm" variant="secondary" disabled={addReview.isPending} onClick={() => addReview.mutate({ id, payload: review })}>
               Submit Review
             </Button>
@@ -107,10 +108,10 @@ export default function HeritageInnovationSubmissions() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea required rows={2} placeholder="Problem" value={form.problem} onChange={(e) => setForm((p) => ({ ...p, problem: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea required rows={2} placeholder="Solution" value={form.solution} onChange={(e) => setForm((p) => ({ ...p, solution: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea rows={2} placeholder="Research evidence (optional)" value={form.researchEvidence} onChange={(e) => setForm((p) => ({ ...p, researchEvidence: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Problem" required rows={2} placeholder="Problem" value={form.problem} onChange={(e) => setForm((p) => ({ ...p, problem: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Solution" required rows={2} placeholder="Solution" value={form.solution} onChange={(e) => setForm((p) => ({ ...p, solution: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Research evidence" rows={2} placeholder="Research evidence (optional)" value={form.researchEvidence} onChange={(e) => setForm((p) => ({ ...p, researchEvidence: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={create.isPending}>{create.isPending ? 'Creating…' : 'Create Submission'}</Button>
         </form>
       )}

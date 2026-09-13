@@ -22,7 +22,8 @@ function RouteDetail({ id }) {
 
   const route = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!route) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!route) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   const isFinal = ['Completed', 'Cancelled'].includes(route.status);
 
@@ -45,9 +46,9 @@ function RouteDetail({ id }) {
           {route.status === 'Draft' || route.status === 'Planned' ? (
             <>
               <div className="flex flex-wrap gap-1">
-                <input placeholder="Driver name" value={driver.assignedDriverName} onChange={(e) => setDriver((p) => ({ ...p, assignedDriverName: e.target.value }))} className={`${inputClass} w-28`} />
-                <input placeholder="Phone" value={driver.assignedDriverPhone} onChange={(e) => setDriver((p) => ({ ...p, assignedDriverPhone: e.target.value }))} className={`${inputClass} w-28`} />
-                <input placeholder="Vehicle" value={driver.assignedVehicleLabel} onChange={(e) => setDriver((p) => ({ ...p, assignedVehicleLabel: e.target.value }))} className={`${inputClass} w-24`} />
+                <input aria-label="Driver name" placeholder="Driver name" value={driver.assignedDriverName} onChange={(e) => setDriver((p) => ({ ...p, assignedDriverName: e.target.value }))} className={`${inputClass} w-28`} />
+                <input aria-label="Phone" placeholder="Phone" value={driver.assignedDriverPhone} onChange={(e) => setDriver((p) => ({ ...p, assignedDriverPhone: e.target.value }))} className={`${inputClass} w-28`} />
+                <input aria-label="Vehicle" placeholder="Vehicle" value={driver.assignedVehicleLabel} onChange={(e) => setDriver((p) => ({ ...p, assignedVehicleLabel: e.target.value }))} className={`${inputClass} w-24`} />
                 <Button size="sm" variant="secondary" disabled={!driver.assignedDriverName || assign.isPending} onClick={() => assign.mutate({ id, payload: driver })}>Assign</Button>
               </div>
               <Button size="sm" variant="secondary" disabled={optimize.isPending || route.stops.length < 2} onClick={() => optimize.mutate({ id, payload: {} })}>
@@ -98,12 +99,12 @@ function RouteDetail({ id }) {
 
         {(route.status === 'Draft' || route.status === 'Planned') && (
           <form onSubmit={handleAddStop} className="mt-3 flex flex-wrap gap-2">
-            <select value={stopForm.stopType} onChange={(e) => setStopForm((p) => ({ ...p, stopType: e.target.value }))} className={inputClass}>
+            <select aria-label="Stop Type" value={stopForm.stopType} onChange={(e) => setStopForm((p) => ({ ...p, stopType: e.target.value }))} className={inputClass}>
               {stopTypes.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
-            <input placeholder="Contact name" value={stopForm.contactName} onChange={(e) => setStopForm((p) => ({ ...p, contactName: e.target.value }))} className={`${inputClass} w-32`} />
-            <input placeholder="Address line" value={stopForm.addressLine} onChange={(e) => setStopForm((p) => ({ ...p, addressLine: e.target.value }))} className={`${inputClass} flex-1`} />
-            <input placeholder="City" value={stopForm.city} onChange={(e) => setStopForm((p) => ({ ...p, city: e.target.value }))} className={`${inputClass} w-28`} />
+            <input aria-label="Contact name" placeholder="Contact name" value={stopForm.contactName} onChange={(e) => setStopForm((p) => ({ ...p, contactName: e.target.value }))} className={`${inputClass} w-32`} />
+            <input aria-label="Address line" placeholder="Address line" value={stopForm.addressLine} onChange={(e) => setStopForm((p) => ({ ...p, addressLine: e.target.value }))} className={`${inputClass} flex-1`} />
+            <input aria-label="City" placeholder="City" value={stopForm.city} onChange={(e) => setStopForm((p) => ({ ...p, city: e.target.value }))} className={`${inputClass} w-28`} />
             <Button type="submit" variant="secondary" size="sm" disabled={addStop.isPending}>Add Stop</Button>
           </form>
         )}
@@ -140,9 +141,9 @@ export default function DeliveryRoutes() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Route name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={inputClass} />
-          <input type="date" value={form.scheduledDate} onChange={(e) => setForm((p) => ({ ...p, scheduledDate: e.target.value }))} className={inputClass} />
-          <select value={form.originDistrictId} onChange={(e) => setForm((p) => ({ ...p, originDistrictId: e.target.value }))} className={inputClass}>
+          <input aria-label="Route name" required placeholder="Route name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={inputClass} />
+          <input aria-label="Scheduled Date" type="date" value={form.scheduledDate} onChange={(e) => setForm((p) => ({ ...p, scheduledDate: e.target.value }))} className={inputClass} />
+          <select aria-label="Origin District Id" value={form.originDistrictId} onChange={(e) => setForm((p) => ({ ...p, originDistrictId: e.target.value }))} className={inputClass}>
             <option value="">Origin district</option>
             {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
