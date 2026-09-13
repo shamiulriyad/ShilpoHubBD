@@ -92,6 +92,19 @@ dotnet ef database update --project src/ShilpoHubBD.Data --startup-project src/S
 dotnet ef migrations list --project src/ShilpoHubBD.Data --startup-project src/ShilpoHubBD.Api
 ```
 
+## Database connection
+
+The API talks to PostgreSQL directly over EF Core / Npgsql — **Supabase is used only as the hosted Postgres instance** (and Storage). Supabase's own Auth, PostgREST, and RLS are not used.
+
+Connection wiring, in order:
+
+1. `ConnectionStrings__DefaultConnection` is provided as an environment variable or in `.env` (repo root / `backend/` / `backend/src/ShilpoHubBD.Api/`). In Development, `Program.cs` loads the first `.env` it finds via `DotNetEnv` and then `AddEnvironmentVariables()`. Use the Supabase **session pooler** URI (Project Settings → Database → Connection string), e.g. `Host=aws-0-<region>.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.<ref>;Password=<db-password>;SSL Mode=Require;Trust Server Certificate=true`.
+2. `Program.cs` calls `builder.Services.AddData(builder.Configuration)` ([`ShilpoHubBD.Data/DependencyInjection.cs`](src/ShilpoHubBD.Data/DependencyInjection.cs)), which reads `GetConnectionString("DefaultConnection")` (throws at startup if empty) and registers `ShilpoHubDbContext` with `options.UseNpgsql(connectionString)`.
+3. The same string is registered as the `supabase-postgres` health check exposed at `GET /health/db`.
+4. Repositories take `ShilpoHubDbContext` by DI and persist through `SaveChangesAsync()`; Npgsql manages a pooled TCP + SSL connection to the Supabase host.
+
+The schema is created and evolved **only** by the EF Core migrations above — there is no `Database.Migrate()` / `EnsureCreated()` on startup, so run `dotnet ef database update` after pulling new migrations.
+
 ## Authentication & roles
 
 JWT Bearer auth (`Authorization: Bearer <token>`). Roles (`ShilpoHubBD.Domain.Constants.RoleNames`):
@@ -99,6 +112,17 @@ JWT Bearer auth (`Authorization: Bearer <token>`). Roles (`ShilpoHubBD.Domain.Co
 `Customer`, `Producer`, `BusinessPartner`, `Tourist`, `HeritageAcademyMember`, `HeritageInnovationHub`, `GovernmentNGO`, `LogisticsPartner`, `SuperAdmin`.
 
 Most write endpoints require `[Authorize]`; producer-owned resources (products, live events, auctions, QR codes, certificates, traceability records, orders, courses, mentor profiles, apprenticeship & internship programs, sustainability records, heritage identity) are additionally ownership-checked against the authenticated user, with `SuperAdmin` able to manage anything. Job listings follow the same pattern for `BusinessPartner`-role users, gated on top by their business profile's verification status. Catalog/admin-only actions (roles, categories, districts, craft stories, achievement definitions, sustainability material certification verification) require `SuperAdmin`. The **Heritage Innovation Lab** modules are gated to research roles (`HeritageInnovationHub` / `GovernmentNGO` / `SuperAdmin`) at the edge and membership-checked in the service layer; the entire **Government & NGO** module (`/api/governance/*`) is restricted to `GovernmentNGO` / `SuperAdmin`.
+
+### Where auth data lives
+
+This is a **self-contained identity system** — it does **not** use Supabase Auth. Accounts are rows in the application's own `public."Users"` table (plus `Roles`, `UserRoles`, `RefreshTokens`, `PasswordResetTokens`), all created by the `AddAuthIdentitySchema` migration. Passwords are stored only as BCrypt hashes (`IPasswordHasher` → `BCryptPasswordHasher`); access tokens are self-issued JWTs signed with `Jwt__Key`; refresh tokens are stored hashed and rotated on use.
+
+Consequences:
+
+- The Supabase dashboard's **Authentication → Users** page reads `auth.users` and will always be empty. Registered users appear under **Table Editor → `public` → `Users`**, or via `select "Id", "Email", "FullName", "CreatedAt" from public."Users";` in the SQL editor.
+- `Roles` is seeded by the migration (all nine role names). No user rows are seeded by migrations. Set `Seed__SuperAdminEmail` / `Seed__SuperAdminPassword` in `.env` to have `Program.cs` create one `SuperAdmin` on startup if none exists (idempotent; leave blank to skip).
+
+Registration flow: React form → `POST /api/auth/register` → `AuthController` → FluentValidation (`RegisterRequestValidator`: email/password rules, `SelfRegisterableRoles` only — `SuperAdmin` is rejected) → `AuthService.RegisterAsync` (lowercases email, `409` if it exists, BCrypt-hashes the password, builds the `User` + `UserRole` rows) → `SaveChangesAsync()` → Supabase Postgres → returns a JWT + refresh token.
 
 ## API modules
 

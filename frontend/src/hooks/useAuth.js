@@ -3,13 +3,18 @@ import { authService } from '../services/authService';
 import { queryClient } from '../lib/queryClient';
 import { resolveActiveRole, roleHomePath, roleLabel } from '../utils/roles';
 
+/**
+ * The single source of truth for the authenticated user and their role.
+ * Every component reads identity from here — never from useAuthStore or
+ * localStorage directly.
+ */
 export function useAuth() {
   const accessToken = useAuthStore((s) => s.accessToken);
   const refreshToken = useAuthStore((s) => s.refreshToken);
   const user = useAuthStore((s) => s.user);
   const roles = useAuthStore((s) => s.roles);
   const storedActiveRole = useAuthStore((s) => s.activeRole);
-  const sessionReady = useAuthStore((s) => s.sessionReady);
+  const hasHydrated = useAuthStore((s) => s.hasHydrated);
   const setSession = useAuthStore((s) => s.setSession);
   const clearSession = useAuthStore((s) => s.clearSession);
 
@@ -23,7 +28,7 @@ export function useAuth() {
     roles: roles ?? [],
     activeRole: role,
     isAuthenticated,
-    isHydrated: sessionReady,
+    isHydrated: hasHydrated,
 
     hasRole: (r) => (roles ?? []).includes(r),
     hasAnyRole: (allowed = []) =>
