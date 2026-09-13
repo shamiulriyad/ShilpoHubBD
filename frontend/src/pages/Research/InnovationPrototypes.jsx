@@ -16,7 +16,8 @@ function PrototypeDetail({ id }) {
 
   const prototype = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!prototype) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!prototype) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   const issues = issuesQuery.data || [];
 
@@ -31,8 +32,8 @@ function PrototypeDetail({ id }) {
           {prototype.iterations.length === 0 && <p>No iterations yet.</p>}
         </div>
         <form onSubmit={(e) => { e.preventDefault(); if (!iteration.changeSummary) return; addIteration.mutate({ id, payload: iteration }, { onSuccess: () => setIteration({ label: '', changeSummary: '' }) }); }} className="flex flex-wrap gap-2">
-          <input placeholder="Label" value={iteration.label} onChange={(e) => setIteration((p) => ({ ...p, label: e.target.value }))} className={`${inputClass} w-24`} />
-          <input placeholder="Change summary" value={iteration.changeSummary} onChange={(e) => setIteration((p) => ({ ...p, changeSummary: e.target.value }))} className={`${inputClass} flex-1`} />
+          <input aria-label="Label" placeholder="Label" value={iteration.label} onChange={(e) => setIteration((p) => ({ ...p, label: e.target.value }))} className={`${inputClass} w-24`} />
+          <input aria-label="Change summary" placeholder="Change summary" value={iteration.changeSummary} onChange={(e) => setIteration((p) => ({ ...p, changeSummary: e.target.value }))} className={`${inputClass} flex-1`} />
           <Button type="submit" variant="secondary" size="sm" disabled={addIteration.isPending}>Add</Button>
         </form>
 
@@ -47,8 +48,8 @@ function PrototypeDetail({ id }) {
           {prototype.testCases.length === 0 && <p>No test cases yet.</p>}
         </div>
         <form onSubmit={(e) => { e.preventDefault(); if (!testCase.title || !testCase.expectedResult) return; addTestCase.mutate({ id, payload: { ...testCase, orderIndex: prototype.testCases.length } }, { onSuccess: () => setTestCase({ title: '', expectedResult: '' }) }); }} className="flex flex-wrap gap-2">
-          <input placeholder="Test title" value={testCase.title} onChange={(e) => setTestCase((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-          <input placeholder="Expected result" value={testCase.expectedResult} onChange={(e) => setTestCase((p) => ({ ...p, expectedResult: e.target.value }))} className={`${inputClass} flex-1`} />
+          <input aria-label="Test title" placeholder="Test title" value={testCase.title} onChange={(e) => setTestCase((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+          <input aria-label="Expected result" placeholder="Expected result" value={testCase.expectedResult} onChange={(e) => setTestCase((p) => ({ ...p, expectedResult: e.target.value }))} className={`${inputClass} flex-1`} />
           <Button type="submit" variant="secondary" size="sm" disabled={addTestCase.isPending}>Add</Button>
         </form>
       </div>
@@ -72,8 +73,8 @@ function PrototypeDetail({ id }) {
           {issues.length === 0 && <p className="text-xs text-body/50">No issues reported.</p>}
         </div>
         <form onSubmit={(e) => { e.preventDefault(); if (!issue.title) return; addIssue.mutate({ id, payload: issue }, { onSuccess: () => setIssue({ title: '', description: '', severity: 'Medium' }) }); }} className="flex flex-wrap gap-2">
-          <input placeholder="Issue title" value={issue.title} onChange={(e) => setIssue((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-          <select value={issue.severity} onChange={(e) => setIssue((p) => ({ ...p, severity: e.target.value }))} className={inputClass}>
+          <input aria-label="Issue title" placeholder="Issue title" value={issue.title} onChange={(e) => setIssue((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+          <select aria-label="Severity" value={issue.severity} onChange={(e) => setIssue((p) => ({ ...p, severity: e.target.value }))} className={inputClass}>
             {['Low', 'Medium', 'High', 'Critical'].map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
           <Button type="submit" variant="secondary" size="sm" disabled={addIssue.isPending}>Report</Button>
@@ -107,9 +108,9 @@ export default function InnovationPrototypes() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Prototype name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <input placeholder="Category" value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))} className={inputClass} />
-          <textarea required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Prototype name" required placeholder="Prototype name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Category" placeholder="Category" value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))} className={inputClass} />
+          <textarea aria-label="Description" required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={create.isPending}>{create.isPending ? 'Creating…' : 'Create Prototype'}</Button>
         </form>
       )}

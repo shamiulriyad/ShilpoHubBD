@@ -34,7 +34,7 @@ export default function AiTourismPlanner() {
       />
 
       <form onSubmit={handleSubmit} className="mb-10 grid gap-4 rounded-xl border border-border bg-surface p-6 sm:grid-cols-3">
-        <select
+        <select aria-label="District Id"
           value={form.districtId}
           onChange={(event) => setForm((prev) => ({ ...prev, districtId: event.target.value }))}
           className="rounded-md border border-border bg-background px-3 py-2 text-sm"
@@ -46,7 +46,7 @@ export default function AiTourismPlanner() {
             </option>
           ))}
         </select>
-        <input
+        <input aria-label="Duration"
           type="number"
           min={1}
           max={30}
@@ -55,7 +55,7 @@ export default function AiTourismPlanner() {
           placeholder="Duration (days)"
           className="rounded-md border border-border bg-background px-3 py-2 text-sm"
         />
-        <input
+        <input aria-label="Party size"
           type="number"
           min={1}
           max={100}

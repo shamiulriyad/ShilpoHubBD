@@ -72,13 +72,13 @@ export default function Orders() {
                 )}
                 {item.producerStatus === 'Processing' && (
                   <div className="flex flex-wrap items-center gap-2">
-                    <input
+                    <input aria-label="Tracking number"
                       placeholder="Tracking number"
                       value={shipForm[item.id]?.trackingNumber || ''}
                       onChange={(e) => setShipForm((prev) => ({ ...prev, [item.id]: { ...prev[item.id], trackingNumber: e.target.value } }))}
                       className="rounded-md border border-border bg-background px-3 py-2 text-sm"
                     />
-                    <input
+                    <input aria-label="Carrier"
                       placeholder="Carrier"
                       value={shipForm[item.id]?.carrier || ''}
                       onChange={(e) => setShipForm((prev) => ({ ...prev, [item.id]: { ...prev[item.id], carrier: e.target.value } }))}

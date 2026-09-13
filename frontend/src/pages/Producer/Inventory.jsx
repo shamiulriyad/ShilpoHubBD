@@ -41,7 +41,7 @@ export default function Inventory() {
 
       <form onSubmit={handleAdjust} className="mb-8 space-y-3 rounded-xl border border-border bg-surface p-5">
         <p className="text-sm font-semibold text-heading">Adjust Stock</p>
-        <select
+        <select aria-label="Selected Product Id"
           required
           value={selectedProductId}
           onChange={(event) => setSelectedProductId(event.target.value)}
@@ -53,7 +53,7 @@ export default function Inventory() {
           ))}
         </select>
         <div className="grid gap-3 sm:grid-cols-2">
-          <input
+          <input aria-label="Change amount"
             required
             type="number"
             placeholder="Change amount (+/-)"
@@ -61,7 +61,7 @@ export default function Inventory() {
             onChange={(event) => setChangeAmount(event.target.value)}
             className="rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
-          <input
+          <input aria-label="Reason"
             required
             placeholder="Reason"
             value={reason}

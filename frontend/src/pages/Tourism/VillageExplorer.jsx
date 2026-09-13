@@ -1,6 +1,7 @@
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, AsyncState } from '../../components/ui';
 import { useVillageTourStops } from '../../hooks/useVillageTour';
+import SafeImage from '../../components/media/SafeImage';
 
 export default function VillageExplorer() {
   const { data, isLoading, isError, error } = useVillageTourStops({ pageSize: 50 });
@@ -25,7 +26,7 @@ export default function VillageExplorer() {
                 {stop.mediaType === 'Video' || stop.mediaType === 'Video360' ? (
                   <video src={stop.mediaUrl} poster={stop.thumbnailUrl} className="h-full w-full object-cover" controls />
                 ) : stop.thumbnailUrl || stop.mediaUrl ? (
-                  <img src={stop.thumbnailUrl || stop.mediaUrl} alt={stop.title} className="h-full w-full object-cover" />
+                  <SafeImage src={stop.thumbnailUrl || stop.mediaUrl} alt={stop.title} className="h-full w-full object-cover" />
                 ) : (
                   stop.mediaType
                 )}

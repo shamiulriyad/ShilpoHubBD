@@ -31,8 +31,8 @@ export default function AiBusinessAssistant() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <ToolCard title="Price Suggestion" result={tools.suggestPrice.data} mutation={tools.suggestPrice}>
-          <input placeholder="Category ID" value={priceForm.categoryId} onChange={(e) => setPriceForm((p) => ({ ...p, categoryId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input type="number" placeholder="Estimated cost (optional)" value={priceForm.estimatedCost} onChange={(e) => setPriceForm((p) => ({ ...p, estimatedCost: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Category ID" placeholder="Category ID" value={priceForm.categoryId} onChange={(e) => setPriceForm((p) => ({ ...p, categoryId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Estimated cost" type="number" placeholder="Estimated cost (optional)" value={priceForm.estimatedCost} onChange={(e) => setPriceForm((p) => ({ ...p, estimatedCost: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button
             variant="primary"
             onClick={() => tools.suggestPrice.mutate({ categoryId: priceForm.categoryId, estimatedCost: priceForm.estimatedCost ? Number(priceForm.estimatedCost) : undefined })}
@@ -43,8 +43,8 @@ export default function AiBusinessAssistant() {
         </ToolCard>
 
         <ToolCard title="Product Description Generator" result={tools.generateDescription.data} mutation={tools.generateDescription}>
-          <input placeholder="Product name" value={descForm.productName} onChange={(e) => setDescForm((p) => ({ ...p, productName: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input placeholder="Keywords (comma separated)" value={descForm.keywords} onChange={(e) => setDescForm((p) => ({ ...p, keywords: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Product name" placeholder="Product name" value={descForm.productName} onChange={(e) => setDescForm((p) => ({ ...p, productName: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Keywords" placeholder="Keywords (comma separated)" value={descForm.keywords} onChange={(e) => setDescForm((p) => ({ ...p, keywords: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button
             variant="primary"
             onClick={() => tools.generateDescription.mutate({ productName: descForm.productName, keywords: descForm.keywords.split(',').map((k) => k.trim()).filter(Boolean) })}
@@ -69,8 +69,8 @@ export default function AiBusinessAssistant() {
         </ToolCard>
 
         <ToolCard title="Listing Translator" result={tools.translate.data} mutation={tools.translate}>
-          <textarea rows={2} placeholder="Text to translate" value={translateForm.text} onChange={(e) => setTranslateForm((p) => ({ ...p, text: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <select value={translateForm.targetLanguage} onChange={(e) => setTranslateForm((p) => ({ ...p, targetLanguage: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm">
+          <textarea aria-label="Text to translate" rows={2} placeholder="Text to translate" value={translateForm.text} onChange={(e) => setTranslateForm((p) => ({ ...p, text: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <select aria-label="Target Language" value={translateForm.targetLanguage} onChange={(e) => setTranslateForm((p) => ({ ...p, targetLanguage: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm">
             <option value="bn">Bengali</option>
             <option value="en">English</option>
           </select>
@@ -80,8 +80,8 @@ export default function AiBusinessAssistant() {
         </ToolCard>
 
         <ToolCard title="Demand Forecast" result={tools.forecastDemand.data} mutation={tools.forecastDemand}>
-          <input placeholder="Product ID" value={demandForm.productId} onChange={(e) => setDemandForm((p) => ({ ...p, productId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input type="number" min="1" placeholder="Horizon (weeks)" value={demandForm.horizonWeeks} onChange={(e) => setDemandForm((p) => ({ ...p, horizonWeeks: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Product ID" placeholder="Product ID" value={demandForm.productId} onChange={(e) => setDemandForm((p) => ({ ...p, productId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Horizon" type="number" min="1" placeholder="Horizon (weeks)" value={demandForm.horizonWeeks} onChange={(e) => setDemandForm((p) => ({ ...p, horizonWeeks: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button
             variant="primary"
             onClick={() => tools.forecastDemand.mutate({ productId: demandForm.productId, horizonWeeks: Number(demandForm.horizonWeeks) || 4 })}
@@ -92,10 +92,10 @@ export default function AiBusinessAssistant() {
         </ToolCard>
 
         <ToolCard title="Production Planner" result={tools.planProduction.data} mutation={tools.planProduction}>
-          <input placeholder="Product ID" value={productionForm.productId} onChange={(e) => setProductionForm((p) => ({ ...p, productId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Product ID" placeholder="Product ID" value={productionForm.productId} onChange={(e) => setProductionForm((p) => ({ ...p, productId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <div className="grid grid-cols-2 gap-2">
-            <input type="number" min="1" placeholder="Target quantity" value={productionForm.targetQuantity} onChange={(e) => setProductionForm((p) => ({ ...p, targetQuantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            <input type="number" min="1" placeholder="Daily capacity" value={productionForm.dailyProductionCapacity} onChange={(e) => setProductionForm((p) => ({ ...p, dailyProductionCapacity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Target quantity" type="number" min="1" placeholder="Target quantity" value={productionForm.targetQuantity} onChange={(e) => setProductionForm((p) => ({ ...p, targetQuantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+            <input aria-label="Daily capacity" type="number" min="1" placeholder="Daily capacity" value={productionForm.dailyProductionCapacity} onChange={(e) => setProductionForm((p) => ({ ...p, dailyProductionCapacity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
           </div>
           <Button
             variant="primary"

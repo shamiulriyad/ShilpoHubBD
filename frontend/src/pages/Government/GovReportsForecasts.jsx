@@ -20,14 +20,14 @@ function ReportsTab() {
   return (
     <div>
       <form onSubmit={handleGenerate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-        <input required placeholder="Report title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-        <select value={form.reportType} onChange={(e) => setForm((p) => ({ ...p, reportType: e.target.value }))} className={inputClass}>
+        <input aria-label="Report title" required placeholder="Report title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+        <select aria-label="Report Type" value={form.reportType} onChange={(e) => setForm((p) => ({ ...p, reportType: e.target.value }))} className={inputClass}>
           {['Monthly', 'Quarterly', 'Annual', 'Custom'].map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
         <label className="flex items-center gap-2 text-sm text-body/70">
           <input type="checkbox" checked={form.publish} onChange={(e) => setForm((p) => ({ ...p, publish: e.target.checked }))} /> Publish immediately
         </label>
-        <textarea rows={2} placeholder="Highlights" value={form.highlights} onChange={(e) => setForm((p) => ({ ...p, highlights: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+        <textarea aria-label="Highlights" rows={2} placeholder="Highlights" value={form.highlights} onChange={(e) => setForm((p) => ({ ...p, highlights: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
         <Button type="submit" variant="primary" className="sm:col-span-2" disabled={generateReport.isPending}>
           {generateReport.isPending ? 'Generating…' : 'Generate Report'}
         </Button>
@@ -72,8 +72,8 @@ function ForecastsTab() {
   return (
     <div>
       <form onSubmit={handleGenerate} className="mb-6 flex flex-wrap gap-2 rounded-xl border border-border bg-surface p-4">
-        <input required placeholder="Forecast title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-        <input type="number" min="1" max="60" value={form.horizonMonths} onChange={(e) => setForm((p) => ({ ...p, horizonMonths: e.target.value }))} className={`${inputClass} w-24`} />
+        <input aria-label="Forecast title" required placeholder="Forecast title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+        <input aria-label="Horizon Months" type="number" min="1" max="60" value={form.horizonMonths} onChange={(e) => setForm((p) => ({ ...p, horizonMonths: e.target.value }))} className={`${inputClass} w-24`} />
         <Button type="submit" variant="primary" disabled={generateForecast.isPending}>{generateForecast.isPending ? 'Generating…' : 'Generate Forecast'}</Button>
       </form>
 

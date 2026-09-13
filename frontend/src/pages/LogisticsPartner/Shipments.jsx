@@ -47,7 +47,8 @@ function ShipmentDetail({ id }) {
 
   const shipment = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading shipment…</p>;
-  if (!shipment) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!shipment) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   const timelineEvents = shipment.events.map((e) => ({
     status: e.toStatus || e.eventType,
@@ -83,12 +84,12 @@ function ShipmentDetail({ id }) {
       {!isFinal && (
         <div className="flex flex-wrap items-end gap-2">
           <form onSubmit={handleAdvance} className="flex flex-wrap items-end gap-2">
-            <select value={statusChoice} onChange={(e) => setStatusChoice(e.target.value)} className={inputClass}>
+            <select aria-label="Status Choice" value={statusChoice} onChange={(e) => setStatusChoice(e.target.value)} className={inputClass}>
               <option value="">Advance status…</option>
               {advanceStatuses.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
             {statusChoice === 'DeliveryFailed' && (
-              <input placeholder="Failure reason" value={failureReason} onChange={(e) => setFailureReason(e.target.value)} className={inputClass} />
+              <input aria-label="Failure reason" placeholder="Failure reason" value={failureReason} onChange={(e) => setFailureReason(e.target.value)} className={inputClass} />
             )}
             <Button type="submit" variant="secondary" size="sm" disabled={updateStatus.isPending || !statusChoice}>Update</Button>
           </form>
@@ -155,7 +156,7 @@ export default function Shipments() {
 
       <div className="mb-4 flex items-center gap-2">
         <span className="text-xs text-body/60">Filter:</span>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={inputClass}>
+        <select aria-label="Status Filter" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={inputClass}>
           <option value="">All statuses</option>
           {['Created', ...advanceStatuses, 'Delivered', 'Cancelled'].map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
@@ -163,7 +164,7 @@ export default function Shipments() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <select value={form.serviceLevel} onChange={(e) => setForm((p) => ({ ...p, serviceLevel: e.target.value }))} className={inputClass}>
+          <select aria-label="Service Level" value={form.serviceLevel} onChange={(e) => setForm((p) => ({ ...p, serviceLevel: e.target.value }))} className={inputClass}>
             {serviceLevels.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
           <label className="flex items-center gap-2 text-sm text-body/70">
@@ -174,11 +175,11 @@ export default function Shipments() {
           <fieldset className="sm:col-span-2">
             <legend className="mb-1 text-xs font-medium text-body/60">Origin</legend>
             <div className="grid gap-3 sm:grid-cols-2">
-              <input required placeholder="Contact name" value={form.originContactName} onChange={(e) => setForm((p) => ({ ...p, originContactName: e.target.value }))} className={inputClass} />
-              <input required placeholder="Phone" value={form.originPhone} onChange={(e) => setForm((p) => ({ ...p, originPhone: e.target.value }))} className={inputClass} />
-              <input required placeholder="Address line" value={form.originAddressLine} onChange={(e) => setForm((p) => ({ ...p, originAddressLine: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-              <input required placeholder="City" value={form.originCity} onChange={(e) => setForm((p) => ({ ...p, originCity: e.target.value }))} className={inputClass} />
-              <select value={form.originDistrictId} onChange={(e) => setForm((p) => ({ ...p, originDistrictId: e.target.value }))} className={inputClass}>
+              <input aria-label="Contact name" required placeholder="Contact name" value={form.originContactName} onChange={(e) => setForm((p) => ({ ...p, originContactName: e.target.value }))} className={inputClass} />
+              <input aria-label="Phone" required placeholder="Phone" value={form.originPhone} onChange={(e) => setForm((p) => ({ ...p, originPhone: e.target.value }))} className={inputClass} />
+              <input aria-label="Address line" required placeholder="Address line" value={form.originAddressLine} onChange={(e) => setForm((p) => ({ ...p, originAddressLine: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+              <input aria-label="City" required placeholder="City" value={form.originCity} onChange={(e) => setForm((p) => ({ ...p, originCity: e.target.value }))} className={inputClass} />
+              <select aria-label="Origin District Id" value={form.originDistrictId} onChange={(e) => setForm((p) => ({ ...p, originDistrictId: e.target.value }))} className={inputClass}>
                 <option value="">District</option>
                 {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
               </select>
@@ -188,22 +189,22 @@ export default function Shipments() {
           <fieldset className="sm:col-span-2">
             <legend className="mb-1 text-xs font-medium text-body/60">Destination</legend>
             <div className="grid gap-3 sm:grid-cols-2">
-              <input required placeholder="Recipient name" value={form.recipientName} onChange={(e) => setForm((p) => ({ ...p, recipientName: e.target.value }))} className={inputClass} />
-              <input required placeholder="Recipient phone" value={form.recipientPhone} onChange={(e) => setForm((p) => ({ ...p, recipientPhone: e.target.value }))} className={inputClass} />
-              <input required placeholder="Address line" value={form.destinationAddressLine} onChange={(e) => setForm((p) => ({ ...p, destinationAddressLine: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-              <input required placeholder="City" value={form.destinationCity} onChange={(e) => setForm((p) => ({ ...p, destinationCity: e.target.value }))} className={inputClass} />
-              <select value={form.destinationDistrictId} onChange={(e) => setForm((p) => ({ ...p, destinationDistrictId: e.target.value }))} className={inputClass}>
+              <input aria-label="Recipient name" required placeholder="Recipient name" value={form.recipientName} onChange={(e) => setForm((p) => ({ ...p, recipientName: e.target.value }))} className={inputClass} />
+              <input aria-label="Recipient phone" required placeholder="Recipient phone" value={form.recipientPhone} onChange={(e) => setForm((p) => ({ ...p, recipientPhone: e.target.value }))} className={inputClass} />
+              <input aria-label="Address line" required placeholder="Address line" value={form.destinationAddressLine} onChange={(e) => setForm((p) => ({ ...p, destinationAddressLine: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+              <input aria-label="City" required placeholder="City" value={form.destinationCity} onChange={(e) => setForm((p) => ({ ...p, destinationCity: e.target.value }))} className={inputClass} />
+              <select aria-label="Destination District Id" value={form.destinationDistrictId} onChange={(e) => setForm((p) => ({ ...p, destinationDistrictId: e.target.value }))} className={inputClass}>
                 <option value="">District</option>
                 {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
               </select>
             </div>
           </fieldset>
 
-          <input type="number" min="1" placeholder="Parcel count" value={form.parcelCount} onChange={(e) => setForm((p) => ({ ...p, parcelCount: e.target.value }))} className={inputClass} />
-          <input type="number" min="0" placeholder="Total weight (kg)" value={form.totalWeightKg} onChange={(e) => setForm((p) => ({ ...p, totalWeightKg: e.target.value }))} className={inputClass} />
-          <input type="number" min="0" placeholder="Shipping cost (৳)" value={form.shippingCost} onChange={(e) => setForm((p) => ({ ...p, shippingCost: e.target.value }))} className={inputClass} />
+          <input aria-label="Parcel count" type="number" min="1" placeholder="Parcel count" value={form.parcelCount} onChange={(e) => setForm((p) => ({ ...p, parcelCount: e.target.value }))} className={inputClass} />
+          <input aria-label="Total weight" type="number" min="0" placeholder="Total weight (kg)" value={form.totalWeightKg} onChange={(e) => setForm((p) => ({ ...p, totalWeightKg: e.target.value }))} className={inputClass} />
+          <input aria-label="Shipping cost" type="number" min="0" placeholder="Shipping cost (৳)" value={form.shippingCost} onChange={(e) => setForm((p) => ({ ...p, shippingCost: e.target.value }))} className={inputClass} />
           {form.isCashOnDelivery && (
-            <input type="number" min="0" placeholder="COD amount (৳)" value={form.codAmount} onChange={(e) => setForm((p) => ({ ...p, codAmount: e.target.value }))} className={inputClass} />
+            <input aria-label="COD amount" type="number" min="0" placeholder="COD amount (৳)" value={form.codAmount} onChange={(e) => setForm((p) => ({ ...p, codAmount: e.target.value }))} className={inputClass} />
           )}
 
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={create.isPending}>

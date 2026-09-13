@@ -48,7 +48,7 @@ export default function DesignCollaborations() {
                     ))}
                   </div>
                   <div className="flex gap-2">
-                    <input
+                    <input aria-label="Add a comment"
                       placeholder="Add a comment…"
                       value={comment}
                       onChange={(event) => setComment(event.target.value)}
@@ -61,7 +61,7 @@ export default function DesignCollaborations() {
 
                   {project.status === 'Active' && (
                     <div className="flex gap-2">
-                      <input
+                      <input aria-label="Describe this revision"
                         placeholder="Describe this revision…"
                         value={revision}
                         onChange={(event) => setRevision(event.target.value)}

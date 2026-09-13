@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, AsyncState } from '../../components/ui';
 import { useAuctions } from '../../hooks/useAuctions';
+import SafeImage from '../../components/media/SafeImage';
 
 function formatTimeRemaining(seconds) {
   if (seconds <= 0) return 'Closed';
@@ -35,7 +36,7 @@ export default function Auctions() {
             >
               <div className="mb-3 flex aspect-square items-center justify-center rounded-lg bg-background text-xs text-body/40">
                 {auction.productImageUrl ? (
-                  <img src={auction.productImageUrl} alt={auction.title} className="h-full w-full rounded-lg object-cover" />
+                  <SafeImage src={auction.productImageUrl} alt={auction.title} className="h-full w-full rounded-lg object-cover" />
                 ) : (
                   'Item Image'
                 )}

@@ -22,7 +22,8 @@ function StockDetail({ id }) {
 
   const item = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!item) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!item) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   const events = item.movements.map((m) => ({
     status: `${m.type} · ${m.quantity} → on hand ${m.quantityOnHandAfter}`,
@@ -43,28 +44,28 @@ function StockDetail({ id }) {
         <label className="flex flex-col gap-1 text-xs text-body/60">
           Issue qty
           <div className="flex gap-1">
-            <input type="number" min="1" value={qty.issue} onChange={(e) => setQty((p) => ({ ...p, issue: e.target.value }))} className={`${inputClass} w-20`} />
+            <input aria-label="Issue" type="number" min="1" value={qty.issue} onChange={(e) => setQty((p) => ({ ...p, issue: e.target.value }))} className={`${inputClass} w-20`} />
             <Button size="sm" variant="secondary" disabled={!qty.issue || issue.isPending} onClick={() => issue.mutate({ id, payload: { quantity: Number(qty.issue) } })}>Issue</Button>
           </div>
         </label>
         <label className="flex flex-col gap-1 text-xs text-body/60">
           Reserve qty
           <div className="flex gap-1">
-            <input type="number" min="1" value={qty.reserve} onChange={(e) => setQty((p) => ({ ...p, reserve: e.target.value }))} className={`${inputClass} w-20`} />
+            <input aria-label="Reserve" type="number" min="1" value={qty.reserve} onChange={(e) => setQty((p) => ({ ...p, reserve: e.target.value }))} className={`${inputClass} w-20`} />
             <Button size="sm" variant="secondary" disabled={!qty.reserve || reserve.isPending} onClick={() => reserve.mutate({ id, payload: { quantity: Number(qty.reserve) } })}>Reserve</Button>
           </div>
         </label>
         <label className="flex flex-col gap-1 text-xs text-body/60">
           Release qty
           <div className="flex gap-1">
-            <input type="number" min="1" value={qty.release} onChange={(e) => setQty((p) => ({ ...p, release: e.target.value }))} className={`${inputClass} w-20`} />
+            <input aria-label="Release" type="number" min="1" value={qty.release} onChange={(e) => setQty((p) => ({ ...p, release: e.target.value }))} className={`${inputClass} w-20`} />
             <Button size="sm" variant="secondary" disabled={!qty.release || release.isPending} onClick={() => release.mutate({ id, payload: { quantity: Number(qty.release) } })}>Release</Button>
           </div>
         </label>
         <label className="flex flex-col gap-1 text-xs text-body/60">
           Adjust to
           <div className="flex gap-1">
-            <input type="number" min="0" value={qty.adjust} onChange={(e) => setQty((p) => ({ ...p, adjust: e.target.value }))} className={`${inputClass} w-20`} />
+            <input aria-label="Adjust" type="number" min="0" value={qty.adjust} onChange={(e) => setQty((p) => ({ ...p, adjust: e.target.value }))} className={`${inputClass} w-20`} />
             <Button
               size="sm"
               variant="secondary"
@@ -120,11 +121,11 @@ export default function WarehouseStock() {
       />
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <select value={filters.warehouseId} onChange={(e) => setFilters((p) => ({ ...p, warehouseId: e.target.value }))} className={inputClass}>
+        <select aria-label="Warehouse Id" value={filters.warehouseId} onChange={(e) => setFilters((p) => ({ ...p, warehouseId: e.target.value }))} className={inputClass}>
           <option value="">All warehouses</option>
           {warehouses.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
         </select>
-        <input placeholder="Search SKU/description" value={filters.search} onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))} className={inputClass} />
+        <input aria-label="Search SKU/description" placeholder="Search SKU/description" value={filters.search} onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))} className={inputClass} />
         <label className="flex items-center gap-2 text-sm text-body/70">
           <input type="checkbox" checked={filters.lowStock} onChange={(e) => setFilters((p) => ({ ...p, lowStock: e.target.checked }))} />
           Low stock
@@ -137,16 +138,16 @@ export default function WarehouseStock() {
 
       {showForm && (
         <form onSubmit={handleReceive} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <select required value={form.warehouseId} onChange={(e) => setForm((p) => ({ ...p, warehouseId: e.target.value }))} className={inputClass}>
+          <select aria-label="Warehouse Id" required value={form.warehouseId} onChange={(e) => setForm((p) => ({ ...p, warehouseId: e.target.value }))} className={inputClass}>
             <option value="">Select warehouse</option>
             {warehouses.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
           </select>
-          <input required placeholder="SKU" value={form.sku} onChange={(e) => setForm((p) => ({ ...p, sku: e.target.value }))} className={inputClass} />
-          <input required placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <input placeholder="Unit of measure" value={form.unitOfMeasure} onChange={(e) => setForm((p) => ({ ...p, unitOfMeasure: e.target.value }))} className={inputClass} />
-          <input required type="number" min="1" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className={inputClass} />
-          <input placeholder="Batch number" value={form.batchNumber} onChange={(e) => setForm((p) => ({ ...p, batchNumber: e.target.value }))} className={inputClass} />
-          <input type="number" min="0" placeholder="Unit value (৳)" value={form.unitValue} onChange={(e) => setForm((p) => ({ ...p, unitValue: e.target.value }))} className={inputClass} />
+          <input aria-label="SKU" required placeholder="SKU" value={form.sku} onChange={(e) => setForm((p) => ({ ...p, sku: e.target.value }))} className={inputClass} />
+          <input aria-label="Description" required placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Unit of measure" placeholder="Unit of measure" value={form.unitOfMeasure} onChange={(e) => setForm((p) => ({ ...p, unitOfMeasure: e.target.value }))} className={inputClass} />
+          <input aria-label="Quantity" required type="number" min="1" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className={inputClass} />
+          <input aria-label="Batch number" placeholder="Batch number" value={form.batchNumber} onChange={(e) => setForm((p) => ({ ...p, batchNumber: e.target.value }))} className={inputClass} />
+          <input aria-label="Unit value" type="number" min="0" placeholder="Unit value (৳)" value={form.unitValue} onChange={(e) => setForm((p) => ({ ...p, unitValue: e.target.value }))} className={inputClass} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={receive.isPending}>
             {receive.isPending ? 'Receiving…' : 'Receive Stock'}
           </Button>

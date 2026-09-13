@@ -69,13 +69,13 @@ export default function GovernmentPage() {
 
       {showForm && (
         <form onSubmit={handleCapture} className="mt-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Label" value={form.label} onChange={(e) => setForm((p) => ({ ...p, label: e.target.value }))} className={inputClass} />
-          <select value={form.period} onChange={(e) => setForm((p) => ({ ...p, period: e.target.value }))} className={inputClass}>
+          <input aria-label="Label" required placeholder="Label" value={form.label} onChange={(e) => setForm((p) => ({ ...p, label: e.target.value }))} className={inputClass} />
+          <select aria-label="Period" value={form.period} onChange={(e) => setForm((p) => ({ ...p, period: e.target.value }))} className={inputClass}>
             {['Monthly', 'Quarterly', 'Yearly', 'Custom'].map((p) => <option key={p} value={p}>{p}</option>)}
           </select>
-          <input required type="date" value={form.periodStart} onChange={(e) => setForm((p) => ({ ...p, periodStart: e.target.value }))} className={inputClass} />
-          <input required type="date" value={form.periodEnd} onChange={(e) => setForm((p) => ({ ...p, periodEnd: e.target.value }))} className={inputClass} />
-          <textarea rows={2} placeholder="Notes" value={form.notes} onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Period Start" required type="date" value={form.periodStart} onChange={(e) => setForm((p) => ({ ...p, periodStart: e.target.value }))} className={inputClass} />
+          <input aria-label="Period End" required type="date" value={form.periodEnd} onChange={(e) => setForm((p) => ({ ...p, periodEnd: e.target.value }))} className={inputClass} />
+          <textarea aria-label="Notes" rows={2} placeholder="Notes" value={form.notes} onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={captureSnapshot.isPending}>
             {captureSnapshot.isPending ? 'Capturing…' : 'Capture Snapshot'}
           </Button>
@@ -86,7 +86,7 @@ export default function GovernmentPage() {
         <div>
           <div className="mb-2 flex items-center justify-between">
             <h3 className="text-sm font-semibold text-heading">District Rankings</h3>
-            <select value={metric} onChange={(e) => setMetric(e.target.value)} className={inputClass}>
+            <select aria-label="Metric" value={metric} onChange={(e) => setMetric(e.target.value)} className={inputClass}>
               {rankingMetrics.map((m) => <option key={m} value={m}>{m}</option>)}
             </select>
           </div>
@@ -119,7 +119,7 @@ export default function GovernmentPage() {
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-sm font-semibold text-heading">Heritage Intelligence Index</h3>
           <div className="flex gap-2">
-            <select value={indexType} onChange={(e) => setIndexType(e.target.value)} className={inputClass}>
+            <select aria-label="Index Type" value={indexType} onChange={(e) => setIndexType(e.target.value)} className={inputClass}>
               {indexTypes.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
             <Button variant="primary" disabled={computeIndex.isPending} onClick={() => computeIndex.mutate({ indexType, scope: 'National' })}>

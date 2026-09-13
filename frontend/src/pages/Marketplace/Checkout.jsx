@@ -72,14 +72,14 @@ export default function Checkout() {
           <div>
             <p className="mb-3 text-sm font-semibold text-heading">Shipping Address</p>
             <div className="grid gap-4 sm:grid-cols-2">
-              <input
+              <input aria-label="Full Name"
                 required
                 placeholder="Full Name"
                 value={form.recipientName}
                 onChange={update('recipientName')}
                 className="rounded-md border border-border bg-background px-3 py-2 text-sm"
               />
-              <input
+              <input aria-label="Phone Number"
                 required
                 placeholder="Phone Number (01XXXXXXXXX)"
                 value={form.recipientPhone}
@@ -87,7 +87,7 @@ export default function Checkout() {
                 pattern="01[3-9]\d{8}"
                 className="rounded-md border border-border bg-background px-3 py-2 text-sm"
               />
-              <select
+              <select aria-label="Shipping District Id"
                 required
                 value={form.shippingDistrictId}
                 onChange={update('shippingDistrictId')}
@@ -100,7 +100,7 @@ export default function Checkout() {
                   </option>
                 ))}
               </select>
-              <input
+              <input aria-label="Full Address"
                 required
                 placeholder="Full Address"
                 value={form.shippingAddressLine}

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, CategoryFilter, AsyncState } from '../../components/ui';
 import { useTouristServices } from '../../hooks/useTouristServices';
+import SafeImage from '../../components/media/SafeImage';
 
 const types = ['GuideBooking', 'WorkshopBooking', 'ArtisanHomeVisit', 'HomestayBooking', 'TransportationBooking'];
 const typeLabels = {
@@ -47,7 +48,7 @@ export default function TouristServices() {
             >
               <div className="flex aspect-[4/3] items-center justify-center bg-background text-xs text-body/40">
                 {service.imageUrl ? (
-                  <img src={service.imageUrl} alt={service.title} className="h-full w-full object-cover" />
+                  <SafeImage src={service.imageUrl} alt={service.title} className="h-full w-full object-cover" />
                 ) : (
                   'Service Photo'
                 )}

@@ -15,7 +15,8 @@ function ExperimentDetail({ id }) {
 
   const experiment = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!experiment) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!experiment) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   return (
     <div className="mt-4 space-y-4 border-t border-border pt-4">
@@ -95,12 +96,12 @@ export default function InnovationExperiments() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Experiment name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <select value={form.modelType} onChange={(e) => setForm((p) => ({ ...p, modelType: e.target.value }))} className={inputClass}>
+          <input aria-label="Experiment name" required placeholder="Experiment name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <select aria-label="Model Type" value={form.modelType} onChange={(e) => setForm((p) => ({ ...p, modelType: e.target.value }))} className={inputClass}>
             {modelTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <input placeholder="Framework (e.g. PyTorch)" value={form.framework} onChange={(e) => setForm((p) => ({ ...p, framework: e.target.value }))} className={inputClass} />
-          <textarea required rows={2} placeholder="Objective" value={form.objective} onChange={(e) => setForm((p) => ({ ...p, objective: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Framework" placeholder="Framework (e.g. PyTorch)" value={form.framework} onChange={(e) => setForm((p) => ({ ...p, framework: e.target.value }))} className={inputClass} />
+          <textarea aria-label="Objective" required rows={2} placeholder="Objective" value={form.objective} onChange={(e) => setForm((p) => ({ ...p, objective: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={create.isPending}>{create.isPending ? 'Creating…' : 'Create Experiment'}</Button>
         </form>
       )}

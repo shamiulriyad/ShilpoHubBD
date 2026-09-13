@@ -28,15 +28,15 @@ function SimulationsTab() {
   return (
     <div>
       <form onSubmit={handleRun} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-        <input required placeholder="Scenario title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-        <select value={form.simulationType} onChange={(e) => setForm((p) => ({ ...p, simulationType: e.target.value }))} className={inputClass}>
+        <input aria-label="Scenario title" required placeholder="Scenario title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+        <select aria-label="Simulation Type" value={form.simulationType} onChange={(e) => setForm((p) => ({ ...p, simulationType: e.target.value }))} className={inputClass}>
           {simulationTypes.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
-        <select value={form.scope} onChange={(e) => setForm((p) => ({ ...p, scope: e.target.value }))} className={inputClass}>
+        <select aria-label="Scope" value={form.scope} onChange={(e) => setForm((p) => ({ ...p, scope: e.target.value }))} className={inputClass}>
           {scopes.map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
-        <input type="number" min="3" max="120" placeholder="Horizon (months)" value={form.horizonMonths} onChange={(e) => setForm((p) => ({ ...p, horizonMonths: e.target.value }))} className={inputClass} />
-        <input type="number" min="0" placeholder="Budget (৳, optional)" value={form.budget} onChange={(e) => setForm((p) => ({ ...p, budget: e.target.value }))} className={inputClass} />
+        <input aria-label="Horizon" type="number" min="3" max="120" placeholder="Horizon (months)" value={form.horizonMonths} onChange={(e) => setForm((p) => ({ ...p, horizonMonths: e.target.value }))} className={inputClass} />
+        <input aria-label="Budget" type="number" min="0" placeholder="Budget (৳, optional)" value={form.budget} onChange={(e) => setForm((p) => ({ ...p, budget: e.target.value }))} className={inputClass} />
         <Button type="submit" variant="primary" className="sm:col-span-2" disabled={runSimulation.isPending}>
           {runSimulation.isPending ? 'Simulating…' : 'Run Simulation'}
         </Button>
@@ -67,7 +67,8 @@ function ComplianceDetail({ id }) {
 
   const record = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-2 text-xs text-body/60">Loading…</p>;
-  if (!record) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!record) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -87,8 +88,8 @@ function ComplianceDetail({ id }) {
         </div>
       ))}
       <form onSubmit={handleAdd} className="flex flex-wrap gap-2">
-        <input placeholder="Code" value={req.code} onChange={(e) => setReq((p) => ({ ...p, code: e.target.value }))} className={`${inputClass} w-24`} />
-        <input placeholder="Requirement title" value={req.title} onChange={(e) => setReq((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+        <input aria-label="Code" placeholder="Code" value={req.code} onChange={(e) => setReq((p) => ({ ...p, code: e.target.value }))} className={`${inputClass} w-24`} />
+        <input aria-label="Requirement title" placeholder="Requirement title" value={req.title} onChange={(e) => setReq((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
         <Button type="submit" variant="secondary" size="sm" disabled={upsertRequirement.isPending}>Add</Button>
       </form>
     </div>
@@ -117,11 +118,11 @@ function ComplianceTab() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <select value={form.entityType} onChange={(e) => setForm((p) => ({ ...p, entityType: e.target.value }))} className={inputClass}>
+          <select aria-label="Entity Type" value={form.entityType} onChange={(e) => setForm((p) => ({ ...p, entityType: e.target.value }))} className={inputClass}>
             {entityTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <input required placeholder="Entity label" value={form.entityLabel} onChange={(e) => setForm((p) => ({ ...p, entityLabel: e.target.value }))} className={inputClass} />
-          <input required placeholder="Framework (e.g. Fair Trade)" value={form.framework} onChange={(e) => setForm((p) => ({ ...p, framework: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Entity label" required placeholder="Entity label" value={form.entityLabel} onChange={(e) => setForm((p) => ({ ...p, entityLabel: e.target.value }))} className={inputClass} />
+          <input aria-label="Framework" required placeholder="Framework (e.g. Fair Trade)" value={form.framework} onChange={(e) => setForm((p) => ({ ...p, framework: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={createComplianceRecord.isPending}>Create Record</Button>
         </form>
       )}

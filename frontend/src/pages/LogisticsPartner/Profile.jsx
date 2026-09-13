@@ -113,22 +113,22 @@ export default function LogisticsPartnerProfile() {
         <p className="py-10 text-center text-sm text-body/60">Loading…</p>
       ) : (
         <form onSubmit={handleSubmit} className="grid gap-4 rounded-xl border border-border bg-surface p-6 sm:grid-cols-2">
-          <input required placeholder="Company name" value={form.companyName} onChange={set('companyName')} className={inputClass} />
-          <input placeholder="Legal name (optional)" value={form.legalName || ''} onChange={set('legalName')} className={inputClass} />
-          <input placeholder="Registration number" value={form.registrationNumber || ''} onChange={set('registrationNumber')} className={inputClass} />
-          <input placeholder="Country" value={form.country} onChange={set('country')} className={inputClass} />
+          <input aria-label="Company name" required placeholder="Company name" value={form.companyName} onChange={set('companyName')} className={inputClass} />
+          <input aria-label="Legal name" placeholder="Legal name (optional)" value={form.legalName || ''} onChange={set('legalName')} className={inputClass} />
+          <input aria-label="Registration number" placeholder="Registration number" value={form.registrationNumber || ''} onChange={set('registrationNumber')} className={inputClass} />
+          <input aria-label="Country" placeholder="Country" value={form.country} onChange={set('country')} className={inputClass} />
 
-          <input required placeholder="Contact person name" value={form.contactPersonName} onChange={set('contactPersonName')} className={inputClass} />
-          <input required placeholder="Contact phone" value={form.contactPhone} onChange={set('contactPhone')} className={inputClass} />
-          <input required type="email" placeholder="Contact email" value={form.contactEmail} onChange={set('contactEmail')} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Contact person name" required placeholder="Contact person name" value={form.contactPersonName} onChange={set('contactPersonName')} className={inputClass} />
+          <input aria-label="Contact phone" required placeholder="Contact phone" value={form.contactPhone} onChange={set('contactPhone')} className={inputClass} />
+          <input aria-label="Contact email" required type="email" placeholder="Contact email" value={form.contactEmail} onChange={set('contactEmail')} className={`${inputClass} sm:col-span-2`} />
 
-          <input required placeholder="Base address line" value={form.baseAddressLine} onChange={set('baseAddressLine')} className={`${inputClass} sm:col-span-2`} />
-          <input required placeholder="Base city" value={form.baseCity} onChange={set('baseCity')} className={inputClass} />
-          <select value={form.baseDistrictId || ''} onChange={set('baseDistrictId')} className={inputClass}>
+          <input aria-label="Base address line" required placeholder="Base address line" value={form.baseAddressLine} onChange={set('baseAddressLine')} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Base city" required placeholder="Base city" value={form.baseCity} onChange={set('baseCity')} className={inputClass} />
+          <select aria-label="Base district" value={form.baseDistrictId || ''} onChange={set('baseDistrictId')} className={inputClass}>
             <option value="">Select base district</option>
             {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
-          <input placeholder="Postal code" value={form.basePostalCode || ''} onChange={set('basePostalCode')} className={inputClass} />
+          <input aria-label="Postal code" placeholder="Postal code" value={form.basePostalCode || ''} onChange={set('basePostalCode')} className={inputClass} />
 
           <label className="flex flex-col gap-1 text-xs text-body/60">
             Fleet size
@@ -172,7 +172,7 @@ export default function LogisticsPartnerProfile() {
             </label>
           </div>
 
-          <textarea rows={3} placeholder="Notes" value={form.notes || ''} onChange={set('notes')} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Notes" rows={3} placeholder="Notes" value={form.notes || ''} onChange={set('notes')} className={`${inputClass} sm:col-span-2`} />
 
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={upsert.isPending}>
             {upsert.isPending ? 'Saving…' : 'Save Profile'}
@@ -208,7 +208,7 @@ export default function LogisticsPartnerProfile() {
           </div>
 
           <form onSubmit={handleAddServiceArea} className="flex flex-wrap items-end gap-3">
-            <select
+            <select aria-label="District Id"
               value={areaForm.districtId}
               onChange={(e) => setAreaForm((prev) => ({ ...prev, districtId: e.target.value }))}
               className={inputClass}

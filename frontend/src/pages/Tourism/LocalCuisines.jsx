@@ -1,6 +1,7 @@
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, AsyncState } from '../../components/ui';
 import { useLocalCuisines } from '../../hooks/useLocalCuisines';
+import SafeImage from '../../components/media/SafeImage';
 
 export default function LocalCuisines() {
   const { data, isLoading, isError, error } = useLocalCuisines({ pageSize: 50 });
@@ -23,7 +24,7 @@ export default function LocalCuisines() {
             <div key={cuisine.id} className="overflow-hidden rounded-xl border border-border bg-surface">
               <div className="flex aspect-[4/3] items-center justify-center bg-background text-xs text-body/40">
                 {cuisine.imageUrl ? (
-                  <img src={cuisine.imageUrl} alt={cuisine.name} className="h-full w-full object-cover" />
+                  <SafeImage src={cuisine.imageUrl} alt={cuisine.name} className="h-full w-full object-cover" />
                 ) : (
                   'Dish Photo'
                 )}

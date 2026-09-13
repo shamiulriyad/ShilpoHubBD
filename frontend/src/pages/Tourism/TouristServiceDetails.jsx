@@ -5,6 +5,7 @@ import { PageHeader, Button, AsyncState } from '../../components/ui';
 import { useTouristService, useServiceAvailabilitySlots } from '../../hooks/useTouristServices';
 import { useBookingMutations } from '../../hooks/useBookings';
 import { useAuth } from '../../hooks/useAuth';
+import SafeImage from '../../components/media/SafeImage';
 
 export default function TouristServiceDetails() {
   const { serviceId } = useParams();
@@ -45,7 +46,7 @@ export default function TouristServiceDetails() {
               <div>
                 <div className="flex aspect-video items-center justify-center rounded-2xl border border-border bg-background text-sm text-body/40">
                   {service.imageUrl ? (
-                    <img src={service.imageUrl} alt={service.title} className="h-full w-full rounded-2xl object-cover" />
+                    <SafeImage src={service.imageUrl} alt={service.title} className="h-full w-full rounded-2xl object-cover" />
                   ) : (
                     'Service Photo'
                   )}
@@ -77,7 +78,7 @@ export default function TouristServiceDetails() {
 
                 <div>
                   <label className="mb-1.5 block text-sm font-medium text-body/70">Party size</label>
-                  <input
+                  <input aria-label="Party Size"
                     type="number"
                     min={1}
                     value={partySize}

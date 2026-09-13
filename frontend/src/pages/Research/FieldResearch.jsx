@@ -35,8 +35,8 @@ function QuestionsTab({ survey }) {
         {survey.questions.length === 0 && <p className="text-sm text-body/60">No questions yet.</p>}
       </div>
       <form onSubmit={handleAdd} className="flex flex-wrap gap-2">
-        <input placeholder="Question text" value={form.text} onChange={(e) => setForm((p) => ({ ...p, text: e.target.value }))} className={`${inputClass} flex-1`} />
-        <select value={form.questionType} onChange={(e) => setForm((p) => ({ ...p, questionType: e.target.value }))} className={inputClass}>
+        <input aria-label="Question text" placeholder="Question text" value={form.text} onChange={(e) => setForm((p) => ({ ...p, text: e.target.value }))} className={`${inputClass} flex-1`} />
+        <select aria-label="Question Type" value={form.questionType} onChange={(e) => setForm((p) => ({ ...p, questionType: e.target.value }))} className={inputClass}>
           {questionTypes.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
         <label className="flex items-center gap-1 text-xs text-body/60">
@@ -64,7 +64,7 @@ function FieldResearchersTab({ survey }) {
         {survey.fieldAssignments.length === 0 && <p className="text-sm text-body/60">No field researchers assigned yet.</p>}
       </div>
       <div className="flex gap-2">
-        <input placeholder="User ID" value={userId} onChange={(e) => setUserId(e.target.value)} className={`${inputClass} flex-1`} />
+        <input aria-label="User ID" placeholder="User ID" value={userId} onChange={(e) => setUserId(e.target.value)} className={`${inputClass} flex-1`} />
         <Button
           variant="secondary"
           size="sm"
@@ -117,11 +117,11 @@ function EvidenceTab({ surveyId }) {
   return (
     <div>
       <form onSubmit={handleAdd} className="mb-3 flex flex-wrap gap-2">
-        <select value={form.evidenceType} onChange={(e) => setForm((p) => ({ ...p, evidenceType: e.target.value }))} className={inputClass}>
+        <select aria-label="Evidence Type" value={form.evidenceType} onChange={(e) => setForm((p) => ({ ...p, evidenceType: e.target.value }))} className={inputClass}>
           {evidenceTypes.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
-        <input placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-        <input placeholder="File URL" value={form.fileUrl} onChange={(e) => setForm((p) => ({ ...p, fileUrl: e.target.value }))} className={`${inputClass} flex-1`} />
+        <input aria-label="Title" placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
+        <input aria-label="File URL" placeholder="File URL" value={form.fileUrl} onChange={(e) => setForm((p) => ({ ...p, fileUrl: e.target.value }))} className={`${inputClass} flex-1`} />
         <Button type="submit" variant="secondary" size="sm" disabled={createEvidence.isPending}>Add</Button>
       </form>
       <div className="space-y-2">
@@ -144,13 +144,14 @@ function SurveyDetail({ id }) {
 
   const survey = detailQuery.data;
   if (detailQuery.isLoading) return <p className="py-4 text-sm text-body/60">Loading…</p>;
-  if (!survey) return null;
+  if (detailQuery.isError) return <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">Unable to load this record. It may have been removed or you may not have access.</p>;
+  if (!survey) return <p className="py-4 text-sm text-body/60">This record is unavailable.</p>;
 
   return (
     <div className="mt-4 border-t border-border pt-4">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-body/60">{survey.responseCount} response(s) · {survey.evidenceCount} evidence item(s)</p>
-        <select value={survey.status} onChange={(e) => updateStatus.mutate({ id, payload: { status: e.target.value } })} className={inputClass}>
+        <select aria-label="Status" value={survey.status} onChange={(e) => updateStatus.mutate({ id, payload: { status: e.target.value } })} className={inputClass}>
           {['Draft', 'Open', 'Closed', 'Archived'].map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
       </div>
@@ -195,9 +196,9 @@ export default function FieldResearch() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <textarea required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <input placeholder="Target region" value={form.targetRegion} onChange={(e) => setForm((p) => ({ ...p, targetRegion: e.target.value }))} className={inputClass} />
+          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <textarea aria-label="Description" required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Target region" placeholder="Target region" value={form.targetRegion} onChange={(e) => setForm((p) => ({ ...p, targetRegion: e.target.value }))} className={inputClass} />
           <label className="flex items-center gap-2 text-sm text-body/70">
             <input type="checkbox" checked={form.allowAnonymousResponses} onChange={(e) => setForm((p) => ({ ...p, allowAnonymousResponses: e.target.checked }))} /> Allow anonymous responses
           </label>

@@ -47,9 +47,9 @@ export default function Sustainability() {
       <SectionHeader eyebrow="Materials" title="Sustainable Material Records" />
       <form onSubmit={handleAddMaterial} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
         <div className="grid gap-3 sm:grid-cols-3">
-          <input required placeholder="Material name" value={material.materialName} onChange={(e) => setMaterial((p) => ({ ...p, materialName: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required type="number" placeholder="Quantity used" value={material.quantityUsed} onChange={(e) => setMaterial((p) => ({ ...p, quantityUsed: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input required placeholder="Unit (kg, m, etc.)" value={material.unit} onChange={(e) => setMaterial((p) => ({ ...p, unit: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Material name" required placeholder="Material name" value={material.materialName} onChange={(e) => setMaterial((p) => ({ ...p, materialName: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Quantity used" required type="number" placeholder="Quantity used" value={material.quantityUsed} onChange={(e) => setMaterial((p) => ({ ...p, quantityUsed: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Unit" required placeholder="Unit (kg, m, etc.)" value={material.unit} onChange={(e) => setMaterial((p) => ({ ...p, unit: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
         </div>
         <div className="flex flex-wrap gap-4 text-sm">
           {['isRecycled', 'isRenewable', 'isLocallySourced', 'isBiodegradable'].map((key) => (
@@ -73,10 +73,10 @@ export default function Sustainability() {
 
       <SectionHeader eyebrow="Certifications" title="Sustainability Certifications" />
       <form onSubmit={handleAddCert} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-        <input required placeholder="Material name" value={cert.materialName} onChange={(e) => setCert((p) => ({ ...p, materialName: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-        <input required placeholder="Certifying body" value={cert.certifyingBody} onChange={(e) => setCert((p) => ({ ...p, certifyingBody: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-        <input required placeholder="Certificate reference" value={cert.certificateReference} onChange={(e) => setCert((p) => ({ ...p, certificateReference: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
-        <input required type="date" value={cert.issuedAt} onChange={(e) => setCert((p) => ({ ...p, issuedAt: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+        <input aria-label="Material name" required placeholder="Material name" value={cert.materialName} onChange={(e) => setCert((p) => ({ ...p, materialName: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+        <input aria-label="Certifying body" required placeholder="Certifying body" value={cert.certifyingBody} onChange={(e) => setCert((p) => ({ ...p, certifyingBody: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+        <input aria-label="Certificate reference" required placeholder="Certificate reference" value={cert.certificateReference} onChange={(e) => setCert((p) => ({ ...p, certificateReference: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+        <input aria-label="Issued At" required type="date" value={cert.issuedAt} onChange={(e) => setCert((p) => ({ ...p, issuedAt: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
         <Button type="submit" variant="primary" className="sm:col-span-2" disabled={addCertification.isPending}>Add Certification</Button>
       </form>
       <div className="divide-y divide-border rounded-xl border border-border bg-surface">

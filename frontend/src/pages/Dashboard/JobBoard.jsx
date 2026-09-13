@@ -31,7 +31,7 @@ function BrowseTab() {
               <Badge>{j.applicationCount} applicant(s)</Badge>
             </div>
             <div className="mt-2 flex gap-2">
-              <input
+              <input aria-label="Short cover message"
                 placeholder="Short cover message"
                 value={coverMessage[j.id] || ''}
                 onChange={(e) => setCoverMessage((p) => ({ ...p, [j.id]: e.target.value }))}
@@ -131,12 +131,12 @@ function PostingsTab() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2">
-          <input required placeholder="Job title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
-          <select value={form.employmentType} onChange={(e) => setForm((p) => ({ ...p, employmentType: e.target.value }))} className={inputClass}>
+          <input aria-label="Job title" required placeholder="Job title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <select aria-label="Employment Type" value={form.employmentType} onChange={(e) => setForm((p) => ({ ...p, employmentType: e.target.value }))} className={inputClass}>
             {employmentTypes.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
-          <input placeholder="Location" value={form.location} onChange={(e) => setForm((p) => ({ ...p, location: e.target.value }))} className={inputClass} />
-          <textarea required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Location" placeholder="Location" value={form.location} onChange={(e) => setForm((p) => ({ ...p, location: e.target.value }))} className={inputClass} />
+          <textarea aria-label="Description" required rows={2} placeholder="Description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={createListing.isPending}>Create Listing</Button>
         </form>
       )}
@@ -181,8 +181,8 @@ function MatchesTab() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-2">
-        <input placeholder="Location" value={form.location} onChange={(e) => setForm((p) => ({ ...p, location: e.target.value }))} className={inputClass} />
-        <input type="number" min="0" placeholder="Years of experience" value={form.yearsOfExperience} onChange={(e) => setForm((p) => ({ ...p, yearsOfExperience: e.target.value }))} className={inputClass} />
+        <input aria-label="Location" placeholder="Location" value={form.location} onChange={(e) => setForm((p) => ({ ...p, location: e.target.value }))} className={inputClass} />
+        <input aria-label="Years of experience" type="number" min="0" placeholder="Years of experience" value={form.yearsOfExperience} onChange={(e) => setForm((p) => ({ ...p, yearsOfExperience: e.target.value }))} className={inputClass} />
         <Button
           variant="primary"
           disabled={getRecommendedJobs.isPending}

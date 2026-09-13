@@ -4,6 +4,7 @@ import { PageHeader, QueryState } from '../../components/ui';
 import { ProductCard } from '../../components/cards';
 import { useVillage, useProducts } from '../../hooks/queries/useCatalog';
 import { mapProduct } from '../../utils/mappers';
+import SafeImage from '../../components/media/SafeImage';
 
 export default function VillageDetails() {
   const { villageId } = useParams();
@@ -32,7 +33,7 @@ export default function VillageDetails() {
             />
 
             {v.imageUrl ? (
-              <img
+              <SafeImage
                 src={v.imageUrl}
                 alt={v.name}
                 className="mb-10 aspect-[21/9] w-full rounded-2xl border border-border object-cover"
