@@ -27,17 +27,12 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         >
           ☰
         </button>
-
-        <Link
-          to={routePaths.home}
-          className="flex shrink-0 items-center gap-2 text-base font-bold text-title"
-        >
+        <Link to={routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title">
           <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs text-surface">
             শি
           </span>
           <span className="hidden sm:inline">ShilpoHub</span>
         </Link>
-
         <div className="ml-auto">
           <ProfileDropdown />
         </div>
@@ -69,12 +64,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
               Close
             </button>
           </div>
-
-          <Sidebar
-            items={items}
-            title={title}
-            onNavigate={() => setSidebarOpen(false)}
-          />
+          <Sidebar items={items} title={title} onNavigate={() => setSidebarOpen(false)} />
         </div>
 
         <main className="min-w-0 flex-1">
