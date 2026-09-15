@@ -103,24 +103,11 @@ function GroupedNav({ groups, onNavigate, collapsed }) {
         const isGroupCollapsed = Boolean(collapsedGroups[group.section]);
         return (
           <div key={group.section}>
-<<<<<<< HEAD
-            <button
-              type="button"
-              onClick={() => toggle(group.section)}
-              aria-expanded={!isCollapsed}
-              className="mb-1.5 flex w-full items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-body/40 hover:text-body/70"
-            >
-              <span>{group.section}</span>
-              <span aria-hidden="true" className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}>
-                ›
-              </span>
-            </button>
-            {!isCollapsed && (
-=======
             {!collapsed && (
               <button
                 type="button"
                 onClick={() => toggle(group.section)}
+                aria-expanded={!isGroupCollapsed}
                 className="mb-1 flex w-full items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-[#786C66]/70 hover:text-title"
               >
                 <span>{group.section}</span>
@@ -128,7 +115,6 @@ function GroupedNav({ groups, onNavigate, collapsed }) {
               </button>
             )}
             {(collapsed || !isGroupCollapsed) && (
->>>>>>> main
               <div className="space-y-1">
                 {group.items.map((item) => (
                   <NavItem key={item.label} item={item} onNavigate={onNavigate} collapsed={collapsed} />
@@ -147,8 +133,8 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
   const { activeRole } = useAuth();
   const [collapsed, setCollapsed] = useState(() => readState().collapsed ?? false);
 
-  // Keep the page content offset (see DashboardLayout) in sync with the
-  // sidebar's current width, since it's fixed/out-of-flow at lg+.
+  // Keep the workspace-sidebar wrapper's width (see DashboardLayout) in sync
+  // with this collapsed state via a shared custom property.
   useLayoutEffect(() => {
     document.documentElement.style.setProperty('--sh-sidebar-w', collapsed ? WIDTH_COLLAPSED : WIDTH_EXPANDED);
   }, [collapsed]);
@@ -162,14 +148,7 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
   };
 
   return (
-    <aside
-<<<<<<< HEAD
-      className={`w-full shrink-0 lg:border-r lg:border-border lg:pr-4 ${className}`}
-=======
-      style={{ '--w': collapsed ? WIDTH_COLLAPSED : WIDTH_EXPANDED }}
-      className={`flex h-full w-full shrink-0 flex-col border-r border-border bg-surface transition-[width] duration-200 ease-in-out lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:h-screen lg:w-[var(--w)] ${className}`}
->>>>>>> main
-    >
+    <aside className={`flex w-full flex-col bg-surface lg:border-r lg:border-border ${className}`}>
       <div className={`flex items-center gap-2.5 border-b border-border px-4 py-4 ${collapsed ? 'justify-center px-2' : ''}`}>
         <Link to={routePaths.home} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-xs font-bold text-surface">
           SH
@@ -184,7 +163,7 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
         </div>
       )}
 
-      <div className={`flex-1 overflow-y-auto py-4 ${collapsed ? 'px-2' : 'px-3'}`}>
+      <div className={`py-4 ${collapsed ? 'px-2' : 'px-3'}`}>
         {grouped ? (
           <GroupedNav groups={items} onNavigate={onNavigate} collapsed={collapsed} />
         ) : (
