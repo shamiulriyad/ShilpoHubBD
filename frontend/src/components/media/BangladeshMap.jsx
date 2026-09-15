@@ -23,16 +23,16 @@ const districtCoordinates = {
   Sunamganj: [25.0658, 91.3950], Sylhet: [24.8949, 91.8687],
 };
 
-function buildMapUrl(coordinates) {
+function buildMapUrl(coordinates, focused) {
   const [latitude, longitude] = coordinates;
-  const span = 0.34;
+  const span = focused ? 0.34 : 3.2;
   const bbox = [longitude - span, latitude - span, longitude + span, latitude + span].join('%2C');
   return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${latitude}%2C${longitude}`;
 }
 
 export default function BangladeshMap({ selectedDistrict }) {
   const coordinates = districtCoordinates[selectedDistrict] || [23.6850, 90.3563];
-  const mapUrl = buildMapUrl(coordinates);
+  const mapUrl = buildMapUrl(coordinates, Boolean(districtCoordinates[selectedDistrict]));
   const mapPageUrl = `https://www.openstreetmap.org/#map=${selectedDistrict ? 11 : 7}/${coordinates[0]}/${coordinates[1]}`;
 
   return (

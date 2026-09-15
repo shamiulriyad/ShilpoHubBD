@@ -1,7 +1,7 @@
 import apiClient from './apiClient';
 
 export const productsService = {
-  create: (payload) => apiClient.post('/products', payload).then((res) => res.data),
+  create: payload => apiClient.post('/products', payload).then(res => res.data),
   list: (params) => apiClient.get('/products', { params }).then((res) => res.data),
   featured: (count = 8) => apiClient.get('/products/featured', { params: { count } }).then((res) => res.data),
   trending: (count = 8) => apiClient.get('/products/trending', { params: { count } }).then((res) => res.data),

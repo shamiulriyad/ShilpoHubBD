@@ -20,7 +20,7 @@ export default function DashboardProfile() {
             </span>
             <div className="min-w-0">
               <p className="break-words text-sm font-semibold text-heading">{user?.name || 'ShilpoHub member'}</p>
-              <p className="mt-1 break-all text-xs text-body/60">{user?.email || 'No email available'}</p>
+              <p className="mt-1 break-all text-xs text-body/60">{user?.email || 'No email returned'}</p>
             </div>
           </div>
         </DashboardCard>

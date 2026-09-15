@@ -1,7 +1,7 @@
+import MutationFeedback from '../../components/ui/MutationFeedback';
+import ProducerInsights from './ProducerInsights';
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState, SectionHeader, Pagination, QueryStatusBanner } from '../../components/ui';
-import ProducerInsights from './ProducerInsights';
-import MutationFeedback from '../../components/ui/MutationFeedback';
 import { StatCard } from '../../components/cards';
 import {
   useProducerOrderItems,
@@ -14,8 +14,8 @@ const statusTone = { Pending: 'secondary', Accepted: 'primary', Rejected: 'neutr
 const filters = ['All', 'Pending', 'Accepted', 'Processing', 'Shipped', 'Delivered', 'Rejected'];
 
 export default function Orders() {
-  const [status, setStatus] = useState('All');
   const [page, setPage] = useState(1);
+  const [status, setStatus] = useState('All');
   const itemsQuery = useProducerOrderItems({ status: status === 'All' ? undefined : status, page, pageSize: 15 });
   const revenueQuery = useProducerRevenue();
   const performanceQuery = useProducerProductPerformance();
@@ -27,9 +27,9 @@ export default function Orders() {
   return (
     <div>
       <PageHeader title="Orders & Fulfillment" description="Manage incoming orders and track your sales performance." />
-      <QueryStatusBanner queries={[revenueQuery, performanceQuery]} />
-      <div className="mb-4 space-y-2">{[accept,reject,startProcessing,ship,deliver].map((mutation,index)=><MutationFeedback key={index} mutation={mutation} successMessage="Order updated." />)}</div>
 
+      <QueryStatusBanner queries={[revenueQuery,performanceQuery]} />
+      {[accept,reject,startProcessing,ship,deliver].map((mutation,index)=><MutationFeedback key={index} mutation={mutation} successMessage="Order updated." />)}
       {revenueQuery.data && (
         <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatCard label="Total Revenue" value={`৳ ${revenueQuery.data.totalRevenue.toLocaleString()}`} />
@@ -45,7 +45,6 @@ export default function Orders() {
             key={f}
             type="button"
             onClick={() => { setStatus(f); setPage(1); }}
-            aria-pressed={status === f}
             className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
               status === f ? 'border-primary bg-primary text-surface' : 'border-border bg-surface text-body hover:bg-background'
             }`}
@@ -107,9 +106,8 @@ export default function Orders() {
           ))}
           {items.length === 0 && <p className="text-sm text-body/60">No orders in this status.</p>}
         </div>
+        {itemsQuery.data?.totalPages > 1 && <Pagination currentPage={page} totalPages={itemsQuery.data.totalPages} onPageChange={setPage} />}
       </AsyncState>
-      {itemsQuery.data?.totalPages > 1 && <Pagination currentPage={page} totalPages={itemsQuery.data.totalPages} onPageChange={setPage} />}
-      <ProducerInsights />
 
       <div className="mt-10">
         <SectionHeader eyebrow="Insights" title="Product Performance" />
@@ -123,6 +121,7 @@ export default function Orders() {
           {(performanceQuery.data || []).length === 0 && <p className="p-3 text-sm text-body/60">No sales data yet.</p>}
         </div>
       </div>
+      <ProducerInsights />
     </div>
   );
 }

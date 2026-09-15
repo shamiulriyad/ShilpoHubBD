@@ -11,7 +11,6 @@ export default function CategoryFilter({ options = [], active, onChange, classNa
             key={value ?? 'all'}
             type="button"
             onClick={() => onChange?.(value)}
-            aria-pressed={active === value}
             className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
               active === value
                 ? 'border-primary bg-primary text-surface'

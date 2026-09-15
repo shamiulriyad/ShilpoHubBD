@@ -3,7 +3,7 @@ const trimTrailingSlash = (value) => value.replace(/\/+$/, '');
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
 
 /**
- * In development we mirror the backend's default HTTP launch profile. In production,
+ * In development we mirror the backend's HTTP launch profile. In production,
  * a relative /api default keeps the build deployable behind the same reverse
  * proxy without accidentally calling a developer machine.
  */

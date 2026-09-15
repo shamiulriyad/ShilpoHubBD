@@ -15,7 +15,7 @@ export default function SearchBar({ placeholder = 'Search…', size = 'md', clas
       className={`flex w-full items-center gap-3 rounded-full border border-border bg-surface px-5 shadow-[0_12px_32px_rgba(23,59,53,0.09)] transition focus-within:border-primary/50 focus-within:ring-4 focus-within:ring-primary/10 ${sizes[size] || sizes.md} ${className}`}
     >
       <span aria-hidden="true" className="text-lg text-primary">⌕</span>
-      <input aria-label="Value"
+      <input aria-label={placeholder}
         type="search"
         placeholder={placeholder}
         value={value}
