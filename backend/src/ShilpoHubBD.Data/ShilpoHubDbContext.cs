@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Domain.Entities.Achievement;
+using ShilpoHubBD.Domain.Entities.Admin;
 using ShilpoHubBD.Domain.Entities.Apprenticeship;
 using ShilpoHubBD.Domain.Entities.Assessment;
 using ShilpoHubBD.Domain.Entities.ArVr;
@@ -58,6 +59,10 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<UserRole> UserRoles => Set<UserRole>();
 	public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 	public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
+
+	public DbSet<Permission> Permissions => Set<Permission>();
+	public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+	public DbSet<IdentityVerificationRequest> IdentityVerificationRequests => Set<IdentityVerificationRequest>();
 
 	public DbSet<Category> Categories => Set<Category>();
 	public DbSet<District> Districts => Set<District>();

@@ -144,6 +144,10 @@ public static class DependencyInjection
 		services.AddScoped<IReturnHandlingRepository, ReturnHandlingRepository>();
 		services.AddScoped<IAiLogisticsRepository, AiLogisticsRepository>();
 
+		services.AddScoped<IAdminUserRepository, AdminUserRepository>();
+		services.AddScoped<IPermissionRepository, PermissionRepository>();
+		services.AddScoped<IIdentityVerificationRepository, IdentityVerificationRepository>();
+
 		services.AddScoped<IMuseumItemRepository, MuseumItemRepository>();
 		services.AddScoped<IVillageTourStopRepository, VillageTourStopRepository>();
 		services.AddScoped<ICulturalStoryRepository, CulturalStoryRepository>();
