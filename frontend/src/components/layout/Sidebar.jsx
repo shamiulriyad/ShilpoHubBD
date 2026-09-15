@@ -57,20 +57,13 @@ function writeState(next) {
   }
 }
 
-<<<<<<< HEAD
-function NavItem({ item, onNavigate }) {
-=======
-function NavItem({ item, collapsed }) {
->>>>>>> Riyad
+function NavItem({ item, onNavigate, collapsed }) {
   return (
     <NavLink
       to={item.path}
       end
-<<<<<<< HEAD
       onClick={onNavigate}
-=======
       title={collapsed ? item.label : undefined}
->>>>>>> Riyad
       className={({ isActive }) =>
         `flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-colors duration-200 ease-in-out ${
           collapsed ? 'justify-center px-0' : 'px-3'
@@ -83,31 +76,18 @@ function NavItem({ item, collapsed }) {
   );
 }
 
-<<<<<<< HEAD
-function FlatNav({ items, onNavigate }) {
+function FlatNav({ items, onNavigate, collapsed }) {
   return (
     <nav className="space-y-1">
       {items.map((item) => (
-        <NavItem key={item.label} item={item} onNavigate={onNavigate} />
-=======
-function FlatNav({ items, collapsed }) {
-  return (
-    <nav className="space-y-1">
-      {items.map((item) => (
-        <NavItem key={item.label} item={item} collapsed={collapsed} />
->>>>>>> Riyad
+        <NavItem key={item.label} item={item} onNavigate={onNavigate} collapsed={collapsed} />
       ))}
     </nav>
   );
 }
 
-<<<<<<< HEAD
-function GroupedNav({ groups, onNavigate }) {
-  const [collapsed, setCollapsed] = useState(readCollapsed);
-=======
-function GroupedNav({ groups, collapsed }) {
+function GroupedNav({ groups, onNavigate, collapsed }) {
   const [collapsedGroups, setCollapsedGroups] = useState(() => readState().collapsedGroups ?? {});
->>>>>>> Riyad
 
   const toggle = (section) => {
     setCollapsedGroups((prev) => {
@@ -136,11 +116,7 @@ function GroupedNav({ groups, collapsed }) {
             {(collapsed || !isGroupCollapsed) && (
               <div className="space-y-1">
                 {group.items.map((item) => (
-<<<<<<< HEAD
-                  <NavItem key={item.label} item={item} onNavigate={onNavigate} />
-=======
-                  <NavItem key={item.label} item={item} collapsed={collapsed} />
->>>>>>> Riyad
+                  <NavItem key={item.label} item={item} onNavigate={onNavigate} collapsed={collapsed} />
                 ))}
               </div>
             )}
@@ -182,9 +158,6 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
         {!collapsed && <span className="truncate text-base font-bold text-title">ShilpoHub</span>}
       </div>
 
-<<<<<<< HEAD
-      {grouped ? <GroupedNav groups={items} onNavigate={onNavigate} /> : <FlatNav items={items} onNavigate={onNavigate} />}
-=======
       {!collapsed && (
         <div className="border-b border-border px-4 py-3">
           <p className="truncate text-sm font-semibold text-heading">{title} workspace</p>
@@ -193,7 +166,11 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
       )}
 
       <div className={`flex-1 overflow-y-auto py-4 ${collapsed ? 'px-2' : 'px-3'}`}>
-        {grouped ? <GroupedNav groups={items} collapsed={collapsed} /> : <FlatNav items={items} collapsed={collapsed} />}
+        {grouped ? (
+          <GroupedNav groups={items} onNavigate={onNavigate} collapsed={collapsed} />
+        ) : (
+          <FlatNav items={items} onNavigate={onNavigate} collapsed={collapsed} />
+        )}
       </div>
 
       <div className="border-t border-border p-2">
@@ -208,7 +185,6 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
           {!collapsed && <span>Collapse</span>}
         </button>
       </div>
->>>>>>> Riyad
     </aside>
   );
 }
