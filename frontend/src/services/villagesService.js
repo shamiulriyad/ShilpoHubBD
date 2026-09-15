@@ -7,4 +7,6 @@ export const villagesService = {
   favorite: (id) => apiClient.post(`/villages/${id}/favorite`),
   unfavorite: (id) => apiClient.delete(`/villages/${id}/favorite`),
   create: (payload) => apiClient.post('/villages', payload).then((res) => res.data),
+  update: (id, payload) => apiClient.put(`/villages/${id}`, payload).then((res) => res.data),
+  remove: (id) => apiClient.delete(`/villages/${id}`).then((res) => res.data),
 };

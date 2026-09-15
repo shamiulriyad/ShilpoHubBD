@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/layout/Sidebar';
 import NotificationPanel from '../components/layout/NotificationPanel';
 import ProfileDropdown from '../components/layout/ProfileDropdown';
 import SearchBar from '../components/ui/SearchBar';
 import { sidebarNav, roleSidebars } from '../data/navigation';
-import { routePaths } from '../routes/routePaths';
 import { useAuth } from '../hooks/useAuth';
 
 export default function DashboardLayout({ navItems, sidebarTitle }) {
@@ -22,7 +21,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface px-4 py-3 lg:px-6">
+      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface px-4 py-3 transition-[padding] duration-200 ease-in-out lg:pr-6 lg:pl-[calc(1.5rem+var(--sh-sidebar-w,260px))]">
         <button
           type="button"
           className="rounded-md border border-border p-2 text-body lg:hidden"
@@ -31,12 +30,6 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         >
           ☰
         </button>
-        <Link to={routePaths.home} className="hidden shrink-0 items-center gap-2 text-base font-bold text-title lg:flex">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs text-surface">
-            SH
-          </span>
-          ShilpoHub
-        </Link>
         <div className="mx-auto hidden max-w-md flex-1 lg:block">
           <SearchBar placeholder="Search the dashboard…" />
         </div>
@@ -51,7 +44,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         <ProfileDropdown />
       </header>
 
-      <div className="mx-auto flex max-w-[1600px] items-start gap-6 px-4 py-6 lg:px-6">
+      <div className="mx-auto flex max-w-[1600px] items-start gap-6 px-4 py-6 transition-[padding] duration-200 ease-in-out lg:pr-6 lg:pl-[calc(1.5rem+var(--sh-sidebar-w,260px))]">
         <div className={`${sidebarOpen ? 'block' : 'hidden'} w-full lg:block lg:w-auto`}>
           <Sidebar items={items} title={title} />
         </div>

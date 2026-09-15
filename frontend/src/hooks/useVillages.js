@@ -32,3 +32,13 @@ export function useCreateVillage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['villages'] }),
   });
 }
+
+export function useVillageMutations() {
+  const queryClient = useQueryClient();
+  const invalidate = () => queryClient.invalidateQueries({ queryKey: ['villages'] });
+
+  return {
+    update: useMutation({ mutationFn: ({ id, payload }) => villagesService.update(id, payload), onSuccess: invalidate }),
+    remove: useMutation({ mutationFn: (id) => villagesService.remove(id), onSuccess: invalidate }),
+  };
+}
