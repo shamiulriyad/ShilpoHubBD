@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-<<<<<<< HEAD
 :root,
 [data-theme='light'] {
+  --sh-sidebar-w: 260px;
   --color-background: 248 245 239;
   --color-surface: 255 254 251;
   --color-border: 231 222 208;
@@ -15,6 +15,7 @@
   --color-primary: 168 79 45;
   --color-primary-dark: 132 58 32;
   --color-primary-soft: 248 233 226;
+  --color-secondary: 217 155 61;
   --color-link: 30 96 86;
   --color-success: 50 115 93;
   --color-error: 179 67 43;
@@ -31,26 +32,10 @@
   --color-primary: 222 131 93;
   --color-primary-dark: 236 151 112;
   --color-primary-soft: 62 46 40;
+  --color-secondary: 217 155 61;
   --color-link: 115 195 181;
   --color-success: 110 190 159;
   --color-error: 240 126 105;
-=======
-:root {
-  --sh-sidebar-w: 260px;
-  --color-background: #F8F5EF;
-  --color-surface: #FFFEFB;
-
-  --color-title: #173B35;
-  --color-heading: #173B35;
-  --color-body: #373832;
-
-  --color-primary: #A84F2D;
-  --color-secondary: #D99B3D;
-  --color-link: #1E6056;
-
-  --color-border: #E7DED0;
-  --color-success: #32735D;
->>>>>>> Riyad
 }
 
 html,
@@ -59,7 +44,6 @@ body,
   min-height: 100%;
 }
 
-<<<<<<< HEAD
 html {
   background: rgb(var(--color-background));
   scroll-padding-top: 6rem;
@@ -78,26 +62,6 @@ html {
     text-rendering: optimizeLegibility;
   }
 
-=======
-body {
-  margin: 0;
-  background: var(--color-background);
-  color: var(--color-body);
-
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
-  text-rendering: optimizeLegibility;
-}
-
-@layer base {
->>>>>>> Riyad
   h1,
   h2,
   h3,
@@ -110,7 +74,6 @@ body {
   a {
     @apply text-link;
   }
-<<<<<<< HEAD
 
   button,
   input,
@@ -129,12 +92,6 @@ body {
   ::selection {
     background: rgb(var(--color-primary-soft));
     color: rgb(var(--color-title));
-=======
-
-  ::selection {
-    background: #F3CCB8;
-    color: #173B35;
->>>>>>> Riyad
   }
 
   * {
@@ -144,8 +101,7 @@ body {
 
 @layer components {
   .premium-shell {
-<<<<<<< HEAD
-    background: radial-gradient(circle at 15% 0%, rgb(var(--color-secondary, 217 155 61) / 0.13), transparent 25rem), rgb(var(--color-background));
+    background: radial-gradient(circle at 15% 0%, rgb(var(--color-secondary) / 0.13), transparent 25rem), rgb(var(--color-background));
   }
 
   .premium-card {
@@ -161,30 +117,3 @@ body {
     @apply h-px w-6 bg-primary;
   }
 }
-=======
-    background:
-      radial-gradient(
-        circle at 15% 0%,
-        rgba(217, 155, 61, 0.13),
-        transparent 25rem
-      ),
-      var(--color-background);
-  }
-
-  .premium-card {
-    @apply rounded-2xl border border-border bg-surface
-           shadow-[0_12px_30px_rgba(45,44,36,0.06)];
-  }
-
-  .eyebrow {
-    @apply inline-flex items-center gap-2
-           text-[11px] font-bold uppercase
-           tracking-[0.18em] text-primary;
-  }
-
-  .eyebrow::before {
-    content: "";
-    @apply h-px w-6 bg-primary;
-  }
-}
->>>>>>> Riyad
