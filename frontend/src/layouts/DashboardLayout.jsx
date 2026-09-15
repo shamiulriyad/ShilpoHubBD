@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/layout/Sidebar';
 import ProfileDropdown from '../components/layout/ProfileDropdown';
 import { sidebarNav, roleSidebars } from '../data/navigation';
-import { routePaths } from '../routes/routePaths';
 import { useAuth } from '../hooks/useAuth';
 
 export default function DashboardLayout({ navItems, sidebarTitle }) {
@@ -16,7 +15,11 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
 
   return (
     <div className="min-h-screen bg-background">
+<<<<<<< HEAD
       <header className="sticky top-0 z-40 flex items-center gap-3 border-b border-border bg-surface px-4 py-3 lg:px-6">
+=======
+      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface px-4 py-3 transition-[padding] duration-200 ease-in-out lg:pr-6 lg:pl-[calc(1.5rem+var(--sh-sidebar-w,260px))]">
+>>>>>>> Riyad
         <button
           type="button"
           className="rounded-md border border-border p-2 text-body lg:hidden"
@@ -27,6 +30,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         >
           ☰
         </button>
+<<<<<<< HEAD
         <Link to={routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title">
           <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs text-surface">
             শি
@@ -35,9 +39,14 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         </Link>
         <div className="ml-auto">
           <ProfileDropdown />
+=======
+        <div className="mx-auto hidden max-w-md flex-1 lg:block">
+          <SearchBar placeholder="Search the dashboard…" />
+>>>>>>> Riyad
         </div>
       </header>
 
+<<<<<<< HEAD
       {sidebarOpen && (
         <button
           type="button"
@@ -65,6 +74,11 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
             </button>
           </div>
           <Sidebar items={items} title={title} onNavigate={() => setSidebarOpen(false)} />
+=======
+      <div className="mx-auto flex max-w-[1600px] items-start gap-6 px-4 py-6 transition-[padding] duration-200 ease-in-out lg:pr-6 lg:pl-[calc(1.5rem+var(--sh-sidebar-w,260px))]">
+        <div className={`${sidebarOpen ? 'block' : 'hidden'} w-full lg:block lg:w-auto`}>
+          <Sidebar items={items} title={title} />
+>>>>>>> Riyad
         </div>
 
         <main className="min-w-0 flex-1">
