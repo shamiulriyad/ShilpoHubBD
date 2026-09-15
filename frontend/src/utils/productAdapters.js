@@ -9,7 +9,7 @@ export function toProductCardItem(dto) {
     producer: dto.producerName,
     producerId: dto.producerId,
     district: dto.districtName,
-    image: dto.primaryImageUrl ?? null,
+    image: dto.primaryImageUrl || dto.imageUrl || dto.images?.[0]?.url || null,
   };
 }
 
@@ -18,5 +18,6 @@ export function toCategoryCardItem(dto) {
     id: dto.id,
     name: dto.name,
     itemCount: dto.productCount,
+    image: dto.imageUrl || null,
   };
 }

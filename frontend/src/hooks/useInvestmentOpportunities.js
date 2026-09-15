@@ -5,8 +5,8 @@ export function useInvestmentOpportunities(params = {}) {
   return useQuery({ queryKey: ['investments', 'opportunities', params], queryFn: () => investmentOpportunitiesService.list(params) });
 }
 
-export function useMyInvestmentOpportunities() {
-  return useQuery({ queryKey: ['investments', 'opportunities', 'mine'], queryFn: () => investmentOpportunitiesService.mine() });
+export function useMyInvestmentOpportunities(params = {}) {
+  return useQuery({ queryKey: ['investments', 'opportunities', 'mine', params], queryFn: () => investmentOpportunitiesService.mine(params) });
 }
 
 export function useInvestmentOpportunity(id) {
@@ -17,10 +17,10 @@ export function useInvestmentOpportunity(id) {
   });
 }
 
-export function useInvestmentOpportunityProposals(id) {
+export function useInvestmentOpportunityProposals(id, params = {}) {
   return useQuery({
-    queryKey: ['investments', 'opportunities', id, 'proposals'],
-    queryFn: () => investmentOpportunitiesService.opportunityProposals(id),
+    queryKey: ['investments', 'opportunities', id, 'proposals', params],
+    queryFn: () => investmentOpportunitiesService.opportunityProposals(id, params),
     enabled: Boolean(id),
   });
 }

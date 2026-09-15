@@ -3,12 +3,12 @@ const trimTrailingSlash = (value) => value.replace(/\/+$/, '');
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
 
 /**
- * In development we mirror the backend's HTTPS launch profile. In production,
+ * In development we mirror the backend's default HTTP launch profile. In production,
  * a relative /api default keeps the build deployable behind the same reverse
  * proxy without accidentally calling a developer machine.
  */
 export const API_BASE_URL = trimTrailingSlash(
-  configuredApiBaseUrl || (import.meta.env.DEV ? 'https://localhost:5001/api' : '/api'),
+  configuredApiBaseUrl || (import.meta.env.DEV ? 'http://localhost:5065/api' : '/api'),
 );
 
 const configuredTimeout = Number(import.meta.env.VITE_API_TIMEOUT_MS);

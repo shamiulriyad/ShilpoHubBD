@@ -33,7 +33,7 @@ If you intentionally change dependencies, use `npm install` and commit the resul
 Create a local `.env` file when you need to override the API URL.
 
 ```env
-VITE_API_BASE_URL=http://localhost:5000/api
+VITE_API_BASE_URL=http://localhost:5065/api
 ```
 
 `VITE_API_BASE_URL` must contain the backend API base path. Do not put backend secrets, database credentials, signing keys, or other private values in frontend environment variables.
@@ -46,7 +46,7 @@ The runtime configuration in `src/config/runtime.js` normalizes the API base URL
 npm run dev
 ```
 
-Vite will print the local development URL in the terminal.
+Vite will print the local development URL in the terminal. Start the API in a separate terminal with `dotnet run --project backend/src/ShilpoHubBD.Api --launch-profile http` from the repository root. The default frontend API URL is `http://localhost:5065/api`. Restart Vite after changing `.env`.
 
 ## Production build
 
