@@ -123,6 +123,20 @@ function GroupedNav({ groups, collapsed }) {
         const isGroupCollapsed = Boolean(collapsedGroups[group.section]);
         return (
           <div key={group.section}>
+<<<<<<< HEAD
+            <button
+              type="button"
+              onClick={() => toggle(group.section)}
+              aria-expanded={!isCollapsed}
+              className="mb-1.5 flex w-full items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-body/40 hover:text-body/70"
+            >
+              <span>{group.section}</span>
+              <span aria-hidden="true" className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}>
+                ›
+              </span>
+            </button>
+            {!isCollapsed && (
+=======
             {!collapsed && (
               <button
                 type="button"
@@ -134,6 +148,7 @@ function GroupedNav({ groups, collapsed }) {
               </button>
             )}
             {(collapsed || !isGroupCollapsed) && (
+>>>>>>> main
               <div className="space-y-1">
                 {group.items.map((item) => (
 <<<<<<< HEAD
@@ -172,8 +187,12 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
 
   return (
     <aside
+<<<<<<< HEAD
+      className={`w-full shrink-0 lg:border-r lg:border-border lg:pr-4 ${className}`}
+=======
       style={{ '--w': collapsed ? WIDTH_COLLAPSED : WIDTH_EXPANDED }}
       className={`flex h-full w-full shrink-0 flex-col border-r border-border bg-surface transition-[width] duration-200 ease-in-out lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:h-screen lg:w-[var(--w)] ${className}`}
+>>>>>>> main
     >
       <div className={`flex items-center gap-2.5 border-b border-border px-4 py-4 ${collapsed ? 'justify-center px-2' : ''}`}>
         <Link to={routePaths.home} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-xs font-bold text-surface">

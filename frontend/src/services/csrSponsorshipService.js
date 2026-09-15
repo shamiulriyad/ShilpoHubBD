@@ -3,11 +3,11 @@ import apiClient from './apiClient';
 export const csrSponsorshipService = {
   createOpportunity: (payload) => apiClient.post('/csr-sponsorship/opportunities', payload).then((res) => res.data),
   listOpportunities: (params) => apiClient.get('/csr-sponsorship/opportunities', { params }).then((res) => res.data),
-  myOpportunities: () => apiClient.get('/csr-sponsorship/opportunities/mine').then((res) => res.data),
+  myOpportunities: (params) => apiClient.get('/csr-sponsorship/opportunities/mine', { params }).then((res) => res.data),
   getOpportunity: (id) => apiClient.get(`/csr-sponsorship/opportunities/${id}`).then((res) => res.data),
   closeOpportunity: (id) => apiClient.post(`/csr-sponsorship/opportunities/${id}/close`).then((res) => res.data),
   cancelOpportunity: (id) => apiClient.post(`/csr-sponsorship/opportunities/${id}/cancel`).then((res) => res.data),
-  opportunityProposals: (id) => apiClient.get(`/csr-sponsorship/opportunities/${id}/proposals`).then((res) => res.data),
+  opportunityProposals: (id, params) => apiClient.get(`/csr-sponsorship/opportunities/${id}/proposals`, { params }).then((res) => res.data),
   submitProposal: (id, payload) => apiClient.post(`/csr-sponsorship/opportunities/${id}/proposals`, payload).then((res) => res.data),
   myProposals: (params) => apiClient.get('/csr-sponsorship/proposals', { params }).then((res) => res.data),
   getProposal: (id) => apiClient.get(`/csr-sponsorship/proposals/${id}`).then((res) => res.data),

@@ -62,6 +62,12 @@ body,
 <<<<<<< HEAD
 html {
   background: rgb(var(--color-background));
+  scroll-padding-top: 6rem;
+}
+
+.workspace-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--color-border)) transparent;
 }
 
 @layer base {
