@@ -1,3 +1,19 @@
+<<<<<<< HEAD
+import { useQuery } from '@tanstack/react-query';
+import { heritageFestivalsService } from '../services/heritageFestivalsService';
+
+export function useHeritageFestivals(params = {}) {
+  return useQuery({ queryKey: ['heritage-festivals', params], queryFn: () => heritageFestivalsService.list(params) });
+}
+
+export function useHeritageFestival(id) {
+  return useQuery({
+    queryKey: ['heritage-festivals', id],
+    queryFn: () => heritageFestivalsService.getById(id),
+    enabled: Boolean(id),
+  });
+}
+=======
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { heritageFestivalsService } from '../services/heritageFestivalsService';
 
@@ -23,3 +39,4 @@ export function useHeritageFestivalMutations() {
     remove: useMutation({ mutationFn: (id) => heritageFestivalsService.remove(id), onSuccess: invalidate }),
   };
 }
+>>>>>>> Riyad

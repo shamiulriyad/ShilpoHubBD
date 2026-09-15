@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+import apiClient from './apiClient';
+
+export const heritageFestivalsService = {
+  list: (params) => apiClient.get('/heritage-festivals', { params }).then((res) => res.data),
+  getById: (id) => apiClient.get(`/heritage-festivals/${id}`).then((res) => res.data),
+};
+=======
 import apiClient from './apiClient';
 
 export const heritageFestivalsService = {
@@ -7,3 +15,4 @@ export const heritageFestivalsService = {
   update: (id, payload) => apiClient.put(`/heritage-festivals/${id}`, payload).then((res) => res.data),
   remove: (id) => apiClient.delete(`/heritage-festivals/${id}`).then((res) => res.data),
 };
+>>>>>>> Riyad
