@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useLowStockProducts, useInventoryHistory, useAdjustStock } from '../../hooks/useInventory';
 import { useMyProducts } from '../../hooks/useProducts';
+import MutationFeedback from '../../components/ui/MutationFeedback';
+import NewProductForm from './NewProductForm';
 
 export default function Inventory() {
   const lowStockQuery = useLowStockProducts();
@@ -11,9 +13,15 @@ export default function Inventory() {
   const [reason, setReason] = useState('');
   const adjustStock = useAdjustStock();
   const historyQuery = useInventoryHistory(selectedProductId);
+  const [showCreate, setShowCreate] = useState(false);
+  const [createdMessage, setCreatedMessage] = useState('');
+  const selectedProduct = productsQuery.data?.find((product) => product.id === selectedProductId);
+  const amount = Number(changeAmount);
+  const validAdjustment = Boolean(selectedProduct) && Number.isInteger(amount) && amount !== 0 && selectedProduct.stock + amount >= 0 && reason.trim().length > 0;
 
   const handleAdjust = (event) => {
     event.preventDefault();
+    if (!validAdjustment || adjustStock.isPending) return;
     adjustStock.mutate(
       { productId: selectedProductId, payload: { changeAmount: Number(changeAmount), reason } },
       { onSuccess: () => { setChangeAmount(''); setReason(''); } },
@@ -22,7 +30,9 @@ export default function Inventory() {
 
   return (
     <div>
-      <PageHeader title="Inventory" description="Adjust stock levels and review transaction history." />
+      <PageHeader title="Inventory" description="Manage your products, stock levels and transaction history." action={<Button type="button" onClick={() => setShowCreate(true)}>Add product</Button>} />
+      {createdMessage && <p role="status" className="mb-4 text-sm text-success">{createdMessage}</p>}
+      {showCreate && <NewProductForm onCancel={() => setShowCreate(false)} onCreated={(product) => { setShowCreate(false); setSelectedProductId(product.id); setCreatedMessage(`${product.name} was added to your inventory.`); }} />}
 
       <div className="mb-8 rounded-xl border border-border bg-surface p-5">
         <p className="mb-3 text-sm font-semibold text-heading">Low Stock Alerts</p>
@@ -39,7 +49,8 @@ export default function Inventory() {
         </AsyncState>
       </div>
 
-      <form onSubmit={handleAdjust} className="mb-8 space-y-3 rounded-xl border border-border bg-surface p-5">
+      <AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}>
+      {productsQuery.data?.length === 0 ? <div className="mb-8 rounded-xl border border-dashed border-border bg-surface p-8 text-center"><h2 className="text-lg font-semibold">Your inventory is ready for its first product</h2><p className="mt-2 text-sm text-muted">Add a product to set its opening stock and start selling.</p><Button type="button" className="mt-4" onClick={() => setShowCreate(true)}>Add your first product</Button></div> : <form onSubmit={handleAdjust} className="mb-8 space-y-3 rounded-xl border border-border bg-surface p-5">
         <p className="text-sm font-semibold text-heading">Adjust Stock</p>
         <select aria-label="Selected Product Id"
           required
@@ -56,6 +67,7 @@ export default function Inventory() {
           <input aria-label="Change amount"
             required
             type="number"
+            step="1"
             placeholder="Change amount (+/-)"
             value={changeAmount}
             onChange={(event) => setChangeAmount(event.target.value)}
@@ -63,16 +75,20 @@ export default function Inventory() {
           />
           <input aria-label="Reason"
             required
+            maxLength={500}
             placeholder="Reason"
             value={reason}
             onChange={(event) => setReason(event.target.value)}
             className="rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
         </div>
-        <Button type="submit" variant="primary" disabled={adjustStock.isPending}>
+        <MutationFeedback mutation={adjustStock} successMessage="Stock updated." />
+        {selectedProduct && <p className="text-sm text-muted">Current stock: {selectedProduct.stock}. {changeAmount && `After adjustment: ${selectedProduct.stock + amount}.`}</p>}
+        <Button type="submit" variant="primary" disabled={adjustStock.isPending || !validAdjustment}>
           {adjustStock.isPending ? 'Adjusting…' : 'Adjust Stock'}
         </Button>
-      </form>
+      </form>}
+      </AsyncState>
 
       {selectedProductId && (
         <div>

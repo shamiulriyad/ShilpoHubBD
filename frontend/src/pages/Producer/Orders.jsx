@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { PageHeader, Badge, Button, AsyncState, SectionHeader } from '../../components/ui';
+import { PageHeader, Badge, Button, AsyncState, SectionHeader, Pagination, QueryStatusBanner } from '../../components/ui';
+import ProducerInsights from './ProducerInsights';
+import MutationFeedback from '../../components/ui/MutationFeedback';
 import { StatCard } from '../../components/cards';
 import {
   useProducerOrderItems,
@@ -13,7 +15,8 @@ const filters = ['All', 'Pending', 'Accepted', 'Processing', 'Shipped', 'Deliver
 
 export default function Orders() {
   const [status, setStatus] = useState('All');
-  const itemsQuery = useProducerOrderItems({ status: status === 'All' ? undefined : status, pageSize: 30 });
+  const [page, setPage] = useState(1);
+  const itemsQuery = useProducerOrderItems({ status: status === 'All' ? undefined : status, page, pageSize: 15 });
   const revenueQuery = useProducerRevenue();
   const performanceQuery = useProducerProductPerformance();
   const { accept, reject, startProcessing, ship, deliver } = useProducerOrderMutations();
@@ -24,6 +27,8 @@ export default function Orders() {
   return (
     <div>
       <PageHeader title="Orders & Fulfillment" description="Manage incoming orders and track your sales performance." />
+      <QueryStatusBanner queries={[revenueQuery, performanceQuery]} />
+      <div className="mb-4 space-y-2">{[accept,reject,startProcessing,ship,deliver].map((mutation,index)=><MutationFeedback key={index} mutation={mutation} successMessage="Order updated." />)}</div>
 
       {revenueQuery.data && (
         <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -39,7 +44,8 @@ export default function Orders() {
           <button
             key={f}
             type="button"
-            onClick={() => setStatus(f)}
+            onClick={() => { setStatus(f); setPage(1); }}
+            aria-pressed={status === f}
             className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
               status === f ? 'border-primary bg-primary text-surface' : 'border-border bg-surface text-body hover:bg-background'
             }`}
@@ -63,12 +69,12 @@ export default function Orders() {
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 {item.producerStatus === 'Pending' && (
                   <>
-                    <Button variant="primary" onClick={() => accept.mutate(item.id)}>Accept</Button>
-                    <Button variant="secondary" onClick={() => reject.mutate({ id: item.id, reason: 'Out of stock' })}>Reject</Button>
+                    <Button variant="primary" disabled={accept.isPending} onClick={() => accept.mutate(item.id)}>Accept</Button>
+                    <Button variant="secondary" disabled={reject.isPending} onClick={() => reject.mutate({ id: item.id, reason: 'Out of stock' })}>Reject</Button>
                   </>
                 )}
                 {item.producerStatus === 'Accepted' && (
-                  <Button variant="primary" onClick={() => startProcessing.mutate(item.id)}>Start Processing</Button>
+                  <Button variant="primary" disabled={startProcessing.isPending} onClick={() => startProcessing.mutate(item.id)}>Start Processing</Button>
                 )}
                 {item.producerStatus === 'Processing' && (
                   <div className="flex flex-wrap items-center gap-2">
@@ -87,14 +93,14 @@ export default function Orders() {
                     <Button
                       variant="primary"
                       onClick={() => ship.mutate({ id: item.id, payload: shipForm[item.id] || {} })}
-                      disabled={!shipForm[item.id]?.trackingNumber || !shipForm[item.id]?.carrier}
+                      disabled={ship.isPending || !shipForm[item.id]?.trackingNumber?.trim() || !shipForm[item.id]?.carrier?.trim()}
                     >
                       Ship
                     </Button>
                   </div>
                 )}
                 {item.producerStatus === 'Shipped' && (
-                  <Button variant="primary" onClick={() => deliver.mutate(item.id)}>Mark Delivered</Button>
+                  <Button variant="primary" disabled={deliver.isPending} onClick={() => deliver.mutate(item.id)}>Mark Delivered</Button>
                 )}
               </div>
             </div>
@@ -102,6 +108,8 @@ export default function Orders() {
           {items.length === 0 && <p className="text-sm text-body/60">No orders in this status.</p>}
         </div>
       </AsyncState>
+      {itemsQuery.data?.totalPages > 1 && <Pagination currentPage={page} totalPages={itemsQuery.data.totalPages} onPageChange={setPage} />}
+      <ProducerInsights />
 
       <div className="mt-10">
         <SectionHeader eyebrow="Insights" title="Product Performance" />

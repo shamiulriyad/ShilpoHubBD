@@ -6,6 +6,7 @@ import { useProducerOrderItems, useProducerRevenue } from '../../hooks/useProduc
 import { useLowStockProducts } from '../../hooks/useInventory';
 import { useReceivedContracts } from '../../hooks/useContracts';
 import { useReceivedQuotations } from '../../hooks/useQuotations';
+import ProducerInsights from './ProducerInsights';
 
 export default function ProducerDashboard() {
   const pendingOrdersQuery = useProducerOrderItems({ status: 'Pending', pageSize: 1 });
@@ -34,6 +35,7 @@ export default function ProducerDashboard() {
         </DashboardCard>
       </div>
 
+      <ProducerInsights />
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
           { title: 'Orders & Fulfillment', to: routePaths.producerOrders },
