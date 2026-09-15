@@ -110,6 +110,399 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("XpTransactions", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Admin.IdentityVerificationRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ApplicantNote")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("BackImageUrl")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("FrontImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("RejectionReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ReviewedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("SelfieImageUrl")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewedByUserId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("SubmittedAt");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("IdentityVerificationRequests", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Admin.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Module")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000000"),
+                            Code = "users.view",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "View the user directory and user profiles.",
+                            Module = "Users",
+                            Name = "View Users"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000001"),
+                            Code = "users.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Activate, deactivate and edit user accounts.",
+                            Module = "Users",
+                            Name = "Manage Users"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000002"),
+                            Code = "users.roles.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Assign and remove roles from users.",
+                            Module = "Users",
+                            Name = "Manage Roles"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000003"),
+                            Code = "users.permissions.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Grant or revoke permissions on roles.",
+                            Module = "Users",
+                            Name = "Manage Permissions"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000004"),
+                            Code = "users.verification.review",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Approve or reject submitted identity verification requests.",
+                            Module = "Users",
+                            Name = "Review Identity Verifications"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000005"),
+                            Code = "heritage.categories.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Create, edit and remove craft categories.",
+                            Module = "Heritage",
+                            Name = "Manage Craft Categories"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000006"),
+                            Code = "heritage.villages.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Create, edit and remove heritage villages.",
+                            Module = "Heritage",
+                            Name = "Manage Heritage Villages"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000007"),
+                            Code = "heritage.districts.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Create, edit and remove districts.",
+                            Module = "Heritage",
+                            Name = "Manage Districts"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000008"),
+                            Code = "heritage.festivals.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Create, edit and remove festivals.",
+                            Module = "Heritage",
+                            Name = "Manage Festivals"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000009"),
+                            Code = "heritage.unesco.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Create, edit and remove UNESCO heritage records.",
+                            Module = "Heritage",
+                            Name = "Manage UNESCO Records"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000010"),
+                            Code = "marketplace.products.approve",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Approve or reject product listings.",
+                            Module = "Marketplace",
+                            Name = "Approve Products"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000011"),
+                            Code = "marketplace.monitor",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "View marketplace-wide monitoring dashboards.",
+                            Module = "Marketplace",
+                            Name = "Monitor Marketplace"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000012"),
+                            Code = "marketplace.refunds.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Approve or reject refund requests.",
+                            Module = "Marketplace",
+                            Name = "Manage Refunds"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000013"),
+                            Code = "marketplace.fraud.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Review and act on fraud-control flags.",
+                            Module = "Marketplace",
+                            Name = "Manage Fraud Control"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000014"),
+                            Code = "cms.homepage.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Edit homepage content sections.",
+                            Module = "CMS",
+                            Name = "Manage Homepage"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000015"),
+                            Code = "cms.blogs.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Create, edit and remove blog posts.",
+                            Module = "CMS",
+                            Name = "Manage Blogs"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000016"),
+                            Code = "cms.news.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Create, edit and remove news items.",
+                            Module = "CMS",
+                            Name = "Manage News"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000017"),
+                            Code = "cms.events.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Create, edit and remove CMS events.",
+                            Module = "CMS",
+                            Name = "Manage Events"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000018"),
+                            Code = "cms.announcements.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Create, edit and remove announcements.",
+                            Module = "CMS",
+                            Name = "Manage Announcements"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000019"),
+                            Code = "moderation.reviews.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Review and act on fake-review flags.",
+                            Module = "AI Moderation",
+                            Name = "Moderate Reviews"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000020"),
+                            Code = "moderation.spam.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Review and act on spam-detection flags.",
+                            Module = "AI Moderation",
+                            Name = "Moderate Spam"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000021"),
+                            Code = "moderation.content.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Review and act on flagged content.",
+                            Module = "AI Moderation",
+                            Name = "Moderate Content"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000022"),
+                            Code = "moderation.images.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Review and act on flagged images.",
+                            Module = "AI Moderation",
+                            Name = "Moderate Images"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000023"),
+                            Code = "security.audit.view",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "View platform audit logs.",
+                            Module = "Security",
+                            Name = "View Audit Logs"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000024"),
+                            Code = "security.backups.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Trigger and manage system backups.",
+                            Module = "Security",
+                            Name = "Manage Backups"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000025"),
+                            Code = "security.monitoring.view",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "View system health and monitoring dashboards.",
+                            Module = "Security",
+                            Name = "View System Monitoring"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000026"),
+                            Code = "security.api.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Manage API keys and API access.",
+                            Module = "Security",
+                            Name = "Manage API Access"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000027"),
+                            Code = "security.threats.manage",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Review and act on threat-detection alerts.",
+                            Module = "Security",
+                            Name = "Manage Threat Detection"
+                        });
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Admin.RolePermission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("GrantedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("GrantedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GrantedByUserId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId", "PermissionId")
+                        .IsUnique();
+
+                    b.ToTable("RolePermissions", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Apprenticeship.ApprenticeEnrollment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -5357,6 +5750,66 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("RouteStops", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.UnescoRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("DistrictId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("InscribedYear")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OfficialUrl")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisplayOrder");
+
+                    b.HasIndex("DistrictId");
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("Type");
+
+                    b.ToTable("UnescoRecords", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.FamilyHeritageMember", b =>
                 {
                     b.Property<Guid>("Id")
@@ -7989,6 +8442,70 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("DeliveryAttempts", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DeliveryPrediction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Confidence")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FactorsJson")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("GeneratedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LogisticsPartnerProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<double>("OnTimeProbability")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime?>("PredictedDeliveryAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double>("PredictedFailureProbability")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("PredictedTransitDays")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("RiskLevel")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<Guid>("ShipmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GeneratedByUserId");
+
+                    b.HasIndex("ShipmentId");
+
+                    b.HasIndex("LogisticsPartnerProfileId", "CreatedAt");
+
+                    b.ToTable("DeliveryPredictions", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DeliveryRoute", b =>
                 {
                     b.Property<Guid>("Id")
@@ -8280,6 +8797,116 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("DeliveryRouteId", "Sequence");
 
                     b.ToTable("DeliveryRouteStops", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DemandForecast", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AssumptionsJson")
+                        .HasColumnType("text");
+
+                    b.Property<double>("BaselineDailyAverage")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Confidence")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("GeneratedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Granularity")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<int>("HorizonDays")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("LogisticsPartnerProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("Metric")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<DateTime>("PeriodEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double>("PredictedTotal")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Scope")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<Guid?>("ScopeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ScopeLabel")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("character varying(160)");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GeneratedByUserId");
+
+                    b.HasIndex("LogisticsPartnerProfileId", "CreatedAt");
+
+                    b.HasIndex("Scope", "ScopeId");
+
+                    b.ToTable("LogisticsDemandForecasts", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DemandForecastPoint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("DemandForecastId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("LowerBound")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("PeriodDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double>("PredictedValue")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("UpperBound")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DemandForecastId", "PeriodDate");
+
+                    b.ToTable("LogisticsDemandForecastPoints", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerProfile", b =>
@@ -8995,6 +9622,113 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("ReturnRequests", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.RouteOptimizationRun", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("AppliedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("AppliedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Confidence")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DeliveryRouteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("DistanceSavingKm")
+                        .HasColumnType("numeric(10,2)");
+
+                    b.Property<Guid>("GeneratedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LogisticsPartnerProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("Objective")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<decimal?>("OriginalDistanceKm")
+                        .HasColumnType("numeric(10,2)");
+
+                    b.Property<decimal?>("ProposedDistanceKm")
+                        .HasColumnType("numeric(10,2)");
+
+                    b.Property<int?>("ProposedDurationMinutes")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppliedByUserId");
+
+                    b.HasIndex("GeneratedByUserId");
+
+                    b.HasIndex("DeliveryRouteId", "Status");
+
+                    b.HasIndex("LogisticsPartnerProfileId", "CreatedAt");
+
+                    b.ToTable("RouteOptimizationRuns", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.RouteOptimizationRunStop", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("DistanceFromPreviousKm")
+                        .HasColumnType("numeric(10,2)");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<int>("OriginalSequence")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProposedSequence")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("RouteOptimizationRunId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RouteStopId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RouteOptimizationRunId", "ProposedSequence");
+
+                    b.ToTable("RouteOptimizationRunStops", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.Shipment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -9347,6 +10081,125 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("LogisticsPartnerProfileId", "Status");
 
                     b.ToTable("Warehouses", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseAllocationOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("ProjectedUtilizationPercent")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("Rank")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Rationale")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<bool>("SameDistrictAsDestination")
+                        .HasColumnType("boolean");
+
+                    b.Property<double>("Score")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("WarehouseAllocationRecommendationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("WarehouseCode")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("WarehouseName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WarehouseAllocationRecommendationId", "Rank");
+
+                    b.ToTable("WarehouseAllocationOptions", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseAllocationRecommendation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Confidence")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DestinationDistrictId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("GeneratedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LogisticsPartnerProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("Objective")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RecommendedWarehouseCode")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<Guid?>("RecommendedWarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("RequireColdChain")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("ShipmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Sku")
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationDistrictId");
+
+                    b.HasIndex("GeneratedByUserId");
+
+                    b.HasIndex("RecommendedWarehouseId");
+
+                    b.HasIndex("ShipmentId");
+
+                    b.HasIndex("LogisticsPartnerProfileId", "CreatedAt");
+
+                    b.ToTable("WarehouseAllocationRecommendations", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseBin", b =>
@@ -13159,6 +14012,50 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Admin.IdentityVerificationRequest", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "ReviewedBy")
+                        .WithMany()
+                        .HasForeignKey("ReviewedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReviewedBy");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Admin.RolePermission", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "GrantedBy")
+                        .WithMany()
+                        .HasForeignKey("GrantedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Admin.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GrantedBy");
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Apprenticeship.ApprenticeEnrollment", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Apprenticeship.ProgramApplication", "Application")
@@ -14896,6 +15793,16 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Route");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.UnescoRecord", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("District");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.FamilyHeritageMember", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", "ProducerHeritageIdentity")
@@ -15942,6 +16849,33 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Shipment");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DeliveryPrediction", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "GeneratedBy")
+                        .WithMany()
+                        .HasForeignKey("GeneratedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerProfile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("LogisticsPartnerProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.Shipment", "Shipment")
+                        .WithMany()
+                        .HasForeignKey("ShipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GeneratedBy");
+
+                    b.Navigation("Profile");
+
+                    b.Navigation("Shipment");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DeliveryRoute", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "CreatedBy")
@@ -16016,6 +16950,36 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("PickupRequest");
 
                     b.Navigation("Route");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DemandForecast", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "GeneratedBy")
+                        .WithMany()
+                        .HasForeignKey("GeneratedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerProfile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("LogisticsPartnerProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GeneratedBy");
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DemandForecastPoint", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.DemandForecast", "DemandForecast")
+                        .WithMany("Points")
+                        .HasForeignKey("DemandForecastId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DemandForecast");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerProfile", b =>
@@ -16246,6 +17210,51 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Shipment");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.RouteOptimizationRun", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "AppliedBy")
+                        .WithMany()
+                        .HasForeignKey("AppliedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.DeliveryRoute", "DeliveryRoute")
+                        .WithMany()
+                        .HasForeignKey("DeliveryRouteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "GeneratedBy")
+                        .WithMany()
+                        .HasForeignKey("GeneratedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerProfile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("LogisticsPartnerProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppliedBy");
+
+                    b.Navigation("DeliveryRoute");
+
+                    b.Navigation("GeneratedBy");
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.RouteOptimizationRunStop", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.RouteOptimizationRun", "RouteOptimizationRun")
+                        .WithMany("Stops")
+                        .HasForeignKey("RouteOptimizationRunId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RouteOptimizationRun");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.Shipment", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "CreatedBy")
@@ -16349,6 +17358,57 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("District");
 
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseAllocationOption", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.WarehouseAllocationRecommendation", "Recommendation")
+                        .WithMany("Options")
+                        .HasForeignKey("WarehouseAllocationRecommendationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recommendation");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseAllocationRecommendation", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.District", "DestinationDistrict")
+                        .WithMany()
+                        .HasForeignKey("DestinationDistrictId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "GeneratedBy")
+                        .WithMany()
+                        .HasForeignKey("GeneratedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerProfile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("LogisticsPartnerProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.Warehouse", "RecommendedWarehouse")
+                        .WithMany()
+                        .HasForeignKey("RecommendedWarehouseId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.Shipment", "Shipment")
+                        .WithMany()
+                        .HasForeignKey("ShipmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("DestinationDistrict");
+
+                    b.Navigation("GeneratedBy");
+
+                    b.Navigation("Profile");
+
+                    b.Navigation("RecommendedWarehouse");
+
+                    b.Navigation("Shipment");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseBin", b =>
@@ -17622,6 +18682,11 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("UserAchievements");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Admin.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Apprenticeship.ApprenticeEnrollment", b =>
                 {
                     b.Navigation("MilestoneProgress");
@@ -18025,6 +19090,11 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Stops");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DemandForecast", b =>
+                {
+                    b.Navigation("Points");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerProfile", b =>
                 {
                     b.Navigation("ServiceAreas");
@@ -18046,6 +19116,11 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.RouteOptimizationRun", b =>
+                {
+                    b.Navigation("Stops");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.Shipment", b =>
                 {
                     b.Navigation("Attempts");
@@ -18058,6 +19133,11 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Bins");
 
                     b.Navigation("Zones");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseAllocationRecommendation", b =>
+                {
+                    b.Navigation("Options");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ManufacturingPartnership.ManufacturingPartnership", b =>

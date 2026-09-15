@@ -57,8 +57,8 @@ public class HeritageFestivalService : IHeritageFestivalService
             Description = request.Description.Trim(),
             DistrictId = request.DistrictId,
             HeritagePlaceId = request.HeritagePlaceId,
-            StartDate = request.StartDate,
-            EndDate = request.EndDate,
+            StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc),
+            EndDate = DateTime.SpecifyKind(request.EndDate, DateTimeKind.Utc),
             IsRecurringAnnually = request.IsRecurringAnnually,
             ImageUrl = request.ImageUrl?.Trim(),
             IsActive = true,
@@ -89,8 +89,8 @@ public class HeritageFestivalService : IHeritageFestivalService
         festival.Description = request.Description.Trim();
         festival.DistrictId = request.DistrictId;
         festival.HeritagePlaceId = request.HeritagePlaceId;
-        festival.StartDate = request.StartDate;
-        festival.EndDate = request.EndDate;
+        festival.StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc);
+        festival.EndDate = DateTime.SpecifyKind(request.EndDate, DateTimeKind.Utc);
         festival.IsRecurringAnnually = request.IsRecurringAnnually;
         festival.ImageUrl = request.ImageUrl?.Trim();
         festival.IsActive = request.IsActive;

@@ -106,6 +106,7 @@ public static class DependencyInjection
 		services.AddScoped<ICulturalEventRepository, CulturalEventRepository>();
 		services.AddScoped<ILocalCuisineRepository, LocalCuisineRepository>();
 		services.AddScoped<IHeritageRouteRepository, HeritageRouteRepository>();
+		services.AddScoped<IUnescoRecordRepository, UnescoRecordRepository>();
 
 		services.AddScoped<ITouristServiceRepository, TouristServiceRepository>();
 		services.AddScoped<IServiceAvailabilitySlotRepository, ServiceAvailabilitySlotRepository>();
@@ -143,6 +144,10 @@ public static class DependencyInjection
 		services.AddScoped<IWarehouseStockRepository, WarehouseStockRepository>();
 		services.AddScoped<IReturnHandlingRepository, ReturnHandlingRepository>();
 		services.AddScoped<IAiLogisticsRepository, AiLogisticsRepository>();
+
+		services.AddScoped<IAdminUserRepository, AdminUserRepository>();
+		services.AddScoped<IPermissionRepository, PermissionRepository>();
+		services.AddScoped<IIdentityVerificationRepository, IdentityVerificationRepository>();
 
 		services.AddScoped<IMuseumItemRepository, MuseumItemRepository>();
 		services.AddScoped<IVillageTourStopRepository, VillageTourStopRepository>();

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Application.Options;
 using ShilpoHubBD.Application.Services.Achievement;
+using ShilpoHubBD.Application.Services.Admin;
 using ShilpoHubBD.Application.Services.AIBusiness;
 using ShilpoHubBD.Application.Services.AIBusinessPartner;
 using ShilpoHubBD.Application.Services.AIShopping;
@@ -176,6 +177,7 @@ public static class DependencyInjection
 
         services.AddScoped<IHeritagePlaceService, HeritagePlaceService>();
         services.AddScoped<IHeritageFestivalService, HeritageFestivalService>();
+        services.AddScoped<IUnescoRecordService, UnescoRecordService>();
         services.AddScoped<ICulturalEventService, CulturalEventService>();
         services.AddScoped<ILocalCuisineService, LocalCuisineService>();
         services.AddScoped<IHeritageRouteService, HeritageRouteService>();
@@ -232,6 +234,10 @@ public static class DependencyInjection
         services.AddScoped<IVillageTourService, VillageTourService>();
         services.AddScoped<ICulturalStoryService, CulturalStoryService>();
         services.AddScoped<IArCraftScanService, ArCraftScanService>();
+
+        services.AddScoped<IAdminUserService, AdminUserService>();
+        services.AddScoped<IPermissionService, PermissionService>();
+        services.AddScoped<IIdentityVerificationService, IdentityVerificationService>();
 
         return services;
     }
