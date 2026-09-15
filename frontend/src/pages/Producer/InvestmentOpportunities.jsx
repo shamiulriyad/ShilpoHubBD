@@ -1,21 +1,26 @@
 import { useState } from 'react';
-import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { PageHeader, Badge, Button, AsyncState, Pagination } from '../../components/ui';
 import {
   useMyInvestmentOpportunities,
   useInvestmentOpportunityProposals,
   useInvestmentOpportunityMutations,
 } from '../../hooks/useInvestmentOpportunities';
 
+import MutationFeedback from '../../components/ui/MutationFeedback';
+
 const oppTone = { Open: 'secondary', FullyFunded: 'success', Closed: 'neutral', Cancelled: 'neutral' };
 const proposalTone = { Submitted: 'secondary', Approved: 'success', Rejected: 'neutral', Active: 'primary', Completed: 'success', Cancelled: 'neutral' };
 
 function ProposalsPanel({ opportunityId }) {
-  const { data } = useInvestmentOpportunityProposals(opportunityId);
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error } = useInvestmentOpportunityProposals(opportunityId, { page, pageSize: 10 });
   const { decideProposal } = useInvestmentOpportunityMutations();
 
   return (
+    <AsyncState isLoading={isLoading} isError={isError} error={error}>
     <div className="space-y-2">
-      {(data || []).map((p) => (
+      <MutationFeedback mutation={decideProposal} successMessage="Proposal decision saved." />
+      {(data?.items || []).map((p) => (
         <div key={p.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-background p-3 text-sm">
           <div>
             <p className="font-medium text-heading">{p.businessPartnerName}</p>
@@ -25,32 +30,35 @@ function ProposalsPanel({ opportunityId }) {
             <Badge tone={proposalTone[p.status] || 'neutral'}>{p.status}</Badge>
             {p.status === 'Submitted' && (
               <>
-                <Button variant="primary" onClick={() => decideProposal.mutate({ id: p.id, payload: { approve: true } })}>Approve</Button>
+                <Button variant="primary" disabled={decideProposal.isPending} onClick={() => decideProposal.mutate({ id: p.id, payload: { approve: true } })}>Approve</Button>
                 <Button variant="secondary" onClick={() => decideProposal.mutate({ id: p.id, payload: { approve: false } })}>Reject</Button>
               </>
             )}
           </div>
         </div>
       ))}
-      {(data || []).length === 0 && <p className="text-xs text-body/50">No proposals yet.</p>}
+      {(data?.items || []).length === 0 && <p className="text-xs text-body/50">No proposals yet.</p>}
+      {data?.totalPages > 1 && <Pagination currentPage={page} totalPages={data.totalPages} onPageChange={setPage} />}
     </div>
+    </AsyncState>
   );
 }
 
 export default function InvestmentOpportunities() {
-  const { data, isLoading, isError, error } = useMyInvestmentOpportunities();
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error } = useMyInvestmentOpportunities({ page, pageSize: 10 });
   const { create, close, cancel } = useInvestmentOpportunityMutations();
   const [expandedId, setExpandedId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', projectDescription: '', fundingRequirement: '' });
 
-  const opportunities = data || [];
+  const opportunities = data?.items || [];
 
   const handleCreate = (event) => {
     event.preventDefault();
     create.mutate(
       { title: form.title, projectDescription: form.projectDescription, fundingRequirement: Number(form.fundingRequirement) },
-      { onSuccess: () => { setForm({ title: '', projectDescription: '', fundingRequirement: '' }); setShowForm(false); } },
+      { onSuccess: () => { setPage(1); setForm({ title: '', projectDescription: '', fundingRequirement: '' }); setShowForm(false); } },
     );
   };
 
@@ -62,11 +70,13 @@ export default function InvestmentOpportunities() {
         action={<Button variant="primary" onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'New Opportunity'}</Button>}
       />
 
+      <div className="mb-4 space-y-2"><MutationFeedback mutation={create} successMessage="Opportunity created." /><MutationFeedback mutation={close} successMessage="Opportunity closed." /><MutationFeedback mutation={cancel} successMessage="Opportunity cancelled." /></div>
+
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <textarea aria-label="Project description" required rows={3} placeholder="Project description" value={form.projectDescription} onChange={(e) => setForm((p) => ({ ...p, projectDescription: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input aria-label="Funding requirement" required type="number" placeholder="Funding requirement (৳)" value={form.fundingRequirement} onChange={(e) => setForm((p) => ({ ...p, fundingRequirement: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Title" required maxLength={200} placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <textarea aria-label="Project description" required maxLength={4000} rows={3} placeholder="Project description" value={form.projectDescription} onChange={(e) => setForm((p) => ({ ...p, projectDescription: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Funding requirement" required type="number" min="0.01" step="0.01" placeholder="Funding requirement (৳)" value={form.fundingRequirement} onChange={(e) => setForm((p) => ({ ...p, fundingRequirement: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button type="submit" variant="primary" disabled={create.isPending}>Create</Button>
         </form>
       )}
@@ -92,8 +102,8 @@ export default function InvestmentOpportunities() {
                   <ProposalsPanel opportunityId={opp.id} />
                   {opp.status === 'Open' && (
                     <div className="flex gap-2">
-                      <Button variant="secondary" onClick={() => close.mutate(opp.id)}>Close</Button>
-                      <Button variant="secondary" onClick={() => cancel.mutate(opp.id)}>Cancel</Button>
+                      <Button variant="secondary" disabled={close.isPending || cancel.isPending} onClick={() => close.mutate(opp.id)}>Close</Button>
+                      <Button variant="secondary" disabled={close.isPending || cancel.isPending} onClick={() => cancel.mutate(opp.id)}>Cancel</Button>
                     </div>
                   )}
                 </div>
@@ -102,6 +112,7 @@ export default function InvestmentOpportunities() {
           ))}
           {opportunities.length === 0 && <p className="text-sm text-body/60">You haven't posted any investment opportunities yet.</p>}
         </div>
+        {data?.totalPages > 1 && <div className="mt-6"><Pagination currentPage={page} totalPages={data.totalPages} onPageChange={setPage} /></div>}
       </AsyncState>
     </div>
   );
