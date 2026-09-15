@@ -10,7 +10,7 @@ export default function DashboardProfile() {
     <div>
       <PageHeader
         title="Account Profile"
-        description="Identity information returned by your authenticated ShilpoHub account."
+        description="Your account details and available workspaces."
       />
       <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
         <DashboardCard title="Overview">
@@ -20,7 +20,7 @@ export default function DashboardProfile() {
             </span>
             <div className="min-w-0">
               <p className="break-words text-sm font-semibold text-heading">{user?.name || 'ShilpoHub member'}</p>
-              <p className="mt-1 break-all text-xs text-body/60">{user?.email || 'No email returned'}</p>
+              <p className="mt-1 break-all text-xs text-body/60">{user?.email || 'No email available'}</p>
             </div>
           </div>
         </DashboardCard>
@@ -43,7 +43,7 @@ export default function DashboardProfile() {
             </div>
           </dl>
           <p className="mt-5 text-xs leading-5 text-body/55">
-            Profile editing is not exposed here because the current authentication API does not provide a generic account-profile update endpoint.
+            Account details are read-only here.
           </p>
         </DashboardCard>
       </div>
