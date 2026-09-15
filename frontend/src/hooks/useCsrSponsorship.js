@@ -5,18 +5,18 @@ export function useCsrOpportunities(params = {}) {
   return useQuery({ queryKey: ['csr', 'opportunities', params], queryFn: () => csrSponsorshipService.listOpportunities(params) });
 }
 
-export function useMyCsrOpportunities() {
-  return useQuery({ queryKey: ['csr', 'opportunities', 'mine'], queryFn: () => csrSponsorshipService.myOpportunities() });
+export function useMyCsrOpportunities(params = {}) {
+  return useQuery({ queryKey: ['csr', 'opportunities', 'mine', params], queryFn: () => csrSponsorshipService.myOpportunities(params) });
 }
 
 export function useCsrOpportunity(id) {
   return useQuery({ queryKey: ['csr', 'opportunities', id], queryFn: () => csrSponsorshipService.getOpportunity(id), enabled: Boolean(id) });
 }
 
-export function useCsrOpportunityProposals(id) {
+export function useCsrOpportunityProposals(id, params = {}) {
   return useQuery({
-    queryKey: ['csr', 'opportunities', id, 'proposals'],
-    queryFn: () => csrSponsorshipService.opportunityProposals(id),
+    queryKey: ['csr', 'opportunities', id, 'proposals', params],
+    queryFn: () => csrSponsorshipService.opportunityProposals(id, params),
     enabled: Boolean(id),
   });
 }

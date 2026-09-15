@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { recommendationsService } from '../services/recommendationsService';
 
-export function useRecommendedForMe(count = 8) {
+export function useRecommendedForMe(count = 8, enabled = true) {
   return useQuery({
     queryKey: ['recommendations', 'for-me', count],
     queryFn: () => recommendationsService.forMe(count),
+    enabled,
   });
 }
 
