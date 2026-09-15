@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import Sidebar from '../components/layout/Sidebar';
 import ProfileDropdown from '../components/layout/ProfileDropdown';
 import Footer from '../components/layout/Footer';
 import { sidebarNav, roleSidebars } from '../data/navigation';
 import { useAuth } from '../hooks/useAuth';
+import { routePaths } from '../routes/routePaths';
 
 export default function DashboardLayout({ navItems, sidebarTitle }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -15,17 +16,8 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
   const title = sidebarTitle ?? roleConfig?.title ?? 'Workspace';
 
   return (
-<<<<<<< HEAD
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-40 flex h-[4.5rem] shrink-0 items-center gap-3 border-b border-border bg-surface px-4 py-3 lg:px-6">
-=======
-    <div className="min-h-screen bg-background">
-<<<<<<< HEAD
-      <header className="sticky top-0 z-40 flex items-center gap-3 border-b border-border bg-surface px-4 py-3 lg:px-6">
-=======
-      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface px-4 py-3 transition-[padding] duration-200 ease-in-out lg:pr-6 lg:pl-[calc(1.5rem+var(--sh-sidebar-w,260px))]">
->>>>>>> Riyad
->>>>>>> main
         <button
           type="button"
           className="rounded-md border border-border p-2 text-body lg:hidden"
@@ -36,8 +28,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         >
           ☰
         </button>
-<<<<<<< HEAD
-        <Link to={routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title">
+        <Link to={routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title lg:hidden">
           <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs text-surface">
             শি
           </span>
@@ -45,14 +36,9 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         </Link>
         <div className="ml-auto">
           <ProfileDropdown />
-=======
-        <div className="mx-auto hidden max-w-md flex-1 lg:block">
-          <SearchBar placeholder="Search the dashboard…" />
->>>>>>> Riyad
         </div>
       </header>
 
-<<<<<<< HEAD
       {sidebarOpen && (
         <button
           type="button"
@@ -66,7 +52,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         <div
           id="workspace-sidebar"
           onKeyDown={(event) => { if (event.key === 'Escape') setSidebarOpen(false); }}
-          className={`workspace-scroll fixed inset-y-0 left-0 z-50 w-[min(86vw,19rem)] overflow-y-auto overscroll-contain bg-surface p-4 shadow-xl transition-transform lg:sticky lg:top-[6rem] lg:z-30 lg:block lg:max-h-[calc(100dvh-7.5rem)] lg:w-64 lg:shrink-0 lg:translate-x-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
+          className={`workspace-scroll fixed inset-y-0 left-0 z-50 w-[min(86vw,19rem)] overflow-y-auto overscroll-contain bg-surface p-4 shadow-xl transition-[width,transform] duration-200 ease-in-out lg:sticky lg:top-[6rem] lg:z-30 lg:block lg:max-h-[calc(100dvh_-_7.5rem)] lg:w-[var(--sh-sidebar-w,260px)] lg:shrink-0 lg:transform-none lg:bg-transparent lg:p-0 lg:shadow-none ${
             sidebarOpen ? 'visible translate-x-0' : 'invisible -translate-x-full lg:visible'
           }`}
         >
@@ -81,11 +67,6 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
             </button>
           </div>
           <Sidebar items={items} title={title} onNavigate={() => setSidebarOpen(false)} />
-=======
-      <div className="mx-auto flex max-w-[1600px] items-start gap-6 px-4 py-6 transition-[padding] duration-200 ease-in-out lg:pr-6 lg:pl-[calc(1.5rem+var(--sh-sidebar-w,260px))]">
-        <div className={`${sidebarOpen ? 'block' : 'hidden'} w-full lg:block lg:w-auto`}>
-          <Sidebar items={items} title={title} />
->>>>>>> Riyad
         </div>
 
         <main className="min-w-0 flex-1">
