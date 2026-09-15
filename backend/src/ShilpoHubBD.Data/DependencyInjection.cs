@@ -17,7 +17,7 @@ public static class DependencyInjection
 		{
 			throw new InvalidOperationException(
 				"Connection string 'DefaultConnection' is not configured. Set ConnectionStrings__DefaultConnection " +
-				"to your Supabase Postgres connection string.");
+				"to your PostgreSQL connection string, or copy backend/.env.example to backend/.env and fill it in. See backend/README.md (Setup).");
 		}
 
 		services.AddDbContext<ShilpoHubDbContext>(options => options.UseNpgsql(connectionString));

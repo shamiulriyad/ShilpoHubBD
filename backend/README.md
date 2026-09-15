@@ -49,7 +49,7 @@ Abstract providers (swap the implementation without touching callers):
 
 ## Setup
 
-1. Copy the example env file from the repo root and fill in your values:
+1. From the `backend` directory, copy the example env file and fill in your values:
    ```
    cp .env.example .env
    ```
@@ -75,9 +75,32 @@ Abstract providers (swap the implementation without touching callers):
    ```
    dotnet run --project src/ShilpoHubBD.Api
    ```
-   - Swagger UI (Development): `https://localhost:5001/swagger`
+   - Swagger UI (default HTTP profile): `http://localhost:5065/swagger`
    - Health check: `GET /health/db`
    - SignalR hubs: `/hubs/messaging`, `/hubs/live-events`, `/hubs/live-classes`
+
+
+### Missing database configuration / registration cannot reach the server
+
+If startup reports `Connection string 'DefaultConnection' is not configured`, the API has exited and the browser cannot register users. In `backend/.env`, set the real PostgreSQL host, database, username and password using the `Host=...;Port=...;Database=...;Username=...;Password=...` format. The example values must be replaced; a Supabase URL or API key is not a database connection string.
+
+Set `Jwt__Key` to a random signing key. Generate one in PowerShell and paste the result into your private `backend/.env`:
+
+```powershell
+$keyBytes = New-Object byte[] 48
+$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+$rng.GetBytes($keyBytes)
+[Convert]::ToBase64String($keyBytes)
+$rng.Dispose()
+```
+
+Keep `.env` private (it is ignored by Git). Apply the migrations above to your intended database, then start the default HTTP profile from `backend`:
+
+```bash
+dotnet run --project src/ShilpoHubBD.Api --launch-profile http
+```
+
+Check `http://localhost:5065/health/db`: it must return HTTP 200 / `Healthy`. The frontend now defaults to `http://localhost:5065/api`. Remove any old `VITE_API_BASE_URL` override or update it to this address, then restart Vite. If you deliberately select the HTTPS profile, set the frontend override to `https://localhost:5001/api` and trust the .NET development certificate.
 
 ## Database migrations
 
@@ -98,7 +121,7 @@ The API talks to PostgreSQL directly over EF Core / Npgsql — **Supabase is use
 
 Connection wiring, in order:
 
-1. `ConnectionStrings__DefaultConnection` is provided as an environment variable or in `.env` (repo root / `backend/` / `backend/src/ShilpoHubBD.Api/`). In Development, `Program.cs` loads the first `.env` it finds via `DotNetEnv` and then `AddEnvironmentVariables()`. Use the Supabase **session pooler** URI (Project Settings → Database → Connection string), e.g. `Host=aws-0-<region>.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.<ref>;Password=<db-password>;SSL Mode=Require;Trust Server Certificate=true`.
+1. `ConnectionStrings__DefaultConnection` is provided as an environment variable or in `.env` (repo root / `backend/` / `backend/src/ShilpoHubBD.Api/`). In Development, `Program.cs` loads the first `.env` it finds via `DotNetEnv` and then `AddEnvironmentVariables()`. Use the Supabase **session pooler** Npgsql connection string (Project Settings → Database → Connection string), e.g. `Host=aws-0-<region>.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.<ref>;Password=<db-password>;SSL Mode=Require;Trust Server Certificate=true`.
 2. `Program.cs` calls `builder.Services.AddData(builder.Configuration)` ([`ShilpoHubBD.Data/DependencyInjection.cs`](src/ShilpoHubBD.Data/DependencyInjection.cs)), which reads `GetConnectionString("DefaultConnection")` (throws at startup if empty) and registers `ShilpoHubDbContext` with `options.UseNpgsql(connectionString)`.
 3. The same string is registered as the `supabase-postgres` health check exposed at `GET /health/db`.
 4. Repositories take `ShilpoHubDbContext` by DI and persist through `SaveChangesAsync()`; Npgsql manages a pooled TCP + SSL connection to the Supabase host.
