@@ -7,3 +7,9 @@ Locally stored editorial images. These are real photographs, not generated image
 - pottery-photo.jpg — https://pxhere.com/en/photo/989432 (CC0/public domain).
 
 The earlier heritage-*.png generated assets are retained but no longer used by the homepage.
+
+## People-focused collection photographs
+- village-community.jpg — Ian Taylor / Pexels: https://www.pexels.com/photo/smiling-schoolchildren-in-rural-bangladesh-36915231/
+- festival-community.jpg — Swarup Photography / Pexels: https://www.pexels.com/photo/indian-people-on-a-celebration-15840698/
+- learning-together.jpg — Atharv Ingle / Pexels: https://www.pexels.com/photo/skilled-potter-teaching-child-clay-crafting-36928272/
+All three used under the Pexels license as editorial imagery, not as identified members or actual listed events/courses.

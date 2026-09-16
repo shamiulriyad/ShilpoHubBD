@@ -17,7 +17,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 lg:px-8">
         <Link to={routePaths.home} className="flex shrink-0 items-center gap-3 text-xl font-bold tracking-[-0.04em] text-title">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-title text-sm font-bold tracking-tight text-surface shadow-[0_7px_18px_rgba(23,59,53,0.25)]">
-            শি
+            
           </span>
           ShilpoHub
         </Link>
