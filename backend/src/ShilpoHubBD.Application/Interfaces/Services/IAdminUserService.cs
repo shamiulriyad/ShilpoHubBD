@@ -10,5 +10,6 @@ public interface IAdminUserService
 
     Task<AdminUserDetailDto> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<AdminUserDetailDto> SetActiveAsync(Guid id, bool isActive, CancellationToken cancellationToken);
+    Task<AdminUserDetailDto> SetActiveAsync(
+        Guid id, bool isActive, Guid actorUserId, string? ipAddress, CancellationToken cancellationToken);
 }
