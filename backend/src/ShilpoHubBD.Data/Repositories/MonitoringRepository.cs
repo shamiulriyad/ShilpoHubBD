@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using ShilpoHubBD.Application.DTOs.Governance;
@@ -12,6 +14,10 @@ public class MonitoringRepository : IMonitoringRepository
 {
     private static readonly OrderStatus[] BadOrderStatuses =
         { OrderStatus.Cancelled, OrderStatus.Returned, OrderStatus.Refunded, OrderStatus.ReturnRequested };
+
+    // Illustrative rule-based banned-term list for the Content Moderation scan — not an ML classifier.
+    private static readonly string[] BannedTerms =
+        { "scam", "click here", "free money", "guaranteed profit", "bit.ly" };
 
     private readonly ShilpoHubDbContext _context;
 
@@ -378,6 +384,201 @@ public class MonitoringRepository : IMonitoringRepository
         return results;
     }
 
+    // ---- AI Moderation ----------------------------------------------
+
+    public async Task<List<ScanCandidate>> FindSpamContentCandidatesAsync(
+        DateTime since, CancellationToken cancellationToken)
+    {
+        var results = new List<ScanCandidate>();
+
+        // Same message body blasted to several different conversations by one sender — spam-bot pattern.
+        var messageRows = await _context.Messages
+            .Where(m => m.CreatedAt >= since && m.Body.Length >= 5)
+            .GroupBy(m => new { m.SenderId, m.Body })
+            .Select(g => new
+            {
+                g.Key.SenderId,
+                g.Key.Body,
+                Count = g.Count(),
+                Conversations = g.Select(m => m.ConversationId).Distinct().Count(),
+            })
+            .Where(x => x.Count >= 4 && x.Conversations >= 3)
+            .ToListAsync(cancellationToken);
+
+        var senderIds = messageRows.Select(r => r.SenderId).ToList();
+        var senderNames = await _context.Users
+            .Where(u => senderIds.Contains(u.Id))
+            .Select(u => new { u.Id, u.FullName })
+            .ToListAsync(cancellationToken);
+
+        foreach (var r in messageRows)
+        {
+            var name = senderNames.FirstOrDefault(n => n.Id == r.SenderId)?.FullName ?? r.SenderId.ToString();
+            results.Add(new ScanCandidate(
+                MonitoringFlagType.SpamContent,
+                r.Conversations >= 6 ? MonitoringFlagSeverity.High : MonitoringFlagSeverity.Medium,
+                MonitoringSubjectType.Producer, // sender is a user account; reuses the "user account" bucket
+                r.SenderId,
+                name,
+                "Identical message sent to multiple conversations",
+                $"{name} sent the same message to {r.Conversations} different conversations "
+                + $"({r.Count} times total) since {since:yyyy-MM-dd}.",
+                (decimal)Math.Min(90, 40 + r.Conversations * 8),
+                JsonSerializer.Serialize(new { r.Count, r.Conversations }),
+                $"spam:sender:{r.SenderId}:{StableHash(r.Body)}"));
+        }
+
+        // Same reviewer posting the identical review comment on several products.
+        var reviewRows = await _context.Reviews
+            .Where(r => r.CreatedAt >= since && r.Comment.Length >= 5)
+            .GroupBy(r => new { r.UserId, r.Comment })
+            .Select(g => new
+            {
+                g.Key.UserId,
+                g.Key.Comment,
+                Count = g.Count(),
+                Products = g.Select(r => r.ProductId).Distinct().Count(),
+            })
+            .Where(x => x.Count >= 3)
+            .ToListAsync(cancellationToken);
+
+        var reviewerIds = reviewRows.Select(r => r.UserId).ToList();
+        var reviewerNames = await _context.Users
+            .Where(u => reviewerIds.Contains(u.Id))
+            .Select(u => new { u.Id, u.FullName })
+            .ToListAsync(cancellationToken);
+
+        foreach (var r in reviewRows)
+        {
+            var name = reviewerNames.FirstOrDefault(n => n.Id == r.UserId)?.FullName ?? r.UserId.ToString();
+            results.Add(new ScanCandidate(
+                MonitoringFlagType.SpamContent,
+                MonitoringFlagSeverity.Medium,
+                MonitoringSubjectType.Review,
+                r.UserId,
+                name,
+                "Duplicate review comment posted repeatedly",
+                $"{name} posted the same review comment {r.Count} times across {r.Products} products "
+                + $"since {since:yyyy-MM-dd}.",
+                (decimal)Math.Min(85, 35 + r.Count * 10),
+                JsonSerializer.Serialize(new { r.Count, r.Products }),
+                $"spam:review:{r.UserId}:{StableHash(r.Comment)}"));
+        }
+
+        return results;
+    }
+
+    public async Task<List<ScanCandidate>> FindPolicyViolationCandidatesAsync(
+        DateTime since, CancellationToken cancellationToken)
+    {
+        var results = new List<ScanCandidate>();
+
+        foreach (var term in BannedTerms)
+        {
+            var pattern = $"%{term}%";
+
+            var posts = await _context.BlogPosts
+                .Where(b => b.CreatedAt >= since && EF.Functions.ILike(b.Content, pattern))
+                .Select(b => new { b.Id, b.Title })
+                .ToListAsync(cancellationToken);
+
+            foreach (var p in posts)
+            {
+                results.Add(new ScanCandidate(
+                    MonitoringFlagType.PolicyViolation,
+                    MonitoringFlagSeverity.Medium,
+                    MonitoringSubjectType.BlogPost,
+                    p.Id,
+                    p.Title,
+                    "Blog post contains a flagged term",
+                    $"Blog post \"{p.Title}\" contains the flagged term \"{term}\".",
+                    60,
+                    JsonSerializer.Serialize(new { term }),
+                    $"policy:blog:{p.Id}:{term}"));
+            }
+
+            var news = await _context.NewsItems
+                .Where(n => n.CreatedAt >= since && EF.Functions.ILike(n.Content, pattern))
+                .Select(n => new { n.Id, n.Title })
+                .ToListAsync(cancellationToken);
+
+            foreach (var n in news)
+            {
+                results.Add(new ScanCandidate(
+                    MonitoringFlagType.PolicyViolation,
+                    MonitoringFlagSeverity.Medium,
+                    MonitoringSubjectType.Other,
+                    n.Id,
+                    n.Title,
+                    "News item contains a flagged term",
+                    $"News item \"{n.Title}\" contains the flagged term \"{term}\".",
+                    60,
+                    JsonSerializer.Serialize(new { term }),
+                    $"policy:news:{n.Id}:{term}"));
+            }
+
+            var reviews = await _context.Reviews
+                .Where(r => r.CreatedAt >= since && EF.Functions.ILike(r.Comment, pattern))
+                .Select(r => new { r.Id, r.UserId, ReviewerName = r.User.FullName })
+                .ToListAsync(cancellationToken);
+
+            foreach (var r in reviews)
+            {
+                results.Add(new ScanCandidate(
+                    MonitoringFlagType.PolicyViolation,
+                    MonitoringFlagSeverity.Low,
+                    MonitoringSubjectType.Review,
+                    r.Id,
+                    r.ReviewerName,
+                    "Review comment contains a flagged term",
+                    $"A review by {r.ReviewerName} contains the flagged term \"{term}\".",
+                    50,
+                    JsonSerializer.Serialize(new { term }),
+                    $"policy:review:{r.Id}:{term}"));
+            }
+        }
+
+        return results;
+    }
+
+    public async Task<List<ScanCandidate>> FindInappropriateImageCandidatesAsync(
+        DateTime since, CancellationToken cancellationToken)
+    {
+        var results = new List<ScanCandidate>();
+
+        // The same photo reused across many different reviewers' review images — likely stock/stolen photos
+        // rather than genuine purchase photos.
+        var rows = await _context.ReviewImages
+            .Where(i => i.Review.CreatedAt >= since)
+            .GroupBy(i => i.ImageUrl)
+            .Select(g => new
+            {
+                ImageUrl = g.Key,
+                Count = g.Count(),
+                Reviewers = g.Select(i => i.Review.UserId).Distinct().Count(),
+            })
+            .Where(x => x.Reviewers >= 3)
+            .ToListAsync(cancellationToken);
+
+        foreach (var r in rows)
+        {
+            results.Add(new ScanCandidate(
+                MonitoringFlagType.InappropriateImage,
+                r.Reviewers >= 6 ? MonitoringFlagSeverity.High : MonitoringFlagSeverity.Medium,
+                MonitoringSubjectType.Review,
+                null,
+                r.ImageUrl,
+                "Same review photo reused by multiple reviewers",
+                $"The image at \"{r.ImageUrl}\" appears in {r.Count} reviews from {r.Reviewers} different "
+                + $"reviewers since {since:yyyy-MM-dd} — possible stock/stolen photo.",
+                (decimal)Math.Min(90, 40 + r.Reviewers * 8),
+                JsonSerializer.Serialize(new { r.Count, r.Reviewers }),
+                $"image:review:{r.ImageUrl}"));
+        }
+
+        return results;
+    }
+
     // ---- QR overview -------------------------------------------------
 
     public async Task<QrMonitoringOverviewDto> GetQrOverviewAsync(
@@ -500,6 +701,10 @@ public class MonitoringRepository : IMonitoringRepository
 
     public Task SaveChangesAsync(CancellationToken cancellationToken)
         => _context.SaveChangesAsync(cancellationToken);
+
+    // GetHashCode() is randomized per process for strings, which would break dedupe across app restarts.
+    private static string StableHash(string value)
+        => Convert.ToHexString(MD5.HashData(Encoding.UTF8.GetBytes(value)))[..12];
 
     private static bool TryEnum<T>(string? value, out T result) where T : struct, Enum
     {
