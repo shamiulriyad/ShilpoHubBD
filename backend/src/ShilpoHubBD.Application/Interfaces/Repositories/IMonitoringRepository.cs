@@ -33,6 +33,13 @@ public interface IMonitoringRepository
 
     Task<List<ScanCandidate>> FindQrAnomalyCandidatesAsync(DateTime since, CancellationToken cancellationToken);
 
+    // ---- AI Moderation scan signal queries ---------------------------
+    Task<List<ScanCandidate>> FindSpamContentCandidatesAsync(DateTime since, CancellationToken cancellationToken);
+
+    Task<List<ScanCandidate>> FindPolicyViolationCandidatesAsync(DateTime since, CancellationToken cancellationToken);
+
+    Task<List<ScanCandidate>> FindInappropriateImageCandidatesAsync(DateTime since, CancellationToken cancellationToken);
+
     // ---- QR monitoring overview ----------------------------------
     Task<QrMonitoringOverviewDto> GetQrOverviewAsync(
         DateTime? from, DateTime? to, int topN, CancellationToken cancellationToken);

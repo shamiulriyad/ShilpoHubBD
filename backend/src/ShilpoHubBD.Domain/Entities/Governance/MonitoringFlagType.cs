@@ -9,4 +9,9 @@ public enum MonitoringFlagType
     QrAnomaly,
     ComplianceGap,
     Other,
+
+    // ---- AI Moderation (Super Admin) ----
+    SpamContent,
+    PolicyViolation,
+    InappropriateImage,
 }

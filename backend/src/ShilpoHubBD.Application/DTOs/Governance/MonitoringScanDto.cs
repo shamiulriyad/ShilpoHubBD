@@ -2,7 +2,7 @@ namespace ShilpoHubBD.Application.DTOs.Governance;
 
 public class RunMonitoringScanRequest
 {
-    /// <summary>Fraud, FakeProduct, ReviewAbuse, QrAnomaly or All. Defaults to All.</summary>
+    /// <summary>Fraud, FakeProduct, ReviewAbuse, QrAnomaly, SpamContent, PolicyViolation, InappropriateImage or All. Defaults to All.</summary>
     public string ScanType { get; set; } = "All";
 
     /// <summary>Only consider activity on/after this date. Defaults to 180 days ago.</summary>
