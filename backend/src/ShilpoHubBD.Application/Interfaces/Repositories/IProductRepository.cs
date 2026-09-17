@@ -11,6 +11,7 @@ public interface IProductRepository
     Task<List<Product>> GetFeaturedAsync(int count, CancellationToken cancellationToken);
     Task<List<Product>> GetTrendingAsync(int count, CancellationToken cancellationToken);
     Task<(List<Product> Items, int TotalCount)> GetPendingApprovalAsync(int page, int pageSize, CancellationToken cancellationToken);
+    Task<(decimal AveragePrice, int SampleSize)> GetCategoryPriceStatsAsync(Guid categoryId, CancellationToken cancellationToken);
     Task<List<Product>> GetByProducerAsync(Guid producerId, CancellationToken cancellationToken);
     Task<bool> ExistsBySlugAsync(string slug, CancellationToken cancellationToken);
     Task<List<Product>> GetLowStockByProducerAsync(Guid producerId, CancellationToken cancellationToken);
