@@ -1,0 +1,10 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+qdrant_data/
+.rag_index_meta.json
+.env
+data/*.pdf
+tests/
+README.md

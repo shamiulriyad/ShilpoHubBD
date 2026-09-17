@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+qdrant_data/
+.rag_index_meta.json
+.rag_index_meta/
+data/*.pdf
+venv/
+.venv/
+SETUP_AFTER_COPY.txt
