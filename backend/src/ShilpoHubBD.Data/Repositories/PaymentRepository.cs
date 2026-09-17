@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ShilpoHubBD.Application.DTOs.Commerce;
 using ShilpoHubBD.Application.Interfaces.Repositories;
 using ShilpoHubBD.Domain.Entities.Commerce;
 
@@ -30,6 +31,43 @@ public class PaymentRepository : IPaymentRepository
             p => p.OrderId == orderId &&
                 (p.Status == PaymentStatus.Awaiting || p.Status == PaymentStatus.Paid || p.Status == PaymentStatus.PartiallyRefunded),
             cancellationToken);
+
+    public async Task<(List<Payment> Items, int TotalCount)> GetPagedAsync(PaymentAdminQueryParameters query, CancellationToken cancellationToken)
+    {
+        var payments = WithDetails();
+
+        if (!string.IsNullOrWhiteSpace(query.Status) && Enum.TryParse<PaymentStatus>(query.Status, true, out var status))
+        {
+            payments = payments.Where(p => p.Status == status);
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.Search))
+        {
+            var term = $"%{query.Search.Trim()}%";
+            payments = payments.Where(p =>
+                EF.Functions.ILike(p.Order.OrderNumber, term) || EF.Functions.ILike(p.Order.RecipientName, term));
+        }
+
+        if (query.From.HasValue)
+        {
+            payments = payments.Where(p => p.CreatedAt >= query.From.Value);
+        }
+
+        if (query.To.HasValue)
+        {
+            payments = payments.Where(p => p.CreatedAt <= query.To.Value);
+        }
+
+        payments = payments.OrderByDescending(p => p.CreatedAt);
+
+        var totalCount = await payments.CountAsync(cancellationToken);
+        var items = await payments
+            .Skip((query.Page - 1) * query.PageSize)
+            .Take(query.PageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
 
     public async Task AddAsync(Payment payment, CancellationToken cancellationToken)
         => await _context.Payments.AddAsync(payment, cancellationToken);

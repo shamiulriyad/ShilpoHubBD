@@ -1,3 +1,5 @@
+using ShilpoHubBD.Domain.Entities.Marketplace;
+
 namespace ShilpoHubBD.Application.DTOs.Marketplace;
 
 public class ProductListItemDto
@@ -17,4 +19,5 @@ public class ProductListItemDto
     public decimal AverageRating { get; set; }
     public int ReviewCount { get; set; }
     public bool IsFeatured { get; set; }
+    public ProductApprovalStatus ApprovalStatus { get; set; }
 }

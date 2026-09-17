@@ -1,4 +1,5 @@
 using ShilpoHubBD.Application.DTOs.Commerce;
+using ShilpoHubBD.Application.DTOs.Common;
 
 namespace ShilpoHubBD.Application.Interfaces.Services;
 
@@ -10,4 +11,5 @@ public interface IPaymentService
     Task<PaymentDto> VerifyAsync(Guid id, Guid currentUserId, bool isAdmin, CancellationToken cancellationToken);
     Task<PaymentDto> HandleCallbackAsync(Guid id, string payload, CancellationToken cancellationToken);
     Task<PaymentDto> RefundAsync(Guid id, RefundPaymentRequest request, CancellationToken cancellationToken);
+    Task<PagedResult<PaymentDto>> GetPagedForAdminAsync(PaymentAdminQueryParameters query, CancellationToken cancellationToken);
 }

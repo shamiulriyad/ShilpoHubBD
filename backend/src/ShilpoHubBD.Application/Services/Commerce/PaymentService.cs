@@ -1,5 +1,6 @@
 using ShilpoHubBD.Application.Common;
 using ShilpoHubBD.Application.DTOs.Commerce;
+using ShilpoHubBD.Application.DTOs.Common;
 using ShilpoHubBD.Application.Exceptions;
 using ShilpoHubBD.Application.Interfaces.Repositories;
 using ShilpoHubBD.Application.Interfaces.Services;
@@ -149,6 +150,21 @@ public class PaymentService : IPaymentService
         return ToDto(payment);
     }
 
+    public async Task<PagedResult<PaymentDto>> GetPagedForAdminAsync(PaymentAdminQueryParameters query, CancellationToken cancellationToken)
+    {
+        query.Page = query.Page < 1 ? 1 : query.Page;
+        query.PageSize = query.PageSize is < 1 or > 100 ? 20 : query.PageSize;
+
+        var (items, totalCount) = await _paymentRepository.GetPagedAsync(query, cancellationToken);
+        return new PagedResult<PaymentDto>
+        {
+            Items = items.Select(ToDto).ToList(),
+            TotalCount = totalCount,
+            Page = query.Page,
+            PageSize = query.PageSize,
+        };
+    }
+
     private IPaymentProvider ResolveProvider(string name)
         => _providers.FirstOrDefault(p => p.Name == name)
             ?? throw new NotFoundException($"No payment provider registered for '{name}'.");
@@ -196,6 +212,7 @@ public class PaymentService : IPaymentService
         Id = payment.Id,
         OrderId = payment.OrderId,
         OrderNumber = payment.Order.OrderNumber,
+        RecipientName = payment.Order.RecipientName,
         Provider = payment.Provider,
         Amount = payment.Amount,
         RefundedAmount = payment.RefundedAmount,

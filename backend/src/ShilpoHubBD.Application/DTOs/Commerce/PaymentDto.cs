@@ -5,6 +5,7 @@ public class PaymentDto
     public Guid Id { get; set; }
     public Guid OrderId { get; set; }
     public string OrderNumber { get; set; } = string.Empty;
+    public string RecipientName { get; set; } = string.Empty;
     public string Provider { get; set; } = string.Empty;
     public decimal Amount { get; set; }
     public decimal RefundedAmount { get; set; }

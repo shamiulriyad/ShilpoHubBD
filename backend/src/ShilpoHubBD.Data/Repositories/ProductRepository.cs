@@ -20,6 +20,7 @@ public class ProductRepository : IProductRepository
             .Include(p => p.District)
             .Include(p => p.Producer)
             .Include(p => p.HandmadeVerifiedBy)
+            .Include(p => p.ApprovedBy)
             .Include(p => p.Images)
             .Include(p => p.Variants)
             .Include(p => p.Videos)
@@ -27,7 +28,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<(List<Product> Items, int TotalCount)> GetPagedAsync(ProductQueryParameters query, CancellationToken cancellationToken)
     {
-        var products = WithDetails().Where(p => p.IsActive);
+        var products = WithDetails().Where(p => p.IsActive && p.ApprovalStatus == ProductApprovalStatus.Approved);
 
         if (!string.IsNullOrWhiteSpace(query.Search))
         {
@@ -87,18 +88,33 @@ public class ProductRepository : IProductRepository
 
     public Task<List<Product>> GetFeaturedAsync(int count, CancellationToken cancellationToken)
         => WithDetails()
-            .Where(p => p.IsActive && p.IsFeatured)
+            .Where(p => p.IsActive && p.IsFeatured && p.ApprovalStatus == ProductApprovalStatus.Approved)
             .OrderByDescending(p => p.CreatedAt)
             .Take(count)
             .ToListAsync(cancellationToken);
 
     public Task<List<Product>> GetTrendingAsync(int count, CancellationToken cancellationToken)
         => WithDetails()
-            .Where(p => p.IsActive)
+            .Where(p => p.IsActive && p.ApprovalStatus == ProductApprovalStatus.Approved)
             .OrderByDescending(p => p.ViewCount + p.SalesCount * 5)
             .ThenByDescending(p => p.CreatedAt)
             .Take(count)
             .ToListAsync(cancellationToken);
+
+    public async Task<(List<Product> Items, int TotalCount)> GetPendingApprovalAsync(int page, int pageSize, CancellationToken cancellationToken)
+    {
+        var products = WithDetails()
+            .Where(p => p.ApprovalStatus == ProductApprovalStatus.Pending)
+            .OrderBy(p => p.CreatedAt);
+
+        var totalCount = await products.CountAsync(cancellationToken);
+        var items = await products
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
 
     public Task<List<Product>> GetByProducerAsync(Guid producerId, CancellationToken cancellationToken)
         => WithDetails()

@@ -26,6 +26,11 @@ public class ProductDto
     public string? HandmadeVerificationNotes { get; set; }
     public DateTime? HandmadeVerifiedAt { get; set; }
 
+    public ProductApprovalStatus ApprovalStatus { get; set; }
+    public string? ApprovedByName { get; set; }
+    public DateTime? ApprovedAt { get; set; }
+    public string? RejectionReason { get; set; }
+
     public Guid CategoryId { get; set; }
     public string CategoryName { get; set; } = string.Empty;
 
