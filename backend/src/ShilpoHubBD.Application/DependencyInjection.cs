@@ -20,7 +20,11 @@ using ShilpoHubBD.Application.Services.Auction;
 using ShilpoHubBD.Application.Services.Certificate;
 using ShilpoHubBD.Application.Services.Cms;
 using ShilpoHubBD.Application.Services.Community;
+using ShilpoHubBD.Application.Services.CounterfeitDetection;
+using ShilpoHubBD.Application.Services.HeritageAssistant;
 using ShilpoHubBD.Application.Services.Security;
+using ShilpoHubBD.Application.Services.SentimentAnalysis;
+using ShilpoHubBD.Application.Services.StoryGenerator;
 using ShilpoHubBD.Application.Services.Contracts;
 using ShilpoHubBD.Application.Services.CSRSponsorship;
 using ShilpoHubBD.Application.Services.CustomOrders;
@@ -252,6 +256,11 @@ public static class DependencyInjection
         services.AddScoped<IApiKeyService, ApiKeyService>();
         services.AddScoped<ISystemHealthService, SystemHealthService>();
         services.AddScoped<IThreatDetectionService, ThreatDetectionService>();
+
+        services.AddScoped<IHeritageAssistantService, HeritageAssistantService>();
+        services.AddScoped<ICounterfeitDetectionService, CounterfeitDetectionService>();
+        services.AddScoped<IStoryGeneratorService, StoryGeneratorService>();
+        services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
 
         return services;
     }
