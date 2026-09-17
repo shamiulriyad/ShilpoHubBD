@@ -9,8 +9,9 @@ using ShilpoHubBD.Domain.Constants;
 
 namespace ShilpoHubBD.Api.Controllers;
 
+/// <summary>Reads are public (Cross-Platform AI: Heritage Risk Prediction is public-interest heritage
+/// data); writes stay restricted to <see cref="StewardRoles"/>.</summary>
 [ApiController]
-[Authorize(Roles = $"{RoleNames.HeritageInnovationHub},{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin}")]
 [Route("api/heritage-database/risk")]
 public class HeritageRiskController : ControllerBase
 {

@@ -9,12 +9,15 @@ using ShilpoHubBD.Domain.Constants;
 
 namespace ShilpoHubBD.Api.Controllers;
 
-/// <summary>Heritage Knowledge Graph: curate nodes/relationships and run traversal queries. Research roles only.</summary>
+/// <summary>Heritage Knowledge Graph: browse/traverse nodes and relationships (Cross-Platform AI: public
+/// read, a discovery tool for everyone); curating the graph (create/import/update/delete) stays
+/// restricted to <see cref="StewardRoles"/>.</summary>
 [ApiController]
-[Authorize(Roles = $"{RoleNames.HeritageInnovationHub},{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin}")]
 [Route("api/knowledge-graph")]
 public class KnowledgeGraphController : ControllerBase
 {
+    private const string StewardRoles = $"{RoleNames.HeritageInnovationHub},{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin}";
+
     private readonly IKnowledgeGraphService _graphService;
 
     public KnowledgeGraphController(IKnowledgeGraphService graphService)
@@ -39,6 +42,7 @@ public class KnowledgeGraphController : ControllerBase
     public async Task<ActionResult<KnowledgeNodeDto>> GetNode(Guid id, CancellationToken cancellationToken)
         => Ok(await _graphService.GetNodeByIdAsync(id, cancellationToken));
 
+    [Authorize(Roles = StewardRoles)]
     [HttpPost("nodes")]
     public async Task<ActionResult<KnowledgeNodeDto>> CreateNode(
         CreateKnowledgeNodeRequest request, CancellationToken cancellationToken)
@@ -47,16 +51,19 @@ public class KnowledgeGraphController : ControllerBase
         return CreatedAtAction(nameof(GetNode), new { id = result.Id }, result);
     }
 
+    [Authorize(Roles = StewardRoles)]
     [HttpPost("nodes/import")]
     public async Task<ActionResult<KnowledgeNodeDto>> ImportNode(
         ImportKnowledgeNodeRequest request, CancellationToken cancellationToken)
         => Ok(await _graphService.ImportNodeAsync(CurrentUserId, request, cancellationToken));
 
+    [Authorize(Roles = StewardRoles)]
     [HttpPut("nodes/{id:guid}")]
     public async Task<ActionResult<KnowledgeNodeDto>> UpdateNode(
         Guid id, UpdateKnowledgeNodeRequest request, CancellationToken cancellationToken)
         => Ok(await _graphService.UpdateNodeAsync(CurrentUserId, id, request, cancellationToken));
 
+    [Authorize(Roles = StewardRoles)]
     [HttpDelete("nodes/{id:guid}")]
     public async Task<IActionResult> DeleteNode(Guid id, CancellationToken cancellationToken)
     {
@@ -84,6 +91,7 @@ public class KnowledgeGraphController : ControllerBase
     public async Task<ActionResult<KnowledgeRelationshipDto>> GetRelationship(Guid id, CancellationToken cancellationToken)
         => Ok(await _graphService.GetRelationshipByIdAsync(id, cancellationToken));
 
+    [Authorize(Roles = StewardRoles)]
     [HttpPost("relationships")]
     public async Task<ActionResult<KnowledgeRelationshipDto>> CreateRelationship(
         CreateKnowledgeRelationshipRequest request, CancellationToken cancellationToken)
@@ -92,11 +100,13 @@ public class KnowledgeGraphController : ControllerBase
         return CreatedAtAction(nameof(GetRelationship), new { id = result.Id }, result);
     }
 
+    [Authorize(Roles = StewardRoles)]
     [HttpPut("relationships/{id:guid}")]
     public async Task<ActionResult<KnowledgeRelationshipDto>> UpdateRelationship(
         Guid id, UpdateKnowledgeRelationshipRequest request, CancellationToken cancellationToken)
         => Ok(await _graphService.UpdateRelationshipAsync(CurrentUserId, id, request, cancellationToken));
 
+    [Authorize(Roles = StewardRoles)]
     [HttpDelete("relationships/{id:guid}")]
     public async Task<IActionResult> DeleteRelationship(Guid id, CancellationToken cancellationToken)
     {
