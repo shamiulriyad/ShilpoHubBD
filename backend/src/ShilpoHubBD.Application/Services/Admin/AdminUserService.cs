@@ -11,11 +11,14 @@ public class AdminUserService : IAdminUserService
 {
     private readonly IAdminUserRepository _repository;
     private readonly IIdentityVerificationRepository _verificationRepository;
+    private readonly IAuditLogService _auditLogService;
 
-    public AdminUserService(IAdminUserRepository repository, IIdentityVerificationRepository verificationRepository)
+    public AdminUserService(
+        IAdminUserRepository repository, IIdentityVerificationRepository verificationRepository, IAuditLogService auditLogService)
     {
         _repository = repository;
         _verificationRepository = verificationRepository;
+        _auditLogService = auditLogService;
     }
 
     public async Task<PagedResult<AdminUserListItemDto>> GetPagedAsync(
@@ -46,12 +49,19 @@ public class AdminUserService : IAdminUserService
         return user.ToDetailDto(verifications.Select(v => v.ToDto()).ToList());
     }
 
-    public async Task<AdminUserDetailDto> SetActiveAsync(Guid id, bool isActive, CancellationToken cancellationToken)
+    public async Task<AdminUserDetailDto> SetActiveAsync(
+        Guid id, bool isActive, Guid actorUserId, string? ipAddress, CancellationToken cancellationToken)
     {
         var user = await LoadAsync(id, cancellationToken);
         user.IsActive = isActive;
         user.UpdatedAt = DateTime.UtcNow;
         await _repository.SaveChangesAsync(cancellationToken);
+
+        var actor = await _repository.GetByIdWithRolesAsync(actorUserId, cancellationToken);
+        await _auditLogService.LogAsync(
+            actorUserId, actor?.FullName ?? actorUserId.ToString(),
+            isActive ? "AdminUser.Activated" : "AdminUser.Deactivated", "User", id,
+            $"{(isActive ? "Activated" : "Deactivated")} account for {user.FullName}.", ipAddress, cancellationToken);
 
         var verifications = await _verificationRepository.GetByUserIdAsync(id, cancellationToken);
         return user.ToDetailDto(verifications.Select(v => v.ToDto()).ToList());
