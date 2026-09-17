@@ -41,3 +41,14 @@ database/backups/
 
 # Local notes
 backendsetup.md
+
+# Markdown docs (except README files)
+*.md
+!README.md
+!**/README.md
+
+# PDFs
+*.pdf
+
+# Text notes
+*.txt
