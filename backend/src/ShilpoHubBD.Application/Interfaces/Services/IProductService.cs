@@ -27,4 +27,7 @@ public interface IProductService
     Task<ProductDto> DeleteVideoAsync(Guid productId, Guid videoId, Guid currentUserId, bool isAdmin, CancellationToken cancellationToken);
 
     Task<ProductDto> SetHandmadeVerificationAsync(Guid productId, Guid verifierUserId, SetHandmadeVerificationRequest request, CancellationToken cancellationToken);
+
+    Task<PagedResult<ProductListItemDto>> GetPendingApprovalAsync(int page, int pageSize, CancellationToken cancellationToken);
+    Task<ProductDto> SetApprovalAsync(Guid productId, Guid adminUserId, SetProductApprovalRequest request, CancellationToken cancellationToken);
 }

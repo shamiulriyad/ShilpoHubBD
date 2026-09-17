@@ -169,4 +169,21 @@ public class ProductsController : ControllerBase
         var result = await _productService.SetHandmadeVerificationAsync(id, CurrentUserId, request, cancellationToken);
         return Ok(result);
     }
+
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    [HttpGet("pending-approval")]
+    public async Task<ActionResult<PagedResult<ProductListItemDto>>> GetPendingApproval(
+        [FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken cancellationToken = default)
+    {
+        var result = await _productService.GetPendingApprovalAsync(page, pageSize, cancellationToken);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    [HttpPatch("{id:guid}/approval")]
+    public async Task<ActionResult<ProductDto>> SetApproval(Guid id, SetProductApprovalRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _productService.SetApprovalAsync(id, CurrentUserId, request, cancellationToken);
+        return Ok(result);
+    }
 }

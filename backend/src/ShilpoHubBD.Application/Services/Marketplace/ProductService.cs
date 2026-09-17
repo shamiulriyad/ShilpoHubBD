@@ -117,6 +117,7 @@ public class ProductService : IProductService
             MakingProcessVideoUrl = request.MakingProcessVideoUrl?.Trim(),
             Story = string.IsNullOrWhiteSpace(request.Story) ? null : request.Story.Trim(),
             HandmadeVerificationStatus = HandmadeVerificationStatus.Pending,
+            ApprovalStatus = ProductApprovalStatus.Pending,
             CreatedAt = now,
             UpdatedAt = now,
         };
@@ -429,6 +430,48 @@ public class ProductService : IProductService
         return await ToDtoAsync(product, cancellationToken);
     }
 
+    public async Task<PagedResult<ProductListItemDto>> GetPendingApprovalAsync(int page, int pageSize, CancellationToken cancellationToken)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize is < 1 or > 100 ? 20 : pageSize;
+
+        var (items, totalCount) = await _productRepository.GetPendingApprovalAsync(page, pageSize, cancellationToken);
+        return new PagedResult<ProductListItemDto>
+        {
+            Items = items.Select(ToListItemDto).ToList(),
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize,
+        };
+    }
+
+    public async Task<ProductDto> SetApprovalAsync(Guid productId, Guid adminUserId, SetProductApprovalRequest request, CancellationToken cancellationToken)
+    {
+        var product = await _productRepository.GetByIdAsync(productId, cancellationToken)
+            ?? throw new NotFoundException("Product not found.");
+
+        var admin = await _userRepository.GetByIdAsync(adminUserId, cancellationToken)
+            ?? throw new NotFoundException("Approving user not found.");
+
+        if (request.Status == ProductApprovalStatus.Rejected && string.IsNullOrWhiteSpace(request.RejectionReason))
+        {
+            throw new ConflictException("A rejection reason is required when rejecting a product.");
+        }
+
+        product.ApprovalStatus = request.Status;
+        product.ApprovedByUserId = adminUserId;
+        product.ApprovedAt = DateTime.UtcNow;
+        product.RejectionReason = request.Status == ProductApprovalStatus.Rejected
+            ? request.RejectionReason!.Trim()
+            : null;
+        product.UpdatedAt = DateTime.UtcNow;
+
+        await _productRepository.SaveChangesAsync(cancellationToken);
+
+        product.ApprovedBy = admin;
+        return await ToDtoAsync(product, cancellationToken);
+    }
+
     private static ProductListItemDto ToListItemDto(Product product) => new()
     {
         Id = product.Id,
@@ -446,6 +489,7 @@ public class ProductService : IProductService
         AverageRating = product.AverageRating,
         ReviewCount = product.ReviewCount,
         IsFeatured = product.IsFeatured,
+        ApprovalStatus = product.ApprovalStatus,
     };
 
     private async Task<ProductDto> ToDtoAsync(Product product, CancellationToken cancellationToken)
@@ -475,6 +519,10 @@ public class ProductService : IProductService
             HandmadeVerifiedByName = product.HandmadeVerifiedBy?.FullName,
             HandmadeVerificationNotes = product.HandmadeVerificationNotes,
             HandmadeVerifiedAt = product.HandmadeVerifiedAt,
+            ApprovalStatus = product.ApprovalStatus,
+            ApprovedByName = product.ApprovedBy?.FullName,
+            ApprovedAt = product.ApprovedAt,
+            RejectionReason = product.RejectionReason,
             CategoryId = product.CategoryId,
             CategoryName = product.Category.Name,
             DistrictId = product.DistrictId,

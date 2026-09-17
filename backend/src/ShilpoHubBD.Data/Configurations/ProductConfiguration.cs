@@ -35,12 +35,16 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.HandmadeVerificationStatus).HasConversion<string>().HasMaxLength(20).IsRequired();
         builder.Property(p => p.HandmadeVerificationNotes).HasMaxLength(1000);
 
+        builder.Property(p => p.ApprovalStatus).HasConversion<string>().HasMaxLength(20).IsRequired();
+        builder.Property(p => p.RejectionReason).HasMaxLength(1000);
+
         builder.Property(p => p.CreatedAt).IsRequired();
         builder.Property(p => p.UpdatedAt).IsRequired();
 
         builder.HasIndex(p => new { p.IsActive, p.CategoryId });
         builder.HasIndex(p => new { p.IsActive, p.DistrictId });
         builder.HasIndex(p => new { p.IsActive, p.IsFeatured });
+        builder.HasIndex(p => new { p.ApprovalStatus, p.IsActive });
         builder.HasIndex(p => p.ProducerId);
 
         builder.HasOne(p => p.Category)
@@ -61,6 +65,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.HasOne(p => p.HandmadeVerifiedBy)
             .WithMany()
             .HasForeignKey(p => p.HandmadeVerifiedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(p => p.ApprovedBy)
+            .WithMany()
+            .HasForeignKey(p => p.ApprovedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(p => p.Images)

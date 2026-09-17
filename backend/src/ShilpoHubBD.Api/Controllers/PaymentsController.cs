@@ -4,6 +4,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShilpoHubBD.Application.DTOs.Commerce;
+using ShilpoHubBD.Application.DTOs.Common;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Domain.Constants;
 
@@ -33,6 +34,13 @@ public class PaymentsController : ControllerBase
         var result = await _paymentService.InitiateAsync(request.OrderId, CurrentUserId, IsAdmin, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
+
+    /// <summary>Super Admin "Refund Management" queue: browse and filter payments platform-wide.</summary>
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    [HttpGet]
+    public async Task<ActionResult<PagedResult<PaymentDto>>> GetPaged(
+        [FromQuery] PaymentAdminQueryParameters query, CancellationToken cancellationToken)
+        => Ok(await _paymentService.GetPagedForAdminAsync(query, cancellationToken));
 
     [HttpGet("order/{orderId:guid}")]
     public async Task<ActionResult<List<PaymentDto>>> GetByOrder(Guid orderId, CancellationToken cancellationToken)
