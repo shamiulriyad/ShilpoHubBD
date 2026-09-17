@@ -11,5 +11,6 @@ public enum MonitoringSubjectType
     Review,
     Village,
     District,
+    BlogPost,
     Other,
 }
