@@ -40,7 +40,6 @@ export default function MarketplaceHome() {
               <EntityCard
                 key={item.id}
                 title={item.name}
-                image={item.image}
                 subtitle={`${item.itemCount} items`}
                 to={routePaths.marketplaceCategories}
               />
@@ -84,7 +83,6 @@ export default function MarketplaceHome() {
           <EntityCard
             key={producer.name}
             title={producer.name}
-            kind="producer"
             subtitle={producer.craft}
             meta={producer.district}
             to={routePaths.exploreProducers}

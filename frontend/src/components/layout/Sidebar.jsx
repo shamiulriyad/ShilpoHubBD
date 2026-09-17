@@ -1,47 +1,11 @@
-import { useLayoutEffect, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import {
-  House, Compass, Handshake, Bot, ChartColumn, ShoppingBag, Map, Bell, Package,
-  FilePenLine, FileText, Wallet, Factory, Mail, Receipt, Wrench, ShoppingCart,
-  Stamp, Image, ScrollText, BookOpen, TrendingUp, MessageCircle, Users, Amphora,
-  Building, Landmark, TentTree, Target, Palette, Video, Medal, Sprout, Settings,
-  Scale, Undo2, Briefcase, Brain, GraduationCap, HandHelping, Heart, Shield,
-  BellRing, Siren, Truck, Mic, Archive, FileArchive, Microscope, Hammer, Search,
-  Satellite, MapPin, Calendar, HandCoins, Award, Ticket, PartyPopper, Gift, Soup,
-  CircleQuestionMark, PenLine, Circle, ChevronLeft, ChevronRight,
-} from 'lucide-react';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { roleLabel } from '../../utils/roles';
-import { routePaths } from '../../routes/routePaths';
 
-const STORAGE_KEY = 'sh:sidebar:v2';
-const WIDTH_EXPANDED = '260px';
-const WIDTH_COLLAPSED = '76px';
+const STORAGE_KEY = 'sh:sidebar:collapsed';
 
-// Every glyph used across data/navigation.js, mapped to a matching monochrome
-// Lucide icon so the sidebar reads as one clean icon set instead of mixed emoji.
-const ICON_MAP = {
-  '🏠': House, '🧭': Compass, '🤝': Handshake, '🤖': Bot, '📊': ChartColumn,
-  '🛍️': ShoppingBag, '🗺️': Map, '🔔': Bell, '📦': Package, '📝': FilePenLine,
-  '📄': FileText, '💰': Wallet, '🏭': Factory, '✉️': Mail, '🧾': Receipt,
-  '🛠️': Wrench, '🛒': ShoppingCart, '🛂': Stamp, '🖼️': Image, '📜': ScrollText,
-  '📚': BookOpen, '📈': TrendingUp, '💬': MessageCircle, '👥': Users, '🏺': Amphora,
-  '🏢': Building, '🏘️': TentTree, '🎯': Target, '🎨': Palette, '🎥': Video,
-  '🎖️': Medal, '🌱': Sprout, '⚙️': Settings, '⚖️': Scale, '↩️': Undo2,
-  '🧳': Briefcase, '🧠': Brain, '🧑‍🏫': GraduationCap, '🤲': HandHelping, '🤍': Heart,
-  '🛡️': Shield, '🛎️': BellRing, '🚨': Siren, '🚚': Truck, '🗣️': Mic,
-  '🗄️': Archive, '🗃️': FileArchive, '🔬': Microscope, '🔨': Hammer, '🔍': Search,
-  '📡': Satellite, '📍': MapPin, '📅': Calendar, '💼': Briefcase, '💸': HandCoins,
-  '🏛️': Landmark, '🏅': Award, '🎫': Ticket, '🎓': GraduationCap, '🎉': PartyPopper,
-  '🎁': Gift, '🍲': Soup, '❓': CircleQuestionMark, '✍️': PenLine,
-};
-
-function NavIcon({ glyph, className = 'h-5 w-5' }) {
-  const Icon = ICON_MAP[glyph] || Circle;
-  return <Icon className={className} strokeWidth={1.75} aria-hidden="true" />;
-}
-
-function readState() {
+function readCollapsed() {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {};
   } catch {
@@ -49,7 +13,7 @@ function readState() {
   }
 }
 
-function writeState(next) {
+function writeCollapsed(next) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   } catch {
@@ -57,67 +21,86 @@ function writeState(next) {
   }
 }
 
-function NavItem({ item, onNavigate, collapsed }) {
+function NavItem({ item, onNavigate }) {
   return (
     <NavLink
       to={item.path}
       end
       onClick={onNavigate}
-      title={collapsed ? item.label : undefined}
       className={({ isActive }) =>
-        `flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-colors duration-200 ease-in-out ${
-          collapsed ? 'justify-center px-0' : 'px-3'
-        } ${isActive ? 'bg-primary-soft text-primary' : 'text-[#786C66] hover:bg-primary-soft/50 hover:text-title'}`
+        `group relative flex items-center gap-2.5 rounded-lg py-2 pl-3 pr-2 text-sm font-medium transition-colors ${
+          isActive
+            ? 'bg-primary/10 text-primary'
+            : 'text-body/80 hover:bg-background hover:text-body'
+        }`
       }
     >
-      <NavIcon glyph={item.icon} className="h-5 w-5 shrink-0" />
-      {!collapsed && <span className="truncate">{item.label}</span>}
+      {({ isActive }) => (
+        <>
+          <span
+            aria-hidden="true"
+            className={`absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-primary transition-opacity ${
+              isActive ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+          {item.icon && (
+            <span
+              aria-hidden="true"
+              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[13px] ${
+                isActive ? 'bg-primary/15' : 'bg-background group-hover:bg-surface'
+              }`}
+            >
+              {item.icon}
+            </span>
+          )}
+          <span className="truncate">{item.label}</span>
+        </>
+      )}
     </NavLink>
   );
 }
 
-function FlatNav({ items, onNavigate, collapsed }) {
+function FlatNav({ items, onNavigate }) {
   return (
     <nav className="space-y-1">
       {items.map((item) => (
-        <NavItem key={item.label} item={item} onNavigate={onNavigate} collapsed={collapsed} />
+        <NavItem key={item.label} item={item} onNavigate={onNavigate} />
       ))}
     </nav>
   );
 }
 
-function GroupedNav({ groups, onNavigate, collapsed }) {
-  const [collapsedGroups, setCollapsedGroups] = useState(() => readState().collapsedGroups ?? {});
+function GroupedNav({ groups, onNavigate }) {
+  const [collapsed, setCollapsed] = useState(readCollapsed);
 
   const toggle = (section) => {
-    setCollapsedGroups((prev) => {
+    setCollapsed((prev) => {
       const next = { ...prev, [section]: !prev[section] };
-      writeState({ ...readState(), collapsedGroups: next });
+      writeCollapsed(next);
       return next;
     });
   };
 
   return (
-    <nav className="space-y-4">
+    <nav className="space-y-5">
       {groups.map((group) => {
-        const isGroupCollapsed = Boolean(collapsedGroups[group.section]);
+        const isCollapsed = Boolean(collapsed[group.section]);
         return (
           <div key={group.section}>
-            {!collapsed && (
-              <button
-                type="button"
-                onClick={() => toggle(group.section)}
-                aria-expanded={!isGroupCollapsed}
-                className="mb-1 flex w-full items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-[#786C66]/70 hover:text-title"
-              >
-                <span>{group.section}</span>
-                <ChevronRight className={`h-3 w-3 transition-transform duration-200 ${isGroupCollapsed ? '' : 'rotate-90'}`} strokeWidth={2} />
-              </button>
-            )}
-            {(collapsed || !isGroupCollapsed) && (
+            <button
+              type="button"
+              onClick={() => toggle(group.section)}
+              className="mb-1.5 flex w-full items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-body/40 hover:text-body/70"
+            >
+              <span>{group.section}</span>
+              <span aria-hidden="true" className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}>
+                ›
+              </span>
+            </button>
+            {!isCollapsed && (
               <div className="space-y-1">
                 {group.items.map((item) => (
-                  <NavItem key={item.label} item={item} onNavigate={onNavigate} collapsed={collapsed} />
+                  <NavItem key={item.label} item={item} onNavigate={onNavigate} />
                 ))}
               </div>
             )}
@@ -131,58 +114,24 @@ function GroupedNav({ groups, onNavigate, collapsed }) {
 export default function Sidebar({ items = [], title = 'Menu', className = '', onNavigate }) {
   const grouped = items.length > 0 && Array.isArray(items[0]?.items);
   const { activeRole } = useAuth();
-  const [collapsed, setCollapsed] = useState(() => readState().collapsed ?? false);
-
-  // Keep the workspace-sidebar wrapper's width (see DashboardLayout) in sync
-  // with this collapsed state via a shared custom property.
-  useLayoutEffect(() => {
-    document.documentElement.style.setProperty('--sh-sidebar-w', collapsed ? WIDTH_COLLAPSED : WIDTH_EXPANDED);
-  }, [collapsed]);
-
-  const toggleCollapsed = () => {
-    setCollapsed((prev) => {
-      const next = !prev;
-      writeState({ ...readState(), collapsed: next });
-      return next;
-    });
-  };
 
   return (
-    <aside className={`flex w-full flex-col bg-surface lg:border-r lg:border-border ${className}`}>
-      <div className={`flex items-center gap-2.5 border-b border-border px-4 py-4 ${collapsed ? 'justify-center px-2' : ''}`}>
-        <Link to={routePaths.home} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-xs font-bold text-surface">
-          SH
-        </Link>
-        {!collapsed && <span className="truncate text-base font-bold text-title">ShilpoHub</span>}
-      </div>
-
-      {!collapsed && (
-        <div className="border-b border-border px-4 py-3">
+    <aside
+      className={`w-full shrink-0 lg:w-full lg:border-r lg:border-border lg:pr-4 ${className}`}
+    >
+      <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-border bg-surface px-3 py-2.5">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs font-bold text-surface">
+          {title.slice(0, 1).toUpperCase()}
+        </span>
+        <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-heading">{title} workspace</p>
-          {activeRole && <p className="truncate text-[11px] font-medium text-primary">{roleLabel(activeRole)}</p>}
+          <p className="truncate text-[11px] font-medium text-primary">
+            {activeRole ? `Role: ${roleLabel(activeRole)}` : 'Signed in'}
+          </p>
         </div>
-      )}
-
-      <div className={`py-4 ${collapsed ? 'px-2' : 'px-3'}`}>
-        {grouped ? (
-          <GroupedNav groups={items} onNavigate={onNavigate} collapsed={collapsed} />
-        ) : (
-          <FlatNav items={items} onNavigate={onNavigate} collapsed={collapsed} />
-        )}
       </div>
 
-      <div className="border-t border-border p-2">
-        <button
-          type="button"
-          onClick={toggleCollapsed}
-          className={`flex w-full items-center gap-2 rounded-lg py-2.5 text-sm font-medium text-[#786C66] transition-colors duration-200 ease-in-out hover:bg-primary-soft/50 hover:text-title ${
-            collapsed ? 'justify-center px-0' : 'px-3'
-          }`}
-        >
-          {collapsed ? <ChevronRight className="h-5 w-5" strokeWidth={1.75} /> : <ChevronLeft className="h-5 w-5" strokeWidth={1.75} />}
-          {!collapsed && <span>Collapse</span>}
-        </button>
-      </div>
+      {grouped ? <GroupedNav groups={items} onNavigate={onNavigate} /> : <FlatNav items={items} onNavigate={onNavigate} />}
     </aside>
   );
 }

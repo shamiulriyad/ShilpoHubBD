@@ -1,6 +1,6 @@
+import CardMedia from '../media/CardMedia';
 import Badge from '../ui/Badge';
 import OptionalCardLink from './OptionalCardLink';
-import CardMedia from '../media/CardMedia';
 
 export default function ProductCard({ product, to }) {
   return (
@@ -10,7 +10,7 @@ export default function ProductCard({ product, to }) {
     >
       <CardMedia src={product.image || product.primaryImageUrl} name={product.name} category={product.category} />
       <div className="flex flex-1 flex-col gap-2 p-4">
-        {product.category && <div className="self-start"><Badge tone="secondary">{product.category}</Badge></div>}
+        {product.category && <Badge tone="secondary">{product.category}</Badge>}
         <h3 className="text-sm font-semibold leading-5 text-heading group-hover:text-primary">{product.name}</h3>
         {(product.producer || product.district) && (
           <p className="text-xs text-body/60">

@@ -1,12 +1,7 @@
-/** @type {import('tailwindcss').Config} */
 const cssColor = (name) => `rgb(var(--color-${name}) / <alpha-value>)`;
 
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-
+  content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {
@@ -20,13 +15,11 @@ export default {
         primary: cssColor('primary'),
         'primary-dark': cssColor('primary-dark'),
         'primary-soft': cssColor('primary-soft'),
-        secondary: cssColor('secondary'),
         link: cssColor('link'),
         success: cssColor('success'),
         error: cssColor('error'),
       },
     },
   },
-
   plugins: [],
 };

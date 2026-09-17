@@ -1,9 +1,12 @@
+import NewProductForm from './NewProductForm';
+import MutationFeedback from '../../components/ui/MutationFeedback';
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useLowStockProducts, useInventoryHistory, useAdjustStock } from '../../hooks/useInventory';
 import { useMyProducts } from '../../hooks/useProducts';
 
 export default function Inventory() {
+  const [showCreate, setShowCreate] = useState(false);
   const lowStockQuery = useLowStockProducts();
   const productsQuery = useMyProducts();
   const [selectedProductId, setSelectedProductId] = useState('');
@@ -24,6 +27,10 @@ export default function Inventory() {
     <div>
       <PageHeader title="Inventory" description="Adjust stock levels and review transaction history." />
 
+      <Button className="mb-5" onClick={() => setShowCreate(!showCreate)}>{showCreate ? 'Close product form' : 'Add product'}</Button>
+      {showCreate && <NewProductForm onCreated={product => { setSelectedProductId(product.id); setShowCreate(false); }} onCancel={() => setShowCreate(false)} />}
+      <MutationFeedback mutation={adjustStock} successMessage="Stock updated." />
+      <AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}>{productsQuery.data?.length === 0 && <p className="mb-6 rounded-xl border border-border p-5">Your inventory is empty. Add your first product to start managing stock.</p>}</AsyncState>
       <div className="mb-8 rounded-xl border border-border bg-surface p-5">
         <p className="mb-3 text-sm font-semibold text-heading">Low Stock Alerts</p>
         <AsyncState isLoading={lowStockQuery.isLoading} isError={lowStockQuery.isError} error={lowStockQuery.error}>
@@ -69,7 +76,7 @@ export default function Inventory() {
             className="rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
         </div>
-        <Button type="submit" variant="primary" disabled={adjustStock.isPending}>
+        <Button type="submit" variant="primary" disabled={adjustStock.isPending || !selectedProductId || !reason.trim() || !Number.isInteger(Number(changeAmount)) || Number(changeAmount) === 0 || (productsQuery.data?.find(product=>product.id===selectedProductId)?.stock ?? 0)+Number(changeAmount)<0}>
           {adjustStock.isPending ? 'Adjusting…' : 'Adjust Stock'}
         </Button>
       </form>

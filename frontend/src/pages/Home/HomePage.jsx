@@ -1,359 +1,81 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { routePaths } from '../../routes/routePaths';
-import { Button, SearchBar, SectionHeader, AsyncState } from '../../components/ui';
-import { useAuth } from '../../hooks/useAuth';
-import { ProductCard, VillageCard, FestivalCard, CourseCard, StatCard, EntityCard } from '../../components/cards';
+import { routePaths as routes } from '../../routes/routePaths';
+import { SearchBar, SectionHeader, AsyncState } from '../../components/ui';
+import { ProductCard } from '../../components/cards';
+import SafeImage from '../../components/media/SafeImage';
+import BangladeshMap from '../../components/media/BangladeshMap';
 import { useDistricts } from '../../hooks/useDistricts';
 import { useVillages } from '../../hooks/useVillages';
 import { useFeaturedProducts, useProducts } from '../../hooks/useProducts';
 import { useHeritageFestivals } from '../../hooks/useHeritageFestivals';
 import { useCourses } from '../../hooks/useCourses';
-import { useResearchPublications } from '../../hooks/useResearchPublications';
 import { toProductCardItem } from '../../utils/productAdapters';
-import { toVillageCardItem } from '../../utils/villageAdapters';
-import BangladeshMap from '../../components/media/BangladeshMap';
 
-const listOf = (data) => data?.items || data || [];
-
-const exploreHighlights = [
-  { title: 'Districts', subtitle: 'Heritage documented by district', to: routePaths.exploreDistricts },
-  { title: 'Heritage Villages', subtitle: 'Craft villages across the country', to: routePaths.exploreVillages },
-  { title: 'Crafts', subtitle: 'Traditional craft disciplines', to: routePaths.exploreCrafts },
-  { title: 'Festivals', subtitle: 'Seasonal & regional celebrations', to: routePaths.tourismFestivals },
-  { title: 'Digital Museum', subtitle: 'Curated heritage collections', to: routePaths.exploreMuseum },
-  { title: 'UNESCO Heritage', subtitle: 'Nationally recognized heritage', to: routePaths.exploreUnesco },
-];
-
-const courseToCardItem = (c) => ({
-  level: c.status || 'Course',
-  title: c.title,
-  mentor: c.authorName,
-  duration: `${c.lessonCount ?? 0} lessons`,
-  enrolled: c.activeEnrollmentCount ?? 0,
-});
-
+const list = data => Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
+const photos = { loom: '/images/loom-photo.jpg', river: '/images/bangladesh-river.jpg', pottery: '/images/pottery-photo.jpg' };
+const shell = 'mx-auto max-w-7xl px-5 lg:px-8';
+const cta = 'inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark';
+function Photo({ src, alt, className = '', eager = false }) {
+  return <SafeImage src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : 'auto'} className={`h-full w-full object-cover ${className}`} />;
+}
+function Collection({ eyebrow, title, description, image, alt, to, query, titleOf, toItem }) {
+  const items = list(query.data).slice(0, 3);
+  return <article className="overflow-hidden rounded-2xl border border-border bg-surface">
+    <Link to={to} className="block h-56 overflow-hidden"><Photo src={image} alt={alt} /></Link>
+    <div className="p-6"><p className="text-xs font-bold uppercase tracking-[.18em] text-primary">{eyebrow}</p><h3 className="mt-3 text-2xl tracking-tight">{title}</h3><p className="mt-3 text-sm leading-6 text-muted">{description}</p>
+      <AsyncState isLoading={query.isLoading} isError={query.isError} error={query.error}><ul className="mt-5 divide-y divide-border">{items.map(item => <li key={item.id}><Link className="block py-3 text-sm font-medium text-heading hover:text-primary" to={toItem(item)}>{titleOf(item)} <span aria-hidden="true">↗</span></Link></li>)}</ul>{!items.length && <p className="mt-4 text-sm text-muted">New listings will appear here when published.</p>}</AsyncState>
+      <Link to={to} className="mt-5 inline-block text-sm font-semibold text-primary">Explore {eyebrow.toLowerCase()} →</Link>
+    </div>
+  </article>;
+}
 export default function HomePage() {
   const navigate = useNavigate();
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const [searchInput, setSearchInput] = useState('');
+  const [search, setSearch] = useState('');
+  const [districtId, setDistrictId] = useState('');
   const districtsQuery = useDistricts();
   const villagesQuery = useVillages();
-  const { isAuthenticated } = useAuth();
-  const productsQuery = useFeaturedProducts(6);
-  const productCountQuery = useProducts({ pageSize: 1 });
-  const festivalsQuery = useHeritageFestivals({ pageSize: 6 });
+  const featuredQuery = useFeaturedProducts(6);
+  const catalogQuery = useProducts({ pageSize: 6 });
+  const festivalsQuery = useHeritageFestivals({ pageSize: 3 });
   const coursesQuery = useCourses({ pageSize: 3 });
-  // The publications repository requires auth — skip the call for anonymous visitors.
-  const publicationsQuery = useResearchPublications({ pageSize: 3 }, isAuthenticated);
-
-  const districts = listOf(districtsQuery.data);
-  const villages = listOf(villagesQuery.data);
-  const products = productsQuery.data || [];
-  const festivals = listOf(festivalsQuery.data);
-  const courses = listOf(coursesQuery.data);
-  const publications = listOf(publicationsQuery.data);
-  const heritageStats = [
-    { label: 'Districts in Directory', value: districtsQuery.isLoading ? '…' : districts.length },
-    { label: 'Heritage Villages', value: villagesQuery.isLoading ? '…' : villages.length },
-    { label: 'Marketplace Products', value: productCountQuery.isLoading ? '…' : productCountQuery.data?.totalCount ?? 0 },
-    { label: 'Featured Products', value: productsQuery.isLoading ? '…' : products.length },
-  ];
-
-  const producers = [
-    ...new Map(
-      products
-        .filter((p) => p.producerName)
-        .map((p) => [p.producerName, { name: p.producerName, craft: p.categoryName, district: p.districtName }]),
-    ).values(),
-  ];
-
-  return (
-    <div className="premium-shell overflow-hidden">
-      {/* 1. Hero */}
-      <section className="relative isolate overflow-hidden border-b border-border bg-title">
-        <div className="absolute inset-0 opacity-70 [background-image:radial-gradient(circle_at_14%_16%,rgba(217,155,61,.35),transparent_22rem),radial-gradient(circle_at_86%_84%,rgba(168,79,45,.45),transparent_25rem)]" />
-        <div className="absolute -right-32 top-8 h-80 w-80 rounded-full border border-surface/15" />
-        <div className="absolute -right-16 top-24 h-56 w-56 rounded-full border border-surface/10" />
-        <div className="relative mx-auto max-w-7xl px-4 py-20 text-center lg:px-8 lg:py-28">
-          <p className="inline-flex rounded-full border border-surface/20 bg-surface/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F6D5AA]">Bangladesh's National Heritage Ecosystem</p>
-          <h1 className="mx-auto mt-5 max-w-4xl text-4xl font-bold tracking-[-0.055em] text-surface sm:text-5xl lg:text-7xl">
-            Heritage, made <span className="text-[#F3C79D]">living.</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-surface/75 sm:text-lg">
-            Discover authentic Bangladeshi craft, meet the people behind it, and help safeguard the traditions that shape us.
-          </p>
-          <div className="mx-auto mt-8 max-w-xl">
-            <SearchBar
-              size="lg"
-              placeholder="Search heritage products…"
-              value={searchInput}
-              onChange={(event) => setSearchInput(event.target.value)}
-              onSubmit={(value) => {
-                const query = (value || '').trim();
-                navigate(query ? `${routePaths.marketplaceProducts}?search=${encodeURIComponent(query)}` : routePaths.marketplaceProducts);
-              }}
-            />
-          </div>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <Link to={routePaths.explore}>
-              <Button variant="primary">Explore Heritage</Button>
-            </Link>
-            <Link to={routePaths.marketplace}>
-              <Button variant="secondary" className="border-surface/25 bg-surface/10 text-surface hover:bg-surface hover:text-title">Visit Marketplace</Button>
-            </Link>
-          </div>
-          <div className="mx-auto mt-12 grid max-w-2xl grid-cols-3 divide-x divide-surface/15 rounded-2xl border border-surface/15 bg-surface/[.06] px-3 py-4 text-left backdrop-blur-sm">
-            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">{districtsQuery.isLoading ? '…' : districts.length}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Districts</p></div>
-            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">{villagesQuery.isLoading ? '…' : villages.length}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Villages</p></div>
-            <div className="px-4"><p className="text-xl font-bold text-[#F3C79D]">{productCountQuery.isLoading ? '…' : productCountQuery.data?.totalCount ?? 0}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-surface/60">Products</p></div>
-          </div>
+  const districts = list(districtsQuery.data);
+  const district = districts.find(item => item.id === districtId);
+  const productsQuery = list(featuredQuery.data).length ? featuredQuery : catalogQuery;
+  const products = list(productsQuery.data).slice(0, 6);
+  return <div className="overflow-hidden">
+    <section className="border-b border-border bg-background">
+      <div className={`${shell} grid items-center gap-10 py-12 lg:grid-cols-2 lg:gap-16 lg:py-20`}>
+        <div><p className="text-xs font-bold uppercase tracking-[.24em] text-primary">Craft · Culture · Community</p><h1 className="mt-6 text-5xl leading-[1.08] tracking-[-.04em] sm:text-6xl lg:text-7xl" style={{fontFamily:'Georgia, serif'}}>Made by hand.<br/><span className="text-primary">Carried by stories.</span></h1><p className="mt-6 max-w-lg text-base leading-8 text-muted">Discover the craft, places and people of Bangladesh. Find something meaningful, learn a timeless skill, and become part of a living tradition.</p>
+          <div className="mt-8"><SearchBar placeholder="Find a craft, a product, a story…" value={search} onChange={event=>setSearch(event.target.value)} onSubmit={value=>navigate(`${routes.marketplaceProducts}${value?.trim() ? `?search=${encodeURIComponent(value.trim())}` : ''}`)} /></div>
+          <div className="mt-6 flex flex-wrap items-center gap-5"><Link className={cta} to={routes.marketplaceProducts}>Shop the collection ↗</Link><Link className="text-sm font-semibold text-heading" to={routes.explore}>Explore Bangladesh →</Link></div>
+          <p className="mt-8 border-t border-border pt-5 text-xs leading-6 text-muted">Thoughtfully made. Deeply rooted. Ready to be discovered.</p>
         </div>
-      </section>
-
-      {/* 2. Heritage Statistics */}
-      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {heritageStats.map((stat) => (
-            <StatCard key={stat.label} label={stat.label} value={stat.value} />
-          ))}
-        </div>
-      </section>
-
-      {/* 3. Explore Bangladesh Heritage */}
-      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <SectionHeader
-          eyebrow="Explore"
-          title="Explore Bangladesh Heritage"
-          description="Browse heritage by district, village, craft, festival and collection."
-          action={
-            <Link to={routePaths.explore} className="text-sm font-medium text-link hover:underline">
-              View all →
-            </Link>
-          }
-        />
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {exploreHighlights.map((item) => (
-            <EntityCard key={item.title} title={item.title} subtitle={item.subtitle} to={item.to} />
-          ))}
-        </div>
-      </section>
-
-      {/* 4. Featured Heritage Products */}
-      <section className="border-y border-border/70 bg-surface py-16">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <SectionHeader
-            eyebrow="Marketplace"
-            title="Featured Heritage Products"
-            description="Authentic products sourced directly from verified producers."
-            action={
-              <Link to={routePaths.marketplaceProducts} className="text-sm font-medium text-link hover:underline">
-                View all →
-              </Link>
-            }
-          />
-          <AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}>
-            <div className="flex snap-x gap-4 overflow-x-auto pb-2">
-              {products.map((product) => (
-                <div key={product.id} className="w-56 shrink-0 snap-start">
-                  <ProductCard
-                    product={toProductCardItem(product)}
-                    to={routePaths.marketplaceProductDetails.replace(':productId', product.id)}
-                  />
-                </div>
-              ))}
-            </div>
-          </AsyncState>
-        </div>
-      </section>
-
-      {/* 5. Featured Producers */}
-      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <SectionHeader
-          eyebrow="Community"
-          title="Featured Producers"
-          description="Meet the artisans and producers behind the collections."
-          action={
-            <Link to={routePaths.exploreProducers} className="text-sm font-medium text-link hover:underline">
-              View all →
-            </Link>
-          }
-        />
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {producers.map((producer) => (
-            <EntityCard
-              key={producer.name}
-              title={producer.name}
-              subtitle={producer.craft}
-              meta={producer.district}
-              to={routePaths.exploreProducers}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* 6. Interactive Bangladesh Map */}
-      <section className="border-y border-border/70 bg-surface py-16">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <SectionHeader
-            eyebrow="Heritage Map"
-            title="Interactive Bangladesh Map"
-            description="Select a district to explore its villages, crafts and producers."
-          />
-          <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-            <BangladeshMap selectedDistrict={selectedDistrict?.name} />
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 lg:grid-cols-1">
-              {districts.map((district) => (
-                <button
-                  key={district.id}
-                  type="button"
-                  onClick={() => setSelectedDistrict(district)}
-                  className={`rounded-lg border px-3 py-2 text-left text-sm transition ${selectedDistrict?.id === district.id ? 'border-primary bg-primary-soft font-semibold text-primary' : 'border-border bg-background text-body hover:border-primary hover:text-primary'}`}
-                >
-                  {district.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Heritage Villages */}
-      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <SectionHeader
-          eyebrow="Explore"
-          title="Heritage Villages"
-          description="Villages recognized for keeping traditional crafts alive."
-          action={
-            <Link to={routePaths.exploreVillages} className="text-sm font-medium text-link hover:underline">
-              View all →
-            </Link>
-          }
-        />
-        <AsyncState isLoading={villagesQuery.isLoading} isError={villagesQuery.isError} error={villagesQuery.error}>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {villages.slice(0, 6).map((village) => (
-              <VillageCard
-                key={village.id}
-                village={toVillageCardItem(village)}
-                to={routePaths.exploreVillageDetails.replace(':villageId', village.id)}
-              />
-            ))}
-          </div>
-        </AsyncState>
-      </section>
-
-      {/* 9. Festivals & Events */}
-      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <SectionHeader
-          eyebrow="Tourism"
-          title="Festivals & Events"
-          description="Upcoming cultural festivals and heritage events."
-          action={
-            <Link to={routePaths.tourismFestivals} className="text-sm font-medium text-link hover:underline">
-              View all →
-            </Link>
-          }
-        />
-        <AsyncState isLoading={festivalsQuery.isLoading} isError={festivalsQuery.isError} error={festivalsQuery.error}>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {festivals.map((festival) => (
-              <FestivalCard
-                key={festival.id}
-                festival={{ name: festival.name, date: festival.startDate, district: festival.districtName }}
-              />
-            ))}
-          </div>
-        </AsyncState>
-      </section>
-
-      {/* 10. Heritage Academy */}
-      <section className="border-y border-border/70 bg-surface py-16">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <SectionHeader
-            eyebrow="Academy"
-            title="Heritage Academy"
-            description="Learn traditional crafts from certified master artisans."
-            action={
-              <Link to={routePaths.academy} className="text-sm font-medium text-link hover:underline">
-                Browse courses →
-              </Link>
-            }
-          />
-          <AsyncState isLoading={coursesQuery.isLoading} isError={coursesQuery.isError} error={coursesQuery.error}>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {courses.map((course) => (
-                <CourseCard
-                  key={course.id}
-                  course={courseToCardItem(course)}
-                  to={routePaths.academyCourseDetails.replace(':courseId', course.id)}
-                />
-              ))}
-            </div>
-          </AsyncState>
-        </div>
-      </section>
-
-      {/* 11. Innovation Hub */}
-      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <SectionHeader
-          eyebrow="Innovation Hub"
-          title="Innovation Hub"
-          description="Research tools, publications and heritage data for the ShilpoHub ecosystem."
-          action={
-            <Link to={routePaths.research} className="text-sm font-medium text-link hover:underline">
-              Visit Innovation Hub →
-            </Link>
-          }
-        />
-        {isAuthenticated ? (
-          <AsyncState isLoading={publicationsQuery.isLoading} isError={publicationsQuery.isError} error={publicationsQuery.error}>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {publications.map((pub) => (
-                <div key={pub.id} className="rounded-xl border border-border bg-surface p-4">
-                  <p className="text-sm font-semibold text-heading">{pub.title}</p>
-                  <p className="mt-1 text-xs text-body/60">
-                    {pub.authors}
-                    {pub.publishedOn ? ` · ${new Date(pub.publishedOn).getFullYear()}` : ''}
-                  </p>
-                </div>
-              ))}
-              {publications.length === 0 && <p className="text-sm text-body/60">No publications are available yet.</p>}
-            </div>
-          </AsyncState>
-        ) : (
-          <div className="rounded-xl border border-border bg-surface p-5 text-sm text-body/70">
-            The research repository is available to signed-in members.{' '}
-            <Link to={routePaths.login} className="font-medium text-link hover:underline">Sign in to browse publications →</Link>
-          </div>
-        )}
-      </section>
-
-      {/* 12. Call To Action */}
-      <section className="relative overflow-hidden bg-title py-20 text-surface">
-        <div className="mx-auto max-w-7xl px-4 text-center lg:px-8">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#F3C79D]">One living ecosystem</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] sm:text-4xl">Join the ShilpoHub Ecosystem</h2>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-surface/80">
-            Whichever role you play in heritage — there's a place for you here.
-          </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            {[
-              { label: 'Join as Producer', desc: 'Sell your crafts to the nation and beyond' },
-              { label: 'Join as Customer', desc: 'Discover and shop authentic heritage products' },
-              { label: 'Join as Business Partner', desc: 'Partner with ShilpoHub on distribution & growth' },
-            ].map((cta) => (
-              <div key={cta.label} className="rounded-2xl border border-surface/15 bg-surface/[.08] p-6 text-left backdrop-blur-sm transition hover:-translate-y-1 hover:bg-surface/[.13]">
-                <p className="text-sm font-semibold">{cta.label}</p>
-                <p className="mt-1 text-xs text-surface/70">{cta.desc}</p>
-                <Link to={routePaths.register} className="mt-4 inline-block text-xs font-medium underline">
-                  Get started →
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        <figure className="relative"><div className="h-[380px] overflow-hidden rounded-[2rem] sm:h-[520px]"><Photo src={photos.pottery} alt="A potter shaping wet clay by hand on a pottery wheel" eager /></div><figcaption className="absolute bottom-5 left-5 right-5 rounded-xl bg-surface/95 px-5 py-4 shadow-lg"><p className="text-[10px] font-bold uppercase tracking-[.2em] text-primary">The art of making</p><p className="mt-1 text-lg font-medium text-heading">Every piece begins with a human touch.</p></figcaption></figure>
+      </div>
+    </section>
+    <div className={`${shell} grid grid-cols-3 divide-x divide-border border-b border-border py-7 text-center`}>
+      {[['Districts to explore',districtsQuery,districts.length],['Heritage villages',villagesQuery,list(villagesQuery.data).length],['Marketplace finds',catalogQuery,catalogQuery.data?.totalCount ?? list(catalogQuery.data).length]].map(([label,query,value])=><div key={label} className="px-2"><p className="text-2xl font-semibold text-heading">{query.isLoading || query.isError ? '—' : value.toLocaleString()}</p><p className="mt-1 text-xs text-muted">{label}</p></div>)}
     </div>
-  );
+    <section className={`${shell} py-16 lg:py-20`}>
+      <SectionHeader eyebrow="Start your discovery" title="A world of heritage, closer to you." description="Follow your curiosity through craft, culture and the places that connect them." />
+      <div className="grid gap-5 md:grid-cols-3">{[
+        ['01 / Places','Beyond the familiar',photos.river,'Riverside homes in rural Bangladesh',routes.exploreVillages,'Explore villages, waterways and local traditions.'],
+        ['02 / Craft','Objects with a story',photos.pottery,'Potter working with clay',routes.exploreCrafts,'Discover the techniques behind handmade objects.'],
+        ['03 / Learning','Keep the skill alive',photos.loom,'Hands weaving fabric on a wooden loom',routes.academy,'Make room for creativity and learn something lasting.']
+      ].map(([label,title,src,alt,to,description])=><Link to={to} key={title} className="group overflow-hidden rounded-2xl border border-border bg-surface"><div className="h-64 overflow-hidden"><Photo src={src} alt={alt} className="transition duration-500 group-hover:scale-105" /></div><div className="p-6"><p className="text-xs font-semibold uppercase tracking-widest text-primary">{label}</p><h3 className="mt-3 text-2xl">{title} ↗</h3><p className="mt-2 text-sm leading-6 text-muted">{description}</p></div></Link>)}</div>
+      <div className="mt-6 flex flex-wrap gap-3">{[['District directory',routes.exploreDistricts],['Digital museum',routes.exploreMuseum],['UNESCO heritage',routes.exploreUnesco]].map(([label,to])=><Link key={label} to={to} className="rounded-full border border-border px-5 py-2 text-sm text-heading hover:border-primary">{label} →</Link>)}</div>
+    </section>
+    <section className="border-y border-border bg-surface py-16"><div className={shell}><SectionHeader eyebrow="The marketplace" title="Find your next treasured piece." description="Browse products from the ShilpoHub community." action={<Link to={routes.marketplaceProducts} className="text-sm font-semibold text-primary">Shop all products →</Link>} /><AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{products.map(product=><ProductCard key={product.id} product={toProductCardItem(product)} to={routes.marketplaceProductDetails.replace(':productId',product.id)} />)}</div>{!products.length && <p className="rounded-xl bg-background p-6 text-muted">The collection is being prepared. Check back for new handmade finds.</p>}</AsyncState></div></section>
+    <section className={`${shell} grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24`}><figure className="h-[380px] overflow-hidden rounded-2xl"><Photo src={photos.loom} alt="A close-up of hands carefully working threads on a loom" /></figure><div><p className="text-xs font-bold uppercase tracking-[.2em] text-primary">People behind the craft</p><h2 className="mt-4 text-4xl leading-tight tracking-tight" style={{fontFamily:'Georgia, serif'}}>Meet the makers.<br/>Understand the making.</h2><p className="mt-5 text-base leading-8 text-muted">Behind every woven thread and carefully shaped vessel is a skill developed over time. Explore producer profiles, their collections, and the communities they call home.</p><Link className={`${cta} mt-7`} to={routes.exploreProducers}>Discover our producers →</Link></div></section>
+    <section className="border-y border-border bg-surface py-16"><div className={`${shell} grid items-center gap-10 lg:grid-cols-[1fr_1.4fr]`}><div><p className="text-xs font-bold uppercase tracking-[.2em] text-primary">A sense of place</p><h2 className="mt-4 text-4xl tracking-tight">Your journey starts here.</h2><p className="mt-4 text-sm leading-7 text-muted">Browse the district directory to find local heritage and plan your next discovery.</p><AsyncState isLoading={districtsQuery.isLoading} isError={districtsQuery.isError} error={districtsQuery.error}><label className="mt-6 block text-sm font-medium">Choose a district<select value={districtId} onChange={event=>setDistrictId(event.target.value)} className="mt-2 w-full rounded-xl border border-border bg-background p-3"><option value="">All districts</option>{districts.map(item=><option key={item.id} value={item.id}>{item.name}</option>)}</select></label></AsyncState><Link className="mt-5 inline-block text-sm font-semibold text-primary" to={district ? routes.exploreDistrictDetails.replace(':districtId',district.id) : routes.exploreDistricts}>{district ? `Explore ${district.name}` : 'Browse all districts'} →</Link></div><div className="overflow-hidden rounded-2xl border border-border"><BangladeshMap selectedDistrict={district?.name} /></div></div></section>
+    <section className={`${shell} py-16 lg:py-20`}><SectionHeader eyebrow="Experience more" title="Places to go. Skills to grow." description="Make heritage a part of your everyday life." /><div className="grid items-start gap-6 lg:grid-cols-3">
+      <Collection eyebrow="Villages" title="Go beyond the city" description="Discover communities where tradition is part of daily life." image="/images/village-community.jpg" alt="Smiling schoolchildren together in rural Bangladesh" to={routes.exploreVillages} query={villagesQuery} titleOf={item=>item.name} toItem={item=>routes.exploreVillageDetails.replace(':villageId',item.id)} />
+      <Collection eyebrow="Festivals" title="Come together" description="Find cultural celebrations and plan your next visit." image="/images/festival-community.jpg" alt="People sharing a joyful moment at a celebration in Dhaka" to={routes.tourismFestivals} query={festivalsQuery} titleOf={item=>item.name} toItem={()=>routes.tourismFestivals} />
+      <Collection eyebrow="Academy" title="Learn by making" description="Explore courses and build your creative practice." image="/images/learning-together.jpg" alt="An experienced potter guiding a child as they shape clay together" to={routes.academy} query={coursesQuery} titleOf={item=>item.title} toItem={item=>routes.academyCourseDetails.replace(':courseId',item.id)} />
+    </div></section>
+    <section className={`${shell} pb-16`}><div className="grid overflow-hidden rounded-2xl bg-[#292d35] md:grid-cols-2"><div className="p-8 lg:p-12"><p className="text-xs font-bold uppercase tracking-[.2em] text-[#e8bd98]">Heritage, looking forward</p><h2 className="mt-4 text-3xl leading-tight text-white">Old knowledge.<br/>New possibilities.</h2><p className="mt-4 text-sm leading-7 text-white/75">Explore research, ideas and collaborations that help preserve heritage for the next generation.</p><Link className="mt-6 inline-block text-sm font-semibold text-white" to={routes.research}>Visit the Innovation Hub →</Link></div><div className="min-h-64"><Photo src={photos.river} alt="Traditional riverside architecture in Bangladesh" /></div></div></section>
+    <section className="border-t border-border bg-primary-soft py-14"><div className={`${shell} flex flex-wrap items-center justify-between gap-6`}><div><p className="text-xs font-bold uppercase tracking-widest text-primary">Be part of the story</p><h2 className="mt-3 text-3xl">A place for makers, explorers and you.</h2><p className="mt-3 text-sm text-muted">Join the community and discover what you can create together.</p></div><Link className={cta} to={routes.register}>Join ShilpoHub →</Link></div></section>
+    <p className={`${shell} py-4 text-[11px] text-muted`}>Editorial photography: <a href="https://www.pexels.com/photo/a-woman-using-a-loom-6634701/">Kaboompics / Pexels</a> · <a href="https://unsplash.com/photos/a-group-of-huts-sitting-on-top-of-a-lake-x6SoJq2xyEs">Jaman Asad / Unsplash</a> · <a href="https://pxhere.com/en/photo/989432">PxHere</a>. Additional photos: <a href="https://www.pexels.com/photo/smiling-schoolchildren-in-rural-bangladesh-36915231/">Ian Taylor</a>, <a href="https://www.pexels.com/photo/indian-people-on-a-celebration-15840698/">Swarup Photography</a>, <a href="https://www.pexels.com/photo/skilled-potter-teaching-child-clay-crafting-36928272/">Atharv Ingle</a> / Pexels. Editorial photographs do not identify listed producers, courses or events.</p>
+  </div>;
 }

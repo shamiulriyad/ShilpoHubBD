@@ -82,7 +82,6 @@ export default function ProductListing() {
 
       <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
         <FilterPanel
-          className="workspace-scroll lg:sticky lg:top-[6rem] lg:max-h-[calc(100dvh-7.5rem)] lg:overflow-y-auto lg:overscroll-contain"
           groups={filterGroups}
           values={{ categoryId, districtId }}
           onChange={updateFilter}

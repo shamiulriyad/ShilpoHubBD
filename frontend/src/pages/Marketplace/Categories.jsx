@@ -23,7 +23,6 @@ export default function Categories() {
             <EntityCard
               key={category.id}
               title={category.name}
-              image={category.imageUrl}
               subtitle={`${category.productCount} items`}
               to={`${routePaths.marketplaceProducts}?categoryId=${category.id}`}
             />

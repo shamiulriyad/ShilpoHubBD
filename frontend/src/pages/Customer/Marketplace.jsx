@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, SearchBar, SectionHeader, Badge, CategoryFilter, MarketplaceFilter, AsyncState, Pagination } from '../../components/ui';
+import { PageHeader, SearchBar, SectionHeader, Badge, CategoryFilter, MarketplaceFilter, AsyncState } from '../../components/ui';
 import { priceRangeToQuery } from '../../components/ui/MarketplaceFilter';
 import { ProductCard, EntityCard, ProducerCard } from '../../components/cards';
 import { useCategories } from '../../hooks/useCategories';
@@ -15,14 +15,11 @@ import { toProductCardItem, toCategoryCardItem } from '../../utils/productAdapte
 export default function Marketplace() {
   const { isAuthenticated } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeCategoryId = searchParams.get('categoryId') || null;
-  const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState('Newest');
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [activeCategoryId, setActiveCategoryIdState] = useState(searchParams.get('categoryId') || null);
 
   const setActiveCategoryId = (value) => {
     const nextValue = value || null;
-    setPage(1);
+    setActiveCategoryIdState(nextValue);
     const nextParams = new URLSearchParams(searchParams);
     if (nextValue) nextParams.set('categoryId', nextValue);
     else nextParams.delete('categoryId');
@@ -34,13 +31,11 @@ export default function Marketplace() {
   const [priceRange, setPriceRange] = useState('');
 
   const categoriesQuery = useCategories();
-  const recommendedQuery = useRecommendedForMe(4, isAuthenticated);
+  const recommendedQuery = useRecommendedForMe(4);
   const productsQuery = useProducts({
     categoryId: activeCategoryId || undefined,
     districtId: districtId || undefined,
     ...priceRangeToQuery(priceRange),
-    page,
-    sortBy,
     pageSize: 12,
   });
   const liveEventsQuery = useLiveEvents({ pageSize: 5 });
@@ -55,7 +50,7 @@ export default function Marketplace() {
     ...new Map(
       (productsQuery.data?.items || [])
         .filter((p) => p.producerName)
-        .map((p) => [p.producerId || p.producerName, { id: p.producerId, name: p.producerName, craft: p.categoryName, district: p.districtName, image: p.producerImageUrl }]),
+        .map((p) => [p.producerName, { name: p.producerName, craft: p.categoryName, district: p.districtName }]),
     ).values(),
   ].slice(0, 6);
 
@@ -142,8 +137,7 @@ export default function Marketplace() {
                   <EntityCard
                     key={item.id}
                     title={item.name}
-                    image={item.image}
-                    subtitle={`${item.itemCount} ${item.itemCount === 1 ? 'item' : 'items'}`}
+                    subtitle={`${item.itemCount} items`}
                     to={`${routePaths.customerMarketplace}?categoryId=${item.id}`}
                   />
                 );
@@ -169,14 +163,11 @@ export default function Marketplace() {
           )}
 
           <SectionHeader eyebrow="Featured" title="Featured Products" />
-          <div className="grid items-start gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-            <div className="rounded-2xl border border-border bg-surface lg:sticky lg:top-[6rem] lg:border-0 lg:bg-transparent">
-              <button type="button" onClick={() => setFiltersOpen((previous) => !previous)} aria-expanded={filtersOpen} aria-controls="marketplace-filters" className="flex w-full items-center justify-between px-5 py-4 text-sm font-semibold text-heading lg:hidden">Filters <span className="text-primary" aria-hidden="true">{filtersOpen ? '−' : '+'}</span></button>
-              <div id="marketplace-filters" className={`workspace-scroll lg:block lg:max-h-[calc(100dvh-7.5rem)] lg:overflow-y-auto lg:overscroll-contain ${filtersOpen ? 'block' : 'hidden'}`}>
-              <MarketplaceFilter
+          <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
+            <MarketplaceFilter
+              className="hidden lg:block"
               values={{ categoryId: activeCategoryId, districtId, priceRange }}
               onChange={(key, value, checked) => {
-                setPage(1);
                 const nextValue = checked ? value : '';
                 if (key === 'categoryId') setActiveCategoryId(nextValue || null);
                 if (key === 'districtId') setDistrictId(nextValue);
@@ -188,23 +179,9 @@ export default function Marketplace() {
                 setPriceRange('');
               }}
             />
-              </div>
-            </div>
-            <div className="min-w-0">
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-surface px-4 py-3">
-                <p className="text-sm text-muted" role="status">{productsQuery.isFetching ? 'Updating products…' : `${productsQuery.data?.totalCount ?? 0} ${productsQuery.data?.totalCount === 1 ? 'product' : 'products'} found`}</p>
-                <label className="flex items-center gap-2 text-sm text-body">Sort by
-                  <select value={sortBy} onChange={(event) => { setSortBy(event.target.value); setPage(1); }} className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-heading">
-                    <option value="Newest">Newest first</option>
-                    <option value="PriceLowToHigh">Price: low to high</option>
-                    <option value="PriceHighToLow">Price: high to low</option>
-                    <option value="Popular">Most popular</option>
-                    <option value="TopRated">Top rated</option>
-                  </select>
-                </label>
-              </div>
+            <div>
               <CategoryFilter className="mb-6" options={categoryOptions} active={activeCategoryId} onChange={setActiveCategoryId} />
-              <div className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                 <AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}>
                   {(productsQuery.data?.items || []).map((product) => (
                     <ProductCard
@@ -214,11 +191,10 @@ export default function Marketplace() {
                     />
                   ))}
                   {productsQuery.data?.items?.length === 0 && (
-                    <p className="col-span-full rounded-xl border border-dashed border-border bg-surface px-6 py-12 text-center text-sm text-muted">No products match these filters. Try another category, price range or district.</p>
+                    <p className="col-span-full text-sm text-body/60">No products in this category yet.</p>
                   )}
                 </AsyncState>
               </div>
-              {productsQuery.data?.totalPages > 1 && <div className="mt-6"><Pagination currentPage={page} totalPages={productsQuery.data.totalPages} onPageChange={setPage} /></div>}
             </div>
           </div>
 
@@ -227,7 +203,7 @@ export default function Marketplace() {
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {featuredProducers.map((producer) => (
-              <ProducerCard key={producer.id || producer.name} producer={producer} to={producer.id ? routePaths.exploreProducerDetails.replace(':producerId', producer.id) : undefined} />
+              <ProducerCard key={producer.name} producer={producer} />
             ))}
           </div>
         </>

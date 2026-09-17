@@ -1,19 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { districtsService } from '../services/districtsService';
 
-export function useDistricts(params = {}) {
+export function useDistricts() {
   return useQuery({
-    queryKey: ['districts', params],
-    queryFn: () => districtsService.list(params),
+    queryKey: ['districts'],
+    queryFn: () => districtsService.list(),
   });
-}
-
-export function useDistrictMutations() {
-  const queryClient = useQueryClient();
-  return {
-    update: useMutation({
-      mutationFn: ({ id, payload }) => districtsService.update(id, payload),
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['districts'] }),
-    }),
-  };
 }

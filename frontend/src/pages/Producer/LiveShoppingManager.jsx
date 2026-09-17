@@ -27,6 +27,7 @@ export default function LiveShoppingManager() {
       { ...form, scheduledStartAt: new Date(form.scheduledStartAt).toISOString() },
       {
         onSuccess: () => {
+          setPage(1);
           setShowForm(false);
           setForm({ productId: '', title: '', description: '', scheduledStartAt: '' });
         },

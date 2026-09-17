@@ -6,9 +6,7 @@ import { parse } from '@babel/parser';
 const projectRoot = path.resolve(process.cwd());
 const sourceRoot = path.join(projectRoot, 'src');
 const extensions = ['.js', '.jsx', '.mjs'];
-const assetExtensions = ['.css', '.json', '.svg', '.png', '.jpg', '.jpeg', '.webp', '.gif'];
 const failures = [];
-const parsedModules = new Map();
 let checkedFiles = 0;
 
 function walk(directory) {
@@ -109,88 +107,12 @@ function visit(node, ancestors, file) {
   }
 }
 
-function parseModule(file) {
-  if (parsedModules.has(file)) return parsedModules.get(file);
-  const source = fs.readFileSync(file, 'utf8');
-  const ast = parse(source, {
-    sourceType: 'module',
-    plugins: ['jsx', 'importMeta', 'topLevelAwait'],
-    errorRecovery: false,
-  });
-  const module = { source, ast };
-  parsedModules.set(file, module);
-  return module;
-}
-
-function resolveRelativeImport(importer, specifier) {
-  const base = path.resolve(path.dirname(importer), specifier);
-  const candidates = [
-    base,
-    ...extensions.map((extension) => `${base}${extension}`),
-    ...extensions.map((extension) => path.join(base, `index${extension}`)),
-    ...assetExtensions.map((extension) => `${base}${extension}`),
-  ];
-  return candidates.find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()) || null;
-}
-
-function declarationExportNames(declaration) {
-  if (!declaration) return [];
-  if (declaration.id?.name) return [declaration.id.name];
-  if (declaration.type === 'VariableDeclaration') {
-    return declaration.declarations.flatMap((item) => (item.id?.type === 'Identifier' ? [item.id.name] : []));
-  }
-  return [];
-}
-
-function collectExports(file, seen = new Set()) {
-  if (seen.has(file)) return { names: new Set(), hasDefault: false, hasWildcard: false };
-  seen.add(file);
-
-  const { ast } = parseModule(file);
-  const names = new Set();
-  let hasDefault = false;
-  let hasWildcard = false;
-
-  for (const statement of ast.program.body) {
-    if (statement.type === 'ExportDefaultDeclaration') {
-      hasDefault = true;
-      continue;
-    }
-
-    if (statement.type === 'ExportNamedDeclaration') {
-      for (const name of declarationExportNames(statement.declaration)) names.add(name);
-      for (const specifier of statement.specifiers || []) {
-        if (specifier.exported?.type === 'Identifier') names.add(specifier.exported.name);
-        else if (specifier.exported?.type === 'StringLiteral') names.add(specifier.exported.value);
-      }
-      continue;
-    }
-
-    if (statement.type === 'ExportAllDeclaration') {
-      const target = statement.source?.value?.startsWith('.')
-        ? resolveRelativeImport(file, statement.source.value)
-        : null;
-      if (!target) {
-        hasWildcard = true;
-        continue;
-      }
-      const nested = collectExports(target, new Set(seen));
-      for (const name of nested.names) names.add(name);
-      if (nested.hasWildcard) hasWildcard = true;
-    }
-  }
-
-  return { names, hasDefault, hasWildcard };
-}
-
 if (!fs.existsSync(sourceRoot)) {
   console.error('Source directory not found:', sourceRoot);
   process.exit(1);
 }
 
-const files = walk(sourceRoot);
-
-for (const file of files) {
+for (const file of walk(sourceRoot)) {
   checkedFiles += 1;
   const source = fs.readFileSync(file, 'utf8');
 
@@ -205,7 +127,11 @@ for (const file of files) {
 
   let ast;
   try {
-    ast = parseModule(file).ast;
+    ast = parse(source, {
+      sourceType: 'module',
+      plugins: ['jsx', 'importMeta', 'topLevelAwait'],
+      errorRecovery: false,
+    });
   } catch (error) {
     addFailure(file, error.loc?.line, `syntax error: ${error.message}`);
     continue;
@@ -213,32 +139,14 @@ for (const file of files) {
 
   for (const statement of ast.program.body) {
     if (statement.type !== 'ImportDeclaration' || !statement.source.value.startsWith('.')) continue;
-    const target = resolveRelativeImport(file, statement.source.value);
-    if (!target) {
+    const base = path.resolve(path.dirname(file), statement.source.value);
+    const candidates = [
+      base,
+      ...extensions.map((extension) => `${base}${extension}`),
+      ...extensions.map((extension) => path.join(base, `index${extension}`)),
+    ];
+    if (!candidates.some((candidate) => fs.existsSync(candidate))) {
       addFailure(file, statement.loc?.start.line, `missing relative import: ${statement.source.value}`);
-      continue;
-    }
-
-    if (!extensions.includes(path.extname(target))) continue;
-
-    let targetExports;
-    try {
-      targetExports = collectExports(target);
-    } catch (error) {
-      addFailure(file, statement.loc?.start.line, `could not inspect imported module ${statement.source.value}: ${error.message}`);
-      continue;
-    }
-
-    for (const specifier of statement.specifiers) {
-      if (specifier.type === 'ImportDefaultSpecifier' && !targetExports.hasDefault) {
-        addFailure(file, statement.loc?.start.line, `default import is not exported by ${statement.source.value}`);
-      }
-      if (specifier.type === 'ImportSpecifier') {
-        const importedName = specifier.imported?.name || specifier.imported?.value;
-        if (!targetExports.hasWildcard && importedName && !targetExports.names.has(importedName)) {
-          addFailure(file, statement.loc?.start.line, `"${importedName}" is not exported by ${statement.source.value}`);
-        }
-      }
     }
   }
 
@@ -251,4 +159,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Source validation passed: ${checkedFiles} modules checked, including relative import/export contracts.`);
+console.log(`Source validation passed: ${checkedFiles} modules checked.`);

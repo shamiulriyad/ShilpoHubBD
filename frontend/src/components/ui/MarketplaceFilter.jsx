@@ -38,7 +38,6 @@ export default function MarketplaceFilter({ values = {}, onChange, onClear, clas
     {
       key: 'districtId',
       label: 'District',
-      searchable: true,
       options: (districts || []).map((district) => ({ label: district.name, value: district.id })),
     },
   ];

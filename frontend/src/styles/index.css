@@ -4,27 +4,25 @@
 
 :root,
 [data-theme='light'] {
-  --sh-sidebar-w: 260px;
   --color-background: 248 245 239;
   --color-surface: 255 254 251;
   --color-border: 231 222 208;
   --color-muted: 116 111 103;
   --color-body: 55 56 50;
-  --color-title: 23 59 53;
-  --color-heading: 23 59 53;
+  --color-title: 39 44 54;
+  --color-heading: 39 44 54;
   --color-primary: 168 79 45;
   --color-primary-dark: 132 58 32;
   --color-primary-soft: 248 233 226;
-  --color-secondary: 217 155 61;
-  --color-link: 30 96 86;
+  --color-link: 145 67 38;
   --color-success: 50 115 93;
   --color-error: 179 67 43;
 }
 
 [data-theme='dark'] {
-  --color-background: 20 27 25;
-  --color-surface: 29 38 35;
-  --color-border: 65 78 73;
+  --color-background: 23 25 30;
+  --color-surface: 32 35 42;
+  --color-border: 65 69 79;
   --color-muted: 177 177 166;
   --color-body: 226 226 216;
   --color-title: 241 238 229;
@@ -32,8 +30,7 @@
   --color-primary: 222 131 93;
   --color-primary-dark: 236 151 112;
   --color-primary-soft: 62 46 40;
-  --color-secondary: 217 155 61;
-  --color-link: 115 195 181;
+  --color-link: 235 164 126;
   --color-success: 110 190 159;
   --color-error: 240 126 105;
 }
@@ -46,12 +43,6 @@ body,
 
 html {
   background: rgb(var(--color-background));
-  scroll-padding-top: 6rem;
-}
-
-.workspace-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: rgb(var(--color-border)) transparent;
 }
 
 @layer base {
@@ -101,7 +92,7 @@ html {
 
 @layer components {
   .premium-shell {
-    background: radial-gradient(circle at 15% 0%, rgb(var(--color-secondary) / 0.13), transparent 25rem), rgb(var(--color-background));
+    background: radial-gradient(circle at 15% 0%, rgb(var(--color-secondary, 217 155 61) / 0.13), transparent 25rem), rgb(var(--color-background));
   }
 
   .premium-card {

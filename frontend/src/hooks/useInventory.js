@@ -19,6 +19,7 @@ export function useAdjustStock() {
     mutationFn: ({ productId, payload }) => inventoryService.adjustStock(productId, payload),
     onSuccess: (_, { productId }) => {
       queryClient.invalidateQueries({ queryKey: ['inventory'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['inventory', 'history', productId] });
     },
   });

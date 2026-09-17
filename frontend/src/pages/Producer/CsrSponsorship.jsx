@@ -27,7 +27,7 @@ function ProposalsPanel({ opportunityId }) {
             {p.status === 'Submitted' && (
               <>
                 <Button variant="primary" disabled={decideProposal.isPending} onClick={() => decideProposal.mutate({ id: p.id, payload: { approve: true } })}>Approve</Button>
-                <Button variant="secondary" onClick={() => decideProposal.mutate({ id: p.id, payload: { approve: false } })}>Reject</Button>
+                <Button variant="secondary" disabled={decideProposal.isPending} onClick={() => decideProposal.mutate({ id: p.id, payload: { approve: false } })}>Reject</Button>
               </>
             )}
           </div>

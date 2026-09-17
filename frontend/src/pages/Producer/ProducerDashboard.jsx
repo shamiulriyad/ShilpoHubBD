@@ -1,3 +1,4 @@
+import ProducerInsights from './ProducerInsights';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, QueryStatusBanner } from '../../components/ui';
@@ -58,6 +59,7 @@ export default function ProducerDashboard() {
           You have {quotationsQuery.data.totalCount} quotation request{quotationsQuery.data.totalCount > 1 ? 's' : ''} waiting for a response.
         </p>
       )}
+      <ProducerInsights />
     </div>
   );
 }
