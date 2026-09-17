@@ -125,6 +125,15 @@ public class ProductRepository : IProductRepository
     public Task<bool> ExistsBySlugAsync(string slug, CancellationToken cancellationToken)
         => _context.Products.AnyAsync(p => p.Slug == slug, cancellationToken);
 
+    public async Task<(decimal AveragePrice, int SampleSize)> GetCategoryPriceStatsAsync(
+        Guid categoryId, CancellationToken cancellationToken)
+    {
+        var query = _context.Products.Where(p => p.CategoryId == categoryId && p.IsActive);
+        var count = await query.CountAsync(cancellationToken);
+        var average = count > 0 ? await query.AverageAsync(p => p.Price, cancellationToken) : 0m;
+        return (average, count);
+    }
+
     public Task<List<Product>> GetLowStockByProducerAsync(Guid producerId, CancellationToken cancellationToken)
         => WithDetails()
             .Where(p => p.ProducerId == producerId && p.IsActive
