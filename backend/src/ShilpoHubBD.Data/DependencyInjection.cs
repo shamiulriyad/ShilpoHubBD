@@ -153,6 +153,12 @@ public static class DependencyInjection
 		services.AddScoped<IVillageTourStopRepository, VillageTourStopRepository>();
 		services.AddScoped<ICulturalStoryRepository, CulturalStoryRepository>();
 
+		services.AddScoped<IHomepageSectionRepository, HomepageSectionRepository>();
+		services.AddScoped<IBlogPostRepository, BlogPostRepository>();
+		services.AddScoped<INewsItemRepository, NewsItemRepository>();
+		services.AddScoped<ICmsEventRepository, CmsEventRepository>();
+		services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
+
 		return services;
 	}
 }
