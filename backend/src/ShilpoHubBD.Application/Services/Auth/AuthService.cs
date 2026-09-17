@@ -4,6 +4,7 @@ using ShilpoHubBD.Application.Exceptions;
 using ShilpoHubBD.Application.Interfaces.Repositories;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Domain.Entities.Identity;
+using ShilpoHubBD.Domain.Entities.Security;
 
 namespace ShilpoHubBD.Application.Services.Auth;
 
@@ -17,6 +18,7 @@ public class AuthService : IAuthService
     private readonly IPasswordHasher _passwordHasher;
     private readonly IEmailSender _emailSender;
     private readonly IConfiguration _configuration;
+    private readonly IThreatDetectionRepository _threatDetectionRepository;
 
     private static readonly TimeSpan PasswordResetTokenLifetime = TimeSpan.FromHours(1);
 
@@ -28,7 +30,8 @@ public class AuthService : IAuthService
         ITokenService tokenService,
         IPasswordHasher passwordHasher,
         IEmailSender emailSender,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IThreatDetectionRepository threatDetectionRepository)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -38,6 +41,7 @@ public class AuthService : IAuthService
         _passwordHasher = passwordHasher;
         _emailSender = emailSender;
         _configuration = configuration;
+        _threatDetectionRepository = threatDetectionRepository;
     }
 
     public async Task<AuthResponse> RegisterAsync(RegisterRequest request, string? ipAddress, CancellationToken cancellationToken)
@@ -89,15 +93,32 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponse> LoginAsync(LoginRequest request, string? ipAddress, CancellationToken cancellationToken)
     {
+        if (!string.IsNullOrEmpty(ipAddress) && await _threatDetectionRepository.IsIpBlockedAsync(ipAddress, cancellationToken))
+        {
+            throw new UnauthorizedAccessException("Access from this IP address has been blocked.");
+        }
+
         var email = request.Email.Trim().ToLowerInvariant();
         var user = await _userRepository.GetByEmailWithRolesAsync(email, cancellationToken);
+        var passwordValid = user is not null && _passwordHasher.Verify(request.Password, user.PasswordHash);
 
-        if (user is null || !_passwordHasher.Verify(request.Password, user.PasswordHash))
+        await _threatDetectionRepository.AddLoginAttemptAsync(new LoginAttempt
+        {
+            Id = Guid.NewGuid(),
+            Email = email,
+            IpAddress = ipAddress,
+            Succeeded = passwordValid && user!.IsActive,
+            UserId = user?.Id,
+            CreatedAt = DateTime.UtcNow,
+        }, cancellationToken);
+        await _threatDetectionRepository.SaveChangesAsync(cancellationToken);
+
+        if (!passwordValid)
         {
             throw new UnauthorizedAccessException("Invalid email or password.");
         }
 
-        if (!user.IsActive)
+        if (!user!.IsActive)
         {
             throw new UnauthorizedAccessException("This account has been disabled.");
         }

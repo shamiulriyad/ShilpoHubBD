@@ -41,6 +41,8 @@ public static class DependencyInjection
         services.AddScoped<IDemandForecastProvider, RuleBasedDemandForecastProvider>();
         services.AddScoped<IWarehouseAllocationProvider, RuleBasedWarehouseAllocationProvider>();
 
+        services.AddScoped<IBackupRunner, PgDumpBackupRunner>();
+
         return services;
     }
 }

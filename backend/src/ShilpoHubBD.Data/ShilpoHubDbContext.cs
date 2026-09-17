@@ -39,6 +39,7 @@ using ShilpoHubBD.Domain.Entities.Procurement;
 using ShilpoHubBD.Domain.Entities.ProductDevelopment;
 using ShilpoHubBD.Domain.Entities.QRVerification;
 using ShilpoHubBD.Domain.Entities.Research;
+using ShilpoHubBD.Domain.Entities.Security;
 using ShilpoHubBD.Domain.Entities.Quotations;
 using ShilpoHubBD.Domain.Entities.Reviews;
 using ShilpoHubBD.Domain.Entities.Roadmap;
@@ -369,6 +370,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<NewsItem> NewsItems => Set<NewsItem>();
 	public DbSet<CmsEvent> CmsEvents => Set<CmsEvent>();
 	public DbSet<Announcement> Announcements => Set<Announcement>();
+	public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+	public DbSet<BackupRecord> BackupRecords => Set<BackupRecord>();
+	public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
+	public DbSet<LoginAttempt> LoginAttempts => Set<LoginAttempt>();
+	public DbSet<BlockedIpAddress> BlockedIpAddresses => Set<BlockedIpAddress>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

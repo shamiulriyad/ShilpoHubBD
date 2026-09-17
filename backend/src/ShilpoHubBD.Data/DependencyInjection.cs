@@ -159,6 +159,12 @@ public static class DependencyInjection
 		services.AddScoped<ICmsEventRepository, CmsEventRepository>();
 		services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
 
+		services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+		services.AddScoped<IBackupRepository, BackupRepository>();
+		services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
+		services.AddScoped<ISystemHealthRepository, SystemHealthRepository>();
+		services.AddScoped<IThreatDetectionRepository, ThreatDetectionRepository>();
+
 		return services;
 	}
 }

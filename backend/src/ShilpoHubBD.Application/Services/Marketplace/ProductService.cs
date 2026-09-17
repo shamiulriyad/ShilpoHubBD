@@ -16,6 +16,7 @@ public class ProductService : IProductService
     private readonly ICraftStoryRepository _craftStoryRepository;
     private readonly IProducerStoryRepository _producerStoryRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IAuditLogService _auditLogService;
 
     public ProductService(
         IProductRepository productRepository,
@@ -23,7 +24,8 @@ public class ProductService : IProductService
         IDistrictRepository districtRepository,
         ICraftStoryRepository craftStoryRepository,
         IProducerStoryRepository producerStoryRepository,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IAuditLogService auditLogService)
     {
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
@@ -31,6 +33,7 @@ public class ProductService : IProductService
         _craftStoryRepository = craftStoryRepository;
         _producerStoryRepository = producerStoryRepository;
         _userRepository = userRepository;
+        _auditLogService = auditLogService;
     }
 
     public async Task<PagedResult<ProductListItemDto>> GetProductsAsync(ProductQueryParameters query, CancellationToken cancellationToken)
@@ -467,6 +470,14 @@ public class ProductService : IProductService
         product.UpdatedAt = DateTime.UtcNow;
 
         await _productRepository.SaveChangesAsync(cancellationToken);
+
+        await _auditLogService.LogAsync(
+            adminUserId, admin.FullName,
+            request.Status == ProductApprovalStatus.Approved ? "Product.Approved" : "Product.Rejected",
+            "Product", productId,
+            $"{request.Status} product \"{product.Name}\"."
+            + (request.Status == ProductApprovalStatus.Rejected ? $" Reason: {product.RejectionReason}" : string.Empty),
+            null, cancellationToken);
 
         product.ApprovedBy = admin;
         return await ToDtoAsync(product, cancellationToken);

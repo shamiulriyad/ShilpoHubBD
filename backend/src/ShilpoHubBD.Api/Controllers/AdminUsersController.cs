@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShilpoHubBD.Application.DTOs.Admin;
@@ -19,6 +21,12 @@ public class AdminUsersController : ControllerBase
         _adminUserService = adminUserService;
     }
 
+    private Guid CurrentUserId =>
+        Guid.Parse(User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+            ?? User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+    private string? ClientIp => HttpContext.Connection.RemoteIpAddress?.ToString();
+
     [HttpGet]
     public async Task<ActionResult<PagedResult<AdminUserListItemDto>>> GetPaged(
         [FromQuery] AdminUserQueryParameters query, CancellationToken cancellationToken)
@@ -30,9 +38,9 @@ public class AdminUsersController : ControllerBase
 
     [HttpPost("{id:guid}/activate")]
     public async Task<ActionResult<AdminUserDetailDto>> Activate(Guid id, CancellationToken cancellationToken)
-        => Ok(await _adminUserService.SetActiveAsync(id, true, cancellationToken));
+        => Ok(await _adminUserService.SetActiveAsync(id, true, CurrentUserId, ClientIp, cancellationToken));
 
     [HttpPost("{id:guid}/deactivate")]
     public async Task<ActionResult<AdminUserDetailDto>> Deactivate(Guid id, CancellationToken cancellationToken)
-        => Ok(await _adminUserService.SetActiveAsync(id, false, cancellationToken));
+        => Ok(await _adminUserService.SetActiveAsync(id, false, CurrentUserId, ClientIp, cancellationToken));
 }

@@ -20,6 +20,7 @@ using ShilpoHubBD.Application.Services.Auction;
 using ShilpoHubBD.Application.Services.Certificate;
 using ShilpoHubBD.Application.Services.Cms;
 using ShilpoHubBD.Application.Services.Community;
+using ShilpoHubBD.Application.Services.Security;
 using ShilpoHubBD.Application.Services.Contracts;
 using ShilpoHubBD.Application.Services.CSRSponsorship;
 using ShilpoHubBD.Application.Services.CustomOrders;
@@ -245,6 +246,12 @@ public static class DependencyInjection
         services.AddScoped<INewsItemService, NewsItemService>();
         services.AddScoped<ICmsEventService, CmsEventService>();
         services.AddScoped<IAnnouncementService, AnnouncementService>();
+
+        services.AddScoped<IAuditLogService, AuditLogService>();
+        services.AddScoped<IBackupService, BackupService>();
+        services.AddScoped<IApiKeyService, ApiKeyService>();
+        services.AddScoped<ISystemHealthService, SystemHealthService>();
+        services.AddScoped<IThreatDetectionService, ThreatDetectionService>();
 
         return services;
     }
