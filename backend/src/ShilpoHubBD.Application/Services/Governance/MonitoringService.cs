@@ -8,9 +8,11 @@ using ShilpoHubBD.Domain.Entities.Governance;
 namespace ShilpoHubBD.Application.Services.Governance;
 
 /// <summary>
-/// Government &amp; NGO monitoring: rule-based fraud / fake-product / review-abuse / QR-anomaly scans
-/// that raise <see cref="MonitoringFlag"/>s, manual flag creation, the flag triage workflow, and a
-/// read-only QR verification overview. Scans dedupe against still-open flags so re-running is safe.
+/// Rule-based fraud / fake-product / review-abuse / QR-anomaly / spam / policy-violation /
+/// inappropriate-image scans that raise <see cref="MonitoringFlag"/>s, manual flag creation, the flag
+/// triage workflow, and a read-only QR verification overview. Shared engine behind both the
+/// Government &amp; NGO Monitoring dashboard and the Super Admin AI Moderation dashboard — scans dedupe
+/// against still-open flags so re-running is safe.
 /// </summary>
 public class MonitoringService : IMonitoringService
 {
@@ -29,7 +31,11 @@ public class MonitoringService : IMonitoringService
         Guid userId, RunMonitoringScanRequest request, CancellationToken cancellationToken)
     {
         var scanType = (request.ScanType ?? "All").Trim();
-        var validTypes = new[] { "All", "Fraud", "FakeProduct", "ReviewAbuse", "QrAnomaly" };
+        var validTypes = new[]
+        {
+            "All", "Fraud", "FakeProduct", "ReviewAbuse", "QrAnomaly",
+            "SpamContent", "PolicyViolation", "InappropriateImage",
+        };
         if (!validTypes.Contains(scanType, StringComparer.OrdinalIgnoreCase))
         {
             throw new ConflictException($"ScanType must be one of: {string.Join(", ", validTypes)}.");
@@ -59,6 +65,21 @@ public class MonitoringService : IMonitoringService
         if (Matches(scanType, "QrAnomaly"))
         {
             candidates.AddRange(await _repository.FindQrAnomalyCandidatesAsync(since, cancellationToken));
+        }
+
+        if (Matches(scanType, "SpamContent"))
+        {
+            candidates.AddRange(await _repository.FindSpamContentCandidatesAsync(since, cancellationToken));
+        }
+
+        if (Matches(scanType, "PolicyViolation"))
+        {
+            candidates.AddRange(await _repository.FindPolicyViolationCandidatesAsync(since, cancellationToken));
+        }
+
+        if (Matches(scanType, "InappropriateImage"))
+        {
+            candidates.AddRange(await _repository.FindInappropriateImageCandidatesAsync(since, cancellationToken));
         }
 
         var evaluated = candidates.Count;
