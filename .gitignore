@@ -41,6 +41,7 @@ database/backups/
 
 # Local notes
 backendsetup.md
+SELENIUM_TESTING.md
 
 # Markdown docs (except README files)
 *.md
