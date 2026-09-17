@@ -10,6 +10,7 @@ using ShilpoHubBD.Domain.Entities.Certificate;
 using ShilpoHubBD.Domain.Entities.Commerce;
 using ShilpoHubBD.Domain.Entities.Community;
 using ShilpoHubBD.Domain.Entities.Contracts;
+using ShilpoHubBD.Domain.Entities.Cms;
 using ShilpoHubBD.Domain.Entities.CSRSponsorship;
 using ShilpoHubBD.Domain.Entities.CustomOrders;
 using ShilpoHubBD.Domain.Entities.DesignCollaboration;
@@ -363,6 +364,11 @@ public class ShilpoHubDbContext : DbContext
 	public DbSet<RouteOptimizationRunStop> RouteOptimizationRunStops => Set<RouteOptimizationRunStop>();
 	public DbSet<WarehouseAllocationRecommendation> WarehouseAllocationRecommendations => Set<WarehouseAllocationRecommendation>();
 	public DbSet<WarehouseAllocationOption> WarehouseAllocationOptions => Set<WarehouseAllocationOption>();
+	public DbSet<HomepageSection> HomepageSections => Set<HomepageSection>();
+	public DbSet<BlogPost> BlogPosts => Set<BlogPost>();
+	public DbSet<NewsItem> NewsItems => Set<NewsItem>();
+	public DbSet<CmsEvent> CmsEvents => Set<CmsEvent>();
+	public DbSet<Announcement> Announcements => Set<Announcement>();
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
