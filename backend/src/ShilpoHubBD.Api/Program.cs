@@ -226,6 +226,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Product and heritage images uploaded through the authenticated media endpoint.
+app.UseStaticFiles();
+
 app.UseCors("Frontend");
 
 app.UseAuthentication();
