@@ -1,3 +1,4 @@
+import ShoppingCartLink from '../../components/ui/ShoppingCartLink';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
@@ -6,7 +7,7 @@ import { useCart, useCartSummary } from '../../hooks/useCart';
 import { useCheckout } from '../../hooks/useOrders';
 import { useDistricts } from '../../hooks/useDistricts';
 
-const steps = ['Shipping', 'Payment', 'Review'];
+const steps = ['Cart', 'Delivery & payment', 'Confirmation'];
 
 export default function Checkout() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function Checkout() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!cartQuery.isSuccess || !summaryQuery.isSuccess || cartQuery.isFetching || summaryQuery.isFetching || !cartQuery.data?.length || checkout.isPending) return;
     checkout.mutate(
       { ...form, paymentMethod: 'CashOnDelivery' },
       { onSuccess: (order) => navigate(routePaths.customerOrderSuccess, { state: { order } }) },
@@ -38,7 +40,7 @@ export default function Checkout() {
 
   return (
     <div>
-      <PageHeader
+      <PageHeader action={<ShoppingCartLink/>}
         breadcrumbs={[
           { label: 'Dashboard', path: routePaths.customer },
           { label: 'Marketplace', path: routePaths.customerMarketplace },
@@ -47,17 +49,17 @@ export default function Checkout() {
         title="Checkout"
       />
 
-      <div className="mb-8 flex items-center gap-3">
+      <div className="mb-8 flex flex-wrap items-center gap-3">
         {steps.map((step, index) => (
           <div key={step} className="flex items-center gap-2">
             <span
               className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold ${
-                index === 0 ? 'bg-primary text-surface' : 'border border-border text-body/60'
+                index === 1 ? 'bg-primary text-surface' : 'border border-border text-body/60'
               }`}
             >
               {index + 1}
             </span>
-            <span className={`text-sm ${index === 0 ? 'font-medium text-heading' : 'text-body/60'}`}>{step}</span>
+            <span className={`text-sm ${index === 1 ? 'font-medium text-heading' : 'text-body/60'}`}>{step}</span>
             {index < steps.length - 1 && <span className="mx-2 h-px w-8 bg-border" />}
           </div>
         ))}
@@ -112,7 +114,7 @@ export default function Checkout() {
               Cash on Delivery
             </label>
             <p className="mt-2 text-xs text-body/50">
-              Only Cash on Delivery is available right now — card and mobile-banking gateways aren't connected yet.
+              Only Cash on Delivery is available right now â€” card and mobile-banking gateways aren't connected yet.
             </p>
           </div>
         </div>
@@ -122,16 +124,16 @@ export default function Checkout() {
           <AsyncState isLoading={summaryQuery.isLoading} isError={summaryQuery.isError} error={summaryQuery.error}>
             <div className="flex justify-between text-sm text-body/70">
               <span>Items ({itemCount})</span>
-              <span>৳ {subtotal.toLocaleString()}</span>
+              <span>à§³ {subtotal.toLocaleString()}</span>
             </div>
             <div className="flex justify-between border-t border-border pt-3 text-sm font-semibold text-heading">
               <span>Total</span>
-              <span>৳ {subtotal.toLocaleString()}</span>
+              <span>à§³ {subtotal.toLocaleString()}</span>
             </div>
           </AsyncState>
           {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
-          <Button type="submit" variant="primary" className="w-full" disabled={checkout.isPending || itemCount === 0}>
-            {checkout.isPending ? 'Placing order…' : 'Place Order'}
+          <Button type="submit" variant="primary" className="w-full" disabled={checkout.isPending || !cartQuery.isSuccess || !summaryQuery.isSuccess || cartQuery.isFetching || summaryQuery.isFetching || itemCount === 0}>
+            {checkout.isPending ? 'Placing orderâ€¦' : 'Place Order'}
           </Button>
         </div>
       </form>
