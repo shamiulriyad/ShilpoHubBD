@@ -5,7 +5,8 @@ export function resolveMediaUrl(value) {
   if (typeof value !== 'string' || !value.trim()) return undefined;
   try {
     const api = new URL(API_BASE_URL, window.location.origin);
-    const url = new URL(value.trim(), `${api.origin}/`);
+    const source = value.trim();
+    const url = new URL(source, source.startsWith('/images/') ? window.location.origin : `${api.origin}/`);
     return ['http:', 'https:'].includes(url.protocol) ? url.href : undefined;
   } catch {
     return undefined;
@@ -13,6 +14,11 @@ export function resolveMediaUrl(value) {
 }
 
 function Illustration({ name, kind }) {
+  const photo = /clay|pot|ceramic|terracotta/i.test(name) ? '/images/pottery-photo.jpg' : /kantha|jamdani|weav|textile|saree/i.test(name) ? '/images/loom-photo.jpg' : null;
+  if (photo && kind !== 'producer') return <div className="absolute inset-0">
+    <SafeImage src={photo} alt="Representative craft photograph, not the listed product" className="h-full w-full object-cover" fallbackLabel="Product photo unavailable"/>
+    <span className="absolute bottom-3 left-3 right-3 rounded-lg bg-white/95 px-3 py-2 text-xs text-slate-700">Craft reference · product photo unavailable</span>
+  </div>;
   const pottery = /clay|pot|ceramic|terracotta/i.test(name);
   const textile = /kantha|jamdani|weav|textile|saree/i.test(name);
   return (
