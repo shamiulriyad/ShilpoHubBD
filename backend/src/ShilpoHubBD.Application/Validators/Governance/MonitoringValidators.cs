@@ -6,7 +6,7 @@ namespace ShilpoHubBD.Application.Validators.Governance;
 
 public class RunMonitoringScanRequestValidator : AbstractValidator<RunMonitoringScanRequest>
 {
-    private static readonly string[] ScanTypes = { "All", "Fraud", "FakeProduct", "ReviewAbuse", "QrAnomaly" };
+    private static readonly string[] ScanTypes = { "All", "Fraud", "FakeProduct", "ReviewAbuse", "QrAnomaly", "SpamContent", "PolicyViolation", "InappropriateImage" };
 
     public RunMonitoringScanRequestValidator()
     {
