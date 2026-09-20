@@ -27,6 +27,7 @@ export const routePaths = {
   // Tourism
   tourism: '/tourism',
   tourismMap: '/tourism/map',
+  tourismPlaceDetails: '/tourism/places/:placeId',
   tourismFestivals: '/tourism/festivals',
   tourismEvents: '/tourism/events',
   tourismVillages: '/tourism/villages',
@@ -137,6 +138,7 @@ export const routePaths = {
   producerCsr: '/producer/csr-sponsorship',
   producerInvestments: '/producer/investment-opportunities',
   producerInventory: '/producer/inventory',
+  producerProducts: '/producer/products',
   producerOrders: '/producer/orders',
   producerSustainability: '/producer/sustainability',
   producerAiAssistant: '/producer/ai-assistant',
