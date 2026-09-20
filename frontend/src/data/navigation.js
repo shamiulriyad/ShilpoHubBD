@@ -146,7 +146,6 @@ export const customerSidebarNav = [
     section: 'Shopping',
     items: [
       { label: 'Wishlist', path: routePaths.customerWishlist, icon: '🤍' },
-      { label: 'Cart', path: routePaths.customerCart, icon: '🛒' },
     ],
   },
   {
