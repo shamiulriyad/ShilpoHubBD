@@ -1,0 +1,36 @@
+import PublishedContent from '../../src/components/home/PublishedContent';
+import PublishedContentDetails from '../../src/pages/News/PublishedContentDetails';
+import RegisterPage from '../../src/pages/Auth/RegisterPage';
+// Development-only fixture entry. Not imported by the production app.
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import {MemoryRouter,Routes,Route} from 'react-router-dom';
+import {QueryClient,QueryClientProvider} from '@tanstack/react-query';
+import apiClient from '../../src/services/apiClient';
+import AdminWorkspace from '../../src/pages/Admin/AdminWorkspace';
+import DashboardLayout from '../../src/layouts/DashboardLayout';
+import {adminSidebarNav} from '../../src/data/navigation';
+import {ThemeProvider} from '../../src/contexts/ThemeContext';
+import '../../src/styles/index.css';
+const id='11111111-1111-4111-8111-111111111111';
+const record={id,userId:id,fullName:'Fixture Reviewer',email:'reviewer@example.test',userFullName:'Fixture Maker',userEmail:'maker@example.test',roles:['Producer'],name:'Jamdani collection',title:'A living craft tradition',summary:'Stories from the weaving community.',content:'Complete article content for editing.',description:'A carefully reviewed community record.',isActive:true,isPublished:true,companyName:'Heritage Studio',verificationStatus:'Pending',type:'NationalId',status:'Pending',documentNumber:'TEST-DOCUMENT',frontImageUrl:'/images/loom-photo.jpg',sectionKey:'heritage-story',imageUrl:'/images/loom-photo.jpg',displayOrder:1,division:'Dhaka',districtId:id,districtName:'Dhaka',craft:'Weaving',startDate:'2026-10-01T08:00:00Z',endDate:'2026-10-02T08:00:00Z',price:2500,producerName:'Fixture Maker',categoryName:'Jamdani Weaving',approvalStatus:'Pending',isFeatured:false,imageUrls:['/images/loom-photo.jpg'],orderNumber:'SH-TEST-001',recipientName:'Fixture Buyer',amount:2500,refundedAmount:0,flagType:'ReviewAbuse',severity:'Medium',subjectLabel:'Fixture review',riskScore:65,events:[],code:'test.read',module:'Testing',permissionCount:1,userCount:1,ipAddress:'192.0.2.10',reason:'Fixture only',failedAttempts:5,createdAt:'2026-09-19T08:00:00Z',keyPrefix:'fixture_',requestedByName:'Fixture Admin',startedAt:'2026-09-19T08:00:00Z'};
+const requests=[];
+apiClient.defaults.adapter=async config=>{
+  const body=config.data?JSON.parse(config.data):undefined;
+  requests.push({method:config.method,url:config.url,params:config.params,body});
+  document.getElementById('requests').textContent=JSON.stringify(requests.slice(-3),null,2);
+  if(new URLSearchParams(location.search).has('error')) throw {response:{status:503,data:{message:'Fixture service unavailable'}},config};
+  const row={...record};
+  let data;
+  if(config.method!=='get') data=config.url.endsWith('/scans')?{candidatesEvaluated:12,flagsCreated:2,duplicatesSkipped:1}:config.url.endsWith('/api-keys')?{name:body.name,apiKey:'fixture-only-not-a-real-key'}:{...row,...body};
+  else if(config.url.endsWith('/system-health')) data={databaseConnected:true,userCount:84,productCount:42,orderCount:120,workingSetBytes:104857600,uptime:'1.02:03:04',runtimeVersion:'.NET 8',generatedAt:'2026-09-19T08:00:00Z'};
+  else if(/\/roles\/[^/]+\/permissions$/.test(config.url)) data={roleId:id,roleName:'Producer',permissionCodes:['test.read']};
+  else if(config.url.endsWith(id)) data=config.url.startsWith('/payments')?{...row,status:'Paid'}:row;
+  else if(['/categories','/villages','/districts','/admin/permissions','/admin/roles','/cms/homepage','/cms/announcements'].includes(config.url)||/suspicious-ips|blocked-ips/.test(config.url)) data=[row];
+  else data={items:[config.url==='/payments'?{...row,status:'Paid'}:row],page:config.params?.page||1,pageSize:20,totalCount:21,totalPages:2};
+  if(new URLSearchParams(location.search).has('empty')) data=Array.isArray(data)?[]:data.items?{...data,items:[],totalCount:0,totalPages:0}:data;
+  return {data,status:200,statusText:'OK',headers:{},config};
+};
+const client=new QueryClient({defaultOptions:{queries:{retry:false},mutations:{retry:false}}});
+const route=new URLSearchParams(location.search).get('route')||'/admin';
+createRoot(document.getElementById('root')).render(<QueryClientProvider client={client}><ThemeProvider><div className="bg-amber-100 p-2 text-center text-xs text-amber-950">LOCAL TEST FIXTURE — synthetic data; no requests reach the backend</div><details className="p-2 text-xs"><summary>Last fixture requests</summary><pre id="requests"/></details><MemoryRouter initialEntries={[route]}><Routes><Route path="/" element={<PublishedContent/>}/><Route path="/updates/:kind/:id" element={<PublishedContentDetails/>}/><Route path="/register" element={<RegisterPage/>}/><Route element={<DashboardLayout navItems={adminSidebarNav} sidebarTitle="Super Admin"/>}><Route path="/admin" element={<AdminWorkspace/>}/><Route path="/admin/:section/:view" element={<AdminWorkspace/>}/></Route></Routes></MemoryRouter></ThemeProvider></QueryClientProvider>);

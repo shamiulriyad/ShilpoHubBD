@@ -1,4 +1,5 @@
 import { routePaths } from '../routes/routePaths';
+import { adminGroups } from '../pages/Admin/adminConfig';
 
 export const mainNav = [
   { label: 'Home', path: routePaths.home },
@@ -276,18 +277,8 @@ export const businessPartnerSidebarNav = [
 
 // Admin / platform-operations workspace.
 export const adminSidebarNav = [
-  {
-    section: 'Overview',
-    items: [{ label: 'Dashboard', path: routePaths.admin, icon: '🏠' }],
-  },
-  {
-    section: 'Management',
-    items: [
-      { label: 'User Management', path: routePaths.adminUsers, icon: '👥' },
-      { label: 'Heritage Management', path: routePaths.adminHeritage, icon: '🏺' },
-      { label: 'Marketplace Monitoring', path: routePaths.adminMarketplace, icon: '🛍️' },
-    ],
-  },
+  { section: 'Overview', items: [{ label: 'Dashboard', path: routePaths.admin, icon: '⌂' }] },
+  ...adminGroups.map(([key, section, views]) => ({ section, items: views.map(([view, label]) => ({ label, path: `/admin/${key}/${view}` })) })),
 ];
 
 // Items every signed-in member shares. Kept in one place so each role sidebar can

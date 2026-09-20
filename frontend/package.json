@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "node scripts/validate-source.mjs",
-    "check": "npm run lint && npm run build"
+    "check": "npm run lint && npm run build",
+    "test:admin": "node scripts/test-admin-contracts.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.59.0",

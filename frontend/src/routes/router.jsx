@@ -1,3 +1,4 @@
+import PublishedContentDetails from '../pages/News/PublishedContentDetails';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
 import AuthLayout from '../layouts/AuthLayout';
@@ -129,10 +130,7 @@ import DashboardMessages from '../pages/Dashboard/DashboardMessages';
 import DashboardSettings from '../pages/Dashboard/DashboardSettings';
 import DashboardProfile from '../pages/Dashboard/DashboardProfile';
 
-import AdminDashboard from '../pages/Admin/AdminDashboard';
-import UserManagement from '../pages/Admin/UserManagement';
-import HeritageManagement from '../pages/Admin/HeritageManagement';
-import MarketplaceMonitoring from '../pages/Admin/MarketplaceMonitoring';
+import AdminWorkspace from '../pages/Admin/AdminWorkspace';
 
 import CustomerDashboard from '../pages/Customer/CustomerDashboard';
 import CustomerMarketplace from '../pages/Customer/Marketplace';
@@ -225,6 +223,7 @@ const router = createBrowserRouter([
       { path: routePaths.tourismMap, element: <HeritageMap /> },
       { path: routePaths.tourismFestivals, element: <FestivalDirectory /> },
       { path: routePaths.tourismEvents, element: <CulturalEvents /> },
+      { path: "/updates/:kind/:id", element: <PublishedContentDetails /> },
       { path: routePaths.tourismVillages, element: <VillageExplorer /> },
       { path: routePaths.tourismRoutes, element: <TourRoutes /> },
       { path: routePaths.tourismCuisines, element: <LocalCuisines /> },
@@ -390,10 +389,12 @@ const router = createBrowserRouter([
           {
             element: <DashboardLayout navItems={adminSidebarNav} sidebarTitle="Admin" />,
             children: [
-              { path: routePaths.admin, element: <AdminDashboard /> },
-              { path: routePaths.adminUsers, element: <UserManagement /> },
-              { path: routePaths.adminHeritage, element: <HeritageManagement /> },
-              { path: routePaths.adminMarketplace, element: <MarketplaceMonitoring /> },
+              { path: routePaths.admin, element: <AdminWorkspace /> },
+              { path: routePaths.adminUsers, element: <AdminWorkspace section="users" /> },
+              { path: routePaths.adminHeritage, element: <AdminWorkspace section="heritage" /> },
+              { path: routePaths.adminMarketplace, element: <AdminWorkspace section="marketplace" /> },
+              { path: "/admin/:section/:view", element: <AdminWorkspace /> },
+              { path: "/admin/:section", element: <AdminWorkspace /> },
             ],
           },
         ],

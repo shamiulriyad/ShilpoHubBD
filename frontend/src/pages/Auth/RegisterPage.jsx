@@ -64,7 +64,7 @@ export default function RegisterPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!selectedRole || mutation.isPending) return;
+    if (!selectedRole || selectedRole === 'SuperAdmin' || mutation.isPending) return;
     mutation.mutate({
       fullName: fullName.trim(),
       email: email.trim(),
@@ -213,9 +213,16 @@ export default function RegisterPage() {
               })}
             </div>
 
+            <button type="button" onClick={() => setSelectedRole('SuperAdmin')} aria-pressed={selectedRole === 'SuperAdmin'} className={`mt-4 w-full rounded-xl border p-5 text-left ${selectedRole === 'SuperAdmin' ? 'border-primary bg-primary/5 ring-2 ring-primary' : 'border-border bg-background'}`}>
+              <span className="block font-semibold text-heading">Super Admin</span>
+              <span className="mt-1 block text-sm text-body/70">Administrator access is assigned by an existing Super Admin.</span>
+            </button>
+            {selectedRole === 'SuperAdmin' && <div role="status" className="mt-4 rounded-lg bg-primary/5 p-4 text-sm">
+              Register a regular account first, then ask your platform administrator to assign the Super Admin role. If you already have administrator access, <Link to={routePaths.login} className="font-semibold text-primary underline">sign in here</Link>.
+            </div>}
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
               <Button type="button" variant="secondary" size="lg" onClick={() => setStep(1)} className="sm:w-auto">Back</Button>
-              <Button type="submit" variant="primary" size="lg" className="flex-1" disabled={!selectedRole || mutation.isPending}>
+              <Button type="submit" variant="primary" size="lg" className="flex-1" disabled={!selectedRole || selectedRole === 'SuperAdmin' || mutation.isPending}>
                 {mutation.isPending ? 'Creating account…' : 'Create Account'}
               </Button>
             </div>
