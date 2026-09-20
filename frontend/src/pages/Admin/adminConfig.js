@@ -15,7 +15,8 @@ const date = (key, label, required = true) => text(key, label, required, {
   type: 'datetime-local'
 });
 const image = text('imageUrl', 'Image URL', false, {
-  maxLength: 1000
+  maxLength: 1000,
+  type: 'image-upload'
 });
 const order = text('displayOrder', 'Display order', true, {
   type: 'number',
@@ -32,7 +33,7 @@ const district = text('districtId', 'District', true, {
   lookup: '/districts'
 });
 const publish = bool('publish', 'Publish now');
-export const adminGroups = [['users', 'User Management', [['directory', 'User directory'], ['verification', 'User Verification'], ['roles', 'Role Management'], ['permissions', 'Permissions'], ['identity', 'Identity Verification']]], ['heritage', 'Heritage Management', [['categories', 'Craft Categories'], ['villages', 'Heritage Villages'], ['districts', 'Districts'], ['festivals', 'Festivals']]], ['marketplace', 'Marketplace', [['approval', 'Product Approval'], ['monitoring', 'Marketplace Monitoring'], ['refunds', 'Refund Management'], ['fraud', 'Fraud Control']]], ['cms', 'CMS', [['homepage', 'Homepage'], ['blogs', 'Blogs'], ['news', 'News'], ['events', 'Events'], ['announcements', 'Announcements']]], ['moderation', 'AI Moderation', [['reviews', 'Fake Reviews'], ['spam', 'Spam Detection'], ['content', 'Content Moderation'], ['images', 'Image Moderation']]], ['security', 'Security', [['audit', 'Audit Logs'], ['backups', 'Backups'], ['health', 'System Monitoring'], ['keys', 'API Management'], ['threats', 'Threat Detection']]]];
+export const adminGroups = [['users', 'User Management', [['directory', 'User directory'], ['verification', 'User Verification'], ['roles', 'Role Management'], ['permissions', 'Permissions'], ['identity', 'Identity Verification']]], ['heritage', 'Heritage Management', [['categories', 'Craft Categories'], ['villages', 'Heritage Villages'], ['places', 'Heritage Places'], ['districts', 'Districts'], ['festivals', 'Festivals']]], ['marketplace', 'Marketplace', [['approval', 'Product Approval'], ['monitoring', 'Marketplace Monitoring'], ['refunds', 'Refund Management'], ['fraud', 'Fraud Control']]], ['cms', 'CMS', [['homepage', 'Homepage'], ['blogs', 'Blogs'], ['news', 'News'], ['events', 'Events'], ['announcements', 'Announcements']]], ['moderation', 'AI Moderation', [['reviews', 'Fake Reviews'], ['spam', 'Spam Detection'], ['content', 'Content Moderation'], ['images', 'Image Moderation']]], ['security', 'Security', [['audit', 'Audit Logs'], ['backups', 'Backups'], ['health', 'System Monitoring'], ['keys', 'API Management'], ['threats', 'Threat Detection']]]];
 export const resources = {
   categories: {
     path: '/categories',
@@ -45,6 +46,12 @@ export const resources = {
     fields: [name, text('craft', 'Craft'), district, long('description', 'Description', false), image],
     update: [active],
     columns: ['name', 'craft', 'districtName', 'isActive']
+  },
+  places: {
+    path: '/heritage-places',
+    fields: [name, long('description', 'Description'), text('placeType', 'Place type', true, { options: ['Village', 'HistoricalSite', 'Museum', 'Temple', 'Monument', 'CraftCenter', 'NaturalSite', 'Other'] }), district, text('address', 'Address', false), text('latitude', 'Latitude', true, { type: 'number', min: -90, max: 90 }), text('longitude', 'Longitude', true, { type: 'number', min: -180, max: 180 }), image, bool('isFeatured', 'Featured')],
+    update: [active],
+    columns: ['name', 'placeType', 'districtName', 'isFeatured', 'isActive']
   },
   districts: {
     path: '/districts',
