@@ -11,7 +11,7 @@ let checks=0;
 const check=(name,fn)=>{fn();checks++;console.log(`PASS ${name}`);};
 const contracts={
   categories:['Marketplace','Category'],villages:['Community','Village'],
-  festivals:['HeritageDiscovery','HeritageFestival'],homepage:['Cms','HomepageSection'],
+  places:['HeritageDiscovery','HeritagePlace'],festivals:['HeritageDiscovery','HeritageFestival'],homepage:['Cms','HomepageSection'],
   blogs:['Cms','BlogPost'],news:['Cms','NewsItem'],events:['Cms','CmsEvent'],announcements:['Cms','Announcement'],
 };
 for(const [view,[folder,type]] of Object.entries(contracts)) {
@@ -44,7 +44,7 @@ check('all requested scan types pass the backend validator',()=>{
 });
 check('all admin navigation paths are unique',()=>{
   const paths=adminGroups.flatMap(([s,,views])=>views.map(([v])=>`/admin/${s}/${v}`));
-  assert.equal(paths.length,27);assert.equal(new Set(paths).size,paths.length);
+  assert.equal(paths.length,28);assert.equal(new Set(paths).size,paths.length);
 });
 
 // Inject a transport; no live requests, tokens, or database mutations.
