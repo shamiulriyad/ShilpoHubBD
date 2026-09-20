@@ -1,213 +1,50 @@
-import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { routePaths } from '../../routes/routePaths';
-import { PageHeader, SearchBar, SectionHeader, Badge, CategoryFilter, MarketplaceFilter, AsyncState } from '../../components/ui';
-import { priceRangeToQuery } from '../../components/ui/MarketplaceFilter';
-import { ProductCard, EntityCard, ProducerCard } from '../../components/cards';
-import { useCategories } from '../../hooks/useCategories';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { PageHeader, SearchBar, AsyncState, Pagination } from '../../components/ui';
+import ShoppingCartLink from '../../components/ui/ShoppingCartLink';
+import { ProductCard } from '../../components/cards';
 import { useProducts } from '../../hooks/useProducts';
-import { useRecommendedForMe } from '../../hooks/useRecommendations';
-import { useLiveEvents } from '../../hooks/useLiveEvents';
-import { useSearch } from '../../hooks/useSearch';
-import { useAuth } from '../../hooks/useAuth';
-import { toProductCardItem, toCategoryCardItem } from '../../utils/productAdapters';
+import { useCategories } from '../../hooks/useCategories';
+import { useDistricts } from '../../hooks/useDistricts';
+import { priceRangeToQuery } from '../../components/ui/MarketplaceFilter';
+import { toProductCardItem } from '../../utils/productAdapters';
+import { routePaths } from '../../routes/routePaths';
 
 export default function Marketplace() {
-  const { isAuthenticated } = useAuth();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [activeCategoryId, setActiveCategoryIdState] = useState(searchParams.get('categoryId') || null);
-
-  const setActiveCategoryId = (value) => {
-    const nextValue = value || null;
-    setActiveCategoryIdState(nextValue);
-    const nextParams = new URLSearchParams(searchParams);
-    if (nextValue) nextParams.set('categoryId', nextValue);
-    else nextParams.delete('categoryId');
-    setSearchParams(nextParams, { replace: true });
+  const [params, setParams] = useSearchParams();
+  const search = params.get('search') || '';
+  const [input, setInput] = useState(search);
+  useEffect(() => setInput(search), [search]);
+  const page = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
+  const categories = useCategories();
+  const districts = useDistricts();
+  const products = useProducts({ search: search || undefined, categoryId: params.get('categoryId') || undefined, districtId: params.get('districtId') || undefined, ...priceRangeToQuery(params.get('priceRange')), sortBy: params.get('sortBy') || 'Newest', page, pageSize: 12 });
+  const change = (key, value) => {
+    const next = new URLSearchParams(params);
+    if (value) next.set(key, value); else next.delete(key);
+    if (key !== 'page') next.delete('page');
+    setParams(next);
   };
-  const [searchInput, setSearchInput] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [districtId, setDistrictId] = useState('');
-  const [priceRange, setPriceRange] = useState('');
-
-  const categoriesQuery = useCategories();
-  const recommendedQuery = useRecommendedForMe(4);
-  const productsQuery = useProducts({
-    categoryId: activeCategoryId || undefined,
-    districtId: districtId || undefined,
-    ...priceRangeToQuery(priceRange),
-    pageSize: 12,
-  });
-  const liveEventsQuery = useLiveEvents({ pageSize: 5 });
-  const searchResults = useSearch(searchQuery);
-
-  const liveEvent = (liveEventsQuery.data?.items || []).find(
-    (e) => (e.status || '').toLowerCase() === 'live',
-  );
-
-  // No producer-directory endpoint — derive distinct producers from the catalog.
-  const featuredProducers = [
-    ...new Map(
-      (productsQuery.data?.items || [])
-        .filter((p) => p.producerName)
-        .map((p) => [p.producerName, { name: p.producerName, craft: p.categoryName, district: p.districtName }]),
-    ).values(),
-  ].slice(0, 6);
-
-  const categoryOptions = [
-    { id: null, name: 'All' },
-    ...(categoriesQuery.data || []).map((c) => ({ id: c.id, name: c.name })),
+  const groups = [
+    ['categoryId', 'Category', (categories.data || []).map(c => [c.id, c.name])],
+    ['districtId', 'District', (districts.data || []).map(d => [d.id, d.name])],
+    ['priceRange', 'Price range', [['under-1000','Under ৳1,000'],['1000-3000','৳1,000–3,000'],['3000-6000','৳3,000–6,000'],['above-6000','Above ৳6,000']]],
+    ['sortBy', 'Sort by', [['Newest','Newest'],['PriceLowToHigh','Price: low to high'],['PriceHighToLow','Price: high to low'],['Popular','Most popular'],['TopRated','Top rated']]],
   ];
-
-  const isSearching = searchQuery.trim().length >= 2;
-
-  return (
-    <div>
-      <PageHeader
-        breadcrumbs={[{ label: 'Dashboard', path: routePaths.customer }, { label: 'Marketplace' }]}
-        title="Marketplace"
-        description="Authentic heritage products, direct from verified producers across Bangladesh."
-      />
-
-      <div className="mb-10 max-w-xl">
-        <SearchBar
-          placeholder="Search products, categories, producers…"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          onSubmit={(value) => setSearchQuery(value || '')}
-        />
-      </div>
-
-      {isSearching ? (
-        <>
-          <SectionHeader
-            eyebrow="AI Search"
-            title={`Results for “${searchQuery.trim()}”`}
-            action={
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchInput('');
-                  setSearchQuery('');
-                }}
-                className="text-sm font-medium text-link hover:underline"
-              >
-                Clear search
-              </button>
-            }
-          />
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            <AsyncState isLoading={searchResults.isLoading} isError={searchResults.isError} error={searchResults.error}>
-              {(searchResults.data?.items || []).map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={toProductCardItem(product)}
-                  to={routePaths.customerProductDetails.replace(':productId', product.id)}
-                />
-              ))}
-              {searchResults.data?.items?.length === 0 && (
-                <p className="col-span-full text-sm text-body/60">No products matched your search.</p>
-              )}
-            </AsyncState>
-          </div>
-        </>
-      ) : (
-        <>
-          {liveEvent && (
-            <div className="mb-10 flex flex-wrap items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
-              <Badge tone="success">Live Now</Badge>
-              <p className="text-sm text-body/80">
-                {liveEvent.producerName} is streaming {liveEvent.title.toLowerCase()}.
-              </p>
-              <Link
-                to={routePaths.customerLiveShopping.replace(':workshopId', liveEvent.id)}
-                className="ml-auto text-sm font-medium text-link hover:underline"
-              >
-                Watch now →
-              </Link>
-            </div>
-          )}
-
-          <SectionHeader eyebrow="Browse" title="Shop by Category" />
-          <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            <AsyncState isLoading={categoriesQuery.isLoading} isError={categoriesQuery.isError} error={categoriesQuery.error}>
-              {categoriesQuery.data?.map((category) => {
-                const item = toCategoryCardItem(category);
-                return (
-                  <EntityCard
-                    key={item.id}
-                    title={item.name}
-                    subtitle={`${item.itemCount} items`}
-                    to={`${routePaths.customerMarketplace}?categoryId=${item.id}`}
-                  />
-                );
-              })}
-            </AsyncState>
-          </div>
-
-          {isAuthenticated && (
-            <>
-              <SectionHeader eyebrow="For You" title="Recommended for You" />
-              <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                <AsyncState isLoading={recommendedQuery.isLoading} isError={recommendedQuery.isError} error={recommendedQuery.error}>
-                  {(recommendedQuery.data || []).map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={toProductCardItem(product)}
-                      to={routePaths.customerProductDetails.replace(':productId', product.id)}
-                    />
-                  ))}
-                </AsyncState>
-              </div>
-            </>
-          )}
-
-          <SectionHeader eyebrow="Featured" title="Featured Products" />
-          <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
-            <MarketplaceFilter
-              className="hidden lg:block"
-              values={{ categoryId: activeCategoryId, districtId, priceRange }}
-              onChange={(key, value, checked) => {
-                const nextValue = checked ? value : '';
-                if (key === 'categoryId') setActiveCategoryId(nextValue || null);
-                if (key === 'districtId') setDistrictId(nextValue);
-                if (key === 'priceRange') setPriceRange(nextValue);
-              }}
-              onClear={() => {
-                setActiveCategoryId(null);
-                setDistrictId('');
-                setPriceRange('');
-              }}
-            />
-            <div>
-              <CategoryFilter className="mb-6" options={categoryOptions} active={activeCategoryId} onChange={setActiveCategoryId} />
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                <AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}>
-                  {(productsQuery.data?.items || []).map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={toProductCardItem(product)}
-                      to={routePaths.customerProductDetails.replace(':productId', product.id)}
-                    />
-                  ))}
-                  {productsQuery.data?.items?.length === 0 && (
-                    <p className="col-span-full text-sm text-body/60">No products in this category yet.</p>
-                  )}
-                </AsyncState>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-10">
-            <SectionHeader eyebrow="Community" title="Featured Producers" />
-          </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {featuredProducers.map((producer) => (
-              <ProducerCard key={producer.name} producer={producer} />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
+  return <div>
+    <PageHeader title="Marketplace" description="Find handmade pieces for everyday living. Search by product name or description." breadcrumbs={[{label:'Dashboard',path:routePaths.customer},{label:'Marketplace'}]} action={<ShoppingCartLink/>}/>
+    <section aria-label="Search and filter products" className="mb-8 space-y-5 rounded-2xl border border-border bg-surface p-5 sm:p-6">
+      <SearchBar placeholder="Search products…" value={input} onChange={e => setInput(e.target.value)} onSubmit={value => change('search', (value || '').trim())}/>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{groups.map(([key,label,options]) => <label key={key} className="space-y-2 text-sm font-medium text-heading"><span>{label}</span><select className="block min-h-11 w-full rounded-lg border border-border bg-background px-3 focus:outline-primary" value={params.get(key) || (key === 'sortBy' ? 'Newest' : '')} onChange={e => change(key,e.target.value)}>{key !== 'sortBy' && <option value="">All {label.toLowerCase()}</option>}{options.map(([value,name]) => <option key={value} value={value}>{name}</option>)}</select></label>)}</div>
+      {(categories.isError || districts.isError) && <p role="alert" className="text-sm">Some filters could not load. <button className="underline" onClick={() => { categories.refetch(); districts.refetch(); }}>Retry filters</button></p>}
+      {params.size > 0 && <button onClick={() => { setInput(''); setParams({}); }} className="text-sm font-semibold text-primary underline">Clear search and filters</button>}
+    </section>
+    <div className="mb-5 flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-semibold text-heading">{search ? `Results for “${search}”` : 'Explore the collection'}</h2><p role="status" className="text-sm text-body">{products.isFetching ? 'Updating products…' : products.isError ? 'Products could not load' : `${products.data?.totalCount ?? 0} products`}</p></div>
+    <AsyncState isLoading={products.isLoading} isError={products.isError} error={products.error}>
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-busy={products.isFetching}>{(products.data?.items || []).map(product => <ProductCard key={product.id} product={toProductCardItem(product)} to={routePaths.customerProductDetails.replace(':productId',product.id)}/>)}</div>
+      {products.isSuccess && !products.data?.items?.length && <div className="rounded-2xl border border-border bg-surface p-10 text-center"><h3 className="text-lg font-semibold">No matching products</h3><p className="my-3 text-body">Try a different product name or clear your filters.</p><button className="font-semibold text-primary underline" onClick={() => {setInput('');setParams({});}}>Show all products</button></div>}
+    </AsyncState>
+    {products.isError && <button className="mt-4 rounded-lg border border-border px-5 py-3" onClick={() => products.refetch()}>Retry loading products</button>}
+    {!products.isError && products.data?.totalPages > 1 && <div className="mt-8"><Pagination currentPage={page} totalPages={products.data.totalPages} onPageChange={value => change('page',String(value))}/></div>}
+  </div>;
 }
