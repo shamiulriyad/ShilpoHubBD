@@ -1,10 +1,12 @@
 import { PageHeader, Button, Badge, AsyncState } from '../../components/ui';
 import { useMyTrainingCertificates } from '../../hooks/useTrainingCertificates';
-import { API_BASE_URL } from '../../config/runtime';
+import { useMutation } from '@tanstack/react-query';
+import { trainingCertificatesService } from '../../services/trainingCertificatesService';
 
 export default function Certificates() {
   const { data, isLoading, isError, error } = useMyTrainingCertificates();
   const certificates = data || [];
+  const download = useMutation({ mutationFn: trainingCertificatesService.download, onSuccess: (blob, id) => { const url = URL.createObjectURL(blob); const anchor = document.createElement('a'); anchor.href = url; anchor.download = `shilpohub-certificate-${id}.pdf`; anchor.click(); URL.revokeObjectURL(url); } });
 
   return (
     <div>
@@ -20,9 +22,7 @@ export default function Certificates() {
                 </p>
                 {cert.isRevoked && <Badge tone="neutral">Revoked</Badge>}
               </div>
-              <a href={`${API_BASE_URL}/training-certificates/${cert.id}/download`} target="_blank" rel="noreferrer">
-                <Button variant="secondary">Download</Button>
-              </a>
+              {!cert.isRevoked && <Button variant="secondary" disabled={download.isPending} onClick={() => download.mutate(cert.id)}>{download.isPending && download.variables === cert.id ? 'Preparing…' : 'Download PDF'}</Button>}
             </div>
           ))}
           {certificates.length === 0 && (
