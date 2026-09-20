@@ -20,7 +20,7 @@ export function useCartSummary(enabled = true) {
 export function useCartMutations() {
   const queryClient = useQueryClient();
   const invalidate = () => {
-    queryClient.invalidateQueries({ queryKey: ['cart'] });
+    return queryClient.invalidateQueries({ queryKey: ['cart'] });
   };
 
   const add = useMutation({

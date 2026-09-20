@@ -17,7 +17,7 @@ export function toProductCardItem(dto) {
     producer: dto.producerName,
     producerId: dto.producerId,
     district: dto.districtName,
-    image: dto.primaryImageUrl ?? null,
+    image: dto.primaryImageUrl || dto.imageUrls?.find(url => typeof url === 'string' && url.trim()) || null,
   };
 }
 

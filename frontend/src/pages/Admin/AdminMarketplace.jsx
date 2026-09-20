@@ -1,4 +1,5 @@
 import SafeImage from '../../components/media/SafeImage';
+import { resolveMediaUrl } from '../../components/media/CardMedia';
 import { useState } from 'react';
 import { Action, DataTable, Editor, ErrorNotice, Modal, Panel, RecordDetails, useAdminAction, useAdminQuery, inputClass } from './AdminUI';
 export default function AdminMarketplace({
@@ -44,7 +45,7 @@ export default function AdminMarketplace({
           setPage(1);
         }}><option value="">All payment statuses</option>{['Pending', 'Awaiting', 'Paid', 'Failed', 'Refunded', 'PartiallyRefunded'].map(s => <option key={s}>{s}</option>)}</select>}</form>}<Action disabled={query.isFetching} onClick={() => query.refetch()}>Refresh</Action></div>
     <DataTable query={query} page={page} onPage={setPage} columns={refunds ? ['orderNumber', 'recipientName', 'amount', 'refundedAmount', 'status'] : ['name', 'producerName', 'categoryName', 'price', 'approvalStatus', 'isFeatured']} actions={row => <Action onClick={() => setSelected(row)}>Review</Action>} />
-    {selected && <Modal title={refunds ? 'Payment review' : 'Product review'} onClose={() => setSelected(null)}><ErrorNotice error={detail.error} />{detail.isPending ? <p>Loading details…</p> : detail.isSuccess && <><RecordDetails record={detail.data} />{detail.data.imageUrls?.length > 0 && <div className="mt-4 flex flex-wrap gap-3">{detail.data.imageUrls.filter(url => /^https?:\/\//.test(url)).map(url => <SafeImage key={url} src={url} alt={detail.data.name} className="h-36 w-36 rounded-lg object-cover" />)}</div>}<div className="mt-6 flex flex-wrap gap-3">
+    {selected && <Modal title={refunds ? 'Payment review' : 'Product review'} onClose={() => setSelected(null)}><ErrorNotice error={detail.error} />{detail.isPending ? <p>Loading details…</p> : detail.isSuccess && <><RecordDetails record={detail.data} />{detail.data.imageUrls?.length > 0 && <div className="mt-4 flex flex-wrap gap-3">{detail.data.imageUrls.map(url => <SafeImage key={url} src={resolveMediaUrl(url)} alt={detail.data.name} className="h-36 w-36 rounded-lg object-cover" />)}</div>}<div className="mt-6 flex flex-wrap gap-3">
     {refunds ? ['Paid', 'PartiallyRefunded'].includes(detail.data.status) && <Action danger onClick={() => start('Issue refund', 'post', `/payments/${selected.id}/refund`, [{
             key: 'amount',
             label: 'Refund amount (BDT)',

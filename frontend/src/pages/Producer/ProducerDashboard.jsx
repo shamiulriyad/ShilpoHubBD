@@ -39,6 +39,7 @@ export default function ProducerDashboard() {
         {[
           { title: 'Orders & Fulfillment', to: routePaths.producerOrders },
           { title: 'Inventory', to: routePaths.producerInventory },
+          { title: 'My Products', to: routePaths.producerProducts },
           { title: 'Contracts', to: routePaths.producerContracts },
           { title: 'Quotation Requests', to: routePaths.producerQuotations },
           { title: 'Manufacturing Partnerships', to: routePaths.producerPartnerships },

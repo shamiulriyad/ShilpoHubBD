@@ -28,6 +28,7 @@ import ProducerCsrSponsorship from '../pages/Producer/CsrSponsorship';
 import ProducerInvestmentOpportunities from '../pages/Producer/InvestmentOpportunities';
 import ProducerInventory from '../pages/Producer/Inventory';
 import ProducerOrders from '../pages/Producer/Orders';
+import ProducerProducts from '../pages/Producer/Products';
 import ProducerSustainability from '../pages/Producer/Sustainability';
 import ProducerAiBusinessAssistant from '../pages/Producer/AiBusinessAssistant';
 import ProducerLiveShoppingManager from '../pages/Producer/LiveShoppingManager';
@@ -73,6 +74,7 @@ import Auctions from '../pages/Marketplace/Auctions';
 
 import TourismHome from '../pages/Tourism/TourismHome';
 import HeritageMap from '../pages/Tourism/HeritageMap';
+import HeritagePlaceDetails from '../pages/Tourism/HeritagePlaceDetails';
 import FestivalDirectory from '../pages/Tourism/FestivalDirectory';
 import CulturalEvents from '../pages/Tourism/CulturalEvents';
 import VillageExplorer from '../pages/Tourism/VillageExplorer';
@@ -221,6 +223,7 @@ const router = createBrowserRouter([
 
       { path: routePaths.tourism, element: <TourismHome /> },
       { path: routePaths.tourismMap, element: <HeritageMap /> },
+      { path: routePaths.tourismPlaceDetails, element: <HeritagePlaceDetails /> },
       { path: routePaths.tourismFestivals, element: <FestivalDirectory /> },
       { path: routePaths.tourismEvents, element: <CulturalEvents /> },
       { path: "/updates/:kind/:id", element: <PublishedContentDetails /> },
@@ -459,6 +462,7 @@ const router = createBrowserRouter([
           { path: routePaths.producerCsr, element: <ProducerCsrSponsorship /> },
           { path: routePaths.producerInvestments, element: <ProducerInvestmentOpportunities /> },
           { path: routePaths.producerInventory, element: <ProducerInventory /> },
+          { path: routePaths.producerProducts, element: <ProducerProducts /> },
           { path: routePaths.producerOrders, element: <ProducerOrders /> },
           { path: routePaths.producerSustainability, element: <ProducerSustainability /> },
           { path: routePaths.producerAiAssistant, element: <ProducerAiBusinessAssistant /> },

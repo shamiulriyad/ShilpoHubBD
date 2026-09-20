@@ -159,6 +159,14 @@ public class ProductService : IProductService
         product.IsActive = request.IsActive;
         product.MakingProcessVideoUrl = request.MakingProcessVideoUrl?.Trim();
         product.Story = string.IsNullOrWhiteSpace(request.Story) ? null : request.Story.Trim();
+        if (!isAdmin)
+        {
+            // Material producer edits must return through the marketplace approval queue.
+            product.ApprovalStatus = ProductApprovalStatus.Pending;
+            product.ApprovedByUserId = null;
+            product.ApprovedAt = null;
+            product.RejectionReason = null;
+        }
         product.UpdatedAt = DateTime.UtcNow;
 
         product.Images.Clear();

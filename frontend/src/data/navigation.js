@@ -146,7 +146,6 @@ export const customerSidebarNav = [
     section: 'Shopping',
     items: [
       { label: 'Wishlist', path: routePaths.customerWishlist, icon: '🤍' },
-      { label: 'Cart', path: routePaths.customerCart, icon: '🛒' },
     ],
   },
   {
@@ -200,6 +199,7 @@ export const producerSidebarNav = [
     section: 'Sell & Fulfil',
     items: [
       { label: 'Orders & Fulfillment', path: routePaths.producerOrders, icon: '📦' },
+      { label: 'My Products', path: routePaths.producerProducts, icon: '🏺' },
       { label: 'Inventory', path: routePaths.producerInventory, icon: '🗃️' },
     ],
   },
