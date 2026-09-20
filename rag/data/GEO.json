@@ -1,0 +1,1987 @@
+{
+  "dataset_metadata": {
+    "dataset_name": "Bangladesh Geographical, Village and Craft Heritage Dataset",
+    "project": "ShilpoHub",
+    "version": "2.0-researched-foundation",
+    "country": "Bangladesh",
+    "created_date": "2026-08-31",
+    "languages": [
+      "English",
+      "Bangla"
+    ],
+    "intended_use": [
+      "RAG",
+      "AI training",
+      "semantic search",
+      "knowledge graph",
+      "heritage recommendation"
+    ],
+    "research_policy": "No unsupported village-level association should be treated as verified fact.",
+    "coverage": {
+      "divisions": 8,
+      "districts": 64,
+      "craft_taxonomy_scope": "broad traditional folk art and craft families"
+    },
+    "limitations": "This is a research-grounded foundation dataset, not a claim that every living artisan or every village-level production cluster in Bangladesh has been exhaustively enumerated."
+  },
+  "source_registry": [
+    {
+      "id": "SRC_UNESCO_BD",
+      "title": "UNESCO Intangible Cultural Heritage – Bangladesh",
+      "url": "https://ich.unesco.org/en/state/bangladesh-BD?info=elements-on-the-lists",
+      "authority": "UNESCO",
+      "tier": "A"
+    },
+    {
+      "id": "SRC_UNESCO_JAMDANI",
+      "title": "Traditional art of Jamdani weaving",
+      "url": "https://ich.unesco.org/en/RL/traditional-art-of-jamdani-weaving-00879",
+      "authority": "UNESCO",
+      "tier": "A"
+    },
+    {
+      "id": "SRC_UNESCO_TANGAIL",
+      "title": "Traditional Saree weaving art of Tangail",
+      "url": "https://ich.unesco.org/en/RL/traditional-saree-weaving-art-of-tangail-02322",
+      "authority": "UNESCO",
+      "tier": "A"
+    },
+    {
+      "id": "SRC_UNESCO_SHITAL_PATI",
+      "title": "Traditional art of Shital Pati weaving of Sylhet",
+      "url": "https://ich.unesco.org/en/RL/traditional-art-of-shital-pati-weaving-of-sylhet-01112",
+      "authority": "UNESCO",
+      "tier": "A"
+    },
+    {
+      "id": "SRC_BD_FOLK_FOUNDATION",
+      "title": "Bangladesh Folk Art and Crafts Foundation",
+      "url": "https://sonargaonmuseum.gov.bd/",
+      "authority": "Government of Bangladesh",
+      "tier": "A"
+    },
+    {
+      "id": "SRC_ARTISAN_GOV",
+      "title": "Karushilpi Batayan",
+      "url": "https://artisan.gov.bd/",
+      "authority": "Government of Bangladesh",
+      "tier": "A"
+    },
+    {
+      "id": "SRC_BANGLAPEDIA_FOLK",
+      "title": "Folk Art and Crafts",
+      "url": "https://en.banglapedia.org/index.php/Folk_Art_and_Crafts",
+      "authority": "Banglapedia",
+      "tier": "B"
+    },
+    {
+      "id": "SRC_BANGLAPEDIA_KANTHA",
+      "title": "Nakshi Kantha",
+      "url": "https://en.banglapedia.org/index.php?title=Nakshi_Kantha",
+      "authority": "Banglapedia",
+      "tier": "B"
+    },
+    {
+      "id": "SRC_TANGAIL_GOV",
+      "title": "Tangail District Heritage",
+      "url": "https://tangail.gov.bd/pages/static-pages/6995975d35ce18e1c0786874",
+      "authority": "Tangail District Administration",
+      "tier": "A"
+    },
+    {
+      "id": "SRC_BD_DISTRICTS",
+      "title": "Bangladesh National Portal – District List",
+      "url": "https://bangladesh.gov.bd/site/view/district-list/",
+      "authority": "Government of Bangladesh",
+      "tier": "A"
+    }
+  ],
+  "verification_levels": {
+    "A": "Primary/authoritative: UNESCO, Government of Bangladesh, official institution",
+    "B": "Reference authority: Banglapedia or comparable scholarly reference",
+    "C": "Secondary research; requires corroboration",
+    "FIELD_REQUIRED": "Needs direct field survey or local authority/community confirmation"
+  },
+  "geographic_coverage": {
+    "divisions": {
+      "Barishal": [
+        "Barguna",
+        "Barishal",
+        "Bhola",
+        "Jhalokathi",
+        "Patuakhali",
+        "Pirojpur"
+      ],
+      "Chattogram": [
+        "Bandarban",
+        "Brahmanbaria",
+        "Chandpur",
+        "Chattogram",
+        "Cumilla",
+        "Cox's Bazar",
+        "Feni",
+        "Khagrachhari",
+        "Lakshmipur",
+        "Noakhali",
+        "Rangamati"
+      ],
+      "Dhaka": [
+        "Dhaka",
+        "Faridpur",
+        "Gazipur",
+        "Gopalganj",
+        "Kishoreganj",
+        "Madaripur",
+        "Manikganj",
+        "Munshiganj",
+        "Narayanganj",
+        "Narsingdi",
+        "Rajbari",
+        "Shariatpur",
+        "Tangail"
+      ],
+      "Khulna": [
+        "Bagerhat",
+        "Chuadanga",
+        "Jashore",
+        "Jhenaidah",
+        "Khulna",
+        "Kushtia",
+        "Magura",
+        "Meherpur",
+        "Narail",
+        "Satkhira"
+      ],
+      "Mymensingh": [
+        "Jamalpur",
+        "Mymensingh",
+        "Netrokona",
+        "Sherpur"
+      ],
+      "Rajshahi": [
+        "Bogura",
+        "Joypurhat",
+        "Naogaon",
+        "Natore",
+        "Chapainawabganj",
+        "Pabna",
+        "Rajshahi",
+        "Sirajganj"
+      ],
+      "Rangpur": [
+        "Dinajpur",
+        "Gaibandha",
+        "Kurigram",
+        "Lalmonirhat",
+        "Nilphamari",
+        "Panchagarh",
+        "Rangpur",
+        "Thakurgaon"
+      ],
+      "Sylhet": [
+        "Habiganj",
+        "Moulvibazar",
+        "Sunamganj",
+        "Sylhet"
+      ]
+    },
+    "district_records": [
+      {
+        "division": "Barishal",
+        "district": "Barguna",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Barishal",
+        "district": "Barishal",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Barishal",
+        "district": "Bhola",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Barishal",
+        "district": "Jhalokathi",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Barishal",
+        "district": "Patuakhali",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Barishal",
+        "district": "Pirojpur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Bandarban",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Brahmanbaria",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Chandpur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Chattogram",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Cumilla",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Cox's Bazar",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Feni",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Khagrachhari",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Lakshmipur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Noakhali",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Chattogram",
+        "district": "Rangamati",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Dhaka",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Faridpur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Gazipur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Gopalganj",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Kishoreganj",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Madaripur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Manikganj",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Munshiganj",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Narayanganj",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Narsingdi",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Rajbari",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Shariatpur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Dhaka",
+        "district": "Tangail",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Bagerhat",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Chuadanga",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Jashore",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Jhenaidah",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Khulna",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Kushtia",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Magura",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Meherpur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Narail",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Khulna",
+        "district": "Satkhira",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Mymensingh",
+        "district": "Jamalpur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Mymensingh",
+        "district": "Mymensingh",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Mymensingh",
+        "district": "Netrokona",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Mymensingh",
+        "district": "Sherpur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rajshahi",
+        "district": "Bogura",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rajshahi",
+        "district": "Joypurhat",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rajshahi",
+        "district": "Naogaon",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rajshahi",
+        "district": "Natore",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rajshahi",
+        "district": "Chapainawabganj",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rajshahi",
+        "district": "Pabna",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rajshahi",
+        "district": "Rajshahi",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rajshahi",
+        "district": "Sirajganj",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rangpur",
+        "district": "Dinajpur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rangpur",
+        "district": "Gaibandha",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rangpur",
+        "district": "Kurigram",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rangpur",
+        "district": "Lalmonirhat",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rangpur",
+        "district": "Nilphamari",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rangpur",
+        "district": "Panchagarh",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rangpur",
+        "district": "Rangpur",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Rangpur",
+        "district": "Thakurgaon",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Sylhet",
+        "district": "Habiganj",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Sylhet",
+        "district": "Moulvibazar",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Sylhet",
+        "district": "Sunamganj",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      },
+      {
+        "division": "Sylhet",
+        "district": "Sylhet",
+        "coverage_status": "geographic_scaffold",
+        "verified_craft_records": [],
+        "note": "District included to guarantee national geographic coverage. Craft associations are added only when supported by sources or explicitly marked for verification."
+      }
+    ]
+  },
+  "craft_taxonomy": {
+    "Textile Heritage": [
+      "Jamdani",
+      "Tangail Saree",
+      "Muslin",
+      "Rajshahi Silk",
+      "Khadi",
+      "Nakshi Kantha",
+      "Manipuri weaving",
+      "Satrangi"
+    ],
+    "Natural Fibre Crafts": [
+      "Shital Pati",
+      "Bamboo Craft",
+      "Cane/Rattan Craft",
+      "Jute Craft",
+      "Nakshi Pakha"
+    ],
+    "Clay Crafts": [
+      "Pottery",
+      "Terracotta",
+      "Clay toys"
+    ],
+    "Metal Crafts": [
+      "Bell metal",
+      "Brass",
+      "Bronze",
+      "Copper",
+      "Iron/blacksmith traditions"
+    ],
+    "Wood Crafts": [
+      "Woodwork",
+      "Wood carving",
+      "Traditional boat making"
+    ],
+    "Folk Arts": [
+      "Rickshaw art",
+      "Alpana",
+      "Patachitra",
+      "Masks",
+      "Folk painting"
+    ],
+    "Musical Crafts": [
+      "Ektara",
+      "Dotara",
+      "Dhol and other folk instruments"
+    ],
+    "Other Traditional Crafts": [
+      "Conch/shell craft",
+      "Shola craft",
+      "Palm-leaf craft",
+      "Coconut craft"
+    ]
+  },
+  "unesco_bangladesh_intangible_heritage": [
+    {
+      "name": "Baul songs",
+      "year": 2008
+    },
+    {
+      "name": "Traditional art of Jamdani weaving",
+      "year": 2013
+    },
+    {
+      "name": "Mangal Shobhajatra on Pahela Baishakh",
+      "year": 2016
+    },
+    {
+      "name": "Traditional art of Shital Pati weaving of Sylhet",
+      "year": 2017
+    },
+    {
+      "name": "Rickshaws and rickshaw painting in Dhaka",
+      "year": 2023
+    },
+    {
+      "name": "Traditional Saree weaving art of Tangail",
+      "year": 2025
+    }
+  ],
+  "crafts": [
+    {
+      "id": "BDV2-001",
+      "entity_type": "craft",
+      "name": {
+        "en": "Jamdani",
+        "bn": "জামদানি"
+      },
+      "category": "Textile Heritage",
+      "subcategory": "Handloom weaving",
+      "geographical_associations": [
+        {
+          "division": "Dhaka",
+          "district": "Dhaka",
+          "upazila_or_area": "Greater Dhaka weaving tradition",
+          "village_or_cluster": null,
+          "association_type": "historical_and_cultural_region",
+          "confidence": "high"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Narayanganj",
+          "upazila_or_area": "Rupganj",
+          "village_or_cluster": "Tarabo",
+          "association_type": "major_production_cluster",
+          "confidence": "medium"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Narayanganj",
+          "upazila_or_area": "Sonargaon",
+          "village_or_cluster": null,
+          "association_type": "heritage_association",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "cotton yarn"
+      ],
+      "techniques": [
+        "handloom",
+        "discontinuous supplementary weft"
+      ],
+      "products_or_outputs": [
+        "saree",
+        "fabric"
+      ],
+      "local_traditions": [],
+      "heritage_status": "UNESCO-inscribed intangible cultural heritage",
+      "sources": [
+        "SRC_UNESCO_JAMDANI"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Jamdani",
+        "জামদানি",
+        "Textile Heritage",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-002",
+      "entity_type": "craft",
+      "name": {
+        "en": "Tangail Saree",
+        "bn": "টাঙ্গাইল শাড়ি"
+      },
+      "category": "Textile Heritage",
+      "subcategory": "Handloom weaving",
+      "geographical_associations": [
+        {
+          "division": "Dhaka",
+          "district": "Tangail",
+          "upazila_or_area": "Tangail Sadar",
+          "village_or_cluster": "Bajitpur",
+          "association_type": "traditional_weaving_cluster",
+          "confidence": "high"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Tangail",
+          "upazila_or_area": "Tangail Sadar",
+          "village_or_cluster": "Pathrail",
+          "association_type": "traditional_weaving_cluster",
+          "confidence": "high"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Tangail",
+          "upazila_or_area": "Tangail Sadar",
+          "village_or_cluster": "Nalsunda",
+          "association_type": "traditional_weaving_cluster",
+          "confidence": "high"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Tangail",
+          "upazila_or_area": "Tangail Sadar",
+          "village_or_cluster": "Chandi",
+          "association_type": "traditional_weaving_cluster",
+          "confidence": "high"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Tangail",
+          "upazila_or_area": "Tangail Sadar",
+          "village_or_cluster": "Bishnupur",
+          "association_type": "traditional_weaving_cluster",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "cotton",
+        "silk",
+        "jute"
+      ],
+      "techniques": [
+        "traditional handloom weaving"
+      ],
+      "products_or_outputs": [
+        "saree"
+      ],
+      "local_traditions": [],
+      "heritage_status": "UNESCO-inscribed in 2025",
+      "sources": [
+        "SRC_UNESCO_TANGAIL",
+        "SRC_TANGAIL_GOV"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Tangail Saree",
+        "টাঙ্গাইল শাড়ি",
+        "Textile Heritage",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-003",
+      "entity_type": "craft",
+      "name": {
+        "en": "Shital Pati",
+        "bn": "শীতল পাটি"
+      },
+      "category": "Natural Fibre Heritage",
+      "subcategory": "Murta mat weaving",
+      "geographical_associations": [
+        {
+          "division": "Sylhet",
+          "district": "Sylhet",
+          "upazila_or_area": "Greater Sylhet low-lying villages",
+          "village_or_cluster": null,
+          "association_type": "primary_cultural_region",
+          "confidence": "high"
+        },
+        {
+          "division": "Sylhet",
+          "district": "Moulvibazar",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "regional_practitioner_area",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "murta"
+      ],
+      "techniques": [
+        "splitting",
+        "processing",
+        "hand weaving"
+      ],
+      "products_or_outputs": [
+        "cooling mat",
+        "decorative mat"
+      ],
+      "local_traditions": [],
+      "heritage_status": "UNESCO-inscribed intangible cultural heritage",
+      "sources": [
+        "SRC_UNESCO_SHITAL_PATI"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Shital Pati",
+        "শীতল পাটি",
+        "Natural Fibre Heritage",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-004",
+      "entity_type": "craft",
+      "name": {
+        "en": "Rickshaw Art and Rickshaw Painting",
+        "bn": "রিকশা ও রিকশাচিত্র"
+      },
+      "category": "Urban Folk Art",
+      "subcategory": "Vehicle folk painting",
+      "geographical_associations": [
+        {
+          "division": "Dhaka",
+          "district": "Dhaka",
+          "upazila_or_area": "Dhaka City",
+          "village_or_cluster": null,
+          "association_type": "primary_urban_cultural_region",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "paint",
+        "metal sheet",
+        "wood"
+      ],
+      "techniques": [
+        "hand painting"
+      ],
+      "products_or_outputs": [
+        "painted rickshaw",
+        "decorative panels"
+      ],
+      "local_traditions": [],
+      "heritage_status": "UNESCO-inscribed in 2023",
+      "sources": [
+        "SRC_UNESCO_BD"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Rickshaw Art and Rickshaw Painting",
+        "রিকশা ও রিকশাচিত্র",
+        "Urban Folk Art",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-005",
+      "entity_type": "craft",
+      "name": {
+        "en": "Nakshi Kantha",
+        "bn": "নকশি কাঁথা"
+      },
+      "category": "Textile Heritage",
+      "subcategory": "Embroidery and quilt craft",
+      "geographical_associations": [
+        {
+          "division": "Rajshahi",
+          "district": "Rajshahi",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "famous_regional_style",
+          "confidence": "medium"
+        },
+        {
+          "division": "Khulna",
+          "district": "Jashore",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "famous_regional_style",
+          "confidence": "medium"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Faridpur",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "famous_regional_style",
+          "confidence": "medium"
+        },
+        {
+          "division": "Sylhet",
+          "district": "Sylhet",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "famous_regional_style",
+          "confidence": "medium"
+        },
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "nationwide_tradition",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "old cloth",
+        "cotton cloth",
+        "thread"
+      ],
+      "techniques": [
+        "running stitch",
+        "embroidery"
+      ],
+      "products_or_outputs": [
+        "quilt",
+        "bedspread",
+        "prayer mat",
+        "bag"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Traditional women's folk art",
+      "sources": [
+        "SRC_BANGLAPEDIA_KANTHA",
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Nakshi Kantha",
+        "নকশি কাঁথা",
+        "Textile Heritage",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-006",
+      "entity_type": "craft",
+      "name": {
+        "en": "Rajshahi Silk",
+        "bn": "রাজশাহী সিল্ক"
+      },
+      "category": "Textile Heritage",
+      "subcategory": "Silk weaving",
+      "geographical_associations": [
+        {
+          "division": "Rajshahi",
+          "district": "Rajshahi",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "primary_regional_identity",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "silk"
+      ],
+      "techniques": [
+        "weaving"
+      ],
+      "products_or_outputs": [
+        "saree",
+        "fabric"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Regional silk tradition; current production should be verified at enterprise level",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Rajshahi Silk",
+        "রাজশাহী সিল্ক",
+        "Textile Heritage",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-007",
+      "entity_type": "craft",
+      "name": {
+        "en": "Khadi",
+        "bn": "খাদি"
+      },
+      "category": "Textile Heritage",
+      "subcategory": "Hand-spun and handwoven cloth",
+      "geographical_associations": [
+        {
+          "division": "Chattogram",
+          "district": "Cumilla",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "strong_regional_association",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "cotton"
+      ],
+      "techniques": [
+        "spinning",
+        "handloom weaving"
+      ],
+      "products_or_outputs": [
+        "cloth",
+        "garments"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Regional association",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Khadi",
+        "খাদি",
+        "Textile Heritage",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-008",
+      "entity_type": "craft",
+      "name": {
+        "en": "Manipuri Weaving",
+        "bn": "মণিপুরি তাঁত"
+      },
+      "category": "Indigenous Craft",
+      "subcategory": "Traditional community weaving",
+      "geographical_associations": [
+        {
+          "division": "Sylhet",
+          "district": "Moulvibazar",
+          "upazila_or_area": "Kamalganj",
+          "village_or_cluster": "Manipuri settlements",
+          "association_type": "primary_community_region",
+          "confidence": "medium"
+        },
+        {
+          "division": "Sylhet",
+          "district": "Moulvibazar",
+          "upazila_or_area": "Sreemangal area",
+          "village_or_cluster": "Manipuri settlements",
+          "association_type": "community_region",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "cotton",
+        "silk",
+        "yarn"
+      ],
+      "techniques": [
+        "traditional handloom weaving"
+      ],
+      "products_or_outputs": [
+        "phanek",
+        "shawl",
+        "textiles"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Indigenous/community craft; village-level records need community-source verification",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Manipuri Weaving",
+        "মণিপুরি তাঁত",
+        "Indigenous Craft",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-009",
+      "entity_type": "craft",
+      "name": {
+        "en": "Satrangi",
+        "bn": "সতরঞ্জি"
+      },
+      "category": "Textile Heritage",
+      "subcategory": "Handwoven floor covering",
+      "geographical_associations": [
+        {
+          "division": "Rangpur",
+          "district": "Rangpur",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "primary_regional_identity",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "cotton",
+        "yarn"
+      ],
+      "techniques": [
+        "hand weaving"
+      ],
+      "products_or_outputs": [
+        "rug",
+        "floor covering"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Regional craft association",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Satrangi",
+        "সতরঞ্জি",
+        "Textile Heritage",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-010",
+      "entity_type": "craft",
+      "name": {
+        "en": "Bamboo Craft",
+        "bn": "বাঁশের কারুশিল্প"
+      },
+      "category": "Handicraft",
+      "subcategory": "Bamboo processing and weaving",
+      "geographical_associations": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "upazila_or_area": "Rural Bangladesh",
+          "village_or_cluster": null,
+          "association_type": "nationwide_tradition",
+          "confidence": "high"
+        },
+        {
+          "division": "Chattogram",
+          "district": "Rangamati",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "indigenous_regional_tradition",
+          "confidence": "medium"
+        },
+        {
+          "division": "Chattogram",
+          "district": "Bandarban",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "indigenous_regional_tradition",
+          "confidence": "medium"
+        },
+        {
+          "division": "Chattogram",
+          "district": "Khagrachhari",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "indigenous_regional_tradition",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "bamboo"
+      ],
+      "techniques": [
+        "splitting",
+        "weaving",
+        "binding"
+      ],
+      "products_or_outputs": [
+        "basket",
+        "kula",
+        "trap",
+        "tray",
+        "furniture"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Nationwide craft family",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Bamboo Craft",
+        "বাঁশের কারুশিল্প",
+        "Handicraft",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-011",
+      "entity_type": "craft",
+      "name": {
+        "en": "Cane and Rattan Craft",
+        "bn": "বেতের কারুশিল্প"
+      },
+      "category": "Handicraft",
+      "subcategory": "Cane/rattan weaving",
+      "geographical_associations": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "nationwide_tradition",
+          "confidence": "medium"
+        },
+        {
+          "division": "Sylhet",
+          "district": "Sylhet",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "regional_association",
+          "confidence": "medium"
+        },
+        {
+          "division": "Sylhet",
+          "district": "Moulvibazar",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "regional_association",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "cane",
+        "rattan"
+      ],
+      "techniques": [
+        "bending",
+        "weaving",
+        "binding"
+      ],
+      "products_or_outputs": [
+        "furniture",
+        "basket",
+        "decorative products"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Traditional craft",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Cane and Rattan Craft",
+        "বেতের কারুশিল্প",
+        "Handicraft",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-012",
+      "entity_type": "craft",
+      "name": {
+        "en": "Jute Craft",
+        "bn": "পাটের কারুশিল্প"
+      },
+      "category": "Natural Fibre Craft",
+      "subcategory": "Jute processing and handicrafts",
+      "geographical_associations": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "nationwide_material_and_craft",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "jute fibre"
+      ],
+      "techniques": [
+        "weaving",
+        "braiding",
+        "binding"
+      ],
+      "products_or_outputs": [
+        "bag",
+        "mat",
+        "rope",
+        "decorative craft"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Nationwide",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Jute Craft",
+        "পাটের কারুশিল্প",
+        "Natural Fibre Craft",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-013",
+      "entity_type": "craft",
+      "name": {
+        "en": "Pottery",
+        "bn": "মৃৎশিল্প"
+      },
+      "category": "Clay Craft",
+      "subcategory": "Traditional earthenware",
+      "geographical_associations": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "upazila_or_area": "Rural pottery communities",
+          "village_or_cluster": null,
+          "association_type": "nationwide_tradition",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "clay"
+      ],
+      "techniques": [
+        "wheel throwing",
+        "hand shaping",
+        "firing"
+      ],
+      "products_or_outputs": [
+        "pot",
+        "pitcher",
+        "cooking vessel",
+        "figurine"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Nationwide craft; specific pottery villages require district-level verification",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Pottery",
+        "মৃৎশিল্প",
+        "Clay Craft",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-014",
+      "entity_type": "craft",
+      "name": {
+        "en": "Terracotta Art",
+        "bn": "টেরাকোটা শিল্প"
+      },
+      "category": "Clay Heritage",
+      "subcategory": "Terracotta plaques and architecture",
+      "geographical_associations": [
+        {
+          "division": "Rajshahi",
+          "district": "Naogaon",
+          "upazila_or_area": "Paharpur",
+          "village_or_cluster": null,
+          "association_type": "archaeological_heritage",
+          "confidence": "high"
+        },
+        {
+          "division": "Rangpur",
+          "district": "Dinajpur",
+          "upazila_or_area": "Kantaji area",
+          "village_or_cluster": null,
+          "association_type": "architectural_heritage",
+          "confidence": "high"
+        },
+        {
+          "division": "Chattogram",
+          "district": "Cumilla",
+          "upazila_or_area": "Mainamati",
+          "village_or_cluster": null,
+          "association_type": "archaeological_heritage",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "clay"
+      ],
+      "techniques": [
+        "moulding",
+        "carving",
+        "firing"
+      ],
+      "products_or_outputs": [
+        "plaque",
+        "sculpture",
+        "architectural ornament"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Historical heritage associations",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Terracotta Art",
+        "টেরাকোটা শিল্প",
+        "Clay Heritage",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-015",
+      "entity_type": "craft",
+      "name": {
+        "en": "Conch Shell Craft",
+        "bn": "শাঁখ ও ঝিনুকের কারুশিল্প"
+      },
+      "category": "Handicraft",
+      "subcategory": "Shell and conch craft",
+      "geographical_associations": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "traditional_craft_family",
+          "confidence": "medium"
+        },
+        {
+          "division": "Chattogram",
+          "district": "Cox's Bazar",
+          "upazila_or_area": "Coastal area",
+          "village_or_cluster": null,
+          "association_type": "material_source_region",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "conch shell",
+        "shell"
+      ],
+      "techniques": [
+        "cutting",
+        "polishing",
+        "carving"
+      ],
+      "products_or_outputs": [
+        "ornament",
+        "decorative item"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Traditional craft family",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Conch Shell Craft",
+        "শাঁখ ও ঝিনুকের কারুশিল্প",
+        "Handicraft",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-016",
+      "entity_type": "craft",
+      "name": {
+        "en": "Bell Metal and Brass Craft",
+        "bn": "কাঁসা ও পিতলের কারুশিল্প"
+      },
+      "category": "Metal Craft",
+      "subcategory": "Traditional metalwork",
+      "geographical_associations": [
+        {
+          "division": "Dhaka",
+          "district": "Dhaka",
+          "upazila_or_area": "Dhamrai",
+          "village_or_cluster": null,
+          "association_type": "important_traditional_association",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "bell metal",
+        "brass",
+        "copper"
+      ],
+      "techniques": [
+        "casting",
+        "engraving",
+        "polishing"
+      ],
+      "products_or_outputs": [
+        "plate",
+        "bowl",
+        "pitcher",
+        "lamp"
+      ],
+      "local_traditions": [],
+      "heritage_status": "UNESCO state page lists traditional bronze and copper craft of Dhamrai among pending files",
+      "sources": [
+        "SRC_UNESCO_BD",
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Bell Metal and Brass Craft",
+        "কাঁসা ও পিতলের কারুশিল্প",
+        "Metal Craft",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-017",
+      "entity_type": "craft",
+      "name": {
+        "en": "Woodwork and Wood Carving",
+        "bn": "কাঠের কারুশিল্প"
+      },
+      "category": "Handicraft",
+      "subcategory": "Woodworking",
+      "geographical_associations": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "nationwide_tradition",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "wood"
+      ],
+      "techniques": [
+        "carving",
+        "cutting",
+        "joining"
+      ],
+      "products_or_outputs": [
+        "furniture",
+        "household item",
+        "decorative object"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Nationwide craft family",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Woodwork and Wood Carving",
+        "কাঠের কারুশিল্প",
+        "Handicraft",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-018",
+      "entity_type": "craft",
+      "name": {
+        "en": "Nakshi Pakha",
+        "bn": "নকশি পাখা"
+      },
+      "category": "Folk Craft",
+      "subcategory": "Decorated hand fan",
+      "geographical_associations": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "upazila_or_area": "Rural areas",
+          "village_or_cluster": null,
+          "association_type": "nationwide_rural_tradition",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "bamboo",
+        "cane",
+        "date palm leaves",
+        "shola",
+        "palm leaves",
+        "yarn"
+      ],
+      "techniques": [
+        "weaving",
+        "decorative design"
+      ],
+      "products_or_outputs": [
+        "hand fan"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Traditional decorative craft",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Nakshi Pakha",
+        "নকশি পাখা",
+        "Folk Craft",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-019",
+      "entity_type": "craft",
+      "name": {
+        "en": "Alpana",
+        "bn": "আলপনা"
+      },
+      "category": "Folk Art",
+      "subcategory": "Floor and wall decorative painting",
+      "geographical_associations": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "nationwide_cultural_tradition",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "rice paste",
+        "natural colours"
+      ],
+      "techniques": [
+        "freehand painting"
+      ],
+      "products_or_outputs": [
+        "festival decoration"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Associated with social and cultural practices",
+      "sources": [
+        "SRC_BANGLAPEDIA_FOLK"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Alpana",
+        "আলপনা",
+        "Folk Art",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-020",
+      "entity_type": "craft",
+      "name": {
+        "en": "Traditional Boat Making",
+        "bn": "ঐতিহ্যবাহী নৌকা নির্মাণ"
+      },
+      "category": "Wood Heritage",
+      "subcategory": "Boat construction",
+      "geographical_associations": [
+        {
+          "division": "Dhaka",
+          "district": "Gopalganj",
+          "upazila_or_area": null,
+          "village_or_cluster": null,
+          "association_type": "important_heritage_association",
+          "confidence": "high"
+        },
+        {
+          "division": "Barishal",
+          "district": "Barishal",
+          "upazila_or_area": "Riverine areas",
+          "village_or_cluster": null,
+          "association_type": "riverine_tradition",
+          "confidence": "medium"
+        }
+      ],
+      "materials": [
+        "wood"
+      ],
+      "techniques": [
+        "hull construction",
+        "joining"
+      ],
+      "products_or_outputs": [
+        "river boat",
+        "fishing boat"
+      ],
+      "local_traditions": [],
+      "heritage_status": "UNESCO state page lists traditional boat making art of Gopalganj among pending files",
+      "sources": [
+        "SRC_UNESCO_BD"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Traditional Boat Making",
+        "ঐতিহ্যবাহী নৌকা নির্মাণ",
+        "Wood Heritage",
+        "Bangladesh heritage"
+      ]
+    },
+    {
+      "id": "BDV2-021",
+      "entity_type": "craft",
+      "name": {
+        "en": "Baul Instrument Craft",
+        "bn": "বাউল বাদ্যযন্ত্র নির্মাণ"
+      },
+      "category": "Musical Craft",
+      "subcategory": "Traditional folk instrument making",
+      "geographical_associations": [
+        {
+          "division": "Khulna",
+          "district": "Kushtia",
+          "upazila_or_area": "Baul/Lalon cultural region",
+          "village_or_cluster": null,
+          "association_type": "primary_cultural_association",
+          "confidence": "high"
+        }
+      ],
+      "materials": [
+        "wood",
+        "gourd",
+        "string"
+      ],
+      "techniques": [
+        "instrument construction"
+      ],
+      "products_or_outputs": [
+        "ektara",
+        "dotara"
+      ],
+      "local_traditions": [],
+      "heritage_status": "Associated with Baul songs and Lalon tradition",
+      "sources": [
+        "SRC_UNESCO_BD"
+      ],
+      "verification": {
+        "overall": "mixed_authoritative_and_secondary",
+        "rule": "Do not upgrade village-level claims without an authoritative source or field verification."
+      },
+      "ai_tags": [
+        "Baul Instrument Craft",
+        "বাউল বাদ্যযন্ত্র নির্মাণ",
+        "Musical Craft",
+        "Bangladesh heritage"
+      ]
+    }
+  ],
+  "heritage_sites": [
+    {
+      "name_en": "Bangladesh Folk Art and Crafts Foundation / Sonargaon Folk Art and Craft Museum",
+      "division": "Dhaka",
+      "district": "Narayanganj",
+      "area": "Sonargaon",
+      "type": "folk_art_and_craft_institution",
+      "sources": [
+        "SRC_BD_FOLK_FOUNDATION"
+      ]
+    },
+    {
+      "name_en": "Panam City",
+      "division": "Dhaka",
+      "district": "Narayanganj",
+      "area": "Sonargaon",
+      "type": "historic_site",
+      "sources": [
+        "SRC_BD_FOLK_FOUNDATION"
+      ]
+    },
+    {
+      "name_en": "Somapura Mahavihara",
+      "division": "Rajshahi",
+      "district": "Naogaon",
+      "area": "Paharpur",
+      "type": "archaeological_site",
+      "associated_craft": "Terracotta"
+    },
+    {
+      "name_en": "Kantaji Temple",
+      "division": "Rangpur",
+      "district": "Dinajpur",
+      "type": "architectural_heritage",
+      "associated_craft": "Terracotta"
+    },
+    {
+      "name_en": "Mainamati Archaeological Sites",
+      "division": "Chattogram",
+      "district": "Cumilla",
+      "area": "Mainamati",
+      "type": "archaeological_site",
+      "associated_craft": "Terracotta"
+    }
+  ],
+  "knowledge_graph_schema": {
+    "nodes": [
+      "Craft",
+      "CraftFamily",
+      "Material",
+      "Technique",
+      "Product",
+      "Village",
+      "Area",
+      "Upazila",
+      "District",
+      "Division",
+      "HeritageSite",
+      "Tradition",
+      "Source"
+    ],
+    "relations": [
+      "MADE_IN",
+      "ASSOCIATED_WITH",
+      "HISTORICALLY_ASSOCIATED_WITH",
+      "USES_MATERIAL",
+      "USES_TECHNIQUE",
+      "LOCATED_IN",
+      "TRANSMITTED_THROUGH",
+      "DOCUMENTED_BY",
+      "HAS_CONFIDENCE"
+    ]
+  },
+  "ai_training_rules": [
+    "Never infer a village from a district-level association.",
+    "Distinguish historical origin, cultural association and current production cluster.",
+    "Return confidence and source IDs with geographic answers.",
+    "For low-confidence village questions, say verification is required.",
+    "Do not claim exclusivity unless the source explicitly says a craft belongs uniquely to one place.",
+    "Use Bangla and English aliases during retrieval."
+  ],
+  "research_backlog": {
+    "priority": "Field verification and district-by-district expansion",
+    "targets": [
+      "all documented artisan villages",
+      "current production clusters",
+      "artisan counts",
+      "GPS coordinates",
+      "GI registry links",
+      "district government heritage pages",
+      "museum catalog records"
+    ],
+    "status": "recommended_next_phase"
+  }
+}
