@@ -1,3 +1,4 @@
+import PublishedContent from '../../components/home/PublishedContent';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { routePaths as routes } from '../../routes/routePaths';
@@ -54,6 +55,7 @@ export default function HomePage() {
         <figure className="relative"><div className="h-[380px] overflow-hidden rounded-[2rem] sm:h-[520px]"><Photo src={photos.pottery} alt="A potter shaping wet clay by hand on a pottery wheel" eager /></div><figcaption className="absolute bottom-5 left-5 right-5 rounded-xl bg-surface/95 px-5 py-4 shadow-lg"><p className="text-[10px] font-bold uppercase tracking-[.2em] text-primary">The art of making</p><p className="mt-1 text-lg font-medium text-heading">Every piece begins with a human touch.</p></figcaption></figure>
       </div>
     </section>
+    <PublishedContent />
     <div className={`${shell} grid grid-cols-3 divide-x divide-border border-b border-border py-7 text-center`}>
       {[['Districts to explore',districtsQuery,districts.length],['Heritage villages',villagesQuery,list(villagesQuery.data).length],['Marketplace finds',catalogQuery,catalogQuery.data?.totalCount ?? list(catalogQuery.data).length]].map(([label,query,value])=><div key={label} className="px-2"><p className="text-2xl font-semibold text-heading">{query.isLoading || query.isError ? '—' : value.toLocaleString()}</p><p className="mt-1 text-xs text-muted">{label}</p></div>)}
     </div>
