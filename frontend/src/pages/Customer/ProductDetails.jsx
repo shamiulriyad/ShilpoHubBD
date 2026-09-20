@@ -1,3 +1,4 @@
+import ShoppingCartLink from '../../components/ui/ShoppingCartLink';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
@@ -22,6 +23,7 @@ export default function ProductDetails() {
   const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [view360, setView360] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
   const [qrCode, setQrCode] = useState('');
   const verifyQr = useVerifyQRCode();
@@ -54,7 +56,7 @@ export default function ProductDetails() {
       <AsyncState isLoading={productQuery.isLoading} isError={productQuery.isError} error={productQuery.error}>
         {product && (
           <>
-            <PageHeader
+            <PageHeader action={<ShoppingCartLink/>}
               breadcrumbs={[
                 { label: 'Dashboard', path: routePaths.customer },
                 { label: 'Marketplace', path: routePaths.customerMarketplace },
@@ -72,7 +74,7 @@ export default function ProductDetails() {
                       onClick={() => setView360((prev) => !prev)}
                       className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-body hover:bg-background"
                     >
-                      {view360 ? 'Show Gallery' : 'Show 360° View'}
+                      {view360 ? 'Show Gallery' : 'Show 360Â° View'}
                     </button>
                   </div>
                 )}
@@ -96,12 +98,12 @@ export default function ProductDetails() {
               </div>
 
               <div>
-                <Badge tone="secondary">{product.categoryName}</Badge>
+                <Badge tone="secondary">{toProductCardItem(product).category}</Badge>
                 <p className="mt-3 text-2xl font-semibold text-primary">
-                  ৳ {(product.discountPrice ?? product.price).toLocaleString()}
+                  à§³ {(product.discountPrice ?? product.price).toLocaleString()}
                   {product.discountPrice && (
                     <span className="ml-2 text-base font-normal text-body/40 line-through">
-                      ৳ {product.price.toLocaleString()}
+                      à§³ {product.price.toLocaleString()}
                     </span>
                   )}
                 </p>
@@ -109,13 +111,16 @@ export default function ProductDetails() {
                   {product.description || `Handcrafted by ${product.producerName} in ${product.districtName}.`}
                 </p>
 
+                <label className="mt-5 block text-sm font-medium">Quantity
+                  <input type="number" min="1" max={product.stock || 1} value={quantity} onChange={e => setQuantity(Number(e.target.value))} className="ml-3 w-24 rounded-lg border border-border px-3 py-2"/>
+                </label>
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <Button
                     variant="primary"
-                    disabled={!isAuthenticated || addToCart.isPending}
-                    onClick={() => addToCart.mutate({ productId: product.id, quantity: 1 })}
+                    disabled={!isAuthenticated || addToCart.isPending || product.stock <= 0 || !Number.isInteger(quantity) || quantity < 1 || quantity > product.stock}
+                    onClick={() => addToCart.mutate({ productId: product.id, quantity })}
                   >
-                    {addToCart.isPending ? 'Adding…' : 'Add to Cart'}
+                    {product.stock <= 0 ? 'Out of stock' : addToCart.isPending ? 'Addingâ€¦' : 'Add to Cart'}
                   </Button>
                   <div className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2">
                     <WishlistButton
@@ -133,6 +138,8 @@ export default function ProductDetails() {
                     <span className="text-sm font-medium text-title">Wishlist</span>
                   </div>
                 </div>
+                {addToCart.isSuccess && <p role="status" className="mt-4 text-sm font-medium">Added to your cart. <Link className="text-primary underline" to={routePaths.customerCart}>View cart and checkout</Link></p>}
+                {addToCart.isError && <p role="alert" className="mt-4 text-sm text-red-700">Could not add this item. Check availability and try again.</p>}
                 {!isAuthenticated && (
                   <p className="mt-2 text-xs text-body/50">Log in to add items to your cart or wishlist.</p>
                 )}
@@ -142,19 +149,19 @@ export default function ProductDetails() {
                     to={routePaths.customerAISimilarProducts.replace(':productId', product.id)}
                     className="text-link hover:underline"
                   >
-                    Find similar products →
+                    Find similar products â†’
                   </Link>
                   <Link
                     to={routePaths.customerAIInteriorPreview.replace(':productId', product.id)}
                     className="text-link hover:underline"
                   >
-                    Preview in your room →
+                    Preview in your room â†’
                   </Link>
                   <Link
                     to={routePaths.customerAIFashionMatching.replace(':productId', product.id)}
                     className="text-link hover:underline"
                   >
-                    Complete the look →
+                    Complete the look â†’
                   </Link>
                 </div>
 
@@ -169,7 +176,7 @@ export default function ProductDetails() {
                     <p className="text-sm font-medium text-heading">{product.producerName}</p>
                     <p className="text-xs text-body/60">{product.districtName}</p>
                   </div>
-                  <span className="text-sm text-link">View profile →</span>
+                  <span className="text-sm text-link">View profile â†’</span>
                 </Link>
 
                 {craftStory && (
@@ -178,7 +185,7 @@ export default function ProductDetails() {
                     className="mt-3 flex items-center justify-between rounded-xl border border-border bg-surface p-4 text-sm transition hover:shadow-md"
                   >
                     <span className="font-medium text-heading">Read the story behind {product.categoryName}</span>
-                    <span className="text-link">Explore →</span>
+                    <span className="text-link">Explore â†’</span>
                   </Link>
                 )}
               </div>
@@ -221,7 +228,7 @@ export default function ProductDetails() {
                         to={routePaths.customerCraftStory.replace(':craftId', product.categoryId)}
                         className="inline-block text-link hover:underline"
                       >
-                        Read the full craft story →
+                        Read the full craft story â†’
                       </Link>
                     </>
                   ) : (
@@ -239,7 +246,7 @@ export default function ProductDetails() {
                         .map((ev) => ({
                           marker: ev.eventDate ? new Date(ev.eventDate).getFullYear() : undefined,
                           title: ev.title,
-                          description: `${ev.description}${ev.location ? ` · ${ev.location}` : ''}`,
+                          description: `${ev.description}${ev.location ? ` Â· ${ev.location}` : ''}`,
                         }))}
                     />
                   ) : (
@@ -270,11 +277,11 @@ export default function ProductDetails() {
                     <input aria-label="Enter authenticity code"
                       value={qrCode}
                       onChange={(event) => setQrCode(event.target.value)}
-                      placeholder="Enter authenticity code…"
+                      placeholder="Enter authenticity codeâ€¦"
                       className="min-w-0 flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
                     />
                     <Button type="submit" variant="primary" disabled={verifyQr.isPending}>
-                      {verifyQr.isPending ? 'Verifying…' : 'Verify'}
+                      {verifyQr.isPending ? 'Verifyingâ€¦' : 'Verify'}
                     </Button>
                   </form>
 
@@ -287,12 +294,12 @@ export default function ProductDetails() {
                       }`}
                     >
                       <p className="font-semibold">
-                        {verifyQr.data.isValid ? '✓ Authentic' : '✕ Could not verify'}
+                        {verifyQr.data.isValid ? 'âœ“ Authentic' : 'âœ• Could not verify'}
                       </p>
                       <p className="mt-1 text-body/70">{verifyQr.data.message}</p>
                       {verifyQr.data.isValid && (
                         <p className="mt-1 text-body/60">
-                          {verifyQr.data.productName} · {verifyQr.data.producerName} · {verifyQr.data.district}
+                          {verifyQr.data.productName} Â· {verifyQr.data.producerName} Â· {verifyQr.data.district}
                         </p>
                       )}
                     </div>
@@ -340,13 +347,13 @@ export default function ProductDetails() {
                       <textarea aria-label="Share your experience with this product"
                         required
                         rows={3}
-                        placeholder="Share your experience with this product…"
+                        placeholder="Share your experience with this productâ€¦"
                         value={newReview.comment}
                         onChange={(event) => setNewReview((prev) => ({ ...prev, comment: event.target.value }))}
                         className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
                       />
                       <Button type="submit" variant="primary" disabled={createReview.isPending}>
-                        {createReview.isPending ? 'Posting…' : 'Post Review'}
+                        {createReview.isPending ? 'Postingâ€¦' : 'Post Review'}
                       </Button>
                     </form>
                   )}
@@ -358,7 +365,7 @@ export default function ProductDetails() {
                       />
                     ))}
                     {reviewsQuery.data?.items.length === 0 && (
-                      <p className="text-sm text-body/60">No reviews yet — be the first to share your experience.</p>
+                      <p className="text-sm text-body/60">No reviews yet â€” be the first to share your experience.</p>
                     )}
                   </AsyncState>
                 </div>
