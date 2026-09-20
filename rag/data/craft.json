@@ -1,0 +1,988 @@
+{
+  "dataset_metadata": {
+    "dataset_name": "Bangladesh Craft and Production Details Dataset",
+    "project": "ShilpoHub",
+    "version": "2.0-researched-foundation",
+    "created_date": "2026-08-31",
+    "languages": [
+      "English",
+      "Bangla"
+    ],
+    "purpose": [
+      "AI training",
+      "RAG",
+      "craft explanation",
+      "production knowledge",
+      "heritage recommendation"
+    ],
+    "research_policy": "Production steps are expressed at an appropriate general level unless an authoritative source documents a precise process.",
+    "critical_rule": "Do not fabricate exact production times. Exact time is stored only when supported by a reliable source."
+  },
+  "field_definitions": {
+    "how_made": "Ordered high-level production workflow",
+    "materials": "Traditional or commonly documented materials",
+    "traditional_techniques": "Named craft techniques",
+    "traditional_tools": "Typical tools; tool lists may require craft-specific field verification",
+    "time_required": "Exact duration only when reliably documented; otherwise variable",
+    "regions": "Geographical prevalence or documented association with confidence labels"
+  },
+  "crafts": [
+    {
+      "id": "BDCP-001",
+      "name_en": "Jamdani",
+      "name_bn": "জামদানি",
+      "category": "Textile Heritage",
+      "how_made": [
+        "Fine cotton yarn is prepared and the handloom is dressed.",
+        "The base cloth is woven on the handloom.",
+        "Motifs are inserted directly on the loom using discontinuous supplementary weft.",
+        "Repeated weaving and motif insertion continue until the fabric is completed.",
+        "Finished fabric is inspected and prepared for use as sarees or other textiles."
+      ],
+      "materials": [
+        "fine cotton yarn",
+        "coloured supplementary weft yarn"
+      ],
+      "traditional_techniques": [
+        "handloom weaving",
+        "discontinuous supplementary weft",
+        "motif weaving directly on the loom"
+      ],
+      "traditional_tools": [
+        "handloom",
+        "shuttle",
+        "weaving implements",
+        "yarn preparation equipment"
+      ],
+      "time_required": {
+        "value": "variable; generally labour-intensive and time-consuming",
+        "confidence": "high",
+        "note": "Exact duration depends on design complexity, size and loom/workflow."
+      },
+      "regions": [
+        {
+          "division": "Dhaka",
+          "district": "Dhaka",
+          "area": "Dhaka weaving region",
+          "association": "traditional region",
+          "confidence": "high"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Narayanganj",
+          "area": "Rupganj and Sonargaon heritage region",
+          "association": "production/heritage association",
+          "confidence": "medium"
+        }
+      ],
+      "sources": [
+        "UNESCO Traditional art of Jamdani weaving"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-002",
+      "name_en": "Tangail Saree",
+      "name_bn": "টাঙ্গাইল শাড়ি",
+      "category": "Textile Heritage",
+      "how_made": [
+        "Cotton, silk or jute yarn is prepared for weaving.",
+        "Yarn may be dyed according to the design.",
+        "Women traditionally assist with thread preparation using a wheel and apply rice starch.",
+        "The fabric is woven on a traditional handloom using the local weaving technique.",
+        "Family members help prepare and finish the fabric."
+      ],
+      "materials": [
+        "cotton",
+        "silk",
+        "jute",
+        "yarn",
+        "rice starch"
+      ],
+      "traditional_techniques": [
+        "traditional handloom weaving",
+        "yarn dyeing",
+        "thread preparation",
+        "fabric finishing"
+      ],
+      "traditional_tools": [
+        "traditional handloom",
+        "traditional spinning wheel",
+        "yarn preparation tools"
+      ],
+      "time_required": {
+        "value": "variable by design and fabric complexity",
+        "confidence": "high",
+        "note": "UNESCO describes the production workflow but does not provide one universal production time."
+      },
+      "regions": [
+        {
+          "division": "Dhaka",
+          "district": "Tangail",
+          "area": "Tangail Sadar",
+          "village_cluster": [
+            "Bajitpur",
+            "Pathrail",
+            "Nalsunda",
+            "Chandi",
+            "Bishnupur"
+          ],
+          "association": "traditional weaving clusters",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "UNESCO Traditional Saree weaving art of Tangail",
+        "Tangail District Administration heritage information"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-003",
+      "name_en": "Shital Pati",
+      "name_bn": "শীতল পাটি",
+      "category": "Natural Fibre Heritage",
+      "how_made": [
+        "Murta cane is collected and prepared.",
+        "The cane is split into fine strips.",
+        "Strips are processed and prepared for weaving.",
+        "The prepared strips are woven by hand into a mat.",
+        "Depending on the design, the finished mat may be plain or decorative."
+      ],
+      "materials": [
+        "Murta cane"
+      ],
+      "traditional_techniques": [
+        "cane splitting",
+        "strip preparation",
+        "hand mat weaving"
+      ],
+      "traditional_tools": [
+        "cutting tools",
+        "splitting tools",
+        "hand weaving workspace"
+      ],
+      "time_required": {
+        "value": "variable by mat size, fineness and pattern complexity",
+        "confidence": "high",
+        "note": "No single universal production duration should be used for AI answers."
+      },
+      "regions": [
+        {
+          "division": "Sylhet",
+          "district": "Sylhet",
+          "area": "low-lying villages of greater Sylhet",
+          "association": "main practitioner region",
+          "confidence": "high"
+        },
+        {
+          "division": "Sylhet",
+          "district": "Moulvibazar",
+          "area": "Rajnagar",
+          "association": "documented Murta strip preparation area",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "UNESCO Traditional art of Shital Pati weaving of Sylhet"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-004",
+      "name_en": "Nakshi Kantha",
+      "name_bn": "নকশি কাঁথা",
+      "category": "Textile Heritage",
+      "how_made": [
+        "Several layers of old or reused cloth are placed together.",
+        "The layers are held together with stitching.",
+        "Decorative motifs and scenes are embroidered by hand.",
+        "The entire surface may be filled with running stitches and other decorative stitches."
+      ],
+      "materials": [
+        "old cloth",
+        "cotton cloth",
+        "thread"
+      ],
+      "traditional_techniques": [
+        "running stitch",
+        "hand embroidery",
+        "layered quilt construction"
+      ],
+      "traditional_tools": [
+        "needle",
+        "thread",
+        "scissors"
+      ],
+      "time_required": {
+        "value": "variable; depends heavily on size and embroidery complexity",
+        "confidence": "high"
+      },
+      "regions": [
+        {
+          "division": "Rajshahi",
+          "district": "Rajshahi",
+          "association": "famous regional style",
+          "confidence": "high"
+        },
+        {
+          "division": "Khulna",
+          "district": "Jashore",
+          "association": "famous regional style",
+          "confidence": "high"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Faridpur",
+          "association": "famous regional style",
+          "confidence": "high"
+        },
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "association": "widely practiced",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-005",
+      "name_en": "Bamboo Craft",
+      "name_bn": "বাঁশের কারুশিল্প",
+      "category": "Handicraft",
+      "how_made": [
+        "Bamboo is selected and cut into workable sections.",
+        "Sections are split into strips where weaving is required.",
+        "Strips or bamboo pieces are shaped and assembled.",
+        "Parts are woven or bound together to create functional or decorative products."
+      ],
+      "materials": [
+        "bamboo"
+      ],
+      "traditional_techniques": [
+        "cutting",
+        "splitting",
+        "weaving",
+        "binding",
+        "shaping"
+      ],
+      "traditional_tools": [
+        "dao/knife",
+        "cutting tools",
+        "splitting tools",
+        "binding materials"
+      ],
+      "time_required": {
+        "value": "variable by product type",
+        "confidence": "high"
+      },
+      "regions": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "area": "rural communities",
+          "association": "nationwide craft tradition",
+          "confidence": "high"
+        },
+        {
+          "division": "Chattogram",
+          "district": "Rangamati",
+          "association": "indigenous/regional tradition",
+          "confidence": "medium"
+        },
+        {
+          "division": "Chattogram",
+          "district": "Bandarban",
+          "association": "indigenous/regional tradition",
+          "confidence": "medium"
+        }
+      ],
+      "sources": [
+        "Banglapedia Bamboo Craft",
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-006",
+      "name_en": "Cane and Rattan Craft",
+      "name_bn": "বেতের কারুশিল্প",
+      "category": "Handicraft",
+      "how_made": [
+        "Cane or rattan is selected and prepared.",
+        "Material is cut or split as required.",
+        "Pieces are bent, woven and bound into the desired form.",
+        "The finished item is trimmed and checked."
+      ],
+      "materials": [
+        "cane",
+        "rattan"
+      ],
+      "traditional_techniques": [
+        "bending",
+        "weaving",
+        "binding"
+      ],
+      "traditional_tools": [
+        "cutting knife",
+        "hand tools",
+        "binding tools"
+      ],
+      "time_required": {
+        "value": "variable by product",
+        "confidence": "medium"
+      },
+      "regions": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "association": "traditional craft family",
+          "confidence": "medium"
+        },
+        {
+          "division": "Sylhet",
+          "district": "Sylhet",
+          "association": "regional association",
+          "confidence": "medium"
+        },
+        {
+          "division": "Sylhet",
+          "district": "Moulvibazar",
+          "association": "regional association",
+          "confidence": "medium"
+        }
+      ],
+      "sources": [
+        "Banglapedia Folk Art and Crafts",
+        "Banglapedia Handicrafts"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "BDCP-007",
+      "name_en": "Jute Craft",
+      "name_bn": "পাটের কারুশিল্প",
+      "category": "Natural Fibre Craft",
+      "how_made": [
+        "Processed jute fibre is cleaned and prepared.",
+        "Fibres are twisted, braided or woven depending on the product.",
+        "The shaped product is assembled and finished."
+      ],
+      "materials": [
+        "jute fibre"
+      ],
+      "traditional_techniques": [
+        "weaving",
+        "braiding",
+        "twisting",
+        "binding"
+      ],
+      "traditional_tools": [
+        "cutting tools",
+        "hand weaving tools",
+        "needles depending on product"
+      ],
+      "time_required": {
+        "value": "variable by product",
+        "confidence": "medium"
+      },
+      "regions": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "association": "nationwide material and craft tradition",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "Banglapedia Handicrafts"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "BDCP-008",
+      "name_en": "Pottery",
+      "name_bn": "মৃৎশিল্প",
+      "category": "Clay Craft",
+      "how_made": [
+        "Clay is collected and prepared.",
+        "The object is shaped by hand or on a potter's wheel.",
+        "The shaped object is dried.",
+        "The object is fired to harden it.",
+        "Some products are painted or decorated after shaping."
+      ],
+      "materials": [
+        "clay",
+        "natural or applied pigments for decorated products"
+      ],
+      "traditional_techniques": [
+        "hand shaping",
+        "wheel throwing",
+        "drying",
+        "firing",
+        "painting"
+      ],
+      "traditional_tools": [
+        "potter's wheel",
+        "hand modelling tools",
+        "kiln/firing arrangement"
+      ],
+      "time_required": {
+        "value": "multi-stage; drying and firing add substantial time",
+        "confidence": "high"
+      },
+      "regions": [
+        {
+          "division": "Chattogram",
+          "district": "Cumilla",
+          "area": "Bijaypur",
+          "association": "leading pottery locality",
+          "confidence": "high"
+        },
+        {
+          "division": "Barishal",
+          "district": "Patuakhali",
+          "area": "Madanpura",
+          "association": "leading pottery locality",
+          "confidence": "high"
+        },
+        {
+          "division": "Chattogram",
+          "district": "Feni",
+          "area": "Champaknagar",
+          "association": "leading pottery locality",
+          "confidence": "high"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Shariatpur",
+          "area": "Kartikpur",
+          "association": "leading pottery locality",
+          "confidence": "high"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Dhaka",
+          "area": "Rayerbazar",
+          "association": "leading pottery locality",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "Banglapedia Cottage Industry",
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-009",
+      "name_en": "Terracotta Art",
+      "name_bn": "টেরাকোটা শিল্প",
+      "category": "Clay Heritage",
+      "how_made": [
+        "Clay is prepared and shaped or moulded.",
+        "Details and motifs are carved or impressed.",
+        "The piece is dried.",
+        "The dried clay is fired to produce terracotta."
+      ],
+      "materials": [
+        "clay"
+      ],
+      "traditional_techniques": [
+        "modelling",
+        "moulding",
+        "carving",
+        "firing"
+      ],
+      "traditional_tools": [
+        "modelling tools",
+        "carving tools",
+        "kiln/firing arrangement"
+      ],
+      "time_required": {
+        "value": "multi-stage; depends on object size and firing process",
+        "confidence": "high"
+      },
+      "regions": [
+        {
+          "division": "Rajshahi",
+          "district": "Naogaon",
+          "area": "Paharpur",
+          "association": "major archaeological terracotta heritage",
+          "confidence": "high"
+        },
+        {
+          "division": "Rangpur",
+          "district": "Dinajpur",
+          "area": "Kantaji",
+          "association": "architectural terracotta heritage",
+          "confidence": "high"
+        },
+        {
+          "division": "Chattogram",
+          "district": "Cumilla",
+          "area": "Mainamati",
+          "association": "archaeological heritage",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "Banglapedia Art and Crafts",
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-010",
+      "name_en": "Clay Toys and Dolls",
+      "name_bn": "মাটির খেলনা ও পুতুল",
+      "category": "Clay Craft",
+      "how_made": [
+        "Clay is shaped into dolls, animals or toys.",
+        "Details are modelled by hand.",
+        "Objects are dried and fired.",
+        "Decorative pieces may be painted."
+      ],
+      "materials": [
+        "clay",
+        "paint or pigments"
+      ],
+      "traditional_techniques": [
+        "hand modelling",
+        "drying",
+        "firing",
+        "painting"
+      ],
+      "traditional_tools": [
+        "hand modelling tools",
+        "kiln/firing arrangement",
+        "brushes"
+      ],
+      "time_required": {
+        "value": "variable by object and drying/firing cycle",
+        "confidence": "high"
+      },
+      "regions": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "association": "made in many parts of Bangladesh",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-011",
+      "name_en": "Bell Metal and Brass Craft",
+      "name_bn": "কাঁসা ও পিতলের কারুশিল্প",
+      "category": "Metal Craft",
+      "how_made": [
+        "Metal is selected and prepared.",
+        "The material is shaped through traditional metalworking processes.",
+        "Surfaces may be engraved with floral, bird or geometric motifs.",
+        "The product is polished and finished."
+      ],
+      "materials": [
+        "brass",
+        "bell metal",
+        "copper"
+      ],
+      "traditional_techniques": [
+        "metal shaping",
+        "engraving",
+        "polishing"
+      ],
+      "traditional_tools": [
+        "simple metalworking implements",
+        "engraving tools",
+        "heating/fire equipment"
+      ],
+      "time_required": {
+        "value": "variable by size, material and ornamentation",
+        "confidence": "medium"
+      },
+      "regions": [
+        {
+          "division": "Dhaka",
+          "district": "Dhaka",
+          "area": "Dhamrai",
+          "association": "renowned metal craft area",
+          "confidence": "high"
+        },
+        {
+          "division": "Rajshahi",
+          "district": "Chapainawabganj",
+          "association": "renowned metal craft area",
+          "confidence": "high"
+        },
+        {
+          "division": "Mymensingh",
+          "district": "Mymensingh",
+          "area": "Shemulia, Savar and Islampur associations reported in reference",
+          "association": "metal craft areas",
+          "confidence": "medium"
+        },
+        {
+          "division": "Dhaka",
+          "district": "Tangail",
+          "area": "Dariabad, Kagmari and Baghil associations reported in reference",
+          "association": "metal craft areas",
+          "confidence": "medium"
+        }
+      ],
+      "sources": [
+        "Banglapedia Art and Crafts",
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-012",
+      "name_en": "Woodwork and Wood Carving",
+      "name_bn": "কাঠের কারুশিল্প",
+      "category": "Wood Craft",
+      "how_made": [
+        "Wood is selected and seasoned as needed.",
+        "Pieces are cut to shape.",
+        "Surfaces may be carved or engraved.",
+        "Components are joined and finished."
+      ],
+      "materials": [
+        "wood"
+      ],
+      "traditional_techniques": [
+        "cutting",
+        "carving",
+        "engraving",
+        "joining"
+      ],
+      "traditional_tools": [
+        "saw",
+        "chisel",
+        "knife",
+        "hand tools"
+      ],
+      "time_required": {
+        "value": "variable by product complexity",
+        "confidence": "medium"
+      },
+      "regions": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "association": "nationwide traditional craft",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "Banglapedia Folk Art and Crafts",
+        "Banglapedia Handicrafts"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "BDCP-013",
+      "name_en": "Alpana",
+      "name_bn": "আলপনা",
+      "category": "Folk Art",
+      "how_made": [
+        "A white paste is traditionally prepared from pounded rice.",
+        "The design is drawn directly on the floor or surface.",
+        "Depending on the occasion, additional materials and colours may be used.",
+        "Motifs are commonly made freehand with fingers or a piece of wood."
+      ],
+      "materials": [
+        "pounded rice paste",
+        "brick powder",
+        "ash",
+        "turmeric paste",
+        "vermilion where traditionally used"
+      ],
+      "traditional_techniques": [
+        "freehand floor painting",
+        "symbolic motif composition"
+      ],
+      "traditional_tools": [
+        "fingers",
+        "piece of wood",
+        "brushes in modern urban practice"
+      ],
+      "time_required": {
+        "value": "typically event/design dependent",
+        "confidence": "high"
+      },
+      "regions": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "association": "Bengali cultural and ceremonial tradition",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-014",
+      "name_en": "Rickshaw Painting",
+      "name_bn": "রিকশাচিত্র",
+      "category": "Urban Folk Art",
+      "how_made": [
+        "Rickshaw surfaces or decorative panels are prepared.",
+        "Artists paint colourful figurative and decorative motifs by hand.",
+        "Panels and vehicle surfaces are finished as part of the rickshaw's visual identity."
+      ],
+      "materials": [
+        "paint",
+        "metal panels",
+        "wooden panels"
+      ],
+      "traditional_techniques": [
+        "hand painting",
+        "folk motif composition"
+      ],
+      "traditional_tools": [
+        "brushes",
+        "painting tools"
+      ],
+      "time_required": {
+        "value": "variable by number of panels and design complexity",
+        "confidence": "medium"
+      },
+      "regions": [
+        {
+          "division": "Dhaka",
+          "district": "Dhaka",
+          "area": "Dhaka City",
+          "association": "primary urban heritage region",
+          "confidence": "high"
+        }
+      ],
+      "sources": [
+        "UNESCO Bangladesh Intangible Heritage list"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-015",
+      "name_en": "Traditional Boat Making",
+      "name_bn": "ঐতিহ্যবাহী নৌকা নির্মাণ",
+      "category": "Wood Heritage",
+      "how_made": [
+        "Suitable wood is selected.",
+        "The hull and structural components are shaped.",
+        "Wooden parts are joined into the boat structure.",
+        "The finished boat is prepared for river or fishing use."
+      ],
+      "materials": [
+        "wood"
+      ],
+      "traditional_techniques": [
+        "hull construction",
+        "wood shaping",
+        "joining"
+      ],
+      "traditional_tools": [
+        "traditional woodworking tools",
+        "cutting tools",
+        "joining tools"
+      ],
+      "time_required": {
+        "value": "variable by boat size and design",
+        "confidence": "medium"
+      },
+      "regions": [
+        {
+          "division": "Dhaka",
+          "district": "Gopalganj",
+          "association": "documented traditional boat-making heritage association",
+          "confidence": "high"
+        },
+        {
+          "division": "Barishal",
+          "district": "Barishal",
+          "area": "riverine communities",
+          "association": "riverine tradition",
+          "confidence": "medium"
+        }
+      ],
+      "sources": [
+        "UNESCO Bangladesh Intangible Heritage list"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "BDCP-016",
+      "name_en": "Patachitra",
+      "name_bn": "পটচিত্র",
+      "category": "Folk Art",
+      "how_made": [
+        "Narrative scenes are planned as a sequence.",
+        "Images are painted on a long scroll or other prepared surface.",
+        "The completed scroll can be rolled around sticks for storage and presentation."
+      ],
+      "materials": [
+        "painting surface",
+        "pigments/paint",
+        "sticks for scroll form"
+      ],
+      "traditional_techniques": [
+        "narrative scroll painting",
+        "folk motif painting"
+      ],
+      "traditional_tools": [
+        "brushes",
+        "painting tools"
+      ],
+      "time_required": {
+        "value": "variable by story length and image detail",
+        "confidence": "high"
+      },
+      "regions": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "association": "Bengali folk-art tradition; locality requires source-specific verification",
+          "confidence": "medium"
+        }
+      ],
+      "sources": [
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "BDCP-017",
+      "name_en": "Nakshi Pakha",
+      "name_bn": "নকশি পাখা",
+      "category": "Folk Craft",
+      "how_made": [
+        "A fan structure is made from locally available traditional material.",
+        "The surface is woven or assembled.",
+        "Decorative motifs are added to create a Nakshi design."
+      ],
+      "materials": [
+        "bamboo",
+        "cane",
+        "palm or other traditional plant material depending on local practice"
+      ],
+      "traditional_techniques": [
+        "weaving",
+        "decorative design"
+      ],
+      "traditional_tools": [
+        "cutting tools",
+        "weaving tools"
+      ],
+      "time_required": {
+        "value": "variable by material and design",
+        "confidence": "medium"
+      },
+      "regions": [
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "area": "rural communities",
+          "association": "traditional folk craft",
+          "confidence": "medium"
+        }
+      ],
+      "sources": [
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "BDCP-018",
+      "name_en": "Traditional Folk Instruments",
+      "name_bn": "ঐতিহ্যবাহী লোকবাদ্যযন্ত্র",
+      "category": "Musical Craft",
+      "how_made": [
+        "Natural materials such as wood, bamboo or gourd are selected depending on the instrument.",
+        "The body is shaped and assembled.",
+        "Strings or other sound-producing components are attached.",
+        "The instrument is adjusted for performance."
+      ],
+      "materials": [
+        "wood",
+        "bamboo",
+        "gourd",
+        "string"
+      ],
+      "traditional_techniques": [
+        "wood shaping",
+        "assembly",
+        "string fitting"
+      ],
+      "traditional_tools": [
+        "cutting tools",
+        "carving tools",
+        "hand assembly tools"
+      ],
+      "time_required": {
+        "value": "instrument-specific",
+        "confidence": "medium"
+      },
+      "regions": [
+        {
+          "division": "Khulna",
+          "district": "Kushtia",
+          "area": "Baul and Lalon cultural region",
+          "association": "strong cultural association with ektara and related traditions",
+          "confidence": "high"
+        },
+        {
+          "division": "Bangladesh",
+          "district": "Nationwide",
+          "association": "folk music traditions",
+          "confidence": "medium"
+        }
+      ],
+      "sources": [
+        "UNESCO Bangladesh Intangible Heritage list",
+        "Banglapedia Folk Art and Crafts"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "ai_response_rules": [
+    "Always distinguish documented fact from estimated or variable production information.",
+    "Never invent an exact number of days for a craft when the dataset says variable.",
+    "When multiple regions are listed, do not claim only one region owns the craft unless explicitly documented.",
+    "Village-level locations with medium confidence should be described as associated clusters, not absolute origins.",
+    "Use the confidence field when answering geographical or production questions."
+  ],
+  "recommended_next_phase": {
+    "name": "V2.1 Craft-by-Craft Field Expansion",
+    "add_fields": [
+      "exact production time ranges from artisan interviews",
+      "tool photographs",
+      "step-by-step process photos",
+      "artisan terminology in Bangla",
+      "upazila and village GPS",
+      "seasonal availability of raw materials",
+      "modern versus traditional production differences",
+      "source quotation/reference IDs"
+    ],
+    "priority_crafts": [
+      "Jamdani",
+      "Tangail Saree",
+      "Shital Pati",
+      "Nakshi Kantha",
+      "Pottery",
+      "Bamboo Craft",
+      "Bell Metal",
+      "Boat Making"
+    ]
+  }
+}
