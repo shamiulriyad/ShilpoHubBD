@@ -1,3 +1,4 @@
+import ShoppingCartLink from '../../components/ui/ShoppingCartLink';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Button, AsyncState } from '../../components/ui';
 import { ProductCard } from '../../components/cards';
@@ -10,7 +11,7 @@ export default function Wishlist() {
 
   return (
     <div>
-      <PageHeader
+      <PageHeader action={<ShoppingCartLink/>}
         breadcrumbs={[
           { label: 'Dashboard', path: routePaths.customer },
           { label: 'Marketplace', path: routePaths.customerMarketplace },
@@ -24,7 +25,7 @@ export default function Wishlist() {
           {items.map((item) => (
             <div key={item.id} className="space-y-2">
               <ProductCard
-                product={{ id: item.productId, name: item.productName, price: item.discountPrice ?? item.price }}
+                product={{ id: item.productId, name: item.productName, price: item.discountPrice ?? item.price, image: item.primaryImageUrl }}
                 to={routePaths.customerProductDetails.replace(':productId', item.productId)}
               />
               <Button variant="secondary" className="w-full" onClick={() => remove.mutate(item.productId)}>
