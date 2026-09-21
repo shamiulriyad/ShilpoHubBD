@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { footerLinks } from '../../data/navigation';
 import { routePaths } from '../../routes/routePaths';
+import BrandLogo from '../brand/BrandLogo';
 
 const columns = [
   { title: 'About', key: 'about' },
@@ -16,7 +17,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">
             <Link to={routePaths.home} className="flex items-center gap-2 text-xl font-bold tracking-[-0.04em] text-surface">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-xs">শি</span> ShilpoHub
+              <BrandLogo size="sm" inverse />
             </Link>
             <p className="mt-3 text-sm leading-6 text-surface/65">
               A heritage ecosystem connecting artisans, producers, tourists and partners across Bangladesh.
