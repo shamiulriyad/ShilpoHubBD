@@ -191,6 +191,7 @@ import LogisticsPartnerPickupRequests from '../pages/LogisticsPartner/PickupRequ
 import LogisticsPartnerReturns from '../pages/LogisticsPartner/Returns';
 import LogisticsPartnerDeliveryRoutes from '../pages/LogisticsPartner/DeliveryRoutes';
 import LogisticsPartnerAiLogisticsTools from '../pages/LogisticsPartner/AiLogisticsTools';
+import LogisticsWorkspaceGuard from '../components/logistics/LogisticsWorkspaceGuard';
 
 import UnauthorizedPage from '../pages/UnauthorizedPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -356,17 +357,20 @@ const router = createBrowserRouter([
         children: [
           {
             element: <DashboardLayout navItems={logisticsPartnerSidebarNav} sidebarTitle="Logistics" />,
-            children: [
-              { path: routePaths.logisticsPartner, element: <LogisticsPartnerPage /> },
-              { path: routePaths.logisticsPartnerProfile, element: <LogisticsPartnerProfile /> },
-              { path: routePaths.logisticsPartnerWarehouses, element: <LogisticsPartnerWarehouses /> },
-              { path: routePaths.logisticsPartnerShipments, element: <LogisticsPartnerShipments /> },
-              { path: routePaths.logisticsPartnerStock, element: <LogisticsPartnerWarehouseStock /> },
-              { path: routePaths.logisticsPartnerPickups, element: <LogisticsPartnerPickupRequests /> },
-              { path: routePaths.logisticsPartnerReturns, element: <LogisticsPartnerReturns /> },
-              { path: routePaths.logisticsPartnerRoutes, element: <LogisticsPartnerDeliveryRoutes /> },
-              { path: routePaths.logisticsPartnerAiTools, element: <LogisticsPartnerAiLogisticsTools /> },
-            ],
+            children: [{
+              element: <LogisticsWorkspaceGuard />,
+              children: [
+                { path: routePaths.logisticsPartner, element: <LogisticsPartnerPage /> },
+                { path: routePaths.logisticsPartnerProfile, element: <LogisticsPartnerProfile /> },
+                { path: routePaths.logisticsPartnerWarehouses, element: <LogisticsPartnerWarehouses /> },
+                { path: routePaths.logisticsPartnerShipments, element: <LogisticsPartnerShipments /> },
+                { path: routePaths.logisticsPartnerStock, element: <LogisticsPartnerWarehouseStock /> },
+                { path: routePaths.logisticsPartnerPickups, element: <LogisticsPartnerPickupRequests /> },
+                { path: routePaths.logisticsPartnerReturns, element: <LogisticsPartnerReturns /> },
+                { path: routePaths.logisticsPartnerRoutes, element: <LogisticsPartnerDeliveryRoutes /> },
+                { path: routePaths.logisticsPartnerAiTools, element: <LogisticsPartnerAiLogisticsTools /> },
+              ],
+            }],
           },
         ],
       },
