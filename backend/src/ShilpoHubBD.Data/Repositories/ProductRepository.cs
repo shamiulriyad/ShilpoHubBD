@@ -33,7 +33,12 @@ public class ProductRepository : IProductRepository
         if (!string.IsNullOrWhiteSpace(query.Search))
         {
             var term = $"%{query.Search.Trim()}%";
-            products = products.Where(p => EF.Functions.ILike(p.Name, term) || EF.Functions.ILike(p.Description, term));
+            products = products.Where(p =>
+                EF.Functions.ILike(p.Name, term) ||
+                EF.Functions.ILike(p.Description, term) ||
+                EF.Functions.ILike(p.Category.Name, term) ||
+                EF.Functions.ILike(p.Producer.FullName, term) ||
+                EF.Functions.ILike(p.District.Name, term));
         }
 
         if (query.CategoryId.HasValue)
