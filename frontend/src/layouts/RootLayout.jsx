@@ -1,10 +1,18 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import DashboardLayout from './DashboardLayout';
 import { useTheme } from '../contexts/ThemeContext';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 
 export default function RootLayout() {
   const { theme } = useTheme();
+  const { isAuthenticated, activeRole } = useAuth();
+  const { pathname } = useLocation();
+
+  if (isAuthenticated && activeRole === 'LogisticsPartner' && (pathname === '/explore' || pathname.startsWith('/explore/'))) {
+    return <div className={theme} data-theme={theme}><DashboardLayout /></div>;
+  }
 
   return (
     <div className={theme} data-theme={theme}>
