@@ -14,6 +14,7 @@ using ShilpoHubBD.Application.DTOs.Auth;
 using ShilpoHubBD.Application.Interfaces.Repositories;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Data;
+using ShilpoHubBD.Data.Seed;
 using ShilpoHubBD.Domain.Constants;
 using ShilpoHubBD.Infrastructure;
 
@@ -214,6 +215,13 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Keep the public craft directory complete for new and existing installations.
+using (var referenceDataScope = app.Services.CreateScope())
+{
+	var dbContext = referenceDataScope.ServiceProvider.GetRequiredService<ShilpoHubDbContext>();
+	await MarketplaceReferenceDataSeeder.SeedCraftCategoriesAsync(dbContext);
+}
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler(_ => { });
