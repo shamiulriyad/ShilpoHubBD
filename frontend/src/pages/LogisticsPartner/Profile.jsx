@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { PageHeader, Button, Badge } from '../../components/ui';
+import MutationFeedback from '../../components/ui/MutationFeedback';
 import { useAuth } from '../../hooks/useAuth';
 import { useDistricts } from '../../hooks/useDistricts';
 import {
@@ -44,6 +46,7 @@ const verificationTone = {
 
 export default function LogisticsPartnerProfile() {
   const { user } = useAuth();
+  const location = useLocation();
   const profileQuery = useMyLogisticsPartnerProfile();
   const districtsQuery = useDistricts();
   const upsert = useUpsertLogisticsPartnerProfile(user?.id);
@@ -56,8 +59,15 @@ export default function LogisticsPartnerProfile() {
   useEffect(() => {
     if (profileQuery.data) {
       setForm((prev) => ({ ...prev, ...profileQuery.data }));
+    } else if (profileQuery.error?.response?.status === 404 && user) {
+      setForm((prev) => ({
+        ...prev,
+        companyName: prev.companyName || `${user.fullName || user.name || 'My'} Logistics`,
+        contactPersonName: prev.contactPersonName || user.fullName || user.name || '',
+        contactEmail: prev.contactEmail || user.email || '',
+      }));
     }
-  }, [profileQuery.data]);
+  }, [profileQuery.data, profileQuery.error, user]);
 
   const set = (field) => (event) => {
     const { type, value, checked } = event.target;
@@ -101,6 +111,13 @@ export default function LogisticsPartnerProfile() {
         description="Keep your logistics company details, capacity and service coverage up to date."
       />
 
+      {(location.state?.setupRequired || profileQuery.error?.response?.status === 404) && (
+        <div className="mb-5 rounded-2xl border border-primary/20 bg-primary-soft p-5 text-sm text-heading">
+          <p className="font-semibold">Complete your company profile to activate the logistics workspace.</p>
+          <p className="mt-1 text-body/70">Warehouses, shipments, pickups, returns, stock and delivery routes will become available immediately after you save these details.</p>
+        </div>
+      )}
+
       {profile && (
         <div className="mb-4 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-surface p-4">
           <span className="text-sm text-body/70">Verification status:</span>
@@ -109,10 +126,8 @@ export default function LogisticsPartnerProfile() {
         </div>
       )}
 
-      {profileQuery.isLoading ? (
-        <p className="py-10 text-center text-sm text-body/60">Loading…</p>
-      ) : (
-        <form onSubmit={handleSubmit} className="grid gap-4 rounded-xl border border-border bg-surface p-6 sm:grid-cols-2">
+      {profileQuery.isLoading && <p role="status" className="mb-3 text-sm text-body/60">Checking for an existing profile… You can start completing the form now.</p>}
+      <form onSubmit={handleSubmit} className="grid gap-4 rounded-xl border border-border bg-surface p-6 sm:grid-cols-2">
           <input aria-label="Company name" required placeholder="Company name" value={form.companyName} onChange={set('companyName')} className={inputClass} />
           <input aria-label="Legal name" placeholder="Legal name (optional)" value={form.legalName || ''} onChange={set('legalName')} className={inputClass} />
           <input aria-label="Registration number" placeholder="Registration number" value={form.registrationNumber || ''} onChange={set('registrationNumber')} className={inputClass} />
@@ -174,11 +189,12 @@ export default function LogisticsPartnerProfile() {
 
           <textarea aria-label="Notes" rows={3} placeholder="Notes" value={form.notes || ''} onChange={set('notes')} className={`${inputClass} sm:col-span-2`} />
 
+          <div className="sm:col-span-2"><MutationFeedback mutation={upsert} /></div>
+
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={upsert.isPending}>
-            {upsert.isPending ? 'Saving…' : 'Save Profile'}
+            {upsert.isPending ? 'Saving…' : profile ? 'Save Profile' : 'Create Company Profile'}
           </Button>
-        </form>
-      )}
+      </form>
 
       {profile && (
         <div className="mt-8 rounded-xl border border-border bg-surface p-6">
