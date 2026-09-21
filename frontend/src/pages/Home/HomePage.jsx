@@ -2,7 +2,7 @@ import PublishedContent from '../../components/home/PublishedContent';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { routePaths as routes } from '../../routes/routePaths';
-import { SearchBar, SectionHeader, AsyncState } from '../../components/ui';
+import { SearchBar, SectionHeader, AsyncState, AIAssistantWidget } from '../../components/ui';
 import { ProductCard } from '../../components/cards';
 import SafeImage from '../../components/media/SafeImage';
 import BangladeshMap from '../../components/media/BangladeshMap';
@@ -79,5 +79,6 @@ export default function HomePage() {
     <section className={`${shell} pb-16`}><div className="grid overflow-hidden rounded-2xl bg-[#292d35] md:grid-cols-2"><div className="p-8 lg:p-12"><p className="text-xs font-bold uppercase tracking-[.2em] text-[#e8bd98]">Heritage, looking forward</p><h2 className="mt-4 text-3xl leading-tight text-white">Old knowledge.<br/>New possibilities.</h2><p className="mt-4 text-sm leading-7 text-white/75">Explore research, ideas and collaborations that help preserve heritage for the next generation.</p><Link className="mt-6 inline-block text-sm font-semibold text-white" to={routes.research}>Visit the Innovation Hub →</Link></div><div className="min-h-64"><Photo src={photos.river} alt="Traditional riverside architecture in Bangladesh" /></div></div></section>
     <section className="border-t border-border bg-primary-soft py-14"><div className={`${shell} flex flex-wrap items-center justify-between gap-6`}><div><p className="text-xs font-bold uppercase tracking-widest text-primary">Be part of the story</p><h2 className="mt-3 text-3xl">A place for makers, explorers and you.</h2><p className="mt-3 text-sm text-muted">Join the community and discover what you can create together.</p></div><Link className={cta} to={routes.register}>Join ShilpoHub →</Link></div></section>
     <p className={`${shell} py-4 text-[11px] text-muted`}>Editorial photography: <a href="https://www.pexels.com/photo/a-woman-using-a-loom-6634701/">Kaboompics / Pexels</a> · <a href="https://unsplash.com/photos/a-group-of-huts-sitting-on-top-of-a-lake-x6SoJq2xyEs">Jaman Asad / Unsplash</a> · <a href="https://pxhere.com/en/photo/989432">PxHere</a>. Additional photos: <a href="https://www.pexels.com/photo/smiling-schoolchildren-in-rural-bangladesh-36915231/">Ian Taylor</a>, <a href="https://www.pexels.com/photo/indian-people-on-a-celebration-15840698/">Swarup Photography</a>, <a href="https://www.pexels.com/photo/skilled-potter-teaching-child-clay-crafting-36928272/">Atharv Ingle</a> / Pexels. Editorial photographs do not identify listed producers, courses or events.</p>
+    <AIAssistantWidget />
   </div>;
 }

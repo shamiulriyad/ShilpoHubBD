@@ -22,3 +22,4 @@ export { default as MilestoneList } from './MilestoneList';
 
 export { default as GlobalFeedback } from './GlobalFeedback';
 export { default as QueryStatusBanner } from './QueryStatusBanner';
+export { default as AIAssistantWidget } from './AIAssistantWidget';
