@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { mainNav, megaMenus } from '../../data/navigation';
 import { routePaths } from '../../routes/routePaths';
@@ -6,27 +6,33 @@ import { useAuth } from '../../hooks/useAuth';
 import Button from '../ui/Button';
 import MegaMenu from './MegaMenu';
 import ProfileDropdown from './ProfileDropdown';
+import BrandLogo from '../brand/BrandLogo';
 
 export default function Navbar() {
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const closeTimer = useRef(null);
   const { isAuthenticated, homePath } = useAuth();
+
+  const cancelClose = () => { if (closeTimer.current) window.clearTimeout(closeTimer.current); };
+  const scheduleClose = () => { cancelClose(); closeTimer.current = window.setTimeout(() => setActiveMenu(null), 180); };
+  useEffect(() => () => cancelClose(), []);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-surface/90 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 lg:px-8">
         <Link to={routePaths.home} className="flex shrink-0 items-center gap-3 text-xl font-bold tracking-[-0.04em] text-title">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-title text-sm font-bold tracking-tight text-surface shadow-[0_7px_18px_rgba(23,59,53,0.25)]">
-            
-          </span>
-          ShilpoHub
+          <BrandLogo />
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" onMouseLeave={() => setActiveMenu(null)}>
+        <nav className="hidden items-center gap-1 lg:flex" onMouseEnter={cancelClose} onMouseLeave={scheduleClose} onKeyDown={(event) => { if (event.key === 'Escape') setActiveMenu(null); }}>
           {mainNav.map((item) => (
-            <div key={item.label} className="relative" onMouseEnter={() => setActiveMenu(item.menu || null)}>
+            <div key={item.label} className="relative" onMouseEnter={() => { cancelClose(); setActiveMenu(item.menu || null); }}>
               <NavLink
                 to={item.path}
+                onFocus={() => item.menu && setActiveMenu(item.menu)}
+                aria-haspopup={item.menu ? 'true' : undefined}
+                aria-expanded={item.menu ? activeMenu === item.menu : undefined}
                 className={({ isActive }) =>
                   `flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-semibold text-body/75 transition hover:bg-primary-soft hover:text-heading ${
                     isActive ? 'bg-primary-soft text-primary' : ''
@@ -71,7 +77,7 @@ export default function Navbar() {
       </div>
 
       {activeMenu && (
-        <div className="border-t border-border/70 bg-surface/95 shadow-xl" onMouseEnter={() => setActiveMenu(activeMenu)} onMouseLeave={() => setActiveMenu(null)}>
+        <div className="border-t border-border/70 bg-surface/95 shadow-xl" onMouseEnter={cancelClose} onMouseLeave={scheduleClose}>
           <MegaMenu menu={megaMenus[activeMenu]} />
         </div>
       )}
