@@ -34,12 +34,22 @@ check('media upload validates authorization, type and size', () => {
   const controller = read('backend/src/ShilpoHubBD.Api/Controllers/MediaController.cs');
   assert(controller.includes('RoleNames.Producer'));
   assert(controller.includes('RoleNames.SuperAdmin'));
-  assert(controller.includes('5 * 1024 * 1024'));
+  assert(controller.includes('20 * 1024 * 1024'));
+  assert(controller.includes('[FromForm] IFormFile file'));
   assert(controller.includes('image/webp'));
 });
 check('tourist places have list, detail and admin authoring routes', () => {
   assert(read('frontend/src/routes/router.jsx').includes('tourismPlaceDetails'));
   assert(read('frontend/src/pages/Admin/adminConfig.js').includes("path: '/heritage-places'"));
+});
+check('logistics operations require profile onboarding instead of exposing repeated 404 errors', () => {
+  const guard = read('frontend/src/components/logistics/LogisticsWorkspaceGuard.jsx');
+  const router = read('frontend/src/routes/router.jsx');
+  const profile = read('frontend/src/pages/LogisticsPartner/Profile.jsx');
+  assert(guard.includes("profile.error?.response?.status === 404"));
+  assert(guard.includes('logisticsPartnerProfile'));
+  assert(router.includes('<LogisticsWorkspaceGuard />'));
+  assert(profile.includes('Create Company Profile'));
 });
 
 console.log(`\n${passed} launch-critical contract checks passed.`);
