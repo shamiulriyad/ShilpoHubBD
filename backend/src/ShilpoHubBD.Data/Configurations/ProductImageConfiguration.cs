@@ -10,6 +10,9 @@ public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
     {
         builder.ToTable("ProductImages");
         builder.HasKey(i => i.Id);
+        // ProductService assigns IDs before attaching replacement images to a
+        // tracked product. These are new rows, not database-generated keys.
+        builder.Property(i => i.Id).ValueGeneratedNever();
 
         builder.Property(i => i.ImageUrl).IsRequired().HasMaxLength(2000);
         builder.Property(i => i.DisplayOrder).IsRequired();
