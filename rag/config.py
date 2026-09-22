@@ -1,6 +1,7 @@
 """All tunable settings in one place. Read from .env, with sane defaults."""
 
 import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -22,12 +23,26 @@ def _resolve(value, default: Path) -> Path:
     return path if path.is_absolute() else (BASE_DIR / path)
 
 
-# --- Step 1: PDF ---------------------------------------------------------
+# --- Step 1: JSON datasets -----------------------------------------------
+# The three ShilpoHub heritage datasets, read from DATA_DIR.
+DATA_DIR = _resolve(os.getenv("DATA_DIR"), BASE_DIR / "data")
+DATASET_FILES = ("craft.json", "craftDetails.json", "GEO.json")
+# Legacy: the PDF-era pipeline read this. Kept so an existing .env still loads;
+# the JSON pipeline does not use it.
 PDF_PATH = _resolve(os.getenv("PDF_PATH"), BASE_DIR / "data" / "sample.pdf")
 
 # --- Step 4: Chunking ----------------------------------------------------
+# Each chunk (header included) must stay under this many EMBEDDING-MODEL tokens: all-MiniLM-L6-v2
+# reads at most 256 and silently drops the rest, so 200 leaves headroom.
+MAX_CHUNK_TOKENS = int(os.getenv("MAX_CHUNK_TOKENS", "200"))
+# Legacy from fixed-size chunking - the aspect chunker does not use these two.
+# Field-aware chunking: one chunk per topic (overview / materials / how made /
+# location / heritage / endangerment). CHUNK_SIZE/CHUNK_OVERLAP only apply to a
+# topic too long for one chunk; MIN_CHUNK_CHARS folds a too-small topic into its
+# neighbour instead of emitting a useless tiny chunk.
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1000"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "150"))
+MIN_CHUNK_CHARS = int(os.getenv("MIN_CHUNK_CHARS", "200"))
 
 # --- Step 5: Embedding ---------------------------------------------------
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -76,18 +91,30 @@ _qdrant_path = os.getenv("QDRANT_PATH")
 # ingest.py` CLI can write to it - a running service, and therefore the UI
 # upload, need server mode. Leave QDRANT_PATH empty for normal mode.
 QDRANT_PATH = str(_resolve(_qdrant_path, BASE_DIR / "qdrant_data")) if _qdrant_path else None
-COLLECTION_NAME = os.getenv("COLLECTION_NAME", "pdf_rag")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME", "shilpohub")
 
 # --- Upload (POST /ingest via the UI) ----------------------------------
 # Sensible configurable ceiling - not unlimited. The .NET layer enforces the
 # same number for the browser -> backend hop (Upload__MaxBytes).
 MAX_UPLOAD_MB = int(os.getenv("MAX_UPLOAD_MB", "200"))
-# A PDF whose pages yield less text than this (after cleaning) is treated as
-# scanned/image-based and rejected with a clear message instead of being indexed.
+# Legacy (PDF-era scanned-document check); unused by the JSON pipeline.
 MIN_TEXT_CHARS = int(os.getenv("MIN_TEXT_CHARS", "200"))
 
+# Sparse (BM25) vectors for hybrid search, made with fastembed. Runs locally on ONNX; the
+# model files (stopwords etc., a few KB) are fetched once on first use.
+SPARSE_MODEL = os.getenv("SPARSE_MODEL", "Qdrant/bm25")
+
+# Prompt templates read at query time (step 7: query analysis, step 10: answer).
+PROMPTS_DIR = _resolve(os.getenv("PROMPTS_DIR"), BASE_DIR / "prompts")
+
 # --- Step 9: Retrieval ---------------------------------------------------
+# Fallback only: each question type has its own top_k (see step 9); this is used when the
+# question analysis fails and the question is answered without a type.
 TOP_K = int(os.getenv("TOP_K", "4"))
+# Chunks scoring below this cosine similarity are treated as "not in the knowledge
+# base" and dropped before generation, so an off-topic question reaches Gemini
+# with no context (and is refused) rather than with the least-bad chunks.
+MIN_RELEVANCE_SCORE = float(os.getenv("MIN_RELEVANCE_SCORE", "0.35"))
 
 # --- Step 10: Gemini LLM -------------------------------------------------
 LLM_MODEL = os.getenv("LLM_MODEL", "gemini-2.5-flash")
@@ -132,3 +159,17 @@ def validate_embedding_config() -> None:
                 f"{', '.join(KNOWN_GOOGLE_EMBEDDING_MODELS)}. "
                 "Recommended: gemini-embedding-001."
             )
+
+
+def ensure_utf8_console() -> None:
+    """Make print() safe for Bangla text.
+
+    The datasets contain Bangla names, and a Windows console defaults to cp1252,
+    which raises UnicodeEncodeError on the first one. Called from the CLI entry
+    points; characters the console still cannot show become '?' rather than a crash.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass  # not a text stream that can be reconfigured (e.g. redirected in a test)

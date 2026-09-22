@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import {
+  findHeritageDemoAnswer,
+  HERITAGE_DEMO_FALLBACK_ID,
+  heritageDemoSuggestions,
+} from '../../data/heritageDemoQuestions';
+import { routePaths } from '../../routes/routePaths';
 
 /* ---------------------------------------------------------------------------
  * Icons — Lucide glyph paths inlined so the widget stays dependency-free.
@@ -66,47 +73,67 @@ const SourceIcon = (props) => (
   </Icon>
 );
 
+const TagIcon = (props) => (
+  <Icon {...props}>
+    <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+    <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+  </Icon>
+);
+
+const CheckIcon = (props) => (
+  <Icon {...props}>
+    <path d="M20 6 9 17l-5-5" />
+  </Icon>
+);
+
 /* ---------------------------------------------------------------------------
- * Demo knowledge base — replace `resolveAnswer` with a real API call later.
+ * Answer source — the one seam between the UI and where answers come from.
+ *
+ * Today it resolves against the static dataset in `data/heritageDemoQuestions`
+ * (no API, RAG or DB call before login). To go live, replace the body of
+ * `requestHeritageAnswer` with the real call, e.g.
+ *
+ *   const { data } = await api.post('/ai/heritage-assistant/ask', { question });
+ *   return {
+ *     answer: data.answer,
+ *     source: data.sources,        // string or string[] — both render
+ *     category: data.category,
+ *     confidence: data.confidence,
+ *   };
+ *
+ * Nothing below this block needs to change.
  * ------------------------------------------------------------------------- */
 
-const SUGGESTIONS = [
-  'What is Jamdani?',
-  'How is Shital Pati traditionally made?',
-  'What can I do on ShilpoHub?',
-];
+const SUGGESTIONS = heritageDemoSuggestions;
 
-const KNOWLEDGE_BASE = [
-  {
-    match: ['jamdani'],
-    answer:
-      'Jamdani is a hand-woven muslin textile from the Dhaka region, traditionally made on a pit loom by two weavers working side by side. The motifs are never printed or embroidered — each one is picked into the weft by hand as the cloth grows, which is why a single sari can take months. UNESCO inscribed the art of Jamdani weaving on its Representative List of Intangible Cultural Heritage in 2013.',
-    sources: ['craft.json', 'unesco-heritage.md'],
-  },
-  {
-    match: ['shital pati', 'shitalpati', 'sital pati'],
-    answer:
-      'Shital Pati is a cooling mat woven from the soft inner bark of the murta plant, most closely associated with Sylhet. Artisans boil and split the cane into fine strips, sun-dry them, then weave the strips into dense geometric patterns. The finished mat stays cool against the skin, which is where the name comes from.',
-    sources: ['craft.json', 'regional-crafts.json'],
-  },
-  {
-    match: ['what can i do', 'shilpohub', 'platform', 'features'],
-    answer:
-      'ShilpoHub connects you to Bangladeshi craft in a few ways: browse and buy directly from verified artisans in the marketplace, trace a product back to its maker and region, enrol in Academy courses taught by master artisans, and explore heritage trails that map crafts to the places they come from.',
-    sources: ['help-center.md', 'platform-guide.json'],
-  },
-];
+/** Mimics network latency so the typing indicator has something to cover. */
+const REPLY_DELAY_MS = 900;
 
-const FALLBACK_ANSWER = {
-  answer:
-    'I could not find that in the ShilpoHub knowledge base yet. Try asking about a specific craft — Jamdani, Nakshi Kantha, Shital Pati — or about how the marketplace and Academy work.',
-  sources: ['help-center.md'],
+/**
+ * Before-login boundary: the three demo answers stay open to everyone, and the
+ * sign-in CTA only appears once a visitor has actually explored — two distinct
+ * demo topics answered, or a question the preview dataset cannot cover.
+ */
+const MIN_TOPICS_BEFORE_CTA = 2;
+
+function shouldShowSignInCta(messages) {
+  const answers = messages.filter((message) => message.role === 'assistant' && message.demoId);
+  if (answers.some((message) => message.demoId === HERITAGE_DEMO_FALLBACK_ID)) return true;
+
+  const topics = new Set(answers.map((message) => message.demoId));
+  topics.delete(HERITAGE_DEMO_FALLBACK_ID);
+  return topics.size >= MIN_TOPICS_BEFORE_CTA;
+}
+
+const ERROR_ANSWER = {
+  answer: 'Something went wrong while looking that up. Please try asking again.',
+  tone: 'error',
 };
 
-function resolveAnswer(question) {
-  const normalized = question.trim().toLowerCase();
-  const hit = KNOWLEDGE_BASE.find((entry) => entry.match.some((term) => normalized.includes(term)));
-  return hit || FALLBACK_ANSWER;
+function requestHeritageAnswer(question) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(findHeritageDemoAnswer(question)), REPLY_DELAY_MS);
+  });
 }
 
 let messageCounter = 0;
@@ -119,20 +146,70 @@ function nextId() {
  * Presentational pieces
  * ------------------------------------------------------------------------- */
 
-function SourceTags({ sources }) {
-  if (!sources?.length) return null;
+/**
+ * Subtle citation strip under an answer — source, category, confidence.
+ * `source` accepts a string or an array, so a future RAG response listing
+ * several sources renders here without a change.
+ */
+function AnswerMeta({ source, category, confidence }) {
+  const sourceLabel = Array.isArray(source) ? source.filter(Boolean).join(' · ') : source;
+
+  const items = [
+    { key: 'source', label: 'Source', value: sourceLabel, Glyph: SourceIcon },
+    { key: 'category', label: 'Category', value: category, Glyph: TagIcon },
+    { key: 'confidence', label: 'Confidence', value: confidence, Glyph: CheckIcon },
+  ].filter((item) => Boolean(item.value));
+
+  if (!items.length) return null;
 
   return (
-    <ul className="mt-2 flex flex-wrap gap-1.5">
-      {sources.map((source) => (
-        <li key={source}>
-          <span className="inline-flex items-center gap-1 rounded-lg bg-white px-2 py-1 text-[11px] font-medium text-gray-500 ring-1 ring-gray-200">
-            <SourceIcon className="h-3 w-3" />
-            {source}
-          </span>
-        </li>
+    <dl className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-gray-200/70 pt-2.5 text-[11px] leading-tight text-gray-500">
+      {items.map(({ key, label, value, Glyph }) => (
+        <div key={key} className="flex items-center gap-1">
+          <Glyph className="h-3 w-3 shrink-0" />
+          <dt className="sr-only">{label}</dt>
+          <dd>
+            <span className="text-gray-400">{label}:</span>{' '}
+            <span className="font-medium text-gray-600">{value}</span>
+          </dd>
+        </div>
       ))}
-    </ul>
+    </dl>
+  );
+}
+
+/**
+ * Sign-in invitation shown below the conversation. Deliberately styled as
+ * another message-width block in the panel's own palette — not an overlay,
+ * modal or banner.
+ */
+function SignInCallout({ onNavigate }) {
+  const linkBase =
+    'rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2';
+
+  return (
+    <div className="mt-4 rounded-2xl border border-gray-100 bg-gradient-to-br from-fuchsia-50/60 via-white to-purple-50/60 p-4">
+      <p className="text-sm font-semibold text-gray-900">Want to explore more of Bangladesh&rsquo;s heritage?</p>
+      <p className="mt-1 text-xs leading-relaxed text-gray-500">
+        Sign in to access the full ShilpoHub Heritage AI.
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Link
+          to={routePaths.login}
+          onClick={onNavigate}
+          className={`${linkBase} bg-teal-900 text-white shadow-sm hover:-translate-y-0.5 hover:bg-teal-800 focus-visible:ring-teal-900/25`}
+        >
+          Sign In
+        </Link>
+        <Link
+          to={routePaths.register}
+          onClick={onNavigate}
+          className={`${linkBase} border border-gray-200 bg-white text-gray-600 hover:-translate-y-0.5 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-800 focus-visible:ring-teal-500/30`}
+        >
+          Create Account
+        </Link>
+      </div>
+    </div>
   );
 }
 
@@ -147,11 +224,19 @@ function MessageBubble({ message }) {
     );
   }
 
+  const isError = message.tone === 'error';
+
   return (
     <li className="flex justify-start">
-      <div className="max-w-[88%] rounded-2xl rounded-bl-md bg-gray-100/80 p-4">
-        <p className="text-sm leading-relaxed text-gray-700">{message.text}</p>
-        <SourceTags sources={message.sources} />
+      <div
+        className={`max-w-[88%] rounded-2xl rounded-bl-md p-4 ${
+          isError ? 'bg-rose-50 ring-1 ring-rose-100' : 'bg-gray-100/80'
+        }`}
+      >
+        <p className={`text-sm leading-relaxed ${isError ? 'text-rose-700' : 'text-gray-700'}`}>
+          {message.text}
+        </p>
+        <AnswerMeta source={message.source} category={message.category} confidence={message.confidence} />
       </div>
     </li>
   );
@@ -189,7 +274,9 @@ export default function AIAssistantWidget() {
 
   const inputRef = useRef(null);
   const scrollRef = useRef(null);
-  const replyTimer = useRef(null);
+  // Only the newest question may write a reply; anything older is discarded.
+  const requestIdRef = useRef(0);
+  const isMountedRef = useRef(true);
 
   const hasConversation = messages.length > 0;
 
@@ -225,22 +312,49 @@ export default function AIAssistantWidget() {
     if (node) node.scrollTop = node.scrollHeight;
   }, [messages, isTyping]);
 
-  useEffect(() => () => clearTimeout(replyTimer.current), []);
+  // Re-arm on every mount so React 19 StrictMode's mount/unmount/mount cycle
+  // does not leave the widget permanently unable to render a reply.
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
-  const ask = useCallback((question) => {
+  const ask = useCallback(async (question) => {
     const text = question.trim();
     if (!text) return;
+
+    requestIdRef.current += 1;
+    const requestId = requestIdRef.current;
 
     setMessages((current) => [...current, { id: nextId(), role: 'user', text }]);
     setInputValue('');
     setIsTyping(true);
 
-    clearTimeout(replyTimer.current);
-    replyTimer.current = setTimeout(() => {
-      const { answer, sources } = resolveAnswer(text);
-      setMessages((current) => [...current, { id: nextId(), role: 'assistant', text: answer, sources }]);
-      setIsTyping(false);
-    }, 900);
+    let reply;
+    try {
+      reply = await requestHeritageAnswer(text);
+    } catch {
+      reply = ERROR_ANSWER;
+    }
+
+    if (!isMountedRef.current || requestId !== requestIdRef.current) return;
+
+    setMessages((current) => [
+      ...current,
+      {
+        id: nextId(),
+        role: 'assistant',
+        text: reply.answer,
+        demoId: reply.id,
+        source: reply.source,
+        category: reply.category,
+        confidence: reply.confidence,
+        tone: reply.tone,
+      },
+    ]);
+    setIsTyping(false);
   }, []);
 
   const handleSubmit = (event) => {
@@ -249,6 +363,8 @@ export default function AIAssistantWidget() {
   };
 
   const canSend = inputValue.trim().length > 0 && !isTyping;
+  // Hold the CTA back until the reply it follows is on screen.
+  const showSignInCta = !isTyping && shouldShowSignInCta(messages);
 
   // Pre-login helper only: stay hidden until the session is known, and for signed-in
   // visitors, who get the in-app support surfaces instead.
@@ -329,6 +445,8 @@ export default function AIAssistantWidget() {
 
                 {isTyping && <TypingIndicator />}
               </ul>
+
+              {showSignInCta && <SignInCallout onNavigate={() => setIsOpen(false)} />}
 
               {!hasConversation && (
                 <div className="mt-4 flex flex-wrap gap-2">

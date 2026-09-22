@@ -1,0 +1,38 @@
+# ---- Core LangChain ----
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+langchain-text-splitters>=0.3.0
+
+# ---- Legacy: PDF text extraction ----
+# The JSON pipeline no longer reads PDFs; these two (and rag/pdf_font_repair.py) are unused.
+pymupdf>=1.24.0
+pypdf>=4.2.0
+
+# ---- Step 5 (default) & 10: Gemini embeddings + Gemini LLM ----
+langchain-google-genai>=2.1.0
+
+# ---- Step 5: optional local embeddings ----
+# For EMBEDDING_PROVIDER=huggingface (all-MiniLM-L6-v2 or bge-m3) also run:
+#     pip install -r requirements-local.txt
+# It pulls in torch (~2 GB), which the default Gemini setup does not need.
+
+# ---- Step 5/6: sparse BM25 vectors for hybrid search ----
+# Runs locally on ONNX; the model files ("Qdrant/bm25", a few KB) download once on first use.
+fastembed>=0.5.0
+
+# ---- Step 6: Qdrant vector store ----
+# langchain-qdrant 1.x requires qdrant-client>=1.15.1 - keep both current together,
+# and keep docker-compose.yml's qdrant image at a version within one minor release
+# of whatever qdrant-client resolves to here (a bigger gap breaks get_collection/query
+# with an opaque "zstd decompressor error", not a memory problem despite the message).
+langchain-qdrant>=1.1.0
+qdrant-client>=1.15.1,<2.0.0
+
+# ---- HTTP API (main.py - the service the .NET backend calls) ----
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+
+# ---- Utils ----
+python-dotenv>=1.0.0
+tqdm>=4.66.0

@@ -1,0 +1,1544 @@
+[
+  {
+    "question": "What is Bogurar Doi?",
+    "language": "en",
+    "expected_type": "describe",
+    "detected_type": "describe",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "bogurar_doi"
+      ],
+      "aspect": [
+        "overview",
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "bogurar_doi"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:bogurar_doi"
+    ],
+    "chunks": 2,
+    "expected_crafts": [
+      "bogurar_doi"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Bogurar Doi (Bogura Yogurt) (বগুড়ার দই) is Bangladesh's most famous traditional sweet yogurt (*mishti doi*), classified under Food Heritage. It is a registered Geographical Indication (GI) product, certified in June 2023, and is credited to confectioner Ghetu Ghosh of Sherpur, Bogura, with its qualities attributed to local milk and water. It is primarily associated with Sherpur Upazila in the Bogura district. The craft is stable and thriving, with its risk level considered stable following a GI certification-driven increase in annual turnover.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Tell me about Harmonium craftsmanship in Bangladesh",
+    "language": "en",
+    "expected_type": "describe",
+    "detected_type": "describe",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "harmonium_craft"
+      ],
+      "aspect": [
+        "overview",
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "harmonium_craft"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:harmonium_craft"
+    ],
+    "chunks": 2,
+    "expected_crafts": [
+      "harmonium_craft"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Harmonium Craftsmanship (হারমোনিয়াম তৈরি) is an assembly and repair craft for the hand-pumped reed harmonium, categorized under Musical Crafts (source label: D. Musical Heritage). It is a workshop-based instrument craft that is more mechanically complex than most other Musical Heritage entries, and it is widely used in devotional, folk, and light-classical Bengali music. \n\nThe main center for harmonium workshops and repair is in Dhaka, which serves as the primary hub. Its endangerment status is a stable niche, driven by steady demand from religious and music institutions, with a risk level of stable. The skill transmission is through workshop-based apprenticeship, and it is more industrial and mechanical in nature compared to most other listed crafts. This data is based on general knowledge and is not individually verified.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "মুসলিন কাপড়ের ইতিহাস কী?",
+    "language": "bn",
+    "expected_type": "describe",
+    "detected_type": "describe",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "muslin_revival"
+      ],
+      "aspect": [
+        "overview",
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "muslin_revival"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:muslin_revival"
+    ],
+    "chunks": 2,
+    "expected_crafts": [
+      "muslin_revival"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "শ ShilpoHub জ্ঞানভান্ডারে মুসলিন কাপড়ের ইতিহাস সম্পর্কে সম্পূর্ণ তথ্য নেই। তবে এতে উল্লেখ আছে যে, এটি মুঘল পৃষ্ঠপোষকতায় বিশ্বখ্যাত হয়ে ওঠা একটি কিংবদন্তি অতি-সূক্ষ্ম হাতে কাটা সুতির কাপড় ('বোনা বাতাস'), যা বিলুপ্তপ্রায় ফুটি কার্পাস তুলার variedades (বৈচিত্র্য) থেকে তৈরি হয় এবং বর্তমানে একটি জিআই-নিবন্ধিত পণ্য যার সক্রিয় সরকারি পুনরুজ্জীবন প্রকল্প রয়েছে। এটি ঐতিহাসিকভাবে মেঘনা/শীতলক্ষ্যা/ব্রহ্মপুত্র নদীর তীরবর্তী ঢাকা অঞ্চলের সাথে যুক্ত এবং এর পুনরুজ্জীবন চাষাবাদ কাপাসিয়ার কাছে হয়।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Rajshahi silk somporke bolo",
+    "language": "banglish",
+    "expected_type": "describe",
+    "detected_type": "describe",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "rajshahi_silk"
+      ],
+      "aspect": [
+        "overview",
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "rajshahi_silk"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-006",
+      "craftDetails.json:rajshahi_silk"
+    ],
+    "chunks": 4,
+    "expected_crafts": [
+      "rajshahi_silk"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Rajshahi Silk (রাজশাহী সিল্ক) হলো একটি টেক্সটাইল হেরিটেজ (Textile Heritage) বা হস্তশিল্প ক্যাটাগরির ঐতিহ্যবাহী শিল্প। এটি একটি সম্পূর্ণ চেইনযুক্ত মালবেরি সিল্ক শিল্প (রেশম চাষ, রিলিং, ডাইং এবং তাঁত বোনা), যা রাজশাহীতে কেন্দ্র করে গড়ে উঠেছে এবং এটি একটি নিবন্ধিত জিআই (GI) পণ্য। \n\nঐতিহ্যগত মর্যাদা অনুযায়ী, এটি একটি নিবন্ধিত জিআই পণ্য এবং একটি আঞ্চলিক সিল্ক ঐতিহ্য। এই শিল্পের সঙ্গে জড়িত রয়েছে বংশপরম্পরায় তাঁত শিল্পী পরিবার এবং আনুষ্ঠানিক সেরিকালচার বোর্ড প্রশিক্ষণ। বর্তমান উৎপাদন এন্টারপ্রাইজ পর্যায়ে যাচাই করা উচিত।\n\nএর সাথে জড়িত অঞ্চল হলো রাজশাহী শহর, বাঘা ও চারঘাট, যার মধ্যে রাজশাহী শহর হলো প্রাথমিক কেন্দ্র। এছাড়া GEO.json ফাইলের তথ্য অনুযায়ী এর অঞ্চল রাজশাহী জেলা এবং রাজশাহী বিভাগ (প্রাথমিক আঞ্চলিক পরিচয়; কনফিডেন্স: মাঝারি)। শিল্পটির বর্তমান স্থিতি বা ঝুঁকি হলো—আমদানিকৃত সিল্ক ও সিন্থেটিকের চাপের মুখে এটি রয়েছে এবং এর ঝুঁকির মাত্রা 'ঝুঁকিপূর্ণ' (at risk)।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "How is Dry Fish (Shutki) processing done?",
+    "language": "en",
+    "expected_type": "how_made",
+    "detected_type": "how_made",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "dry_fish_processing"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "dry_fish_processing"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:dry_fish_processing"
+    ],
+    "chunks": 1,
+    "expected_crafts": [
+      "dry_fish_processing"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "1. Clean and gut freshly caught fish\n2. Salt the fish if making a salted-dry variety (some varieties are dried unsalted)\n3. Lay fish out on raised bamboo racks in direct sun and wind\n4. Turn periodically over several days to ensure even drying and prevent spoilage/insect damage\n5. Once fully dried, sort, pack, and store or transport to market\n\nMaterials:\n- Fresh-caught fish (marine or river species)\n- Salt (for salted-dry varieties)\n\nTools:\n- Bamboo drying racks (machang)\n- Cleaning knives\n- Open-air drying yards ('shutki polli'/drying villages)",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "How is Tabla made?",
+    "language": "en",
+    "expected_type": "how_made",
+    "detected_type": "how_made",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "tabla_making"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "tabla_making"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:tabla_making"
+    ],
+    "chunks": 2,
+    "expected_crafts": [
+      "tabla_making"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "1. Turn/shape the wooden or metal shell.\n2. Prepare goat skin membranes in layered rings.\n3. Stretch and lace the skin over the shell with leather braiding.\n4. Apply and burnish the syahi (tuning paste) in a precise circular pattern on the drumhead.\n5. Fit wooden tuning blocks under the lacing.\n6. Tune by adjusting lacing tension and block position.\n\n**Materials:** Seasoned wood (for the dayan/treble drum shell) or metal/clay (for the bayan/bass drum shell); goat skin (membrane); leather braiding/lacing straps; wooden tuning blocks; a paste of iron filings, rice starch, and gum (syahi) applied to the drumhead center.\n\n**Tools:** Wood lathe for turning the shell; skin-stretching frame; hole-punching tools for lacing; hammer (for tuning blocks).",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "ঢোল কীভাবে তৈরি হয়?",
+    "language": "bn",
+    "expected_type": "how_made",
+    "detected_type": "how_made",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "dhol_making"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "dhol_making"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:dhol_making"
+    ],
+    "chunks": 1,
+    "expected_crafts": [
+      "dhol_making"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "ঢোল (Dhol Making (Instrument Craft)) তৈরির প্রক্রিয়া নিচে দেওয়া হলো:\n\n1. কাঠের ব্যারেল শেল তৈরি করা (স্টেভ-বিল্ড বা একটি মাত্র লগ খোদাই করে)।\n2. প্রতিটি ড্রামহেডের জন্য পশুর চামড়া প্রস্তুত করা এবং মেটাল রিংয়ের ওপর তা প্রসারিত করা।\n3. শেলের উভয় প্রান্তে চামড়ার মাথাগুলো ফিট করা।\n4. চামড়াগুলোকে ঠিক জায়গায় ধরে রাখতে এবং টেনশন সামঞ্জস্য করতে দুই মাথার মাঝে জিগজ্যাগ প্যাটার্নে দড়ি দিয়ে সেলাই বা ল্যাসিং করা।\n5. ল্যাসিং টাইট করার মাধ্যমে টিউন করা।\n\n**উপাদানসমূহ (Materials):**\n* কাঠ (ব্যারেল শেলের জন্য, প্রায়ই আম বা কাঁঠাল কাঠের স্টেভ)\n* পশুর চামড়া (গরু বা ছাগল) উভয় ড্রামহেডের জন্য\n* ল্যাসিং বা টানটান করার জন্য দড়ি\n* মেটাল রিং (চামড়া টানটান রাখতে)\n\n**সরঞ্জামসমূহ (Tools):**\n* কাঠ আক्रৃতি দেওয়ার সরঞ্জাম (ব্যারেল বডির জন্য)\n* চামড়া প্রসারিত করার ফ্রেম\n* মেটাল রিং তৈরির সরঞ্জাম\n* দড়ি ল্যাসিংয়ের সরঞ্জাম",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Harmonium kivabe toiri kora hoy?",
+    "language": "banglish",
+    "expected_type": "how_made",
+    "detected_type": "how_made",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "harmonium_craft"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "harmonium_craft"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:harmonium_craft"
+    ],
+    "chunks": 1,
+    "expected_crafts": [
+      "harmonium_craft"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Harmonium Craftsmanship (হারমোনিয়াম তৈরি) তৈরির প্রক্রিয়াটি নিচে দেওয়া হলো:\n\n1. কাঠের কেসিং তৈরি বা সংগ্রহ করা\n2. মেটাল রিড সেট ইনস্টল এবং সারিবদ্ধ করা\n3. বেলো মেকানিজম একত্রিত করা\n4. চাবি এবং অভ্যন্তরীণ ভালভ/স্টপ মেকানিজম ফিট করা\n5. ফাইল করার মাধ্যমে প্রতিটি রিড পৃথকভাবে সুর করা\n6. বেলোর বায়ুরোধী ক্ষমতা পরীক্ষা এবং সামঞ্জস্য করা\n\n**উপাদানসমূহ:**\n* কাঠ (কেসিংয়ের জন্য)\n* মেটাল রিড\n* বেলো উপাদান (কাপড়/চামড়া)\n* চাবি এবং অভ্যন্তরীণ ভালভ মেকানিজম\n* অনুভূত এবং চামড়ার প্যাডিং\n\n**সরঞ্জামসমূহ:**\n* কেসিংয়ের জন্য কাঠমিস্ত্রির সরঞ্জাম\n* রিড-টিউনিং সরঞ্জাম (ছোট ফাইল)\n* স্ক্রু ড্রাইভার এবং একত্রিত করার সরঞ্জাম\n* টিউনিং রেফারেন্স (টিউনিং ফর্ক বা রেফারেন্স পিচ)",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "What materials are used in Copper Products craft?",
+    "language": "en",
+    "expected_type": "materials_tools",
+    "detected_type": "materials_tools",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "copper_products"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "copper_products"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:copper_products"
+    ],
+    "chunks": 1,
+    "expected_crafts": [
+      "copper_products"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "- Copper sheet/ingot",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "What tools does a Knife and Agricultural Tool maker use?",
+    "language": "en",
+    "expected_type": "materials_tools",
+    "detected_type": "materials_tools",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "knife_agricultural_tool_making"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "knife_agricultural_tool_making"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:knife_agricultural_tool_making"
+    ],
+    "chunks": 2,
+    "expected_crafts": [
+      "knife_agricultural_tool_making"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "- Forge/furnace with bellows\n- Hammer and anvil\n- Tongs\n- Grinding/whetting wheel\n- Quenching trough (water/oil)",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "কাঁসা ও পিতল শিল্পে কী কী উপকরণ লাগে?",
+    "language": "bn",
+    "expected_type": "materials_tools",
+    "detected_type": "materials_tools",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "brass_bell_metal"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "brass_bell_metal"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-016",
+      "craft.json:BDCP-011",
+      "craftDetails.json:brass_bell_metal"
+    ],
+    "chunks": 3,
+    "expected_crafts": [
+      "brass_bell_metal"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "উপকরণসমূহ:\n* brass (পিতল)\n* bell metal (কাঁসা)\n* copper (তামা)\n* Bell-metal alloy (copper+tin) বা brass (copper+zinc)\n* Beeswax এবং resin (lost-wax casting-এর জন্য)\n* Charcoal fuel\n\nসরঞ্জামসমূহ (Tools):\n* সাধারণ মেটালওয়ার্কিং ইমপ্লিমেন্ট, এনগ্রেভিং টুলস এবং হিটিং/ফায়ার ইকুইপমেন্ট\n* Furnace (চুলা)\n* Sand molds বা lost-wax clay molds (বালুর ছাঁচ বা মোম গলানোর মাটির ছাঁচ)\n* Hammers এবং anvils (হাতুড়ি এবং নুড়ি)\n* Chisels (ছেদক/টক্ষণা)\n* Polishing tools (পালিশ করার সরঞ্জাম)\n\nকৌশলসমূহ (Techniques):\n* metal shaping\n* engraving\n* polishing\n* casting",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Dotara banate ki ki upokoron lage?",
+    "language": "banglish",
+    "expected_type": "materials_tools",
+    "detected_type": "materials_tools",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "dotara_making"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "dotara_making"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:dotara_making"
+    ],
+    "chunks": 1,
+    "expected_crafts": [
+      "dotara_making"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "দোতারা (Dotara Making (Instrument Craft)) তৈরিতে ব্যবহৃত উপকরণ এবং যন্ত্রপাতিসমূহ নিচে দেওয়া হলো:\n\n**উপাদান (Materials):**\n* Seasoned wood (jackfruit, mango, or neem)\n* Goat/reptile skin (some variants)\n* Metal strings\n* Tuning pegs\n\n**যন্ত্রপাতি (Tools):**\n* Wood carving chisels/gouges\n* Lathe or hand tools for hollowing\n* Fine sandpaper\n* String-fitting tools",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Is Tangail the only place making Tangail saree?",
+    "language": "en",
+    "expected_type": "craft_location",
+    "detected_type": "craft_location",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "tangail_saree"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "tangail_saree"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-002",
+      "craft.json:BDCP-002",
+      "craftDetails.json:tangail_saree"
+    ],
+    "chunks": 3,
+    "expected_crafts": [
+      "tangail_saree"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Based on the provided context, the primary hubs and traditional weaving clusters for Tangail Saree are in Tangail district (including Tangail Sadar, Karotia, Delduar, Kalihati, Bajitpur, Pathrail, Nalsunda, Chandi, and Bishnupur). The context does not state whether Tangail is the *only* place making Tangail saree; it only details the regions and clusters associated with it in Tangail district.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Is Jamdani specifically made in Tarabo village?",
+    "language": "en",
+    "expected_type": "craft_location",
+    "detected_type": "craft_location",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "jamdani"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "jamdani"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-001",
+      "craft.json:BDCP-001",
+      "craftDetails.json:jamdani"
+    ],
+    "chunks": 3,
+    "expected_crafts": [
+      "jamdani"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Yes, Jamdani is made in Tarabo village, which is noted as a major production cluster in Rupganj, Narayanganj district, Dhaka division, with a medium confidence level.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "রাজশাহী সিল্ক কোথায় তৈরি হয়?",
+    "language": "bn",
+    "expected_type": "craft_location",
+    "detected_type": "craft_location",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "rajshahi_silk"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "rajshahi_silk"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-006",
+      "craftDetails.json:rajshahi_silk"
+    ],
+    "chunks": 2,
+    "expected_crafts": [
+      "rajshahi_silk"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Rajshahi Silk (রাজশাহী সিল্ক)-এর অঞ্চল ও অবস্থান সম্পর্কে তথ্য নিচে দেওয়া হলো:\n\n- রাজশাহী শহর, বাঘা ও চারঘাট। এর মধ্যে রাজশাহী শহর হলো প্রধান কেন্দ্র (Primary hub)।\n- রাজশাহী জেলা, রাজশাহী বিভাগ (প্রাথমিক আঞ্চলিক পরিচয়; আত্মবিশ্বাস: মাঝারি)।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Bogurar doi kothay toiri hoy?",
+    "language": "banglish",
+    "expected_type": "craft_location",
+    "detected_type": "craft_location",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "bogurar_doi"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "bogurar_doi"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:bogurar_doi"
+    ],
+    "chunks": 1,
+    "expected_crafts": [
+      "bogurar_doi"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Bogurar Doi (বগুড়ার দই) এর প্রধান হাব বা অঞ্চল হলো শেরপুর উপজেলা, বগুড়া জেলা (বগুড়া শহর থেকে প্রায় ২৪ কিমি দূরে, যমুনা নদীর তীরে)।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Which crafts are made in Bogura district?",
+    "language": "en",
+    "expected_type": "location_crafts",
+    "detected_type": "location_crafts",
+    "type_ok": true,
+    "filters": {
+      "districts": [
+        "Bogura"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "bogurar_doi",
+      "leather_handicrafts",
+      "knife_agricultural_tool_making",
+      "village_food_processing",
+      "spices_herbs_cultivation",
+      "nakshi_kantha"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:bogurar_doi",
+      "craftDetails.json:knife_agricultural_tool_making",
+      "craftDetails.json:leather_handicrafts",
+      "craftDetails.json:nakshi_kantha",
+      "craftDetails.json:spices_herbs_cultivation",
+      "craftDetails.json:village_food_processing"
+    ],
+    "chunks": 6,
+    "expected_crafts": [
+      "bogurar_doi"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Based on the ShilpoHub data, the crafts associated with Bogura district are:\n\n* Bogurar Doi (Bogura Yogurt) — Region: Sherpur Upazila, Bogura district (~24 km from Bogura town, along the Jamuna River); Primary hub: Sherpur, Bogura.\n* Leather Handicrafts — Region: Bogra (traditional footwear).\n* Knife Making & Agricultural Tools — Region: Notable concentrations in Bogura, Rajshahi, and Sirajganj rural markets.\n* Village Food Processing (Chira, Muri, Gur, Pickles) — Region: Chira/Muri: produced in rice-growing districts nationwide, notably Naogaon and Bogura.\n* Spices & Herbs Cultivation — Region: Bogura and Natore (turmeric/spice cultivation belts); Primary hub: Rajshahi (betel leaf) & Bogura (spices).\n* Nakshi Kantha — Region: Bogra.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "What crafts are found in Sherpur district?",
+    "language": "en",
+    "expected_type": "location_crafts",
+    "detected_type": "location_crafts",
+    "type_ok": true,
+    "filters": {
+      "districts": [
+        "Sherpur"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "bogurar_doi",
+      "indigenous_rice_varieties"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:bogurar_doi",
+      "craftDetails.json:indigenous_rice_varieties"
+    ],
+    "chunks": 2,
+    "expected_crafts": [],
+    "recall": null,
+    "hit": true,
+    "refused": false,
+    "violations": [
+      "Bogurar Doi"
+    ],
+    "answer": "Based on the ShilpoHub data, the following crafts are associated with Sherpur or Sherpur Upazila:\n\n* Bogurar Doi (Bogura Yogurt) (বগুড়ার দই) — Region: Sherpur Upazila, Bogura district; Primary hub: Sherpur, Bogura (Confidence: not specified in source).\n* Indigenous & Aromatic Rice Varieties (দেশীয় ও সুগন্ধি ধান) — Region: Sherpur (Tulshimala rice — GI product); Primary hub: Sherpur (Tulshimala) (Confidence: not specified in source).\n\nThis list reflects the available ShilpoHub data and does not claim to be complete.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "চট্টগ্রামে কোন কোন কারুশিল্প পাওয়া যায়?",
+    "language": "bn",
+    "expected_type": "location_crafts",
+    "detected_type": "location_crafts",
+    "type_ok": true,
+    "filters": {
+      "districts": [
+        "Chattogram"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "wooden_furniture_crafts",
+      "dhol_making",
+      "tabla_making",
+      "nakshi_kantha",
+      "tea_cultivation",
+      "traditional_boat_building",
+      "dry_fish_processing",
+      "handmade_fishing_nets"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:dhol_making",
+      "craftDetails.json:dry_fish_processing",
+      "craftDetails.json:handmade_fishing_nets",
+      "craftDetails.json:nakshi_kantha",
+      "craftDetails.json:tabla_making",
+      "craftDetails.json:tea_cultivation",
+      "craftDetails.json:traditional_boat_building",
+      "craftDetails.json:wooden_furniture_crafts"
+    ],
+    "chunks": 8,
+    "expected_crafts": [
+      "dry_fish_processing",
+      "tea_cultivation"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "ShilpoHub ডাটাবেজের তথ্য অনুযায়ী চট্টগ্রামে (বা এর উপকূলে/অঞ্চলে) যে সমস্ত কারুশিল্প পাওয়া যায়, তার তালিকা নিচে দেওয়া হলো (এটি ShilpoHub ডাটাবেজের তথ্য প্রতিফলিত করে):\n\n* Wooden Crafts & Furniture (কাঠশিল্প) — অঞ্চল: Sylhet, Chattogram, Rajshahi, Dhaka (প্রাথমিক হাব: Sylhet)।\n* Dhol Making (Instrument Craft) (ঢোল তৈরি) — অঞ্চল: বৃহত্তর ঢাকা ও চট্টগ্রামে উল্লেখযোগ্য উপস্থিতিসহ দেশব্যাপী গ্রাম্য ড্রাম-মেকার ক্লাস্টার (প্রাথমিক হাব নেই — দেশব্যাপী গ্রামীণ কর্মশালা)।\n* Tabla Making (Instrument Craft) (তবলা তৈরি) — অঞ্চল: ঢাকা এবং ঐতিহাসিকভাবে ঢাকা ও চট্টগ্রামের শাস্ত্রীয় সংগীত পৃষ্ঠপোষক সম্প্রদায়ের সাথে যুক্ত (প্রাথমিক হাব: ঢাকা)।\n* Nakshi Kantha (নকশি কাঁথা) — অঞ্চল: Jessore, Faridpur, Rajshahi, Mymensingh, Jamalpur (GI-registered), Bogra, Chapainawabganj, Kushtia, Tangail, Chattogram (প্রাথমিক হাব: Jessore & Faridpur)।\n* Tea Cultivation & Traditional Processing (চা চাষ) — অঞ্চল: Chattogram division — Fatikchhari, Panchlaish এবং Sylhet division — Sreemangal, Moulvibazar, Habiganj (প্রাথমিক হাব: Sreemangal, Moulvibazar)।\n* Traditional Boat Building (নৌকা তৈরি) — অঞ্চল: Barishal division, Munshiganj, Manikganj, Sylhet, এবং Chattogram coast (বৃহৎ মাছ ধরার ট্রলারের জন্য) (প্রাথমিক হাব: Barishal division)।\n* Dry Fish (Shutki) Processing (শুঁটকি মাছ) — অঞ্চল: Cox's Bazar, St. Martin's Island, Chattogram coast, Khulna/Sundarbans-adjacent areas (প্রাথমিক হাব: Nazirartek, Cox's Bazar)।\n* Handmade Fishing Nets (হাতে তৈরি মাছ ধরার জাল) — অঞ্চল: Barishal, Bhola, Chandpur এবং Cox's Bazar/Chattogram coast সহ দেশব্যাপী নদী ও উপকূলীয় মাছ ধরার গ্রামসমূহ (প্রাথমিক হাব: Chandpur & greater Padma-Meghna river belt)।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Dhaka te kon kon shilpo ache?",
+    "language": "banglish",
+    "expected_type": "location_crafts",
+    "detected_type": "location_crafts",
+    "type_ok": true,
+    "filters": {
+      "districts": [
+        "Dhaka"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "rickshaw_art",
+      "brass_bell_metal",
+      "jamdani",
+      "calligraphy",
+      "folk_paintings",
+      "pottery",
+      "wooden_furniture_crafts",
+      "tabla_making",
+      "handmade_jewelry",
+      "handmade_soap",
+      "copper_products",
+      "muslin_revival",
+      "harmonium_craft",
+      "alpana",
+      "shell_crafts",
+      "terracotta",
+      "leather_handicrafts",
+      "potchitra_scroll_painting",
+      "jute_crafts",
+      "khadi"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-001",
+      "GEO.json:BDV2-004",
+      "GEO.json:BDV2-016",
+      "craft.json:BDCP-001",
+      "craft.json:BDCP-008",
+      "craft.json:BDCP-011",
+      "craft.json:BDCP-014",
+      "craftDetails.json:alpana",
+      "craftDetails.json:brass_bell_metal",
+      "craftDetails.json:calligraphy",
+      "craftDetails.json:copper_products",
+      "craftDetails.json:folk_paintings",
+      "craftDetails.json:handmade_jewelry",
+      "craftDetails.json:handmade_soap",
+      "craftDetails.json:harmonium_craft",
+      "craftDetails.json:jute_crafts",
+      "craftDetails.json:khadi",
+      "craftDetails.json:leather_handicrafts",
+      "craftDetails.json:muslin_revival",
+      "craftDetails.json:potchitra_scroll_painting",
+      "craftDetails.json:rickshaw_art",
+      "craftDetails.json:shell_crafts",
+      "craftDetails.json:tabla_making",
+      "craftDetails.json:terracotta",
+      "craftDetails.json:wooden_furniture_crafts"
+    ],
+    "chunks": 25,
+    "expected_crafts": [
+      "jamdani",
+      "muslin_revival"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "ShilpoHub ডেটাবেース অনুযায়ী ঢাকায় যে সমস্ত শিল্প যুক্ত আছে তার তালিকা নিচে দেওয়া হলো (এই তালিকাটি সম্পূর্ণ নয় এবং শুধুমাত্র ShilpoHub ডেটা প্রতিফলিত করে):\n\n* Rickshaw Painting (রিকশাচিত্র) - এলাকা: ঢাকা সিটি, ঢাকা জেলা, ঢাকা বিভাগ (উচ্চ আত্মবিশ্বাস); রিকশা ও রিকশাচিত্র (Rickshaw Art and Rickshaw Painting) - এলাকা: ঢাকা সিটি, ঢাকা জেলা, ঢাকা বিভাগ (উচ্চ আত্মবিশ্বাস); রিকশা চিত্রকলা (Rickshaw Art) - এলাকা: ওল্ড ঢাকা রিকশা-মেরামত অঞ্চল (প্রাইমারি হাব: ওল্ড ঢাকা)\n* Bell Metal and Brass Craft (কাঁসা ও পিতলের কারুশিল্প) - এলাকা: ধামরাই, ঢাকা জেলা, ঢাকা বিভাগ (উচ্চ আত্মবিশ্বাস); ধামরাই, ঢাকা জেলা, ঢাকা বিভাগ (গুরুত্বপূর্ণ ঐতিহ্যবাহী অ্যাসোসিয়েশন; উচ্চ আত্মবিশ্বাস); ব্রাস অ্যান্ড বেল মেটাল (Brass & Bell Metal / Kansha/Peetal) - এলাকা: ধামরাই, ঢাকা জেলা (প্রাইমারি হাব: ধামরাই, ঢাকা)\n* Jamdani (জামদানি) - এলাকা: বৃহত্তর ঢাকা তাঁত ঐতিহ্য, ঢাকা জেলা, ঢাকা বিভাগ (উচ্চ আত্মবিশ্বাস); ঢাকা তাঁত অঞ্চল, ঢাকা জেলা, ঢাকা বিভাগ (ঐতিহ্যবাহী অঞ্চল; উচ্চ আত্মবিশ্বাস)\n* Calligraphy (Islamic/Bengali) (ক্যালিগ্রাফি) - এলাকা: ওল্ড ঢাকা (ঐতিহ্যবাহী ইসলামিক ক্যালিগ্রাফি কর্মশালা) এবং দেশব্যাপী মসজিদ সজ্জা ও শিল্প সম্প্রদায়ে চর্চা হয় (প্রাইমারি হাব: ওল্ড ঢাকা)\n* Folk Paintings (লোকচিত্র) - এলাকা: দেশব্যাপী ছড়িয়ে ছিটিয়ে থাকা কারুশিল্পী পকেট, যেখানে ঢাকার কারু ও শিল্প সম্প্রদায়ে এর ঘনত্ব রয়েছে (প্রাইমারি হাব: ঢাকা)\n* Pottery (মৃৎশিল্প) - এলাকা: রায়েরবাজার, ঢাকা জেলা, ঢাকা বিভাগ (প্রধান মৃৎশিল্প এলাকা; উচ্চ আত্মবিশ্বাস)\n* Wooden Crafts & Furniture (কাঠশিল্প) - এলাকা: ঢাকা\n* Tabla Making (Instrument Craft) (তবলা তৈরি) - এলাকা: ঢাকা (বিশেষায়িত কর্মশালার স্বল্প সংখ্যা) এবং ঐতিহাসিকভাবে ঢাকার ধ্রুপদী সঙ্গীত পৃষ্ঠপোষক সম্প্রদায়ের সাথে যুক্ত (প্রাইমারি হাব: ঢাকা)\n* Handmade Jewelry (Traditional Silver/Beadwork) (হস্তনির্মিত গহনা) - এলাকা: ওল্ড ঢাকা (তাঁতিবাজার/শাখারী বাজার গহনা ক্লাস্টার) (প্রাইমারি হাব: ওল্ড ঢাকা ও চট্টগ্রাম পাহাড়ি এলাকা)\n* Handmade Soap (হাতে তৈরি সাবান) - এলাকা: দেশব্যাপী গৃহভিত্তিক কটেজ উৎপাদক, যা ঢাকা ও জেলা শহরের ক্ষুদ্র ব্যবসায়িক ক্লাস্টারের চারপাশে কেন্দ্রীভূত\n* Copper Products (তামার তৈজসপত্র) - এলাকা: ধামরাই, ঢাকা (প্রাইমারি হাব: ধামরাই, ঢাকা)\n* Muslin (Dhakai Muslin) (মসলিন) - এলাকা: ঐতিহাসিকভাবে মেঘনা/শীতলক্ষ্যা/ব্রহ্মপুত্র নদীর তীরবর্তী ঢাকা অঞ্চল (প্রাইমারি হাব: ঢাকা অঞ্চল)\n* Harmonium Craftsmanship (হারমোনিয়াম তৈরি) - এলাকা: ঢাকা (হারমোনিয়াম কর্মশালা ও মেরামতের প্রধান কেন্দ্র) (প্রাইমারি হাব: ঢাকা)\n* Alpana (Floor Painting) (আলপনা) - এলাকা: দেশব্যাপী চর্চা করা হয়, বিশেষ করে ঢাকার পহেলা বৈশাখ উদযাপনে বেশ পরিচিত\n* Shell Crafts (Shakha/Conch Shell) (শাঁখ শিল্প) - এলাকা: শাখারি বাজার, ওল্ড ঢাকা (প্রাইমারি হাব: শাখারি বাজার, ওল্ড ঢাকা)\n* Terracotta (Art & Architectural) (টেরাকোটা) - এলাকা: সমসাময়িক ঢাকা আর্ট স্টুডিও\n* Leather Handicrafts (চামড়াজাত হস্তশিল্প) - এলাকা: ঢাকা (হাজারীবাগ/সাভার ট্যানারি-সংলগ্ন ক্লাস্টার) (প্রাইমারি হাব: ঢাকা চামড়াজাত পণ্য ক্লাস্টার)\n* Patachitra / Potchitra (Scroll Painting) (পটচিত্র) - এলাকা: বৃহত্তর ময়মনসিংহ এবং ঢাকার শিল্প সম্প্রদায়ে বিক্ষিপ্ত পুনরুজ্জীবনবাদী চর্চা\n* Jute Crafts (পাটশিল্প) - এলাকা: ঢাকা ওয়ার্কশপ ক্লাস্টার\n* Khadi (খাদি) - এলাকা: ঢাকা ও রাজশাহী বিভাগে বিক্ষিপ্ত তাঁতের ক্লাস্টার",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Is Tabla making an endangered craft?",
+    "language": "en",
+    "expected_type": "status",
+    "detected_type": "status",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "tabla_making"
+      ],
+      "risk_level": [
+        "critically_endangered",
+        "endangered",
+        "vulnerable",
+        "at_risk"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "tabla_making"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:tabla_making"
+    ],
+    "chunks": 1,
+    "expected_crafts": [
+      "tabla_making"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Yes, Tabla Making (Instrument Craft) is endangered, with very few remaining specialist makers and a risk level of endangered.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Does Bogurar Doi have GI certification?",
+    "language": "en",
+    "expected_type": "status",
+    "detected_type": "status",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "bogurar_doi"
+      ],
+      "is_gi": true,
+      "aspect": [
+        "overview"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "bogurar_doi"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:bogurar_doi"
+    ],
+    "chunks": 1,
+    "expected_crafts": [
+      "bogurar_doi"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "Yes, Bogurar Doi (Bogura Yogurt) is a registered GI product, certified in June 2023.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "রাজশাহী সিল্ক কি ঝুঁকিতে আছে?",
+    "language": "bn",
+    "expected_type": "status",
+    "detected_type": "status",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "rajshahi_silk"
+      ],
+      "risk_level": [
+        "critically_endangered",
+        "endangered",
+        "vulnerable",
+        "at_risk"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "rajshahi_silk"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:rajshahi_silk"
+    ],
+    "chunks": 1,
+    "expected_crafts": [
+      "rajshahi_silk"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "হ্যাঁ, রাজশাহী সিল্ক (Rajshahi Silk) আমদানি করা সিল্ক এবং সিন্থেটিকের চাপের মুখে রয়েছে এবং এটি ঝুঁকিপূর্ণ অবস্থায় আছে (ঝুঁকির মাত্রা: ঝুঁকিতে আছে)।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Kon kon shilpo growing sector hisebe cinhito?",
+    "language": "banglish",
+    "expected_type": "status",
+    "detected_type": "status",
+    "type_ok": true,
+    "filters": {
+      "risk_level": [
+        "growing"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "natural_cosmetics",
+      "jute_crafts",
+      "handmade_soap",
+      "leather_handicrafts"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:handmade_soap",
+      "craftDetails.json:jute_crafts",
+      "craftDetails.json:leather_handicrafts",
+      "craftDetails.json:natural_cosmetics"
+    ],
+    "chunks": 4,
+    "expected_crafts": [
+      "jute_crafts",
+      "leather_handicrafts",
+      "handmade_soap",
+      "natural_cosmetics"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "শিলপোহাব ডেটাসেট অনুযায়ী যে হস্তশিল্প বা সেক্টরগুলো 'growing' বা ক্রমবর্ধমান হিসেবে চিহ্নিত, সেগুলোর তালিকা নিচে দেওয়া হলো:\n\n* Natural/Herbal Cosmetics (প্রাকৃতিক প্রসাধনী): ক্রমবর্ধমান আধুনিক কুটিরশিল্প খাত (Growing modern cottage-industry sector; ঝুঁকির মাত্রা: growing)।\n* Jute Crafts (পাটশিল্প): ক্রমবর্ধমান খাত — পরিবেশবান্ধব উপাদানের চাহিদা (Growing sector — eco-friendly material demand; ঝুঁকির মাত্রা: growing)।\n* Handmade Soap (হাতে তৈরি সাবান): এটি বিপন্ন ঐতিহ্যবাহী শিল্প না হয়ে একটি ক্রমবর্ধমান আধুনিক কুটিরশিল্প খাত (Growing modern cottage-industry sector rather than an endangered heritage craft; ঝুঁকির মাত্রা: growing)।\n* Leather Handicrafts (চামড়াজাত হস্তশিল্প): ক্রমবর্ধমান রপ্তানি খাত, যেখানে ঐতিহ্যবাহী হাতে তৈরি নকশা বা কাজ একটি সংকুচিত ক্ষেত্র (Growing export sector; traditional hand-tooling is a shrinking niche; ঝুঁকির মাত্রা: growing)।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "List the Fisheries crafts of Bangladesh",
+    "language": "en",
+    "expected_type": "list",
+    "detected_type": "list",
+    "type_ok": true,
+    "filters": {
+      "category_norm": "Fisheries",
+      "aspect": [
+        "overview"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "dry_fish_processing",
+      "handmade_fishing_nets",
+      "traditional_boat_building"
+    ],
+    "retrieved_docs": [
+      "REF-TAXONOMY",
+      "craftDetails.json:dry_fish_processing",
+      "craftDetails.json:handmade_fishing_nets",
+      "craftDetails.json:traditional_boat_building"
+    ],
+    "chunks": 4,
+    "expected_crafts": [
+      "dry_fish_processing",
+      "handmade_fishing_nets",
+      "traditional_boat_building"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "- Dry Fish (Shutki) Processing\n- Handmade Fishing Nets\n- Traditional Boat Building",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "What are the Cottage Industries crafts?",
+    "language": "en",
+    "expected_type": "list",
+    "detected_type": "list",
+    "type_ok": true,
+    "filters": {
+      "category_norm": "Cottage Industries",
+      "aspect": [
+        "overview"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "handmade_candles",
+      "natural_cosmetics",
+      "handmade_soap",
+      "village_food_processing",
+      "organic_oil_pressing"
+    ],
+    "retrieved_docs": [
+      "REF-TAXONOMY",
+      "craftDetails.json:handmade_candles",
+      "craftDetails.json:handmade_soap",
+      "craftDetails.json:natural_cosmetics",
+      "craftDetails.json:organic_oil_pressing",
+      "craftDetails.json:village_food_processing"
+    ],
+    "chunks": 6,
+    "expected_crafts": [
+      "handmade_soap",
+      "handmade_candles",
+      "natural_cosmetics",
+      "organic_oil_pressing"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "- Handmade Candles (হাতে তৈরি মোমবাতি)\n- Natural/Herbal Cosmetics (প্রাকৃতিক প্রসাধনী)\n- Handmade Soap (হাতে তৈরি সাবান)\n- Village Food Processing (Chira, Muri, Gur, Pickles) (গ্রামীণ খাদ্য প্রক্রিয়াজাতকরণ)\n- Organic/Traditional Oil Pressing (Ghani) (ঘানি ভাঙ্গা তেল)",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "কৃষি শিল্পের (Krishi Shilpo) তালিকা দাও",
+    "language": "bn",
+    "expected_type": "list",
+    "detected_type": "list",
+    "type_ok": true,
+    "filters": {
+      "category_norm": "Agriculture (Krishi Shilpo)",
+      "aspect": [
+        "overview"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "jackfruit_cultivation",
+      "seed_preservation",
+      "indigenous_rice_varieties",
+      "spices_herbs_cultivation",
+      "honey_production",
+      "heritage_mango_cultivation",
+      "tea_cultivation"
+    ],
+    "retrieved_docs": [
+      "REF-TAXONOMY",
+      "craftDetails.json:heritage_mango_cultivation",
+      "craftDetails.json:honey_production",
+      "craftDetails.json:indigenous_rice_varieties",
+      "craftDetails.json:jackfruit_cultivation",
+      "craftDetails.json:seed_preservation",
+      "craftDetails.json:spices_herbs_cultivation",
+      "craftDetails.json:tea_cultivation"
+    ],
+    "chunks": 8,
+    "expected_crafts": [
+      "honey_production",
+      "jackfruit_cultivation",
+      "tea_cultivation"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "- Jackfruit Cultivation & Processing (কাঁঠাল চাষ ও প্রক্রিয়াজাতকরণ)\n- Indigenous Seed Preservation (Krishi Shilpo) (দেশীয় বীজ সংরক্ষণ)\n- Indigenous & Aromatic Rice Varieties (দেশীয় ও সুগন্ধি ধান)\n- Spices & Herbs Cultivation (মসলা ও ভেষজ চাষ)\n- Traditional Honey Production (মধু চাষ)\n- Heritage Mango Cultivation (ঐতিহ্যবাহী আম চাষ)\n- Tea Cultivation & Traditional Processing (চা চাষ)",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Musical crafts gulor list dao",
+    "language": "banglish",
+    "expected_type": "list",
+    "detected_type": "list",
+    "type_ok": true,
+    "filters": {
+      "category_norm": "Musical Crafts",
+      "aspect": [
+        "overview"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "dotara_making",
+      "harmonium_craft",
+      "folk_instruments",
+      "ektara_making",
+      "tabla_making",
+      "baul_instruments",
+      "dhol_making",
+      "flute_making"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-021",
+      "REF-TAXONOMY",
+      "craft.json:BDCP-018",
+      "craftDetails.json:dhol_making",
+      "craftDetails.json:dotara_making",
+      "craftDetails.json:ektara_making",
+      "craftDetails.json:flute_making",
+      "craftDetails.json:harmonium_craft",
+      "craftDetails.json:tabla_making"
+    ],
+    "chunks": 9,
+    "expected_crafts": [
+      "dotara_making",
+      "ektara_making",
+      "tabla_making",
+      "dhol_making",
+      "flute_making",
+      "harmonium_craft"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "- Ektara, Dotara, Dhol and other folk instruments\n- Dotara Making (Instrument Craft) (দোতারা তৈরি)\n- Harmonium Craftsmanship (হারমোনিয়াম তৈরি)\n- Traditional Folk Instruments (ঐতিহ্যবাহী লোকবাদ্যযন্ত্র)\n- Ektara Making (Instrument Craft) (একতারা তৈরি)\n- Tabla Making (Instrument Craft) (তবলা তৈরি)\n- Baul Instrument Craft (বাউল বাদ্যযন্ত্র নির্মাণ)\n- Dhol Making (Instrument Craft) (ঢোল তৈরি)\n- Flute Making (Bashi) (বাঁশি তৈরি)",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Compare Bogurar Doi and Nakshi Pitha",
+    "language": "en",
+    "expected_type": "compare",
+    "detected_type": "compare",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "bogurar_doi",
+        "nakshi_pitha"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "bogurar_doi",
+      "nakshi_pitha"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:bogurar_doi",
+      "craftDetails.json:nakshi_pitha"
+    ],
+    "chunks": 7,
+    "expected_crafts": [
+      "bogurar_doi",
+      "nakshi_pitha"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "### Bogurar Doi (Bogura Yogurt)\n* **Category:** Food Heritage.\n* **Region and Hub:** Sherpur Upazila, Bogura district (~24 km from Bogura town, along the Jamuna River); primary hub is Sherpur, Bogura.\n* **Materials:** Full-cream cow's milk (deshi dudh, notably from Sahiwal-breed cows), sugar, a starter/seed portion of previously set yogurt, and unglazed earthen pots.\n* **Tools:** Large kadhai (wok) set over an open coal or gas fire, earthen setting pots, and traditional clay ovens for holding/setting the pots.\n* **Time Required:** Several hours of milk-reduction plus an overnight (or longer) fermentation/setting period.\n* **Status:** Stable and thriving; registered GI product certified in June 2023.\n\n### Nakshi Pitha\n* **Category:** Food Heritage.\n* **Region and Hub:** Practiced nationwide, especially in rural Bengal during winter festivals, with notable presence in Rangpur, Comilla, and Faridpur; primary hub is nationwide (seasonal, festival-driven).\n* **Materials:** Rice flour dough, sugar or molasses (gur) syrup, and oil for frying.\n* **Tools:** Small carving knife or comb-like tool for pressing surface patterns, a rolling implement, and a frying pan (kadhai).\n* **Time Required:** A few hours for a batch, including dough preparation, carving, and frying.\n* **Status:** Stable seasonal tradition.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "What is the difference between Tabla Making and Dhol Making?",
+    "language": "en",
+    "expected_type": "compare",
+    "detected_type": "compare",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "tabla_making",
+        "dhol_making"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "tabla_making",
+      "dhol_making"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:dhol_making",
+      "craftDetails.json:tabla_making"
+    ],
+    "chunks": 7,
+    "expected_crafts": [
+      "tabla_making",
+      "dhol_making"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "### Tabla Making (Instrument Craft) (তবলা তৈরি)\n* **Category & Overview:** Musical Crafts; handcrafting of the tabla, a paired hand-drum used in classical, devotional, and folk music.\n* **Materials:** Seasoned wood (for dayan/treble shell), metal or clay (for bayan/bass shell), goat skin, leather braiding/lacing straps, wooden tuning blocks, and syahi (paste of iron filings, rice starch, and gum).\n* **Tools:** Wood lathe, skin-stretching frame, hole-punching tools for lacing, and a hammer (for tuning blocks).\n* **Production Process:** \n  1. Turn/shape the wooden or metal shell.\n  2. Prepare goat skin membranes in layered rings.\n  3. Stretch and lace the skin over the shell with leather braiding.\n  4. Apply and burnish the syahi (tuning paste) in a precise circular pattern on the drumhead.\n  5. Fit wooden tuning blocks under the lacing.\n  6. Tune by adjusting lacing tension and block position.\n* **Region & Hub:** Dhaka (small number of specialized workshops); historically linked to classical-music patron communities in Dhaka and Chattogram; primary hub is Dhaka.\n* **Time Required:** Roughly 1–2 weeks per pair.\n* **Skill Transmission & Status:** Hereditary within specialized instrument-maker families. Data confidence is general knowledge (not individually verified). Endangerment status is endangered (very few remaining specialist makers).\n\n### Dhol Making (Instrument Craft) (ঢোল তৈরি)\n* **Category & Overview:** Musical Crafts; handcrafting of the dhol, a large barrel-shaped folk drum central to wedding processions, festivals, and folk performances.\n* **Materials:** Wood (mango or jackfruit wood staves for the barrel shell), animal skin (cow or goat) for drumheads, rope for lacing/tensioning, and metal rings.\n* **Tools:** Wood-shaping tools, skin-stretching frame, metal ring forming tools, and rope-lacing tools.\n* **Production Process:**\n  1. Shape the wooden barrel shell (stave-built or hollowed from a single log).\n  2. Prepare and stretch animal skin over metal rings for each drumhead.\n  3. Fit the skin heads onto both ends of the shell.\n  4. Lace rope in a zigzag pattern between the two heads to hold them in place and allow tension adjustment.\n  5. Tune by tightening the lacing.\n* **Region & Hub:** Village drum-maker clusters nationwide, with notable presence in greater Dhaka and Chattogram; no single dominant hub (nationwide rural workshops).\n* **Time Required:** Roughly 3–7 days per drum.\n* **Skill Transmission & Status:** Hereditary within drum-maker (often linked to leatherworking) artisan families. Data confidence is general knowledge (not individually verified). Endangerment status is stable (strong ongoing demand tied to weddings and festivals).",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "মসলিন আর জামদানির মধ্যে পার্থক্য কী?",
+    "language": "bn",
+    "expected_type": "compare",
+    "detected_type": "compare",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "muslin_revival",
+        "jamdani"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "muslin_revival",
+      "jamdani"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-001",
+      "craft.json:BDCP-001",
+      "craftDetails.json:jamdani",
+      "craftDetails.json:muslin_revival"
+    ],
+    "chunks": 9,
+    "expected_crafts": [
+      "muslin_revival",
+      "jamdani"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "### Muslin (Dhakai Muslin) (মসলিন)\n* **শ্রেণি ও ওভারভিউ:** টেক্সটাইল হেরিটেজ। মুঘল পৃষ্ঠপোষকতায় বিশ্বখ্যাত কিংবদন্তি অতি-সূক্ষ্ম হাতে কাটা সুতার কাপড় ('বোনা বাতাস'), যা প্রায় বিলুপ্ত ফুটি কার্পাস তুলা থেকে তৈরি হয়। এটি একটি জিআই-নিবন্ধিত পণ্য এবং বর্তমানে সরকারি পুনরুজ্জীবন প্রকল্পের অধীনে রয়েছে। এর দক্ষতা হস্তান্তরের ধারা প্রায় ভেঙে গিয়েছিল এবং অনেকাংশেই পুনর্গঠিত হয়েছে।\n* **উপাদান ও যন্ত্রপাতি:** ফুটি কার্পাস তুলা (পুনরুজ্জীবন-চাষকৃত) এবং অত্যন্ত সূক্ষ্ম হাতে কাটা সুতার সুতা। যন্ত্রপাতির মধ্যে রয়েছে অতি-সূক্ষ্ম কাটার জন্য হাতের চরকা, সংকীর্ণ তাঁত এবং সূক্ষ্ম ফিনিশিং সূঁচ।\n* **তৈরির পদ্ধতি:** ১. নদীমাতৃক অঞ্চলে দুর্লভ ফুটি কার্পাস তুলার চাষ করা হয়; ২. হাতে তুলা ছাড়ানো এবং অতি সূক্ষ্ম সুতায় কাটা হয় (ঐতিহাসিকভাবে আর্দ্র, নদীর তীরবর্তী পরিবেশে কাটা হতো); ৩. সংকীর্ণ তাঁতে হাতে বোনা হয়; ৪. স্বচ্ছতার জন্য ব্লিচ/ফিনিশ করা হয়।\n* **অঞ্চল ও প্রধান কেন্দ্র:** ঐতিহাসিকভাবে মেঘনা/শীতলক্ষ্যা/ব্রহ্মপুত্র নদীর তীরবর্তী ঢাকা অঞ্চল; পুনরুজ্জীবন চাষ কাপাশিয়ার কাছাকাছি হয়। প্রধান কেন্দ্র হলো ঢাকা অঞ্চল।\n* সময়: প্রতি টুকরো তৈরিতে কয়েক মাস সময় লাগে; উৎপাদিত সবচেয়ে শ্রমসাধ্য টেক্সটাইলগুলোর মধ্যে একটি।\n* **ঝুঁকি বা অবস্থা:** মারাত্মকভাবে বিপন্ন / পুনরুজ্জীবন-পর্যায় (ঝুঁকির মাত্রা: মারাত্মকভাবে বিপন্ন)।\n\n### Jamdani (জামদানি)\n* **শ্রেণি ও ওভারভিউ:** টেক্সটাইল হেরিটেজ। এটি লুমের উপর সরাসরি অর্নামেন্টাল মোটিফ দিয়ে বোনা সূক্ষ্ম, স্বচ্ছ সুতির মসলিন, যেখানে ডিসকন্টিনুয়াস সাপ্লিমেন্টারি ওয়েফ্ট (ব্রোকেড) কৌশল ব্যবহার করা হয়। এটি বাংলাদেশের প্রথম জিআই-নিবন্ধিত পণ্য (২০১৬) এবং একটি ইউনেস্কো ইনট্যানজিবল কালচারাল হেরিটেজ উপাদান (২০১৩)। এর দক্ষতা হস্তান্তরের ধারা বংশগত, পরিবার-ভিত্তিক এবং শৈশব/কৈশোর থেকেই উস্তাদ তাঁতির অধীনে হাতে-কলমে শেখা হয়।\n* **উপাদান ও যন্ত্রপাতি:** সুতির সুতা (fine cotton yarn) এবং রঙিন সাপ্লিমেন্টারি ওয়েফ্ট সুতা। যন্ত্রপাতির মধ্যে রয়েছে হস্ততাঁত (handloom), শাটল, তাঁত তৈরির সরঞ্জাম এবং সুতা প্রস্তুতির সরঞ্জাম। পণ্যের মধ্যে রয়েছে শাড়ি এবং কাপড়।\n* **তৈরির পদ্ধতি:** ১. সূক্ষ্ম তুলার সুতা প্রস্তুত করা হয় এবং হস্ততাঁত সাজানো হয়; ২. হস্ততাঁতে বেস কাপড় বোনা হয়; ৩. ডিসকন্টিনুয়াস সাপ্লিমেন্টারি ওয়েফ্ট ব্যবহার করে সরাসরি তাঁতের উপর মোটিফ প্রবেশ করানো হয়; ৪. কাপড় সম্পূর্ণ না হওয়া পর্যন্ত বারবার তাঁত বোনা এবং মোটিফ প্রবেশ করানোর কাজ চলতে থাকে; ৫. সমাপ্ত কাপড় পরিদর্শন করে শাড়ি বা অন্যান্য টেক্সটাইল হিসেবে ব্যবহারের জন্য প্রস্তুত করা হয়। কৌশলগুলোর মধ্যে রয়েছে হ্যান্ডলুম উইভিং, ডিসকন্টিনুয়াস সাপ্লিমেন্টারি ওয়েফ্ট এবং লুমের উপর সরাসরি মোটিফ উইভিং।\n* **অঞ্চল ও প্রধান কেন্দ্র:** নারায়ণগঞ্জ — রূপগঞ্জ, সোনারগাঁও, দক্ষিণ রূপসী/নোয়াপাড়া (বিসিক জামদানি পল্লি), শীতলক্ষ্যা নদী বেষ্টনী। প্রধান কেন্দ্র হলো নারায়ণগঞ্জের রূপগঞ্জ ও সোনারগাঁও।\n* সময়: পরিবর্তনশীল (variable); সাধারণত শ্রমসাধ্য এবং সময়সাপেক্ষ (আস্থা: উচ্চ)। সঠিক সময়কাল নকশার জটিলতা, আকার এবং তাঁত/ওয়ার্কফ্লোর ওপর নির্ভর করে।\n* **ঝুঁকি বা অবস্থা:** ঝুঁকিপূর্ণ (Vulnerable)। ইউনেস্কো-তালিকাভুক্ত অমূর্ত সাংস্কৃতিক ঐতিহ্য (UNESCO-inscribed intangible cultural heritage)।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Rajshahi silk ar khadir modhye parthokko ki?",
+    "language": "banglish",
+    "expected_type": "compare",
+    "detected_type": "compare",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "rajshahi_silk",
+        "khadi"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "rajshahi_silk",
+      "khadi"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-006",
+      "GEO.json:BDV2-007",
+      "craftDetails.json:khadi",
+      "craftDetails.json:rajshahi_silk"
+    ],
+    "chunks": 12,
+    "expected_crafts": [
+      "rajshahi_silk",
+      "khadi"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "## Rajshahi Silk (রাজশাহী সিল্ক)\n* **শ্রেনি ও ওভারভিউ:** এটি একটি টেক্সটাইল হেরিটেজ (Textile Heritage) এবং নিবন্ধিত জিআই (GI) পণ্য। এটি ফুল-চেইন মালবেরি সিল্ক শিল্প—যার মধ্যে সেরিকালচার, রিলিং, ডাইং এবং উইভিং অন্তর্ভুক্ত।\n* **অঞ্চল:** রাজশাহী শহর, বাঘা ও চারঘাট। এর প্রাথমিক কেন্দ্র হলো রাজশাহী শহর। এছাড়া GEO.json ফাইলের তথ্য অনুযায়ী অঞ্চলটি রাজশাহী জেলা ও রাজশাহী বিভাগ (আঞ্চলিক পরিচয়; কনফিডেন্স: মাঝারি)।\n* **উপাদান ও যন্ত্রপাতি:** এর উপকরণ হলো মালবেরি সিল্ক কোকুন, এবং প্রাকৃতিক ও সিন্থেটিক রং। এর উৎপাদনে ব্যবহৃত যন্ত্রপাতির মধ্যে রয়েছে সেরিকালচার রিয়ারিং ট্রে, সিল্ক-রিলিং হুইল, হ্যান্ডলুম বা সেমি-মেকানাইজড লুম এবং ডাই ভ্যাট।\n* **প্রক্রিয়া:** এটি মালবেরি চাষ ও রেশম পোকা লালন-পালন, কোকুন সিদ্ধ ও সুতা রিলিং, সুতা পেঁচানো (ট্যুইস্টিং), রং করা, তাঁতে বোনা এবং ফিনিশিং বা ক্যালেন্ডারিংয়ের মাধ্যমে তৈরি হয়।\n* **ঝুঁকি:** আমদানিকৃত সিল্ক ও সিন্থেটিক পণ্যের চাপের মুখে রয়েছে এবং এর ঝুঁকির স্তর হলো ‘ঝুঁকিপূর্ণ’ (at risk)।\n\n## Khadi (খাদি)\n* **শ্রেনি ও ওভারভিউ:** এটি একটি টেক্সটাইল হেরিটেজ, যা হস্তনির্মিত সুতা ও হাতে বোনা সুতি কাপড় এবং আত্মনির্ভরতার সাথে জড়িত। এটি জামদানির তুলনায় কিছুটা স্থূল এবং আরও বেশি গ্রামীণ প্রকৃতির।\n* **অঞ্চল:** এর প্রধান কেন্দ্র হলো কুমিল্লা। এছাড়া ঢাকা ও রাজশাহী বিভাগে এর বিক্ষিপ্ত হ্যান্ডলুম ক্লাস্টার রয়েছে। GEO.json ফাইলের তথ্য অনুযায়ী এর অঞ্চল হলো কুমিল্লা জেলা ও চট্টগ্রাম বিভাগ (দৃঢ় আঞ্চলিক অ্যাসোসিয়েশন; কনফিডেন্স: মাঝারি)।\n* **উপাদান ও যন্ত্রপাতি:** এর উপকরণ হলো হাতে কাটা সুতি সুতা (মাঝে মাঝে সিল্ক বা পশম মিশ্রিত) এবং প্রাকৃতিক বা ভ্যাট ডাই। এর যন্ত্রপাতির মধ্যে রয়েছে চরকা, পিট লুম/হ্যান্ডলুম এবং ওয়ার্পিং ফ্রেম।\n* **প্রক্রিয়া:** এটি কাঁচা তুলা হাত দিয়ে কার্ডিং করা, চরকায় হাত দিয়ে সুতা কাটা, ওয়ার্প প্রস্তুতি ও সাইজিং, হাতে বোনা এবং ধুয়ে রোদে শুকানোর প্রক্রিয়ার মাধ্যমে তৈরি করা হয়।\n* **ঝুঁকি:** পাওয়ারলুমের প্রতিযোগিতায় এটি স্থিতিশীল হলেও সংকুচিত হচ্ছে, এবং এর ঝুঁকির স্তর ‘ঝুঁকিপূর্ণ’ (at risk)।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Jamdani exactly how many days does it take to make?",
+    "language": "en",
+    "expected_type": "time",
+    "detected_type": "time",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "jamdani"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "jamdani"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-001",
+      "craft.json:BDCP-001",
+      "craftDetails.json:jamdani"
+    ],
+    "chunks": 4,
+    "expected_crafts": [
+      "jamdani"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "- craftDetails.json states: 1–6 months for moderate designs, and 6 months–over a year for highly intricate saris, working approximately 8–10 hours per day, usually with two weavers together.\n- craft.json states: The duration is variable and generally labour-intensive and time-consuming, with the exact duration depending on design complexity, size, and the loom/workflow.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "How many exact hours does Bogurar Doi take to prepare?",
+    "language": "en",
+    "expected_type": "time",
+    "detected_type": "time",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "bogurar_doi"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "bogurar_doi"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:bogurar_doi"
+    ],
+    "chunks": 2,
+    "expected_crafts": [
+      "bogurar_doi"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "According to craftDetails.json, the time required for Bogurar Doi (Bogura Yogurt) (বগুড়ার দই) is several hours of milk-reduction plus an overnight (or longer) fermentation/setting period.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "শীতল পাটি বুনতে ঠিক কত দিন লাগে?",
+    "language": "bn",
+    "expected_type": "time",
+    "detected_type": "time",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "shital_pati"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "shital_pati"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-003",
+      "craft.json:BDCP-003",
+      "craftDetails.json:shital_pati"
+    ],
+    "chunks": 3,
+    "expected_crafts": [
+      "shital_pati"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "উৎস অনুযায়ী শীতল পাটি (Shital Pati) তৈরির সময়কাল নিচে দেওয়া হলো:\n\n* craftDetails.json ফাইল অনুযায়ী: একটি সাধারণ পাটি তৈরি করতে প্রায় ৫ দিন, জামদানি-স্টাইলের পাটি তৈরি করতে ৮-৯ দিন এবং নকশি (এমব্রয়ডারি করা) পাটি তৈরিতে এক মাস পর্যন্ত সময় লাগে।\n* craft.json ফাইল অনুযায়ী: পাটির সাইজ, সূক্ষ্মতা এবং প্যাটার্নের জটিলতার ওপর ভিত্তি করে সময় পরিবর্তনশীল (confidence: high) এবং এর জন্য কোনো একক সর্বজনীন উৎপাদনের সময়কাল ব্যবহার করা উচিত নয়।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Rajshahi silk banate thik koto din lage?",
+    "language": "banglish",
+    "expected_type": "time",
+    "detected_type": "time",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "rajshahi_silk"
+      ],
+      "aspect": [
+        "production"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "rajshahi_silk"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-006",
+      "craftDetails.json:rajshahi_silk"
+    ],
+    "chunks": 2,
+    "expected_crafts": [
+      "rajshahi_silk"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "-এর তথ্য অনুযায়ী, Rajshahi Silk (রাজশাহী সিল্ক) তৈরিতে সিলভওয়ার্ম লালন-পালনের জন্য প্রায় ২৫-৩০ দিন সময় লাগে এবং ডিজাইনের ওপর ভিত্তি করে তাঁতে বোনার কাজ শেষ করতে আরও দিন যোগ হয়। craftDetails.json ফাইল অনুযায়ী এই সময়সীমা দেওয়া হয়েছে। তবে GEO.json ফাইলে তৈরির নির্দিষ্ট কোনো সময় উল্লেখ নেই।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "What historic sites are connected to Terracotta craft heritage?",
+    "language": "en",
+    "expected_type": "heritage",
+    "detected_type": "heritage",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "terracotta"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "terracotta"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-014",
+      "REF-SITES",
+      "craft.json:BDCP-009",
+      "craftDetails.json:terracotta"
+    ],
+    "chunks": 9,
+    "expected_crafts": [
+      "terracotta"
+    ],
+    "recall": 1.0,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "The historic sites connected to Terracotta craft heritage include:\n\n* **Somapura Mahavihara**, an archaeological site in Paharpur, Naogaon district, Rajshahi division.\n* **Kantaji Temple** (also referred to as Kantanagar Temple), an architectural heritage site in Dinajpur district, Rangpur division.\n* **Mainamati Archaeological Sites**, located in Mainamati, Cumilla district, Chattogram division.\n* **Puthia** (or the Puthia temple complex), located in Rajshahi.\n* **Bagerhat**.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "What museums or heritage institutions are linked to folk art in Sonargaon?",
+    "language": "en",
+    "expected_type": "heritage",
+    "detected_type": "heritage",
+    "type_ok": true,
+    "filters": {},
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "rickshaw_art",
+      "folk_paintings",
+      "calligraphy",
+      "alpana"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-004",
+      "GEO.json:BDV2-019",
+      "REF-SITES",
+      "craft.json:BDCP-014",
+      "craftDetails.json:calligraphy",
+      "craftDetails.json:folk_paintings",
+      "craftDetails.json:rickshaw_art"
+    ],
+    "chunks": 8,
+    "expected_crafts": [],
+    "recall": null,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "The Bangladesh Folk Art and Crafts Foundation / Sonargaon Folk Art and Craft Museum (folk art and craft institution) is located in Sonargaon, Narayanganj district, Dhaka division. Additionally, Panam City is a historic site located in Sonargaon.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "কান্তাজি মন্দিরের সাথে কোন কারুশিল্পের সম্পর্ক আছে?",
+    "language": "bn",
+    "expected_type": "heritage",
+    "detected_type": "craft_location",
+    "type_ok": false,
+    "filters": {
+      "craft_key": [
+        "terracotta"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "terracotta"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-014",
+      "craft.json:BDCP-009",
+      "craftDetails.json:terracotta"
+    ],
+    "chunks": 3,
+    "expected_crafts": [],
+    "recall": null,
+    "hit": false,
+    "refused": false,
+    "violations": [],
+    "answer": "কান্তাজি মন্দিরের (Kantaji Temple) সাথে Terracotta Art (টেরাকোটা শিল্প) এবং Terracotta (Art & Architectural) (টেরাকোটা) কারুশিল্পের সম্পর্ক রয়েছে। \n\nএই অঞ্চলের সাথে সম্পর্কিত তথ্য নিচে দেওয়া হলো:\n- **Terracotta Art (টেরাকোটা শিল্প):** Kantaji area, Dinajpur district, Rangpur division (architectural heritage; confidence: high)।\n- **Terracotta (Art & Architectural) (টেরাকোটা):** Dinajpur (Kantanagar Temple)।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Mainamati te kon craft er shathe heritage site jorito?",
+    "language": "banglish",
+    "expected_type": "heritage",
+    "detected_type": "heritage",
+    "type_ok": true,
+    "filters": {
+      "craft_key": [
+        "terracotta"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "terracotta"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-014",
+      "REF-SITES",
+      "craft.json:BDCP-009",
+      "craftDetails.json:terracotta"
+    ],
+    "chunks": 9,
+    "expected_crafts": [],
+    "recall": null,
+    "hit": true,
+    "refused": false,
+    "violations": [],
+    "answer": "ময়নামতি (Mainamati) এলাকার সাথে টেরাকোটা (Terracotta) শিল্প বা টেরাকোটা আর্ট (Terracotta Art) যুক্ত এবং এটি ময়নামতি আর্কিওলজিক্যাল সাইটস (Mainamati Archaeological Sites) নামক প্রত্নতাত্ত্বিক স্থানের সাথে সম্পৃক্ত।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Where can I buy authentic Jamdani sarees online?",
+    "language": "en",
+    "expected_type": "out_of_scope",
+    "detected_type": "craft_location",
+    "type_ok": false,
+    "filters": {
+      "craft_key": [
+        "jamdani"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "jamdani"
+    ],
+    "retrieved_docs": [
+      "GEO.json:BDV2-001",
+      "craft.json:BDCP-001",
+      "craftDetails.json:jamdani"
+    ],
+    "chunks": 3,
+    "expected_crafts": [],
+    "recall": null,
+    "hit": true,
+    "refused": true,
+    "violations": [],
+    "answer": "This information is not available in the ShilpoHub knowledge base.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "What's the phone number of a Nakshi Kantha artisan I can contact?",
+    "language": "en",
+    "expected_type": "out_of_scope",
+    "detected_type": "out_of_scope",
+    "type_ok": true,
+    "filters": {},
+    "fallback": false,
+    "retrieved_craft_keys": [],
+    "retrieved_docs": [],
+    "chunks": 0,
+    "expected_crafts": [],
+    "recall": null,
+    "hit": true,
+    "refused": true,
+    "violations": [],
+    "answer": "I can only answer questions about Bangladeshi traditional crafts and heritage from the ShilpoHub knowledge base. Try asking about a craft, a district or a heritage site.",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "শীতল পাটির দাম কত?",
+    "language": "bn",
+    "expected_type": "out_of_scope",
+    "detected_type": "out_of_scope",
+    "type_ok": true,
+    "filters": {},
+    "fallback": false,
+    "retrieved_craft_keys": [],
+    "retrieved_docs": [],
+    "chunks": 0,
+    "expected_crafts": [],
+    "recall": null,
+    "hit": true,
+    "refused": true,
+    "violations": [],
+    "answer": "আমি শুধু ShilpoHub-এর জ্ঞানভাণ্ডারে থাকা বাংলাদেশের ঐতিহ্যবাহী কারুশিল্প ও ঐতিহ্য বিষয়ক প্রশ্নের উত্তর দিতে পারি। কোনো কারুশিল্প, জেলা বা ঐতিহ্যবাহী স্থান সম্পর্কে জিজ্ঞাসা করুন।",
+    "analysis_source": "gemini"
+  },
+  {
+    "question": "Bogurar doi kothay kinte pabo, dokaner thikana din",
+    "language": "banglish",
+    "expected_type": "out_of_scope",
+    "detected_type": "craft_location",
+    "type_ok": false,
+    "filters": {
+      "craft_key": [
+        "bogurar_doi"
+      ],
+      "aspect": [
+        "geography"
+      ]
+    },
+    "fallback": false,
+    "retrieved_craft_keys": [
+      "bogurar_doi"
+    ],
+    "retrieved_docs": [
+      "craftDetails.json:bogurar_doi"
+    ],
+    "chunks": 1,
+    "expected_crafts": [],
+    "recall": null,
+    "hit": true,
+    "refused": true,
+    "violations": [],
+    "answer": "এই তথ্য ShilpoHub-এর জ্ঞানভাণ্ডারে পাওয়া যায়নি।",
+    "analysis_source": "gemini"
+  }
+]

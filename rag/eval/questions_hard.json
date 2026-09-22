@@ -1,0 +1,56 @@
+[
+  {"question": "What is Bogurar Doi?", "language": "en", "question_type": "describe", "expected_crafts": ["bogurar_doi"], "must_not_contain": []},
+  {"question": "Tell me about Harmonium craftsmanship in Bangladesh", "language": "en", "question_type": "describe", "expected_crafts": ["harmonium_craft"], "must_not_contain": []},
+  {"question": "মুসলিন কাপড়ের ইতিহাস কী?", "language": "bn", "question_type": "describe", "expected_crafts": ["muslin_revival"], "must_not_contain": []},
+  {"question": "Rajshahi silk somporke bolo", "language": "banglish", "question_type": "describe", "expected_crafts": ["rajshahi_silk"], "must_not_contain": []},
+
+  {"question": "How is Dry Fish (Shutki) processing done?", "language": "en", "question_type": "how_made", "expected_crafts": ["dry_fish_processing"], "must_not_contain": []},
+  {"question": "How is Tabla made?", "language": "en", "question_type": "how_made", "expected_crafts": ["tabla_making"], "must_not_contain": []},
+  {"question": "ঢোল কীভাবে তৈরি হয়?", "language": "bn", "question_type": "how_made", "expected_crafts": ["dhol_making"], "must_not_contain": []},
+  {"question": "Harmonium kivabe toiri kora hoy?", "language": "banglish", "question_type": "how_made", "expected_crafts": ["harmonium_craft"], "must_not_contain": []},
+
+  {"question": "What materials are used in Copper Products craft?", "language": "en", "question_type": "materials_tools", "expected_crafts": ["copper_products"], "must_not_contain": []},
+  {"question": "What tools does a Knife and Agricultural Tool maker use?", "language": "en", "question_type": "materials_tools", "expected_crafts": ["knife_agricultural_tool_making"], "must_not_contain": []},
+  {"question": "কাঁসা ও পিতল শিল্পে কী কী উপকরণ লাগে?", "language": "bn", "question_type": "materials_tools", "expected_crafts": ["brass_bell_metal"], "must_not_contain": []},
+  {"question": "Dotara banate ki ki upokoron lage?", "language": "banglish", "question_type": "materials_tools", "expected_crafts": ["dotara_making"], "must_not_contain": []},
+
+  {"question": "Is Tangail the only place making Tangail saree?", "language": "en", "question_type": "craft_location", "expected_crafts": ["tangail_saree"], "must_not_contain": [], "note": "exclusivity trap: data only lists Tangail, answer must not overclaim exclusivity as a proven fact"},
+  {"question": "Is Jamdani specifically made in Tarabo village?", "language": "en", "question_type": "craft_location", "expected_crafts": ["jamdani"], "must_not_contain": [], "note": "village-origin trap: Tarabo is GEO.json medium-confidence, answer must hedge or state the confidence level"},
+  {"question": "রাজশাহী সিল্ক কোথায় তৈরি হয়?", "language": "bn", "question_type": "craft_location", "expected_crafts": ["rajshahi_silk"], "must_not_contain": []},
+  {"question": "Bogurar doi kothay toiri hoy?", "language": "banglish", "question_type": "craft_location", "expected_crafts": ["bogurar_doi"], "must_not_contain": []},
+
+  {"question": "Which crafts are made in Bogura district?", "language": "en", "question_type": "location_crafts", "expected_crafts": ["bogurar_doi"], "must_not_contain": []},
+  {"question": "What crafts are found in Sherpur district?", "language": "en", "question_type": "location_crafts", "expected_crafts": [], "must_not_contain": ["Bogurar Doi"], "note": "targeted regression: Bogurar Doi's region text says 'Sherpur Upazila, Bogura district' (an upazila within Bogura); naive district-name matching may wrongly tag it under the real Sherpur district in Mymensingh"},
+  {"question": "চট্টগ্রামে কোন কোন কারুশিল্প পাওয়া যায়?", "language": "bn", "question_type": "location_crafts", "expected_crafts": ["dry_fish_processing", "tea_cultivation"], "must_not_contain": []},
+  {"question": "Dhaka te kon kon shilpo ache?", "language": "banglish", "question_type": "location_crafts", "expected_crafts": ["jamdani", "muslin_revival"], "must_not_contain": []},
+
+  {"question": "Is Tabla making an endangered craft?", "language": "en", "question_type": "status", "expected_crafts": ["tabla_making"], "must_not_contain": []},
+  {"question": "Does Bogurar Doi have GI certification?", "language": "en", "question_type": "status", "expected_crafts": ["bogurar_doi"], "must_not_contain": []},
+  {"question": "রাজশাহী সিল্ক কি ঝুঁকিতে আছে?", "language": "bn", "question_type": "status", "expected_crafts": ["rajshahi_silk"], "must_not_contain": []},
+  {"question": "Kon kon shilpo growing sector hisebe cinhito?", "language": "banglish", "question_type": "status", "expected_crafts": ["jute_crafts", "leather_handicrafts", "handmade_soap", "natural_cosmetics"], "must_not_contain": []},
+
+  {"question": "List the Fisheries crafts of Bangladesh", "language": "en", "question_type": "list", "expected_crafts": ["dry_fish_processing", "handmade_fishing_nets", "traditional_boat_building"], "expected_docs": ["REF-TAXONOMY"], "must_not_contain": []},
+  {"question": "What are the Cottage Industries crafts?", "language": "en", "question_type": "list", "expected_crafts": ["handmade_soap", "handmade_candles", "natural_cosmetics", "organic_oil_pressing"], "must_not_contain": []},
+  {"question": "কৃষি শিল্পের (Krishi Shilpo) তালিকা দাও", "language": "bn", "question_type": "list", "expected_crafts": ["honey_production", "jackfruit_cultivation", "tea_cultivation"], "must_not_contain": []},
+  {"question": "Musical crafts gulor list dao", "language": "banglish", "question_type": "list", "expected_crafts": ["dotara_making", "ektara_making", "tabla_making", "dhol_making", "flute_making", "harmonium_craft"], "must_not_contain": []},
+
+  {"question": "Compare Bogurar Doi and Nakshi Pitha", "language": "en", "question_type": "compare", "expected_crafts": ["bogurar_doi", "nakshi_pitha"], "must_not_contain": []},
+  {"question": "What is the difference between Tabla Making and Dhol Making?", "language": "en", "question_type": "compare", "expected_crafts": ["tabla_making", "dhol_making"], "must_not_contain": []},
+  {"question": "মসলিন আর জামদানির মধ্যে পার্থক্য কী?", "language": "bn", "question_type": "compare", "expected_crafts": ["muslin_revival", "jamdani"], "must_not_contain": []},
+  {"question": "Rajshahi silk ar khadir modhye parthokko ki?", "language": "banglish", "question_type": "compare", "expected_crafts": ["rajshahi_silk", "khadi"], "must_not_contain": []},
+
+  {"question": "Jamdani exactly how many days does it take to make?", "language": "en", "question_type": "time", "expected_crafts": ["jamdani"], "must_not_contain": [], "note": "exact-time trap: craft.json says the duration is variable/labour-intensive, craftDetails gives only a 1-6 month range; a single exact day count would be invented"},
+  {"question": "How many exact hours does Bogurar Doi take to prepare?", "language": "en", "question_type": "time", "expected_crafts": ["bogurar_doi"], "must_not_contain": [], "note": "exact-time trap: source says 'several hours of milk-reduction plus an overnight (or longer)', not a fixed hour count"},
+  {"question": "শীতল পাটি বুনতে ঠিক কত দিন লাগে?", "language": "bn", "question_type": "time", "expected_crafts": ["shital_pati"], "must_not_contain": [], "note": "exact-time trap: source gives a range (~5 days plain, 8-9 days jamdani-style, more for fine work), not one exact day count"},
+  {"question": "Rajshahi silk banate thik koto din lage?", "language": "banglish", "question_type": "time", "expected_crafts": ["rajshahi_silk"], "must_not_contain": [], "note": "exact-time trap: silkworm rearing ~25-30 days plus a variable weaving add-on, not one exact day count"},
+
+  {"question": "What historic sites are connected to Terracotta craft heritage?", "language": "en", "question_type": "heritage", "expected_crafts": ["terracotta"], "expected_docs": ["REF-SITES"], "must_not_contain": []},
+  {"question": "What museums or heritage institutions are linked to folk art in Sonargaon?", "language": "en", "question_type": "heritage", "expected_crafts": [], "expected_docs": ["REF-SITES"], "must_not_contain": []},
+  {"question": "কান্তাজি মন্দিরের সাথে কোন কারুশিল্পের সম্পর্ক আছে?", "language": "bn", "question_type": "heritage", "expected_crafts": [], "expected_docs": ["REF-SITES"], "must_not_contain": []},
+  {"question": "Mainamati te kon craft er shathe heritage site jorito?", "language": "banglish", "question_type": "heritage", "expected_crafts": [], "expected_docs": ["REF-SITES"], "must_not_contain": []},
+
+  {"question": "Where can I buy authentic Jamdani sarees online?", "language": "en", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["shop", "store", "website", "buy from"]},
+  {"question": "What's the phone number of a Nakshi Kantha artisan I can contact?", "language": "en", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["+880", "phone", "contact number"]},
+  {"question": "শীতল পাটির দাম কত?", "language": "bn", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["টাকা", "দাম"]},
+  {"question": "Bogurar doi kothay kinte pabo, dokaner thikana din", "language": "banglish", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["shop", "address", "market"]}
+]
