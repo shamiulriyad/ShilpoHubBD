@@ -1,4 +1,7 @@
 import { routePaths } from '../../routes/routePaths';
+import { useState } from 'react';
+import TravelEmptyState from '../../components/ui/TravelEmptyState';
+import MutationFeedback from '../../components/ui/MutationFeedback';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useMyBookings, useBookingMutations } from '../../hooks/useBookings';
 
@@ -12,6 +15,7 @@ const statusTone = {
 };
 
 export default function MyBookings() {
+  const [cancelId, setCancelId] = useState(null);
   const { data, isLoading, isError, error } = useMyBookings({ pageSize: 50 });
   const { cancel } = useBookingMutations();
   const bookings = data?.items || [];
@@ -42,16 +46,18 @@ export default function MyBookings() {
                 <p className="text-sm font-semibold text-primary">৳ {booking.totalPrice.toLocaleString()}</p>
                 <Badge tone={statusTone[booking.status] || 'neutral'}>{booking.status}</Badge>
                 {['Pending', 'Confirmed'].includes(booking.status) && (
-                  <Button variant="secondary" onClick={() => cancel.mutate({ id: booking.id })} disabled={cancel.isPending}>
-                    Cancel
+                  <Button variant="secondary" onClick={() => setCancelId(booking.id)} disabled={cancel.isPending}>
+                    Cancel booking
                   </Button>
                 )}
               </div>
             </div>
           ))}
-          {bookings.length === 0 && <p className="p-6 text-center text-sm text-body/60">You have no bookings yet.</p>}
+          {bookings.length === 0 && <TravelEmptyState title="No bookings yet" description="Explore heritage places and local experiences to plan your first trip. Your reservations will appear here." />}
         </div>
       </AsyncState>
+      {cancelId && <section aria-label="Confirm booking cancellation" className="mt-4 rounded-xl border border-border bg-surface p-5"><h2 className="font-semibold">Cancel {bookings.find(booking => booking.id === cancelId)?.serviceTitle || 'this booking'}?</h2><p className="mt-2 text-sm text-body/70">Cancellation cannot be undone. You may need to make a new booking.</p><div className="mt-4 flex gap-3"><Button variant="secondary" disabled={cancel.isPending} onClick={() => setCancelId(null)}>Keep booking</Button><Button disabled={cancel.isPending} onClick={() => cancel.mutate({ id: cancelId }, { onSuccess: () => setCancelId(null) })}>{cancel.isPending ? 'Cancelling…' : 'Confirm cancellation'}</Button></div></section>}
+      <div className="mt-4"><MutationFeedback mutation={cancel} /></div>
     </div>
   );
 }
