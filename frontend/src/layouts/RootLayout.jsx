@@ -10,7 +10,9 @@ export default function RootLayout() {
   const { isAuthenticated, activeRole } = useAuth();
   const { pathname } = useLocation();
 
-  if (isAuthenticated && activeRole === 'LogisticsPartner' && (pathname === '/explore' || pathname.startsWith('/explore/'))) {
+  const explorePage = pathname === '/explore' || pathname.startsWith('/explore/');
+  const tourismPage = pathname === '/tourism' || pathname.startsWith('/tourism/');
+  if (isAuthenticated && ((activeRole === 'LogisticsPartner' && explorePage) || (activeRole === 'Tourist' && (explorePage || tourismPage)))) {
     return <div className={theme} data-theme={theme}><DashboardLayout /></div>;
   }
 
