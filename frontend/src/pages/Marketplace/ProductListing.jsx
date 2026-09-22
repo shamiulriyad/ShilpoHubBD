@@ -25,6 +25,10 @@ export default function ProductListing() {
     districtId: districtId || undefined,
     search: search || undefined,
   });
+  const matchingCategories = (categoriesQuery.data || []).filter((category) => {
+    const term = search.trim().toLocaleLowerCase();
+    return term && `${category.name} ${category.description || ''}`.toLocaleLowerCase().includes(term);
+  });
 
   const filterGroups = [
     {
@@ -79,6 +83,23 @@ export default function ProductListing() {
           }}
         />
       </div>
+
+      {matchingCategories.length > 0 && (
+        <section aria-labelledby="matching-crafts" className="mb-8">
+          <div className="mb-3 flex items-end justify-between gap-4">
+            <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Craft directory</p><h2 id="matching-crafts" className="text-xl font-semibold text-heading">Matching craft categories</h2></div>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {matchingCategories.map((category) => (
+              <button key={category.id} type="button" onClick={() => updateFilter('categoryId', category.id, true)} className="rounded-xl border border-border bg-surface p-4 text-left transition hover:border-primary/40 hover:shadow-md">
+                <span className="font-semibold text-heading">{category.name}</span>
+                <span className="mt-1 block text-sm text-body/65">{category.description}</span>
+                <span className="mt-2 block text-xs font-medium text-primary">{category.productCount} approved products · View category</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
         <FilterPanel

@@ -21,6 +21,10 @@ function Illustration({ name, kind }) {
   </div>;
   const pottery = /clay|pot|ceramic|terracotta/i.test(name);
   const textile = /kantha|jamdani|weav|textile|saree/i.test(name);
+  const seed = [...name].reduce((total, character) => total + character.charCodeAt(0), 0);
+  const palettes = [['#A84F2D', '#F1C99E'], ['#176B67', '#B9D9CE'], ['#75558A', '#D9C8E5'], ['#B17A19', '#F3D78F'], ['#9C3F55', '#EDC0CB']];
+  const [motifColor, motifFill] = palettes[seed % palettes.length];
+  const petals = 6 + (seed % 5);
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-primary-soft via-background to-primary/10 px-4">
       <svg viewBox="0 0 320 210" className="h-[80%] w-full max-w-sm" fill="none" aria-hidden="true">
@@ -40,9 +44,13 @@ function Illustration({ name, kind }) {
           <path d="M87 51l146 26M67 137l147 26" stroke="#f3d6a9" strokeWidth="7" />
           {[0, 1, 2, 3].map((row) => [0, 1, 2, 3].map((col) => <path key={`${row}-${col}`} d={`M${99 + col * 30 - row * 4} ${70 + row * 22 + col * 5}l6 9-9 6-6-9z`} fill="#f3dfb9" />))}
           <path d="M64 151l-5 14m16-12-5 14m16-12-5 14m16-12-5 14m16-12-5 14m16-12-5 14m16-12-5 14m16-12-5 14m16-12-5 14m16-12-5 14m16-12-5 14m16-12-5 14m16-12-5 14" stroke="#b86143" strokeWidth="3" />
-        </g> : <g stroke="#a84f2d" strokeWidth="2.5" fill="#ead2bb">
-          <path d="M96 84l64-34 64 34v78l-64 30-64-30z" />
-          <path d="M96 84l64 34 64-34M160 118v74M129 67l64 34v35" />
+        </g> : <g stroke={motifColor} strokeWidth="2.5">
+          <circle cx="160" cy="108" r="66" fill={motifFill} opacity=".65" />
+          {Array.from({ length: petals }, (_, index) => (
+            <ellipse key={index} cx="160" cy="70" rx="14" ry="32" fill={index % 2 ? motifFill : '#fff7eb'} transform={`rotate(${(360 / petals) * index} 160 108)`} />
+          ))}
+          <circle cx="160" cy="108" r="24" fill={motifColor} />
+          <circle cx="160" cy="108" r="9" fill="#fff7eb" />
         </g>}
       </svg>
       <span className="absolute bottom-3 rounded-full bg-surface/90 px-3 py-1 text-[10px] font-medium text-muted">{kind === 'category' ? 'Craft illustration' : 'Photo unavailable'}</span>

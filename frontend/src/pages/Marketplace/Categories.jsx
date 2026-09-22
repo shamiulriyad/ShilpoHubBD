@@ -23,7 +23,9 @@ export default function Categories() {
             <EntityCard
               key={category.id}
               title={category.name}
-              subtitle={`${category.productCount} items`}
+              subtitle={category.description || `${category.productCount} approved products`}
+              meta={`${category.productCount} approved ${category.productCount === 1 ? 'product' : 'products'}`}
+              image={category.imageUrl}
               to={`${routePaths.marketplaceProducts}?categoryId=${category.id}`}
             />
           ))}

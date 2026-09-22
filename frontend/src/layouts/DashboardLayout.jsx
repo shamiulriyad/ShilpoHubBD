@@ -6,6 +6,7 @@ import ProfileDropdown from '../components/layout/ProfileDropdown';
 import { sidebarNav, roleSidebars } from '../data/navigation';
 import { routePaths } from '../routes/routePaths';
 import { useAuth } from '../hooks/useAuth';
+import BrandLogo from '../components/brand/BrandLogo';
 
 export default function DashboardLayout({ navItems, sidebarTitle }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -30,10 +31,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
           ☰
         </button>
         <Link to={routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs text-surface">
-            শি
-          </span>
-          <span className="hidden sm:inline">ShilpoHub</span>
+          <BrandLogo size="sm" className="[&>span:last-child]:hidden sm:[&>span:last-child]:inline" />
         </Link>
         <div className="ml-auto">
           <ProfileDropdown />
