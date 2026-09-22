@@ -4,6 +4,7 @@ import { PageHeader, FilterPanel, AsyncState, Pagination } from '../../component
 import { FestivalCard } from '../../components/cards';
 import { useHeritageFestivals } from '../../hooks/useHeritageFestivals';
 import { useDistricts } from '../../hooks/useDistricts';
+import TravelEmptyState from '../../components/ui/TravelEmptyState';
 
 export default function FestivalDirectory() {
   const [districtId, setDistrictId] = useState('');
@@ -53,7 +54,7 @@ export default function FestivalDirectory() {
                 />
               ))}
               {festivalsQuery.data?.items?.length === 0 && (
-                <p className="col-span-full text-sm text-body/60">No festivals match the selected district.</p>
+                <TravelEmptyState title={districtId ? 'No festivals in this district yet' : 'The festival calendar is being prepared'} description={districtId ? 'Choose another district or clear the filter to see all published festivals.' : 'Explore heritage places while upcoming celebrations are added.'} onReset={districtId ? () => { setDistrictId(''); setPage(1); } : undefined} />
               )}
             </div>
           </AsyncState>
