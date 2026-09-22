@@ -8,3 +8,4 @@ data/*.pdf
 venv/
 .venv/
 SETUP_AFTER_COPY.txt
+eval/results.json
