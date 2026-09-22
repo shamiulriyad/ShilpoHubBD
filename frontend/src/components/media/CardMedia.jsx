@@ -14,6 +14,13 @@ export function resolveMediaUrl(value) {
 }
 
 function Illustration({ name, kind }) {
+  if (kind === 'product') return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#f3f1ed] px-6 text-center">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" className="h-9 w-9 text-stone-400" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m4 17 5-5 4 4 3-3 5 5" /></svg>
+      <span className="mt-3 text-xs font-medium text-stone-600">Product photo unavailable</span>
+      <span className="mt-1 text-[11px] text-stone-500">View details from the maker</span>
+    </div>
+  );
   const photo = /clay|pot|ceramic|terracotta/i.test(name) ? '/images/pottery-photo.jpg' : /kantha|jamdani|weav|textile|saree/i.test(name) ? '/images/loom-photo.jpg' : null;
   if (photo && kind !== 'producer') return <div className="absolute inset-0">
     <SafeImage src={photo} alt="Representative craft photograph, not the listed product" className="h-full w-full object-cover" fallbackLabel="Product photo unavailable"/>

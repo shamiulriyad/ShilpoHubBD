@@ -1,6 +1,7 @@
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, AsyncState } from '../../components/ui';
 import { useCulturalEvents } from '../../hooks/useCulturalEvents';
+import TravelEmptyState from '../../components/ui/TravelEmptyState';
 
 export default function CulturalEvents() {
   const { data, isLoading, isError, error } = useCulturalEvents({ pageSize: 50 });
@@ -30,7 +31,7 @@ export default function CulturalEvents() {
               <p className="shrink-0 text-xs font-medium text-primary">{new Date(event.eventDate).toLocaleDateString()}</p>
             </div>
           ))}
-          {events.length === 0 && <p className="p-6 text-center text-sm text-body/60">No cultural events scheduled right now.</p>}
+          {events.length === 0 && <TravelEmptyState title="New experiences are on the way" description="There are no published cultural events right now. Explore heritage places to find your next destination." />}
         </div>
       </AsyncState>
     </div>

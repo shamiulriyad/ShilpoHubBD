@@ -30,7 +30,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         >
           ☰
         </button>
-        <Link to={routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title">
+        <Link to={activeRole === 'Tourist' ? routePaths.tourist : routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title">
           <BrandLogo size="sm" className="[&>span:last-child]:hidden sm:[&>span:last-child]:inline" />
         </Link>
         <div className="ml-auto">

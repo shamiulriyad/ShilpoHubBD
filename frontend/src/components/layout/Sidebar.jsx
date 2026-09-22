@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { roleLabel } from '../../utils/roles';
+import NavigationIcon from './NavigationIcon';
 
 const STORAGE_KEY = 'sh:sidebar:collapsed';
 
@@ -22,6 +23,7 @@ function writeCollapsed(next) {
 }
 
 function NavItem({ item, onNavigate }) {
+  const { activeRole } = useAuth();
   return (
     <NavLink
       to={item.path}
@@ -50,7 +52,7 @@ function NavItem({ item, onNavigate }) {
                 isActive ? 'bg-primary/15' : 'bg-background group-hover:bg-surface'
               }`}
             >
-              {item.icon}
+              {activeRole === 'Tourist' ? <NavigationIcon label={item.label} /> : item.icon}
             </span>
           )}
           <span className="truncate">{item.label}</span>
@@ -90,7 +92,8 @@ function GroupedNav({ groups, onNavigate }) {
             <button
               type="button"
               onClick={() => toggle(group.section)}
-              className="mb-1.5 flex w-full items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-body/40 hover:text-body/70"
+              aria-expanded={!isCollapsed}
+              className="mb-1.5 flex w-full items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-body/65 hover:text-body"
             >
               <span>{group.section}</span>
               <span aria-hidden="true" className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}>
