@@ -1,0 +1,65 @@
+[
+  {"question": "What is Jamdani?", "language": "en", "question_type": "describe", "expected_crafts": ["jamdani"], "must_not_contain": []},
+  {"question": "Tell me about Nakshi Kantha", "language": "en", "question_type": "describe", "expected_crafts": ["nakshi_kantha"], "must_not_contain": []},
+  {"question": "What is Bogurar Doi?", "language": "en", "question_type": "describe", "expected_crafts": ["bogurar_doi"], "must_not_contain": []},
+  {"question": "জামদানি কী?", "language": "bn", "question_type": "describe", "expected_crafts": ["jamdani"], "must_not_contain": []},
+  {"question": "নকশি কাঁথা সম্পর্কে বলুন", "language": "bn", "question_type": "describe", "expected_crafts": ["nakshi_kantha"], "must_not_contain": []},
+
+  {"question": "How is Shital Pati made?", "language": "en", "question_type": "how_made", "expected_crafts": ["shital_pati"], "must_not_contain": []},
+  {"question": "How is pottery made in Bangladesh?", "language": "en", "question_type": "how_made", "expected_crafts": ["pottery"], "must_not_contain": []},
+  {"question": "How is Tangail saree woven?", "language": "en", "question_type": "how_made", "expected_crafts": ["tangail_saree"], "must_not_contain": []},
+  {"question": "শীতল পাটি কীভাবে তৈরি হয়?", "language": "bn", "question_type": "how_made", "expected_crafts": ["shital_pati"], "must_not_contain": []},
+  {"question": "জামদানি কীভাবে বোনা হয়?", "language": "bn", "question_type": "how_made", "expected_crafts": ["jamdani"], "must_not_contain": []},
+  {"question": "Shital pati kivabe toiri hoy?", "language": "banglish", "question_type": "how_made", "expected_crafts": ["shital_pati"], "must_not_contain": []},
+
+  {"question": "What materials are used to make Nakshi Kantha?", "language": "en", "question_type": "materials_tools", "expected_crafts": ["nakshi_kantha"], "must_not_contain": []},
+  {"question": "What tools do bamboo craftsmen use?", "language": "en", "question_type": "materials_tools", "expected_crafts": ["bamboo_crafts"], "must_not_contain": []},
+  {"question": "মৃৎশিল্পে কী কী উপকরণ লাগে?", "language": "bn", "question_type": "materials_tools", "expected_crafts": ["pottery"], "must_not_contain": []},
+
+  {"question": "Where is Shital Pati made?", "language": "en", "question_type": "craft_location", "expected_crafts": ["shital_pati"], "must_not_contain": ["Rajshahi", "Khulna"]},
+  {"question": "Which districts is Rajshahi silk associated with?", "language": "en", "question_type": "craft_location", "expected_crafts": ["rajshahi_silk"], "must_not_contain": []},
+  {"question": "টাঙ্গাইল শাড়ি কোথায় তৈরি হয়?", "language": "bn", "question_type": "craft_location", "expected_crafts": ["tangail_saree"], "must_not_contain": []},
+  {"question": "Jamdani kothay banano hoy?", "language": "banglish", "question_type": "craft_location", "expected_crafts": ["jamdani"], "must_not_contain": []},
+
+  {"question": "Which crafts are associated with Narayanganj?", "language": "en", "question_type": "location_crafts", "expected_crafts": ["jamdani"], "must_not_contain": []},
+  {"question": "What crafts come from Sylhet?", "language": "en", "question_type": "location_crafts", "expected_crafts": ["shital_pati", "monipuri_weaving", "tea_cultivation"], "must_not_contain": []},
+  {"question": "Which crafts are found in Tangail?", "language": "en", "question_type": "location_crafts", "expected_crafts": ["tangail_saree"], "must_not_contain": []},
+  {"question": "What crafts are made in Rangamati?", "language": "en", "question_type": "location_crafts", "expected_crafts": ["bamboo_crafts"], "must_not_contain": []},
+  {"question": "Which crafts are made in Comilla?", "language": "en", "question_type": "location_crafts", "expected_crafts": ["khadi", "terracotta"], "must_not_contain": []},
+  {"question": "Which crafts belong to the Sylhet division?", "language": "en", "question_type": "location_crafts", "expected_crafts": ["shital_pati", "monipuri_weaving"], "must_not_contain": []},
+  {"question": "Which crafts are made in Kushtia?", "language": "en", "question_type": "location_crafts", "expected_crafts": ["dotara_making", "ektara_making"], "must_not_contain": []},
+  {"question": "সিলেটে কোন কোন কারুশিল্প হয়?", "language": "bn", "question_type": "location_crafts", "expected_crafts": ["shital_pati", "monipuri_weaving"], "must_not_contain": []},
+  {"question": "Kon kon shilpo Narayanganj e paowa jay?", "language": "banglish", "question_type": "location_crafts", "expected_crafts": ["jamdani"], "must_not_contain": []},
+  {"question": "Which crafts are made in Barguna?", "language": "en", "question_type": "location_crafts", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["Jamdani", "Tangail"]},
+
+  {"question": "What crafts are considered endangered?", "language": "en", "question_type": "status", "expected_crafts": ["rickshaw_art", "copper_products", "shell_crafts", "brass_bell_metal", "muslin_revival", "potchitra_scroll_painting", "tabla_making"], "must_not_contain": []},
+  {"question": "Which crafts have UNESCO recognition?", "language": "en", "question_type": "status", "expected_crafts": ["jamdani", "shital_pati", "rickshaw_art", "tangail_saree"], "expected_docs": ["REF-UNESCO"], "must_not_contain": []},
+  {"question": "Which crafts have GI status?", "language": "en", "question_type": "status", "expected_crafts": ["jamdani", "rajshahi_silk", "bogurar_doi", "shital_pati"], "must_not_contain": []},
+  {"question": "Which crafts are growing sectors?", "language": "en", "question_type": "status", "expected_crafts": ["handmade_soap", "jute_crafts", "leather_handicrafts", "natural_cosmetics"], "must_not_contain": []},
+  {"question": "Is Muslin critically endangered?", "language": "en", "question_type": "status", "expected_crafts": ["muslin_revival"], "must_not_contain": []},
+  {"question": "কোন কারুশিল্পগুলো ইউনেস্কোর স্বীকৃতি পেয়েছে?", "language": "bn", "question_type": "status", "expected_crafts": ["jamdani", "shital_pati", "rickshaw_art", "tangail_saree"], "must_not_contain": []},
+
+  {"question": "List the musical instrument crafts", "language": "en", "question_type": "list", "expected_crafts": ["dotara_making", "ektara_making", "tabla_making", "dhol_making", "flute_making", "harmonium_craft"], "expected_docs": ["REF-TAXONOMY"], "must_not_contain": []},
+  {"question": "What are the textile crafts of Bangladesh?", "language": "en", "question_type": "list", "expected_crafts": ["jamdani", "tangail_saree", "nakshi_kantha", "khadi", "rajshahi_silk", "muslin_revival"], "must_not_contain": []},
+  {"question": "Name the fisheries related crafts", "language": "en", "question_type": "list", "expected_crafts": ["dry_fish_processing", "handmade_fishing_nets", "traditional_boat_building"], "must_not_contain": []},
+  {"question": "মাটির তৈরি কারুশিল্পগুলোর তালিকা দাও", "language": "bn", "question_type": "list", "expected_crafts": ["pottery", "terracotta", "clay_toys"], "must_not_contain": []},
+
+  {"question": "Compare Jamdani and Tangail saree", "language": "en", "question_type": "compare", "expected_crafts": ["jamdani", "tangail_saree"], "must_not_contain": []},
+  {"question": "What is the difference between Shital Pati and bamboo craft?", "language": "en", "question_type": "compare", "expected_crafts": ["shital_pati", "bamboo_crafts"], "must_not_contain": []},
+  {"question": "জামদানি আর নকশি কাঁথার মধ্যে পার্থক্য কী?", "language": "bn", "question_type": "compare", "expected_crafts": ["jamdani", "nakshi_kantha"], "must_not_contain": []},
+
+  {"question": "How long does it take to make Jamdani?", "language": "en", "question_type": "time", "expected_crafts": ["jamdani"], "must_not_contain": []},
+  {"question": "How many days does a Shital Pati take to weave?", "language": "en", "question_type": "time", "expected_crafts": ["shital_pati"], "must_not_contain": []},
+  {"question": "জামদানি শাড়ি বানাতে কত সময় লাগে?", "language": "bn", "question_type": "time", "expected_crafts": ["jamdani"], "must_not_contain": []},
+
+  {"question": "Which heritage sites are linked to terracotta?", "language": "en", "question_type": "heritage", "expected_crafts": ["terracotta"], "expected_docs": ["REF-SITES"], "must_not_contain": []},
+  {"question": "What museums or heritage sites are in Sonargaon?", "language": "en", "question_type": "heritage", "expected_crafts": [], "expected_docs": ["REF-SITES"], "must_not_contain": []},
+
+  {"question": "How many artisans make Jamdani today?", "language": "en", "question_type": "describe", "expected_crafts": ["jamdani"], "must_not_contain": ["thousand", "lakh"]},
+  {"question": "Who won the 2022 FIFA World Cup?", "language": "en", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["Argentina", "France", "Messi"]},
+  {"question": "What is the capital of France?", "language": "en", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["Paris"]},
+  {"question": "Who is the prime minister of Bangladesh?", "language": "en", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["Hasina", "Yunus", "Tarique"]},
+  {"question": "What is the population of Bangladesh?", "language": "en", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["million", "crore"]},
+  {"question": "Write a Python function to reverse a list", "language": "en", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["def ", "return "]},
+  {"question": "আজকের আবহাওয়া কেমন?", "language": "bn", "question_type": "out_of_scope", "expected_crafts": [], "expect_refusal": true, "must_not_contain": ["°C", "ডিগ্রি"]}
+]
