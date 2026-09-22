@@ -53,3 +53,7 @@ SELENIUM_TESTING.md
 
 # Text notes
 *.txt
+
+# ...except files the RAG pipeline needs at runtime / to install
+!rag/prompts/*.txt
+!rag/requirements.txt
