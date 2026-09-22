@@ -3,6 +3,12 @@
 One embedding object is shared by ingestion (step 6) and querying (step 8) -
 the same model must be used on both sides or the vectors are not comparable.
 
+Two kinds of vector are made for every chunk:
+  dense  : get_embeddings()         - the semantic vector (all-MiniLM-L6-v2, unchanged)
+  sparse : get_sparse_embeddings()  - BM25 term weights (fastembed "Qdrant/bm25"), which
+           catch exact words the dense model blurs (a rare place name, "GI", "Tangail")
+Step 6 stores both; step 9 searches both and fuses the rankings (hybrid search).
+
 Two providers, chosen by EMBEDDING_PROVIDER in .env:
   google      : Gemini embeddings (recommended; needs an API key with quota)
   huggingface : a local sentence-transformers model, no API key, no quota
@@ -76,3 +82,22 @@ def detect_dimension(embeddings) -> int:
         ) from exc
     print(f"    vector size: {dim}")
     return dim
+
+
+def get_sparse_embeddings():
+    """BM25 sparse embedder for hybrid search. Runs locally (ONNX); the small model files
+    (stopwords etc.) are downloaded once on first use."""
+    try:
+        from fastembed import SparseTextEmbedding
+    except ImportError as exc:
+        raise RuntimeError("Hybrid search needs fastembed. Install it with:  pip install fastembed") from exc
+
+    try:
+        model = SparseTextEmbedding(config.SPARSE_MODEL)
+    except Exception as exc:  # noqa: BLE001 - re-raised with context
+        raise RuntimeError(
+            f"Could not load the sparse model '{config.SPARSE_MODEL}' (needs a one-time download "
+            f"from Hugging Face).\nOriginal error: {exc}"
+        ) from exc
+    print(f"[5] Sparse     : {config.SPARSE_MODEL} (BM25, local)")
+    return model
