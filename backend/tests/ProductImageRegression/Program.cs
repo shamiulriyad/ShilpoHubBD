@@ -1,0 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using ShilpoHubBD.Data;
+using ShilpoHubBD.Domain.Entities.Marketplace;
+using var db = new ShilpoHubDbContext(new DbContextOptionsBuilder<ShilpoHubDbContext>().UseNpgsql("Host=localhost;Database=unused").Options);
+var product = new Product { Id = Guid.NewGuid() };
+var oldImage = new ProductImage { Id = Guid.NewGuid(), ImageUrl = "/uploads/images/old.png", ProductId = product.Id };
+product.Images.Add(oldImage);
+db.Attach(product);
+product.Images.Clear();
+var replacement = new ProductImage { Id = Guid.NewGuid(), ImageUrl = "/uploads/images/new.png" };
+product.Images.Add(replacement);
+db.ChangeTracker.DetectChanges();
+Console.WriteLine("Replacement image state: " + db.Entry(replacement).State);
+if (db.Entry(replacement).State != EntityState.Added) throw new Exception("Replacement image must INSERT, not UPDATE a nonexistent row.");
+Console.WriteLine("PASS: replaced image is inserted.");
