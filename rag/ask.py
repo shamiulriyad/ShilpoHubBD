@@ -1,6 +1,7 @@
 """Query pipeline - steps 7 to 11.
 
-    python ask.py "what is the refund policy?"
+    python ask.py "Which crafts are associated with Narayanganj?"
+    python ask.py "শীতল পাটি কীভাবে তৈরি হয়?"      # Bangla works too
     python ask.py                 # interactive loop, 'exit' to quit
 """
 
@@ -8,30 +9,31 @@ import sys
 
 import config
 from rag import index_meta
-from rag.step05_embedding import get_embeddings
-from rag.step06_vector_store import get_vector_store
+from rag.pipeline import QueryResult, build_context, run_query
+from rag.step05_embedding import get_embeddings, get_sparse_embeddings
+from rag.step06_vector_store import collection_exists, get_client
 from rag.step07_user_question import get_question
-from rag.step08_query_embedding import embed_question
-from rag.step09_retrieve import retrieve
-from rag.step10_generate import generate_answer, get_llm
 from rag.step11_answer import present
 
 
-def answer_once(question: str, embeddings, vector_store, llm) -> dict:
-    query_vector = embed_question(embeddings, question)             # 8
-    scored_docs = retrieve(vector_store, query_vector, config.TOP_K)  # 9
-    answer = generate_answer(question, scored_docs, llm=llm)        # 10
-    return present(question, answer, scored_docs)                   # 11
+def answer_once(question: str, ctx, collection: str = config.COLLECTION_NAME) -> QueryResult:
+    result = run_query(question, ctx, collection)                   # 7 -> 11
+    present(question, result.response)
+    return result
 
 
 def main() -> None:
+    config.ensure_utf8_console()
+
     index_meta.check_before_query(config.COLLECTION_NAME)           # model still matches the index?
-    embeddings = get_embeddings()                                   # 5 (reused)
-    vector_store = get_vector_store(embeddings, config.COLLECTION_NAME)  # 6 (read side)
-    llm = get_llm()
+    client = get_client()
+    if not client.collection_exists(config.COLLECTION_NAME):
+        raise SystemExit(f"Collection '{config.COLLECTION_NAME}' does not exist yet. Run:  python ingest.py --recreate")
+
+    ctx = build_context(client, get_embeddings(), get_sparse_embeddings())   # 5 (reused) + BM25
 
     if sys.argv[1:]:
-        answer_once(get_question(), embeddings, vector_store, llm)  # 7
+        answer_once(get_question(), ctx)                            # 7
         return
 
     print("Interactive mode. Type 'exit' to quit.")
@@ -43,7 +45,10 @@ def main() -> None:
             return
         if question.lower() in {"exit", "quit", "q"}:
             return
-        answer_once(question, embeddings, vector_store, llm)
+        try:
+            answer_once(question, ctx)
+        except RuntimeError as exc:                                 # e.g. Gemini quota - keep the session alive
+            print(f"\n! {exc}\n")
 
 
 if __name__ == "__main__":
