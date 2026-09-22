@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ShilpoHubBD.Api.Hubs;
@@ -235,7 +236,15 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Product and heritage images uploaded through the authenticated media endpoint.
-app.UseStaticFiles();
+// A missing wwwroot at startup leaves the default provider empty, even after
+// the first upload creates it. Bind a physical provider to the upload location.
+var mediaWebRoot = app.Environment.WebRootPath
+	?? Path.Combine(app.Environment.ContentRootPath, "wwwroot");
+Directory.CreateDirectory(Path.Combine(mediaWebRoot, "uploads", "images"));
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(mediaWebRoot)
+});
 
 app.UseCors("Frontend");
 
