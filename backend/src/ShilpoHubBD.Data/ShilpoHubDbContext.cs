@@ -47,6 +47,7 @@ using ShilpoHubBD.Domain.Entities.SkillAssessment;
 using ShilpoHubBD.Domain.Entities.Sustainability;
 using ShilpoHubBD.Domain.Entities.Traceability;
 using ShilpoHubBD.Domain.Entities.TouristBooking;
+using ShilpoHubBD.Domain.Entities.Tourism;
 
 namespace ShilpoHubBD.Data;
 
@@ -235,6 +236,9 @@ public partial class ShilpoHubDbContext : DbContext
 	public DbSet<TouristService> TouristServices => Set<TouristService>();
 	public DbSet<ServiceAvailabilitySlot> ServiceAvailabilitySlots => Set<ServiceAvailabilitySlot>();
 	public DbSet<Booking> Bookings => Set<Booking>();
+	public DbSet<TourismLocation> TourismLocations => Set<TourismLocation>();
+	public DbSet<TransportOption> TransportOptions => Set<TransportOption>();
+	public DbSet<SavedTourPlan> SavedTourPlans => Set<SavedTourPlan>();
 
 	public DbSet<LiveClass> LiveClasses => Set<LiveClass>();
 	public DbSet<LiveClassParticipant> LiveClassParticipants => Set<LiveClassParticipant>();
@@ -381,5 +385,44 @@ public partial class ShilpoHubDbContext : DbContext
 	{
 		modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShilpoHubDbContext).Assembly);
 		base.OnModelCreating(modelBuilder);
+
+		// Every entity's Guid key is assigned by the application (Guid.NewGuid()) or below. With EF's
+		// default (ValueGeneratedOnAdd) a new child that already has its Id -- e.g. a status-history
+		// event added to a loaded parent's collection -- is assumed to exist already, so SaveChanges
+		// issues an UPDATE that matches 0 rows and fails with DbUpdateConcurrencyException (the CSR
+		// "Approve" bug). Declaring the keys ValueGeneratedNever makes such rows INSERTs.
+		foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+		{
+			var key = entityType.FindPrimaryKey();
+			if (!entityType.IsOwned() && key is { Properties.Count: 1 } && key.Properties[0].ClrType == typeof(Guid))
+			{
+				modelBuilder.Entity(entityType.ClrType).Property(key.Properties[0].Name).ValueGeneratedNever();
+			}
+		}
 	}
+
+	// Keeps the old "the database side gives me a key" convenience: an added entity whose Guid key
+	// was left empty gets a fresh one, so code that never assigned an Id keeps working.
+	private void AssignMissingGuidKeys()
+	{
+		foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Added))
+		{
+			var key = entry.Metadata.FindPrimaryKey();
+			if (key is { Properties.Count: 1 } && key.Properties[0].ClrType == typeof(Guid)
+				&& entry.Property(key.Properties[0].Name).CurrentValue is Guid id && id == Guid.Empty)
+			{
+				entry.Property(key.Properties[0].Name).CurrentValue = Guid.NewGuid();
+			}
+		}
+	}
+
+	public override int SaveChanges(bool acceptAllChangesOnSuccess)
+	{
+		ChangeTracker.DetectChanges();
+		AssignMissingGuidKeys();
+		return base.SaveChanges(acceptAllChangesOnSuccess);
+	}
+
+	// The async SaveChangesAsync override lives in ShilpoHubDbContext.Notifications.cs (it adds the
+	// notifications first, then calls AssignMissingGuidKeys()).
 }
