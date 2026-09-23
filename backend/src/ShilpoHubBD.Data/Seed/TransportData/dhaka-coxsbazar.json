@@ -1,0 +1,166 @@
+{
+  "_format": "One file per route (origin city -> destination district). The seeder loads every *.json in this folder. See README.md in this folder.",
+  "origin": "Dhaka",
+  "destinationDistrict": "Cox's Bazar",
+  "retrievedOn": "2026-09-24",
+  "options": [
+    {
+      "mode": "Train",
+      "operator": "Bangladesh Railway (East Zone)",
+      "serviceName": "Cox's Bazar Express (813/814)",
+      "serviceClasses": "AC Cabin (berth), AC Chair, Shovan Chair, Executive Chair Car",
+      "durationText": "About 8 hours (551 km)",
+      "fareBdt": 695,
+      "fareNote": "Lowest reported fare (Shovon Chair). Reported fares: AC Berth 2,380; AC Seat 1,590; Snigdha 1,325; Shovon Chair 695 (single secondary source, unverified). Confirm on the e-ticket site.",
+      "bookingUrl": "https://eticket.railway.gov.bd/",
+      "notes": "Runs 6 days a week from Dhaka (Kamalapur) via Dhaka Airport and Chattogram; began 1 Dec 2023. Sources DISAGREE on departure times and the weekly off day, so neither is shown - check the current timetable on the e-ticket site.",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Cox%27s_Bazar_Express",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["departure/arrival times (sources conflict)", "weekly off day (sources conflict)", "fares (single secondary source)"]
+    },
+    {
+      "mode": "Train",
+      "operator": "Bangladesh Railway (East Zone)",
+      "serviceName": "Parjatak Express (815/816)",
+      "serviceClasses": "AC Sleeper, AC Chair, Non-AC Chair",
+      "durationText": "About 8 hours (551 km)",
+      "fareBdt": 695,
+      "fareNote": "Lowest reported fare for Dhaka-Cox's Bazar trains (Shovon Chair). Fares per class for this train were not separately confirmed (single secondary source, unverified). Confirm on the e-ticket site.",
+      "bookingUrl": "https://eticket.railway.gov.bd/",
+      "notes": "Runs 6 days a week from Dhaka via Dhaka Airport and Chattogram; began 10 Jan 2024. Sources DISAGREE on departure times and the weekly off day, so neither is shown - check the current timetable on the e-ticket site.",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Parjatak_Express",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["departure/arrival times (sources conflict)", "weekly off day (sources conflict)", "fares (single secondary source)"]
+    },
+
+    {
+      "mode": "Bus",
+      "operator": "Green Line Paribahan",
+      "serviceName": "Green Line - Dhaka to Cox's Bazar",
+      "serviceClasses": "Scania economy, VIP seater, VIP sleeper (as listed by ticketing sites)",
+      "durationText": "About 9-12 hours (typical for this route, secondary sources)",
+      "fareNote": "Fare not shown: sources disagree widely (about Tk 1,500 to Tk 2,700 by class). Confirm with the operator.",
+      "notes": "Named among the most popular operators on this route by several ticketing/travel sites.",
+      "sourceUrl": "https://bdtickets.com/blog/dhaka-to-coxs-bazar-by-bus-operators-classes-and-fares",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["departure times", "fare (sources conflict)", "boarding counters", "official booking page"]
+    },
+    {
+      "mode": "Bus",
+      "operator": "Hanif Enterprise",
+      "serviceName": "Hanif - Dhaka to Cox's Bazar",
+      "serviceClasses": "Non-AC, Volvo business class",
+      "durationText": "About 9-12 hours (typical for this route, secondary sources)",
+      "fareNote": "Fare not shown: one site lists about Tk 800 (Non-AC) and Tk 2,000 (Volvo business) but others differ. Confirm with the operator.",
+      "sourceUrl": "https://bdtickets.com/blog/dhaka-to-coxs-bazar-by-bus-operators-classes-and-fares",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["departure times", "fare (sources conflict)", "boarding counters", "official booking page"]
+    },
+    {
+      "mode": "Bus",
+      "operator": "Soudia Paribahan",
+      "serviceName": "Soudia - Dhaka to Cox's Bazar",
+      "serviceClasses": "Non-AC, Mercedes-Benz business class",
+      "durationText": "About 9-12 hours (typical for this route, secondary sources)",
+      "fareNote": "Fare not shown: one site lists about Tk 800 (Non-AC) and Tk 2,000 (business) but others differ. Confirm with the operator.",
+      "sourceUrl": "https://bdtickets.com/blog/dhaka-to-coxs-bazar-by-bus-operators-classes-and-fares",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["departure times", "fare (sources conflict)", "boarding counters", "official booking page"]
+    },
+    {
+      "mode": "Bus",
+      "operator": "S. Alam Paribahan",
+      "serviceName": "S. Alam - Dhaka to Cox's Bazar",
+      "serviceClasses": "Non-AC (others not confirmed)",
+      "durationText": "About 9-12 hours (typical for this route, secondary sources)",
+      "fareNote": "Fare not shown: one site lists about Tk 800 (Non-AC) but this is not confirmed. Confirm with the operator.",
+      "sourceUrl": "https://bdtickets.com/blog/dhaka-to-coxs-bazar-by-bus-operators-classes-and-fares",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["departure times", "fare (unconfirmed)", "boarding counters", "official booking page"]
+    },
+    {
+      "mode": "Bus",
+      "operator": "Saintmartin Paribahan",
+      "serviceName": "Saintmartin - Dhaka to Cox's Bazar",
+      "serviceClasses": "Economy, business",
+      "durationText": "About 9-12 hours (typical for this route, secondary sources)",
+      "fareNote": "Fare not shown: one site lists about Tk 1,450 (economy) and Tk 2,000 (business) but others differ. Confirm with the operator.",
+      "sourceUrl": "https://bdtickets.com/blog/dhaka-to-coxs-bazar-by-bus-operators-classes-and-fares",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["departure times", "fare (sources conflict)", "boarding counters", "official booking page"]
+    },
+    {
+      "mode": "Bus",
+      "operator": "Shyamoli Paribahan",
+      "serviceName": "Shyamoli - Dhaka to Cox's Bazar",
+      "durationText": "About 9-12 hours (typical for this route, secondary sources)",
+      "fareNote": "No fare found in the sources. Confirm with the operator.",
+      "notes": "Named among the most popular operators on this route.",
+      "sourceUrl": "https://bdtickets.com/blog/dhaka-to-coxs-bazar-by-bus-operators-classes-and-fares",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["classes", "departure times", "fare", "boarding counters", "official booking page"]
+    },
+    {
+      "mode": "Bus",
+      "operator": "TR Travels",
+      "serviceName": "TR Travels - Dhaka to Cox's Bazar",
+      "durationText": "About 9-12 hours (typical for this route, secondary sources)",
+      "fareNote": "No fare found in the sources. Confirm with the operator.",
+      "sourceUrl": "https://bdtickets.com/blog/dhaka-to-coxs-bazar-by-bus-operators-classes-and-fares",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["classes", "departure times", "fare", "boarding counters", "official booking page"]
+    },
+    {
+      "mode": "Bus",
+      "operator": "Desh Travels",
+      "serviceName": "Desh Travels - Dhaka to Cox's Bazar",
+      "durationText": "About 9-12 hours (typical for this route, secondary sources)",
+      "fareNote": "No fare found in the sources. Confirm with the operator.",
+      "sourceUrl": "https://bdtickets.com/blog/dhaka-to-coxs-bazar-by-bus-operators-classes-and-fares",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["classes", "departure times", "fare", "boarding counters", "official booking page"]
+    },
+
+    {
+      "mode": "Plane",
+      "operator": "Biman Bangladesh Airlines",
+      "serviceName": "Biman - Dhaka to Cox's Bazar",
+      "durationText": null,
+      "fareNote": "No fare found. Check the airline for current fares.",
+      "notes": "Listed as serving Cox's Bazar Airport from Dhaka (Hazrat Shahjalal International Airport).",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Cox%27s_Bazar_Airport",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["flight times and frequency", "fare", "flight duration", "official booking page"]
+    },
+    {
+      "mode": "Plane",
+      "operator": "US-Bangla Airlines",
+      "serviceName": "US-Bangla - Dhaka to Cox's Bazar",
+      "fareNote": "No fare found. Check the airline for current fares.",
+      "notes": "Listed as serving Cox's Bazar Airport from Dhaka (Hazrat Shahjalal International Airport).",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Cox%27s_Bazar_Airport",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["flight times and frequency", "fare", "flight duration", "official booking page"]
+    },
+    {
+      "mode": "Plane",
+      "operator": "Novoair",
+      "serviceName": "Novoair - Dhaka to Cox's Bazar",
+      "fareNote": "No fare found. Check the airline for current fares.",
+      "notes": "Listed as serving Cox's Bazar Airport from Dhaka (Hazrat Shahjalal International Airport).",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Cox%27s_Bazar_Airport",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["flight times and frequency", "fare", "flight duration", "official booking page"]
+    },
+    {
+      "mode": "Plane",
+      "operator": "Air Astra",
+      "serviceName": "Air Astra - Dhaka to Cox's Bazar",
+      "fareNote": "No fare found. Check the airline for current fares.",
+      "notes": "Listed as serving Cox's Bazar Airport from Dhaka (Hazrat Shahjalal International Airport).",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Cox%27s_Bazar_Airport",
+      "verificationStatus": "SecondarySource",
+      "unverifiedFields": ["flight times and frequency", "fare", "flight duration", "official booking page"]
+    }
+  ]
+}
