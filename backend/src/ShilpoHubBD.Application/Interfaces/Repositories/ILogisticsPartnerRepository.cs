@@ -6,6 +6,8 @@ namespace ShilpoHubBD.Application.Interfaces.Repositories;
 public interface ILogisticsPartnerRepository
 {
     Task AddAsync(LogisticsPartnerProfile profile, CancellationToken cancellationToken);
+    // Verified partners that are taking work -- the ones a producer can hand a shipment to.
+    Task<List<LogisticsPartnerProfile>> GetAvailableForHandoffAsync(CancellationToken cancellationToken);
 
     void Remove(LogisticsPartnerProfile profile);
 
