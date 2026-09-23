@@ -114,7 +114,7 @@ export default function Checkout() {
               Cash on Delivery
             </label>
             <p className="mt-2 text-xs text-body/50">
-              Only Cash on Delivery is available right now â€” card and mobile-banking gateways aren't connected yet.
+              Only Cash on Delivery is available right now — card and mobile-banking gateways aren't connected yet.
             </p>
           </div>
         </div>
@@ -124,16 +124,16 @@ export default function Checkout() {
           <AsyncState isLoading={summaryQuery.isLoading} isError={summaryQuery.isError} error={summaryQuery.error}>
             <div className="flex justify-between text-sm text-body/70">
               <span>Items ({itemCount})</span>
-              <span>à§³ {subtotal.toLocaleString()}</span>
+              <span>৳ {subtotal.toLocaleString()}</span>
             </div>
             <div className="flex justify-between border-t border-border pt-3 text-sm font-semibold text-heading">
               <span>Total</span>
-              <span>à§³ {subtotal.toLocaleString()}</span>
+              <span>৳ {subtotal.toLocaleString()}</span>
             </div>
           </AsyncState>
           {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
           <Button type="submit" variant="primary" className="w-full" disabled={checkout.isPending || !cartQuery.isSuccess || !summaryQuery.isSuccess || cartQuery.isFetching || summaryQuery.isFetching || itemCount === 0}>
-            {checkout.isPending ? 'Placing orderâ€¦' : 'Place Order'}
+            {checkout.isPending ? 'Placing order…' : 'Place Order'}
           </Button>
         </div>
       </form>
