@@ -7,6 +7,7 @@ import { sidebarNav, roleSidebars } from '../data/navigation';
 import { routePaths } from '../routes/routePaths';
 import { useAuth } from '../hooks/useAuth';
 import BrandLogo from '../components/brand/BrandLogo';
+import { AIAssistantWidget } from '../components/ui';
 
 export default function DashboardLayout({ navItems, sidebarTitle }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -72,6 +73,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         </main>
       </div>
       <Footer />
+      <AIAssistantWidget />
     </div>
   );
 }
