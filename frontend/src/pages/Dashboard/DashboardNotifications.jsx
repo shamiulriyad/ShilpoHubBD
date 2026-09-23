@@ -1,10 +1,11 @@
 import { PageHeader } from '../../components/ui';
+import NotificationCenter from '../../components/notifications/NotificationCenter';
 
 export default function DashboardNotifications() {
   return (
-    <div>
+    <div className="mx-auto max-w-4xl">
       <PageHeader title="Notifications" description="Stay up to date with your ShilpoHub activity." />
-      <p className="rounded-xl border border-border bg-surface p-8 text-center text-sm text-body/60">No notifications are available.</p>
+      <NotificationCenter />
     </div>
   );
 }
