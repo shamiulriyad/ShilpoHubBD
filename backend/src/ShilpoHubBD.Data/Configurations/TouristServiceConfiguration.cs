@@ -16,6 +16,7 @@ public class TouristServiceConfiguration : IEntityTypeConfiguration<TouristServi
         builder.Property(s => s.Type).IsRequired().HasConversion<string>().HasMaxLength(30);
         builder.Property(s => s.Price).IsRequired().HasColumnType("decimal(18,2)");
         builder.Property(s => s.Location).HasMaxLength(300);
+        builder.Property(s => s.Facilities).HasMaxLength(1000);
         builder.Property(s => s.ImageUrl).HasMaxLength(1000);
         builder.Property(s => s.CreatedAt).IsRequired();
         builder.Property(s => s.UpdatedAt).IsRequired();
