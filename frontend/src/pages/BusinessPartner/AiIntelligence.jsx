@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ProducerSelect } from '../../components/forms/EntityPickers';
 import { PageHeader, Badge, Button } from '../../components/ui';
 import { useCategories } from '../../hooks/useCategories';
 import { useAiIntelligenceTools } from '../../hooks/useAiIntelligence';
@@ -24,6 +25,8 @@ export default function AiIntelligence() {
   const [categoryId, setCategoryId] = useState('');
   const [producerId, setProducerId] = useState('');
   const [quantity, setQuantity] = useState('');
+  // The API rejects quantities below 1; block them here instead of accepting -27.
+  const quantityInvalid = quantity !== '' && (!Number.isInteger(Number(quantity)) || Number(quantity) < 1);
 
   return (
     <div>
@@ -41,7 +44,7 @@ export default function AiIntelligence() {
         </ToolCard>
 
         <ToolCard title="Quality Prediction" mutation={tools.predictQuality}>
-          <input aria-label="Producer ID" placeholder="Producer ID" value={producerId} onChange={(e) => setProducerId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <ProducerSelect id="ai-producer-quality" label="Producer" value={producerId} onChange={setProducerId} />
           <Button variant="primary" onClick={() => tools.predictQuality.mutate(producerId)} disabled={!producerId || tools.predictQuality.isPending}>
             Predict Quality
           </Button>
@@ -58,15 +61,16 @@ export default function AiIntelligence() {
         </ToolCard>
 
         <ToolCard title="Delivery Prediction" mutation={tools.predictDelivery}>
-          <input aria-label="Producer ID" placeholder="Producer ID" value={producerId} onChange={(e) => setProducerId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input aria-label="Quantity" type="number" placeholder="Quantity (optional)" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <Button variant="primary" onClick={() => tools.predictDelivery.mutate({ producerId, quantity: quantity ? Number(quantity) : undefined })} disabled={!producerId || tools.predictDelivery.isPending}>
+          <ProducerSelect id="ai-producer-delivery" label="Producer" value={producerId} onChange={setProducerId} />
+          <input aria-label="Quantity" type="number" min="1" step="1" placeholder="Quantity (optional, whole units)" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          {quantityInvalid && <p role="alert" className="text-xs text-error">Quantity must be a whole number of 1 or more.</p>}
+          <Button variant="primary" onClick={() => tools.predictDelivery.mutate({ producerId, quantity: quantity ? Number(quantity) : undefined })} disabled={!producerId || quantityInvalid || tools.predictDelivery.isPending}>
             Predict Delivery
           </Button>
         </ToolCard>
 
         <ToolCard title="Risk Assessment" mutation={tools.assessRisk}>
-          <input aria-label="Producer ID" placeholder="Producer ID" value={producerId} onChange={(e) => setProducerId(e.target.value)} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <ProducerSelect id="ai-producer-risk" label="Producer" value={producerId} onChange={setProducerId} />
           <Button variant="primary" onClick={() => tools.assessRisk.mutate(producerId)} disabled={!producerId || tools.assessRisk.isPending}>
             Assess Risk
           </Button>
