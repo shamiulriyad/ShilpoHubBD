@@ -13,6 +13,8 @@ export default function InvestmentMarketplace() {
   const [proposingId, setProposingId] = useState(null);
 
   const opportunities = opportunitiesQuery.data?.items || [];
+  // /proposals/mine is paged ({ items, totalCount, ... }), not a bare array.
+  const myProposals = proposalsQuery.data?.items || [];
 
   const handleSubmit = (id) => {
     submitProposal.mutate(
@@ -55,7 +57,7 @@ export default function InvestmentMarketplace() {
       <SectionHeader eyebrow="Mine" title="My Proposals" />
       <AsyncState isLoading={proposalsQuery.isLoading} isError={proposalsQuery.isError} error={proposalsQuery.error}>
         <div className="divide-y divide-border rounded-xl border border-border bg-surface">
-          {(proposalsQuery.data || []).map((p) => (
+          {myProposals.map((p) => (
             <div key={p.id} className="flex items-center justify-between p-3 text-sm">
               <span>{p.opportunityTitle}</span>
               <div className="flex items-center gap-3">
@@ -64,7 +66,7 @@ export default function InvestmentMarketplace() {
               </div>
             </div>
           ))}
-          {(proposalsQuery.data || []).length === 0 && <p className="p-3 text-sm text-body/60">No proposals submitted yet.</p>}
+          {myProposals.length === 0 && <p className="p-3 text-sm text-body/60">No proposals submitted yet.</p>}
         </div>
       </AsyncState>
     </div>
