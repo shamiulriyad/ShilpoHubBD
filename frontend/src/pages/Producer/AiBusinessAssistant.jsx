@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MyProductSelect } from '../../components/forms/EntityPickers';
 import { PageHeader, Badge, Button } from '../../components/ui';
 import { useAiBusinessTools } from '../../hooks/useAiBusiness';
 
@@ -23,6 +24,7 @@ export default function AiBusinessAssistant() {
   const [descForm, setDescForm] = useState({ productName: '', categoryName: '', keywords: '' });
   const [translateForm, setTranslateForm] = useState({ text: '', targetLanguage: 'bn' });
   const [demandForm, setDemandForm] = useState({ productId: '', horizonWeeks: 4 });
+  const [trendProductId, setTrendProductId] = useState('');
   const [productionForm, setProductionForm] = useState({ productId: '', targetQuantity: '', dailyProductionCapacity: '', leadTimeDays: 1 });
 
   return (
@@ -62,8 +64,9 @@ export default function AiBusinessAssistant() {
         </ToolCard>
 
         <ToolCard title="Seasonal Trend Prediction" result={tools.predictSeasonalTrend.data} mutation={tools.predictSeasonalTrend}>
-          <p className="text-xs text-body/60">Predicts monthly demand scores across the year.</p>
-          <Button variant="primary" onClick={() => tools.predictSeasonalTrend.mutate({})} disabled={tools.predictSeasonalTrend.isPending}>
+          <p className="text-xs text-body/60">Predicts monthly demand scores across the year for one of your products.</p>
+          <MyProductSelect id="ai-trend-product" label="Product" value={trendProductId} onChange={setTrendProductId} />
+          <Button variant="primary" onClick={() => tools.predictSeasonalTrend.mutate({ productId: trendProductId })} disabled={!trendProductId || tools.predictSeasonalTrend.isPending}>
             Predict Trend
           </Button>
         </ToolCard>
@@ -80,7 +83,7 @@ export default function AiBusinessAssistant() {
         </ToolCard>
 
         <ToolCard title="Demand Forecast" result={tools.forecastDemand.data} mutation={tools.forecastDemand}>
-          <input aria-label="Product ID" placeholder="Product ID" value={demandForm.productId} onChange={(e) => setDemandForm((p) => ({ ...p, productId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <MyProductSelect id="ai-demand-product" label="Product" value={demandForm.productId} onChange={(v) => setDemandForm((p) => ({ ...p, productId: v }))} />
           <input aria-label="Horizon" type="number" min="1" placeholder="Horizon (weeks)" value={demandForm.horizonWeeks} onChange={(e) => setDemandForm((p) => ({ ...p, horizonWeeks: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button
             variant="primary"
@@ -92,7 +95,7 @@ export default function AiBusinessAssistant() {
         </ToolCard>
 
         <ToolCard title="Production Planner" result={tools.planProduction.data} mutation={tools.planProduction}>
-          <input aria-label="Product ID" placeholder="Product ID" value={productionForm.productId} onChange={(e) => setProductionForm((p) => ({ ...p, productId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <MyProductSelect id="ai-production-product" label="Product" value={productionForm.productId} onChange={(v) => setProductionForm((p) => ({ ...p, productId: v }))} />
           <div className="grid grid-cols-2 gap-2">
             <input aria-label="Target quantity" type="number" min="1" placeholder="Target quantity" value={productionForm.targetQuantity} onChange={(e) => setProductionForm((p) => ({ ...p, targetQuantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
             <input aria-label="Daily capacity" type="number" min="1" placeholder="Daily capacity" value={productionForm.dailyProductionCapacity} onChange={(e) => setProductionForm((p) => ({ ...p, dailyProductionCapacity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
