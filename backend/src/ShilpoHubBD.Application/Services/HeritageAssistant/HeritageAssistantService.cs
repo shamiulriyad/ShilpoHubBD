@@ -39,6 +39,6 @@ public class HeritageAssistantService : IHeritageAssistantService
             UnescoRecords = unescoRecords.Select(u => new HeritageUnescoFact(u.Title, u.Description, u.InscribedYear)).ToList(),
         };
 
-        return _provider.Answer(context);
+        return await _provider.AnswerAsync(context, cancellationToken);
     }
 }
