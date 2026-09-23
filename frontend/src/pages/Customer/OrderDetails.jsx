@@ -25,6 +25,8 @@ export default function OrderDetails() {
   const trackingQuery = useOrderTracking(orderId);
   const { cancel, requestReturn } = useOrderMutations();
   const [returnReason, setReturnReason] = useState('');
+  const [confirmingCancel, setConfirmingCancel] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
   const order = orderQuery.data;
 
   return (
@@ -110,6 +112,12 @@ export default function OrderDetails() {
                     <span>৳ {order.total.toLocaleString()}</span>
                   </div>
                   <p className="pt-2 text-xs text-body/60">Paid via {order.paymentMethod}</p>
+                  {order.refundAmount > 0 && (
+                    <div className="rounded-lg border border-success/30 bg-success/5 p-3 text-sm">
+                      <p className="font-semibold text-heading">Refunded ৳ {Number(order.refundAmount).toLocaleString()}</p>
+                      {order.refundReason && <p className="mt-0.5 text-xs text-body/70">{order.refundReason}</p>}
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2 rounded-xl border border-border bg-surface p-5">
@@ -121,14 +129,33 @@ export default function OrderDetails() {
 
                 <div className="flex flex-col gap-2">
                   {canCancel(order.status) && (
-                    <Button
-                      variant="secondary"
-                      className="w-full"
-                      disabled={cancel.isPending}
-                      onClick={() => cancel.mutate({ id: order.id })}
-                    >
-                      {cancel.isPending ? 'Cancelling…' : 'Cancel Order'}
-                    </Button>
+                    confirmingCancel ? (
+                      <div className="space-y-2 rounded-xl border border-border bg-surface p-4">
+                        <p className="text-sm font-semibold text-heading">Cancel this order?</p>
+                        <p className="text-xs text-body/70">Any payment already made will be refunded to you.</p>
+                        <textarea
+                          aria-label="Reason for cancelling"
+                          rows={2}
+                          placeholder="Reason (optional)"
+                          value={cancelReason}
+                          onChange={(e) => setCancelReason(e.target.value)}
+                          className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                        />
+                        <div className="flex gap-2">
+                          <Button variant="secondary" disabled={cancel.isPending} onClick={() => setConfirmingCancel(false)}>Keep order</Button>
+                          <Button
+                            disabled={cancel.isPending}
+                            onClick={() => cancel.mutate({ id: order.id, reason: cancelReason.trim() || undefined }, { onSuccess: () => setConfirmingCancel(false) })}
+                          >
+                            {cancel.isPending ? 'Cancelling…' : 'Yes, cancel order'}
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button variant="secondary" className="w-full" onClick={() => setConfirmingCancel(true)}>
+                        Cancel Order
+                      </Button>
+                    )
                   )}
                   {canReturn(order.status) && (
                     <div className="space-y-2 rounded-xl border border-border bg-surface p-4">
