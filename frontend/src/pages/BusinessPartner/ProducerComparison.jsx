@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { PageHeader, Button } from '../../components/ui';
 import { useProducerComparison } from '../../hooks/useProducerComparison';
+import { ProducerMultiSelect } from '../../components/forms/EntityPickers';
 
 export default function ProducerComparison() {
-  const [producerIds, setProducerIds] = useState('');
+  const [producerIds, setProducerIds] = useState([]);
   const compare = useProducerComparison();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    compare.mutate(producerIds.split(',').map((s) => s.trim()).filter(Boolean));
+    if (producerIds.length >= 2) compare.mutate(producerIds);
   };
 
   const rows = compare.data || [];
@@ -17,17 +18,14 @@ export default function ProducerComparison() {
     <div>
       <PageHeader title="Compare Producers" description="Compare producers side by side on price, quality, delivery and certifications." />
 
-      <form onSubmit={handleSubmit} className="mb-8 flex gap-2">
-        <input aria-label="Producer IDs"
-          required
-          placeholder="Producer IDs (comma separated)"
-          value={producerIds}
-          onChange={(event) => setProducerIds(event.target.value)}
-          className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
-        />
-        <Button type="submit" variant="primary" disabled={compare.isPending}>
-          {compare.isPending ? 'Comparing…' : 'Compare'}
-        </Button>
+      <form onSubmit={handleSubmit} className="mb-8 space-y-4">
+        <ProducerMultiSelect value={producerIds} onChange={setProducerIds} />
+        <div className="flex items-center gap-3">
+          <Button type="submit" variant="primary" disabled={compare.isPending || producerIds.length < 2}>
+            {compare.isPending ? 'Comparing…' : 'Compare'}
+          </Button>
+          {producerIds.length < 2 && <span className="text-xs text-body/60">Select at least 2 producers.</span>}
+        </div>
       </form>
 
       {rows.length > 0 && (
