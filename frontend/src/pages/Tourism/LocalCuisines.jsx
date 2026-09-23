@@ -1,50 +1,24 @@
-import { routePaths } from '../../routes/routePaths';
-import { PageHeader, AsyncState } from '../../components/ui';
+import { useSearchParams } from 'react-router-dom';
+import { PageHeader } from '../../components/ui';
 import { useLocalCuisines } from '../../hooks/useLocalCuisines';
 import SafeImage from '../../components/media/SafeImage';
+import { cuisineGuides } from '../../data/tourismGuides';
+import { DirectoryFilters, EmptyResults, LiveDataNotice } from '../../components/tourism/TravelUI';
 
 export default function LocalCuisines() {
-  const { data, isLoading, isError, error } = useLocalCuisines({ pageSize: 50 });
-  const cuisines = data?.items || [];
-
-  return (
-    <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <PageHeader
-        breadcrumbs={[
-          { label: 'Home', path: routePaths.home },
-          { label: 'Tourism', path: routePaths.tourism },
-          { label: 'Local Cuisine' },
-        ]}
-        title="Local Cuisine"
-        description="Traditional dishes to try on your heritage journey, and where to find them."
-      />
-      <AsyncState isLoading={isLoading} isError={isError} error={error}>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {cuisines.map((cuisine) => (
-            <div key={cuisine.id} className="overflow-hidden rounded-xl border border-border bg-surface">
-              <div className="flex aspect-[4/3] items-center justify-center bg-background text-xs text-body/40">
-                {cuisine.imageUrl ? (
-                  <SafeImage src={cuisine.imageUrl} alt={cuisine.name} className="h-full w-full object-cover" />
-                ) : (
-                  'Dish Photo'
-                )}
-              </div>
-              <div className="space-y-1.5 p-4">
-                <p className="text-sm font-semibold text-heading">{cuisine.name}</p>
-                <p className="text-xs text-body/60">{cuisine.districtName}{cuisine.heritagePlaceName ? ` · ${cuisine.heritagePlaceName}` : ''}</p>
-                <p className="text-sm text-body/70">{cuisine.description}</p>
-                {cuisine.whereToTry && (
-                  <p className="text-xs text-body/50">
-                    <span className="font-medium text-heading">Where to try: </span>
-                    {cuisine.whereToTry}
-                  </p>
-                )}
-              </div>
-            </div>
-          ))}
-          {cuisines.length === 0 && <p className="col-span-full text-sm text-body/60">No local cuisine entries yet.</p>}
-        </div>
-      </AsyncState>
-    </div>
-  );
+  const query=useLocalCuisines({pageSize:100});
+  const [params,setParams]=useSearchParams();
+  const search=params.get('q')||'', district=params.get('district')||'',kind=params.get('kind')||'';
+  const records=[...cuisineGuides,...(query.data?.items||[]).filter(c=>!cuisineGuides.some(g=>g.name.toLowerCase()===c.name.toLowerCase())).map(c=>({...c,kind:'Local listing'}))];
+  const filtered=records.filter(c=>(!district||c.districtName===district)&&(!kind||c.kind===kind)&&[c.name,c.districtName,c.description].join(' ').toLowerCase().includes(search.trim().toLowerCase()));
+  const change=(key,value)=>{const next=new URLSearchParams(params);if(value)next.set(key,value);else next.delete(key);setParams(next,{replace:true});};
+  return <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
+    <PageHeader title="A taste of Bangladesh" description="Discover regional dishes, their ingredients and where to look for them on your journey." breadcrumbs={[{label:'Home',path:'/'},{label:'Local Cuisine'}]}/>
+    <DirectoryFilters search={search} onSearch={v=>change('q',v)} onClear={()=>setParams({})} filters={[{label:'District',value:district,onChange:v=>change('district',v),options:[...new Set(records.map(c=>c.districtName).filter(Boolean))].sort()},{label:'Dish type',value:kind,onChange:v=>change('kind',v),options:[...new Set(records.map(c=>c.kind))]}]}/>
+    <LiveDataNotice query={query} label="Local food listings"/>
+    <p role="status" className="mb-4 text-sm text-body/65">{filtered.length} dishes</p>
+    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{filtered.map(c=><article key={c.id} className="overflow-hidden rounded-xl border border-border bg-surface">{c.imageUrl&&<SafeImage src={c.imageUrl} alt={c.name} className="aspect-video w-full object-cover"/>}<div className="p-6"><p className="text-xs font-semibold uppercase tracking-wide text-primary">{c.districtName} · {c.kind}</p><h2 className="mt-3 text-xl font-semibold text-heading">{c.name}</h2><p className="mt-3 text-sm leading-7 text-body/80">{c.description}</p><dl className="mt-5 space-y-4 border-t border-border pt-4">{c.ingredients&&<div><dt className="text-xs font-semibold uppercase tracking-wide">Typical ingredients</dt><dd className="mt-2 text-sm leading-6 text-body/75">{c.ingredients}</dd></div>}{c.whereToTry&&<div><dt className="text-xs font-semibold uppercase tracking-wide">Where to try</dt><dd className="mt-2 text-sm leading-6 text-body/75">{c.whereToTry}</dd></div>}</dl>{c.source&&<a href={c.source} target="_blank" rel="noreferrer" className="mt-5 inline-block text-xs text-link underline">Bangladesh Tourism Board reference ↗</a>}</div></article>)}</div>
+    {!filtered.length&&<EmptyResults onClear={()=>setParams({})}/>}
+    <p className="mt-6 text-xs leading-6 text-body/65">Recipes vary. Ask the restaurant about ingredients and allergens; these guides do not guarantee any dish is allergen-free.</p>
+  </div>;
 }
