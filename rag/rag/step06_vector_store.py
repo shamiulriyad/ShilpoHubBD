@@ -56,6 +56,9 @@ PAYLOAD_INDEXES = {
     # not in the original list, but step 9 filters on them (REF-* lookups, per-file retrieval)
     "doc_id": PayloadSchemaType.KEYWORD,
     "source_file": PayloadSchemaType.KEYWORD,
+    # Travel Planner metadata (rag/travel/*) -- absent on craft/reference documents.
+    "area": PayloadSchemaType.KEYWORD,
+    "themes": PayloadSchemaType.KEYWORD,
 }
 
 
