@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import CraftHeritageCatalog from '../../components/heritage/CraftHeritageCatalog';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Table, SearchBar, Badge, Button, AsyncState } from '../../components/ui';
 import { useDistricts } from '../../hooks/useDistricts';
@@ -11,6 +13,7 @@ const riskLevels = ['Low', 'Medium', 'High', 'Critical'];
 const riskLevelTone = { Low: 'success', Medium: 'secondary', High: 'primary', Critical: 'neutral' };
 
 function OverviewTab() {
+  const [query, setQuery] = useState('');
   const districtsQuery = useDistricts();
   const villagesQuery = useVillages();
   const summaryQuery = useHeritageDbSummary({});
@@ -20,7 +23,7 @@ function OverviewTab() {
     return acc;
   }, {});
 
-  const rows = (districtsQuery.data || []).map((d) => ({
+  const rows = (districtsQuery.data || []).filter(d => [d.name, d.division].join(' ').toLowerCase().includes(query.trim().toLowerCase())).map((d) => ({
     district: d.name,
     division: d.division,
     villages: villageCountByDistrict[d.id] || 0,
@@ -39,7 +42,7 @@ function OverviewTab() {
         </div>
       )}
       <div className="mb-6 max-w-xl">
-        <SearchBar placeholder="Search the heritage database…" />
+        <SearchBar placeholder="Search districts or divisions…" value={query} onChange={e => setQuery(e.target.value)} />
       </div>
       <AsyncState isLoading={districtsQuery.isLoading} isError={districtsQuery.isError} error={districtsQuery.error}>
         <Table columns={['district', 'division', 'villages']} rows={rows} />
@@ -158,20 +161,22 @@ function RiskTab() {
 }
 
 const tabs = [
+  { key: 'crafts', label: 'Craft heritage' },
   { key: 'overview', label: 'Overview' },
   { key: 'datasets', label: 'Datasets' },
   { key: 'risk', label: 'Risk Assessment' },
 ];
 
 export default function HeritageDatabase() {
-  const [tab, setTab] = useState('overview');
+  const [params, setParams] = useSearchParams();
+  const tab = tabs.some(t => t.key === params.get('tab')) ? params.get('tab') : 'crafts';
+  const setTab = (key) => { const next = new URLSearchParams(params); next.set('tab', key); next.delete('craft'); setParams(next); };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <PageHeader
         breadcrumbs={[
-          { label: 'Home', path: routePaths.home },
-          { label: 'Innovation Hub', path: routePaths.research },
+          { label: 'Innovation Hub', path: routePaths.researcher },
           { label: 'Heritage Database' },
         ]}
         title="Heritage Database"
@@ -183,6 +188,7 @@ export default function HeritageDatabase() {
           <button
             key={t.key}
             type="button"
+            aria-pressed={tab === t.key}
             onClick={() => setTab(t.key)}
             className={`border-b-2 px-3 py-2 text-sm font-medium ${tab === t.key ? 'border-primary text-primary' : 'border-transparent text-body/60'}`}
           >
@@ -191,6 +197,7 @@ export default function HeritageDatabase() {
         ))}
       </div>
 
+      {tab === 'crafts' && <CraftHeritageCatalog />}
       {tab === 'overview' && <OverviewTab />}
       {tab === 'datasets' && <DatasetsTab />}
       {tab === 'risk' && <RiskTab />}
