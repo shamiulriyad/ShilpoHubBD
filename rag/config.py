@@ -1,14 +1,20 @@
 """All tunable settings in one place. Read from .env, with sane defaults."""
 
+import hashlib
 import os
 import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent
+ROOT_ENV = BASE_DIR.parent / ".env"
+
+# rag/.env holds only this service's non-secret settings (embedding model, Qdrant, ...).
+load_dotenv(BASE_DIR / ".env")
+# The Gemini key has ONE source: the repo-root .env (shared with the .NET backend). override=True
+# so a stale Windows/user environment variable of the same name can never win over it.
+load_dotenv(ROOT_ENV, override=True)
 
 
 def _resolve(value, default: Path) -> Path:
@@ -45,7 +51,18 @@ CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "150"))
 MIN_CHUNK_CHARS = int(os.getenv("MIN_CHUNK_CHARS", "200"))
 
 # --- Step 5: Embedding ---------------------------------------------------
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# Name kept so the pipeline modules that read config.GOOGLE_API_KEY are unchanged; the value now
+# comes only from the root .env's Gemini__ApiKey (the old GOOGLE_API_KEY variable is not read).
+GOOGLE_API_KEY = os.getenv("Gemini__ApiKey") or None
+
+
+def gemini_key_status() -> dict:
+    """Whether the Gemini key is loaded -- never the key. `fingerprint` is the first 8 hex chars of
+    its SHA-256, enough to compare two services' keys without revealing either."""
+    if not GOOGLE_API_KEY:
+        return {"loaded": False, "source": str(ROOT_ENV), "fingerprint": None}
+    return {"loaded": True, "source": str(ROOT_ENV),
+            "fingerprint": hashlib.sha256(GOOGLE_API_KEY.encode("utf-8")).hexdigest()[:8]}
 
 # Which embedding backend to use. Set this in .env - it is never hard-coded.
 #   google      : Gemini embeddings (recommended). Needs GOOGLE_API_KEY with
@@ -124,8 +141,8 @@ TEMPERATURE = float(os.getenv("TEMPERATURE", "0.2"))
 def require_api_key() -> None:
     if not GOOGLE_API_KEY:
         raise RuntimeError(
-            "GOOGLE_API_KEY is not set. Copy .env.example to .env and put your "
-            "Gemini API key there (https://aistudio.google.com/app/apikey)."
+            "Gemini__ApiKey is not set. Put it in the repo-root .env (the same file the backend "
+            "uses): Gemini__ApiKey=your_key (https://aistudio.google.com/app/apikey)."
         )
 
 
