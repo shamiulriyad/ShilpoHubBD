@@ -1,5 +1,10 @@
 # Homepage photography
 
+## Current hero
+
+- `hero-weaver.png` — image supplied by the user for the landing-page hero. Original file preserved without alteration; no photographer attribution or photographic-origin claim has been added. The accompanying quote is original site copy.
+- The earlier `hero-ceramics.jpg` is retained but no longer used for the hero.
+
 Locally stored editorial images. These are real photographs, not generated images. They must not be presented as photos of specific listed products or registered producers.
 
 - hero-ceramics.jpg — Ivan S / Pexels: https://www.pexels.com/photo/ceramic-vases-on-a-white-surface-7119222/ (Pexels license). Used only for the homepage hero.
