@@ -1,4 +1,5 @@
 import PublishedContent from '../../components/home/PublishedContent';
+import HeritageGallery from '../../components/home/HeritageGallery';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { routePaths as routes } from '../../routes/routePaths';
@@ -105,6 +106,7 @@ export default function HomePage() {
       ].map(([label,title,src,alt,to,description])=><Link to={to} key={title} className="group overflow-hidden rounded-2xl border border-border bg-surface"><div className="h-64 overflow-hidden"><Photo src={src} alt={alt} className="transition duration-500 group-hover:scale-105" /></div><div className="p-6"><p className="text-xs font-semibold uppercase tracking-widest text-primary">{label}</p><h3 className="mt-3 text-2xl">{title} ↗</h3><p className="mt-2 text-sm leading-6 text-muted">{description}</p></div></Link>)}</div>
       <div className="mt-6 flex flex-wrap gap-3">{[['District directory',routes.exploreDistricts],['Digital museum',routes.exploreMuseum],['UNESCO heritage',routes.exploreUnesco]].map(([label,to])=><Link key={label} to={to} className="rounded-full border border-border px-5 py-2 text-sm text-heading hover:border-primary">{label} →</Link>)}</div>
     </section>
+    <HeritageGallery />
     <section className="border-y border-border bg-surface py-16"><div className={shell}><SectionHeader eyebrow="The marketplace" title="Find your next treasured piece." description="Browse products from the ShilpoHub community." action={<Link to={routes.marketplaceProducts} className="text-sm font-semibold text-primary">Shop all products →</Link>} /><AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{products.map(product=><ProductCard key={product.id} product={toProductCardItem(product)} to={routes.marketplaceProductDetails.replace(':productId',product.id)} />)}</div>{!products.length && <p className="rounded-xl bg-background p-6 text-muted">The collection is being prepared. Check back for new handmade finds.</p>}</AsyncState></div></section>
     <section className="bg-primary py-16 lg:py-20"><div className={shell}>
       <p className="text-xs font-bold uppercase tracking-[.2em] text-white/70">Powered by AI</p>
