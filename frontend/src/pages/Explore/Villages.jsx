@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useAuth } from '../../hooks/useAuth';
+import VillageExplorer from '../Tourism/VillageExplorer';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, FilterPanel, QueryState } from '../../components/ui';
 import { VillageCard } from '../../components/cards';
@@ -7,6 +9,11 @@ import { useVillages } from '../../hooks/queries/useCatalog';
 const uniqueSorted = (values) => [...new Set(values.filter(Boolean))].sort();
 
 export default function Villages() {
+  const { activeRole } = useAuth();
+  return activeRole === 'Tourist' ? <VillageExplorer /> : <PublishedVillages />;
+}
+
+function PublishedVillages() {
   const query = useVillages();
   const villages = query.data ?? [];
   const [district, setDistrict] = useState('');
