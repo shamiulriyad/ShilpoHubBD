@@ -50,13 +50,14 @@ using ShilpoHubBD.Domain.Entities.TouristBooking;
 
 namespace ShilpoHubBD.Data;
 
-public class ShilpoHubDbContext : DbContext
+public partial class ShilpoHubDbContext : DbContext
 {
 	public ShilpoHubDbContext(DbContextOptions<ShilpoHubDbContext> options) : base(options)
 	{
 	}
 
 	public DbSet<User> Users => Set<User>();
+	public DbSet<UserNotification> UserNotifications => Set<UserNotification>();
 	public DbSet<Role> Roles => Set<Role>();
 	public DbSet<UserRole> UserRoles => Set<UserRole>();
 	public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
