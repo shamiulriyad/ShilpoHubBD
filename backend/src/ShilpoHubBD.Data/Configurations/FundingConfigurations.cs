@@ -161,6 +161,7 @@ public class FundingApplicationEventConfiguration : IEntityTypeConfiguration<Fun
     {
         builder.ToTable("FundingApplicationEvents");
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.Type).IsRequired().HasConversion<string>().HasMaxLength(30);
         builder.Property(e => e.Note).HasMaxLength(2000);
