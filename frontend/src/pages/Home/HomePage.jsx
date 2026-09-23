@@ -53,11 +53,10 @@ export default function HomePage() {
           <p className="mt-8 border-t border-border pt-5 text-xs leading-6 text-muted">Thoughtfully made. Deeply rooted. Ready to be discovered.</p>
         </div>
         <figure className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
-          <div className="aspect-[4/3] overflow-hidden"><Photo src="/images/hero-ceramics.jpg" alt="Two textured ceramic vases in warm neutral tones on a stone surface" className="object-right" eager /></div>
+          <div className="aspect-[4/3] overflow-hidden"><Photo src="/images/hero-weaver.png" alt="A woman weaving blue and white fabric on a traditional wooden loom in a sunlit workshop" className="object-center" eager /></div>
           <figcaption className="px-6 py-5 sm:px-8 sm:py-6">
-            <p className="text-[10px] font-bold uppercase tracking-[.2em] text-primary">Crafted with character</p>
-            <p className="mt-2 text-lg font-medium text-heading">Thoughtful objects. Lasting stories.</p>
-            <a href="https://www.pexels.com/photo/ceramic-vases-on-a-white-surface-7119222/" className="mt-2 inline-block text-xs text-muted underline underline-offset-4">Editorial photography by Ivan S / Pexels</a>
+            <p className="text-[10px] font-bold uppercase tracking-[.2em] text-primary">Woven with love. Carried through generations.</p>
+            <blockquote className="mt-3 text-xl leading-relaxed text-heading sm:text-2xl" style={{ fontFamily: 'Georgia, serif' }}>“Every thread holds a memory. Every handmade piece carries a life.”</blockquote>
           </figcaption>
         </figure>
       </div>

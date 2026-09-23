@@ -130,6 +130,7 @@ import DashboardAcademy from '../pages/Dashboard/DashboardAcademy';
 import DashboardCommunity from '../pages/Dashboard/DashboardCommunity';
 import DashboardMessages from '../pages/Dashboard/DashboardMessages';
 import DashboardSettings from '../pages/Dashboard/DashboardSettings';
+import DashboardNotifications from '../pages/Dashboard/DashboardNotifications';
 import DashboardProfile from '../pages/Dashboard/DashboardProfile';
 
 import AdminWorkspace from '../pages/Admin/AdminWorkspace';
@@ -304,6 +305,7 @@ const router = createBrowserRouter([
           { path: routePaths.dashboardCommunity, element: <DashboardCommunity /> },
           { path: routePaths.dashboardMessages, element: <DashboardMessages /> },
           { path: routePaths.dashboardSettings, element: <DashboardSettings /> },
+          { path: '/dashboard/notifications', element: <DashboardNotifications /> },
           { path: routePaths.dashboardProfile, element: <DashboardProfile /> },
 
           { path: routePaths.academyLearning, element: <LearningDashboard /> },

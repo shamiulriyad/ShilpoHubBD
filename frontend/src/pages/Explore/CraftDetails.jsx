@@ -6,6 +6,8 @@ import { useCategory } from '../../hooks/useCategories';
 import { useCraftStory } from '../../hooks/useCraftStories';
 import { useProducts } from '../../hooks/useProducts';
 import { toProductCardItem } from '../../utils/productAdapters';
+import CraftHeritageDetails from '../../components/heritage/CraftHeritageDetails';
+import { heritageForCategory } from '../../data/craftHeritage';
 
 export default function CraftDetails() {
   const { craftId } = useParams();
@@ -34,10 +36,11 @@ export default function CraftDetails() {
                 { label: 'Crafts', path: routePaths.exploreCrafts },
                 { label: craft.name },
               ]}
-              title={craft.name}
+              title={heritageForCategory(craft)?.name || craft.name}
               description={craft.description || undefined}
             />
 
+            <CraftHeritageDetails craft={heritageForCategory(craft)} />
             <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
               <StatCard label="Products Listed" value={productsQuery.data?.totalCount ?? craft.productCount ?? 0} />
               <StatCard label="Active Producers" value={producerNames.length} />

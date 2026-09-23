@@ -7,7 +7,9 @@ public static class MarketplaceReferenceDataSeeder
 {
     private static readonly (string Name, string Slug, string Description, string? ImageUrl)[] CraftCategories =
     {
-        ("Jamdani Weaving", "jamdani-weaving", "Fine handwoven muslin known for its geometric and floral motifs.", "/images/loom-photo.jpg"),
+        ("Dhakai Jamdani", "jamdani-weaving", "Fine handwoven muslin known for its geometric and floral motifs.", "/images/loom-photo.jpg"),
+        ("Dhakai Muslin", "dhakai-muslin", "Fine cotton cloth associated with the historic weaving heritage of Dhaka.", null),
+        ("Rajshahi Silk", "rajshahi-silk", "Silk textiles associated with Rajshahi, known for their lustre and soft drape.", null),
         ("Nakshi Kantha", "nakshi-kantha", "Traditional embroidered quilts that preserve family stories and regional motifs.", "/images/heritage-crafts.png"),
         ("Pottery & Terracotta", "pottery-terracotta", "Hand-shaped earthenware, terracotta sculpture and household pottery.", "/images/pottery-photo.jpg"),
         ("Jute Craft", "jute-craft", "Baskets, bags, homeware and decorative work made from natural jute fibre.", "/images/learning-together.jpg"),
@@ -36,6 +38,9 @@ public static class MarketplaceReferenceDataSeeder
             var item = CraftCategories[index];
             if (existingBySlug.TryGetValue(item.Slug, out var existing))
             {
+                // Preserve the category ID and existing product relationships.
+                if (item.Slug == "jamdani-weaving" && existing.Name == "Jamdani Weaving")
+                    existing.Name = item.Name;
                 if (string.IsNullOrWhiteSpace(existing.Description)) existing.Description = item.Description;
                 if (string.IsNullOrWhiteSpace(existing.ImageUrl) && item.ImageUrl is not null) existing.ImageUrl = item.ImageUrl;
                 existing.IsActive = true;

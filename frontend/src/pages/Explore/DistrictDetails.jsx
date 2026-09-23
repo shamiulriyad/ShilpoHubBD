@@ -1,75 +1,34 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, QueryState } from '../../components/ui';
-import { VillageCard, ProductCard, StatCard } from '../../components/cards';
-import { useDistricts, useVillages, useProducts } from '../../hooks/queries/useCatalog';
-import { mapProduct, mapVillage } from '../../utils/mappers';
+import { useDistricts } from '../../hooks/useDistricts';
+import { districtReference, placesForDistrict, villageGuides, cuisineGuides, normaliseDistrict } from '../../data/tourismGuides';
+import { TravelPhoto, DestinationCard } from '../../components/tourism/TravelUI';
 
 export default function DistrictDetails() {
-  const { districtId } = useParams();
-  const districtsQuery = useDistricts();
-  const villagesQuery = useVillages();
-  const productsQuery = useProducts(districtId ? { districtId, pageSize: 8 } : {});
-
-  const district = (districtsQuery.data ?? []).find((d) => d.id === districtId);
-  const villages = (villagesQuery.data ?? []).filter((v) => v.districtId === districtId);
-  const products = productsQuery.data?.items ?? [];
-  const producerNames = [...new Set(products.map((p) => p.producerName).filter(Boolean))];
-
-  return (
-    <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <QueryState query={districtsQuery} loadingLabel="Loading district…" isEmpty={() => !district} emptyLabel="District not found.">
-        {() => (
-          <>
-            <PageHeader
-              breadcrumbs={[
-                { label: 'Home', path: routePaths.home },
-                { label: 'Explore', path: routePaths.explore },
-                { label: 'Districts', path: routePaths.exploreDistricts },
-                { label: district.name },
-              ]}
-              title={district.name}
-              description={district.division ? `${district.division} Division` : 'District heritage overview.'}
-            />
-
-            <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
-              <StatCard label="Heritage Villages" value={villages.length} />
-              <StatCard label="Products Listed" value={productsQuery.data?.totalCount ?? 0} />
-              <StatCard label="Producers" value={producerNames.length} />
-            </div>
-
-            <p className="mb-3 text-sm font-semibold text-heading">Villages in {district.name}</p>
-            <QueryState query={villagesQuery} loadingLabel="Loading villages…" isEmpty={() => villages.length === 0} emptyLabel="No heritage villages recorded for this district yet.">
-              {() => (
-                <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                  {villages.map((village) => (
-                    <VillageCard
-                      key={village.id}
-                      village={mapVillage(village)}
-                      to={routePaths.exploreVillageDetails.replace(':villageId', village.id)}
-                    />
-                  ))}
-                </div>
-              )}
-            </QueryState>
-
-            <p className="mb-3 text-sm font-semibold text-heading">Products from {district.name}</p>
-            <QueryState query={productsQuery} loadingLabel="Loading products…" isEmpty={(page) => !page?.items?.length} emptyLabel="No products listed from this district yet.">
-              {(page) => (
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                  {page.items.map((p) => (
-                    <ProductCard
-                      key={p.id}
-                      product={mapProduct(p)}
-                      to={routePaths.marketplaceProductDetails.replace(':productId', p.id)}
-                    />
-                  ))}
-                </div>
-              )}
-            </QueryState>
-          </>
-        )}
-      </QueryState>
-    </div>
-  );
+  const {districtId}=useParams();
+  const query=useDistricts();
+  const district=(query.data||[]).find(d=>d.id===districtId);
+  const reference=districtReference(district?.name);
+  const places=placesForDistrict(district?.name);
+  const villages=villageGuides.filter(v=>normaliseDistrict(v.districtName)===normaliseDistrict(district?.name));
+  const cuisines=cuisineGuides.filter(v=>normaliseDistrict(v.districtName)===normaliseDistrict(district?.name));
+  return <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
+    <QueryState query={query} isEmpty={()=>!district} emptyLabel="District not found.">
+      {()=> <><PageHeader title={district.name} description={district.division+' Division · A guide to place, culture and local identity'} breadcrumbs={[{label:'Home',path:'/'},{label:'Districts',path:routePaths.exploreDistricts},{label:district.name}]}/>
+        <section className="mb-8 overflow-hidden rounded-2xl border border-border bg-surface">
+          <TravelPhoto image={reference?.image} className="max-h-[380px] w-full" eager/>
+          <div className="p-6 sm:p-8"><p className="text-xs font-semibold uppercase tracking-widest text-primary">Discover {district.name}</p><h2 className="mt-3 text-2xl font-semibold text-heading">{reference?.knownFor ? 'Known for & places of interest' : 'The district at a glance'}</h2>{reference?.knownFor&&<p className="mt-3 max-w-3xl text-lg leading-8 text-heading">{reference.knownFor}</p>}<p className="mt-4 max-w-3xl text-sm leading-7 text-body/80">{reference?.description || district.description || 'Explore district information and local places through the references below.'}</p>{reference?.source&&<a href={reference.source} target="_blank" rel="noreferrer" className="mt-4 inline-block text-xs text-link underline">District background · Wikipedia, CC BY-SA ↗</a>}
+            {reference?.heritageSource&&<a href={reference.heritageSource} target="_blank" rel="noreferrer" className="ml-4 mt-4 inline-block text-xs text-link underline">Heritage highlights source ↗</a>}
+            <div className="mt-6 flex flex-wrap gap-3">{places.length>0&&<Link className="rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white" to={`${routePaths.tourismMap}?district=${encodeURIComponent(district.name)}`}>Explore district on map</Link>}<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(district.name+' Bangladesh')}`} target="_blank" rel="noreferrer" className="rounded-lg border border-border px-4 py-3 text-sm font-semibold text-link">Open district map ↗</a></div>
+          </div>
+        </section>
+        {places.length>0&&<section className="mb-9"><h2 className="mb-4 text-xl font-semibold text-heading">What to explore</h2><div className="grid gap-5 sm:grid-cols-2">{places.map(place=><DestinationCard key={place.id} place={place}/>)}</div></section>}
+        <div className="grid gap-5 md:grid-cols-2">
+          <section className="rounded-xl border border-border bg-surface p-6"><h2 className="text-lg font-semibold">Crafts & community</h2><p className="mt-3 text-sm leading-7 text-body/75">{villages.length?villages.map(v=>v.name+' · '+v.craft).join('; '):'Discover Bangladesh’s making traditions and arrange community visits with local hosts. District-specific workshop availability should be confirmed directly.'}</p><Link to={routePaths.tourismVillages} className="mt-5 inline-block text-sm font-semibold text-link">Explore village guides →</Link></section>
+          <section className="rounded-xl border border-border bg-surface p-6"><h2 className="text-lg font-semibold">Taste & travel</h2><p className="mt-3 text-sm leading-7 text-body/75">{cuisines.length?cuisines.map(c=>c.name+': '+c.description).join(' '):'Explore regional food guides and travel resources. Check current opening hours and transport connections before setting out.'}</p><Link to={routePaths.tourismCuisines} className="mt-5 inline-block text-sm font-semibold text-link">Explore local cuisine →</Link></section>
+        </div>
+      </>}
+    </QueryState>
+  </div>;
 }

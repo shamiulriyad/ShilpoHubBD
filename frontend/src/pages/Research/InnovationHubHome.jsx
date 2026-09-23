@@ -1,79 +1,35 @@
 import { Link } from 'react-router-dom';
-import { routePaths } from '../../routes/routePaths';
-import { PageHeader, SectionHeader, AsyncState } from '../../components/ui';
-import { EntityCard } from '../../components/cards';
-import { useResearchPublications } from '../../hooks/useResearchPublications';
 import { useAuth } from '../../hooks/useAuth';
+import { routePaths } from '../../routes/routePaths';
 
-const links = [
-  { title: 'Research Workspace', description: 'Ongoing research projects', to: routePaths.researchWorkspace, authenticated: true },
-  { title: 'Publications', description: 'Papers, reports and case studies', to: routePaths.researchPublications, authenticated: true },
-  { title: 'AI Research Assistant', description: 'Insights, trends, correlations and citations', to: routePaths.researchAiAssistant, authenticated: true },
-  { title: 'Field Research', description: 'Surveys, field researchers, responses and evidence', to: routePaths.researchFieldResearch, authenticated: true },
-  { title: 'Preservation Strategies', description: 'Objectives and action plans for heritage preservation', to: routePaths.innovationPreservationStrategies, authenticated: true },
-  { title: 'Innovation Experiments', description: 'AI/ML experiments, versions and training runs', to: routePaths.innovationExperiments, authenticated: true },
-  { title: 'Innovation Submissions', description: 'Submit heritage innovation ideas for review', to: routePaths.innovationSubmissions, authenticated: true },
-  { title: 'Innovation Prototypes', description: 'Iterations, test cases and issue tracking', to: routePaths.innovationPrototypes, authenticated: true },
-  {
-    title: 'Heritage Database',
-    description: 'Curated heritage datasets for authorized research and government teams',
-    to: routePaths.researchHeritageDatabase,
-    roles: ['HeritageInnovationHub', 'GovernmentNGO', 'SuperAdmin'],
-  },
-  {
-    title: 'Knowledge Graph',
-    description: 'Curate heritage knowledge nodes and relationships',
-    to: routePaths.researchKnowledgeGraph,
-    roles: ['HeritageInnovationHub', 'GovernmentNGO', 'SuperAdmin'],
-  },
+const pillars = [
+  ['01', 'Document living heritage', 'Bring craft knowledge, regional context and trusted references together in a structured heritage database.'],
+  ['02', 'Research with communities', 'Organise field research, evidence and publications around the people who keep traditions alive.'],
+  ['03', 'Develop thoughtful innovation', 'Explore ideas, prototypes and preservation strategies that connect traditional knowledge with new possibilities.'],
 ];
 
 export default function InnovationHubHome() {
-  const { isAuthenticated, hasAnyRole } = useAuth();
-  const { data, isLoading, isError, error } = useResearchPublications({ pageSize: 3 }, isAuthenticated);
-  const publications = data?.items || [];
-  const visibleLinks = links.filter((link) => !link.roles || hasAnyRole(link.roles));
-
+  const { isAuthenticated, activeRole } = useAuth();
+  const isResearcher = isAuthenticated && activeRole === 'HeritageInnovationHub';
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <PageHeader
-        breadcrumbs={[{ label: 'Home', path: routePaths.home }, { label: 'Innovation Hub' }]}
-        title="Innovation Hub"
-        description="Research workflows, publications and role-controlled heritage data for the ShilpoHub ecosystem."
-      />
-
-      {!isAuthenticated && (
-        <div className="mb-8 rounded-xl border border-border bg-surface p-4 text-sm text-body/70">
-          Research workspaces require an authenticated account.{' '}
-          <Link to={routePaths.login} className="font-medium text-link hover:underline">Sign in to continue →</Link>
+    <div className="mx-auto max-w-7xl px-5 py-12 sm:py-20 lg:px-8">
+      <section className="grid gap-10 border-b border-border pb-12 lg:grid-cols-[1.3fr_1fr] lg:items-end">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">ShilpoHub · Innovation Hub</p>
+          <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight text-heading sm:text-5xl">Living heritage.<br />Thoughtful progress.</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-body/75">A place to document Bangladesh’s craft traditions, support research and turn knowledge into ideas that help heritage thrive.</p>
+          {isResearcher && <Link to={routePaths.researcher} className="mt-7 inline-flex rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-white">Open your workspace →</Link>}
         </div>
-      )}
-
-      <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {visibleLinks.map((link) => (
-          <EntityCard key={link.title} title={link.title} subtitle={link.description} to={link.to} />
-        ))}
-      </div>
-
-      <SectionHeader eyebrow="Repository" title="Recent Publications" />
-      {isAuthenticated ? (
-        <AsyncState isLoading={isLoading} isError={isError} error={error}>
-          <div className="space-y-3">
-            {publications.map((publication) => (
-              <div key={publication.id} className="rounded-xl border border-border bg-surface p-4">
-                <p className="text-sm font-semibold text-heading">{publication.title}</p>
-                <p className="mt-1 text-xs text-body/60">
-                  {publication.authors}
-                  {publication.publishedOn ? ` · ${new Date(publication.publishedOn).getFullYear()}` : ''}
-                </p>
-              </div>
-            ))}
-            {publications.length === 0 && <p className="text-sm text-body/60">No publications are available yet.</p>}
-          </div>
-        </AsyncState>
-      ) : (
-        <p className="text-sm text-body/60">Sign in to load the publication repository.</p>
-      )}
+        <div className="rounded-2xl border border-border bg-surface p-7">
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary">Our focus</p>
+          <h2 className="mt-4 text-2xl font-semibold text-heading">Knowledge rooted in people and place.</h2>
+          <p className="mt-4 text-sm leading-7 text-body/75">From Dhakai Jamdani and Dhakai Muslin to Rajshahi Silk, the hub connects cultural context, materials and making traditions. References distinguish geographical indications from UNESCO recognition.</p>
+        </div>
+      </section>
+      <section aria-label="What the Innovation Hub does" className="mt-10 grid gap-5 md:grid-cols-3">
+        {pillars.map(([number, title, description]) => <article key={number} className="rounded-xl border border-border bg-surface p-7"><p className="text-sm font-semibold text-primary">{number}</p><h2 className="mt-5 text-xl font-semibold text-heading">{title}</h2><p className="mt-3 text-sm leading-7 text-body/75">{description}</p></article>)}
+      </section>
+      <p className="mt-8 max-w-3xl text-sm leading-7 text-body/65">Research teams use a dedicated workspace for the heritage database, datasets, fieldwork and innovation projects.</p>
     </div>
   );
 }
