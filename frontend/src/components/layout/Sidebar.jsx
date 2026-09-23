@@ -134,6 +134,7 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
         </div>
       </div>
 
+      <div className="mb-5"><NavItem item={{ label: 'Notifications', path: '/dashboard/notifications', icon: '◉' }} onNavigate={onNavigate} /></div>
       {grouped ? <GroupedNav groups={items} onNavigate={onNavigate} /> : <FlatNav items={items} onNavigate={onNavigate} />}
     </aside>
   );
