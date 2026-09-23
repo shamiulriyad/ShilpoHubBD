@@ -8,6 +8,7 @@ using ShilpoHubBD.Infrastructure.AILogistics;
 using ShilpoHubBD.Infrastructure.AITourism;
 using ShilpoHubBD.Infrastructure.CounterfeitDetection;
 using ShilpoHubBD.Infrastructure.Email;
+using ShilpoHubBD.Infrastructure.Geocoding;
 using ShilpoHubBD.Infrastructure.GovForecasting;
 using ShilpoHubBD.Infrastructure.HeritageAssistant;
 using ShilpoHubBD.Infrastructure.HeritageIntelligence;
@@ -16,6 +17,7 @@ using ShilpoHubBD.Infrastructure.PolicySimulation;
 using ShilpoHubBD.Infrastructure.Payments;
 using ShilpoHubBD.Infrastructure.Recommendations;
 using ShilpoHubBD.Infrastructure.ResearchAI;
+using ShilpoHubBD.Infrastructure.Routing;
 using ShilpoHubBD.Infrastructure.Security;
 using ShilpoHubBD.Infrastructure.SentimentAnalysis;
 using ShilpoHubBD.Infrastructure.StoryGenerator;
@@ -28,6 +30,12 @@ public static class DependencyInjection
     {
         services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
         services.Configure<RagServiceOptions>(configuration.GetSection("RagService"));
+        services.Configure<GeminiOptions>(configuration.GetSection("Gemini"));
+        services.Configure<NominatimOptions>(configuration.GetSection("Nominatim"));
+        services.Configure<OsrmOptions>(configuration.GetSection("Osrm"));
+
+        services.AddMemoryCache();
+        services.AddSingleton<NominatimRateGate>();
 
         services.AddScoped<ITokenService, JwtTokenService>();
         services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
@@ -36,7 +44,26 @@ public static class DependencyInjection
         services.AddScoped<IRecommendationProvider, DummyRecommendationProvider>();
         services.AddScoped<IAIBusinessProvider, DummyAIBusinessProvider>();
         services.AddScoped<IAIBusinessPartnerProvider, DummyBusinessPartnerAIProvider>();
-        services.AddScoped<IAITourismProvider, DummyAITourismProvider>();
+        services.AddScoped<DummyAITourismProvider>();
+        services.AddHttpClient<IAITourismProvider, GeminiAITourismProvider>((sp, client) =>
+        {
+            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value;
+            client.BaseAddress = new Uri(geminiOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(geminiOptions.TimeoutSeconds);
+        });
+        services.AddHttpClient<IGeocodingProvider, NominatimGeocodingProvider>((sp, client) =>
+        {
+            var nominatimOptions = sp.GetRequiredService<IOptions<NominatimOptions>>().Value;
+            client.BaseAddress = new Uri(nominatimOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(nominatimOptions.TimeoutSeconds);
+        });
+        services.AddHttpClient<IRoutingProvider, OsrmRoutingProvider>((sp, client) =>
+        {
+            var osrmOptions = sp.GetRequiredService<IOptions<OsrmOptions>>().Value;
+            client.BaseAddress = new Uri(osrmOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(osrmOptions.TimeoutSeconds);
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(osrmOptions.UserAgent);
+        });
         services.AddScoped<IResearchAIProvider, DummyResearchAIProvider>();
         services.AddScoped<IHeritageIntelligenceProvider, RuleBasedHeritageIntelligenceProvider>();
         services.AddScoped<IPolicySimulationProvider, RuleBasedPolicySimulationProvider>();
@@ -50,6 +77,12 @@ public static class DependencyInjection
         services.AddScoped<IBackupRunner, PgDumpBackupRunner>();
 
         services.AddHttpClient<IHeritageAssistantProvider, RagHeritageAssistantProvider>((sp, client) =>
+        {
+            var ragOptions = sp.GetRequiredService<IOptions<RagServiceOptions>>().Value;
+            client.BaseAddress = new Uri(ragOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(ragOptions.TimeoutSeconds);
+        });
+        services.AddHttpClient<ITravelPlannerRagProvider, RagTravelPlannerProvider>((sp, client) =>
         {
             var ragOptions = sp.GetRequiredService<IOptions<RagServiceOptions>>().Value;
             client.BaseAddress = new Uri(ragOptions.BaseUrl);
