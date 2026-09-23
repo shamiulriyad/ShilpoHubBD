@@ -22,11 +22,20 @@ service cannot also write to it - in that mode ingest/query return 501 and you u
 """
 
 import re
+import sys
 from contextlib import asynccontextmanager
 from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+
+# Windows defaults stdout/stderr to the console codepage (cp1252) once they're not an
+# interactive TTY (e.g. redirected to a log file or piped by a process manager), which
+# raises UnicodeEncodeError the moment a Bangla question hits one of the pipeline's
+# print() progress lines. Force UTF-8 so non-Latin questions never crash the request.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
 
 import config
 from api.chat import KnowledgeBaseNotIndexedError, answer_question
