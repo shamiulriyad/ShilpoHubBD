@@ -12,12 +12,18 @@ public class OrderService : IOrderService
     private readonly IOrderRepository _orderRepository;
     private readonly ICartRepository _cartRepository;
     private readonly IDistrictRepository _districtRepository;
+    private readonly IPaymentRepository _paymentRepository;
+    private readonly IPaymentService _paymentService;
 
-    public OrderService(IOrderRepository orderRepository, ICartRepository cartRepository, IDistrictRepository districtRepository)
+    public OrderService(
+        IOrderRepository orderRepository, ICartRepository cartRepository, IDistrictRepository districtRepository,
+        IPaymentRepository paymentRepository, IPaymentService paymentService)
     {
         _orderRepository = orderRepository;
         _cartRepository = cartRepository;
         _districtRepository = districtRepository;
+        _paymentRepository = paymentRepository;
+        _paymentService = paymentService;
     }
 
     public async Task<PagedResult<OrderListItemDto>> GetMyOrdersAsync(Guid userId, OrderQueryParameters query, CancellationToken cancellationToken)
@@ -168,10 +174,139 @@ public class OrderService : IOrderService
         order.Status = OrderStatus.Cancelled;
         order.CancelReason = request.Reason?.Trim();
         order.UpdatedAt = DateTime.UtcNow;
-        await RecordStatusEventAsync(order, OrderStatus.Cancelled, request.Reason, cancellationToken);
+
+        // A cancelled order that was already paid is refunded in full. The refund shares the scoped
+        // DbContext and saves the cancellation and stock restore in the same commit -- if the payment
+        // provider refuses the refund it throws before anything is saved and the order stays as it was.
+        var refunded = await RefundPaidPaymentsAsync(order, cancellationToken);
+        var note = string.IsNullOrWhiteSpace(request.Reason) ? null : request.Reason.Trim();
+        if (refunded > 0)
+        {
+            order.RefundAmount = refunded;
+            order.RefundReason = "Order cancelled by customer";
+            note = $"{(note is null ? "Cancelled" : note)} -- refund of ৳{refunded:0.##} issued.";
+        }
+
+        await RecordStatusEventAsync(order, OrderStatus.Cancelled, note, cancellationToken);
 
         await _orderRepository.SaveChangesAsync(cancellationToken);
         return ToDto(order);
+    }
+
+    // Producers work on OrderItems (Accepted -> Processing -> Shipped -> Delivered), but the customer
+    // sees Order.Status, which only the admin endpoints used to move -- so a producer could ship an
+    // order and the customer still saw "Pending". After each producer action the order is rolled up:
+    //   any item accepted/processing/shipped/delivered ........ Processing
+    //   every live item shipped or delivered .................. Shipped
+    //   every live item delivered ............................. Delivered
+    //   every item declined/cancelled ......................... Cancelled (stock restored, payment refunded)
+    // ("live" = not rejected/cancelled). It only ever moves an order forward.
+    public async Task SyncStatusFromFulfillmentAsync(Guid orderId, CancellationToken cancellationToken)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        if (order is null || order.Status is not (OrderStatus.Pending or OrderStatus.Processing or OrderStatus.Shipped))
+        {
+            return;
+        }
+
+        var live = order.Items
+            .Where(i => i.ProducerStatus is not (OrderItemProducerStatus.Rejected or OrderItemProducerStatus.Cancelled))
+            .ToList();
+
+        if (live.Count == 0)
+        {
+            await CancelAsync(order.Id, order.UserId, true, new CancelOrderRequest { Reason = "Every item was declined by the producer." }, cancellationToken);
+            return;
+        }
+
+        var target = order.Status;
+        if (live.All(i => i.ProducerStatus == OrderItemProducerStatus.Delivered))
+        {
+            target = OrderStatus.Delivered;
+        }
+        else if (live.All(i => i.ProducerStatus is OrderItemProducerStatus.Shipped or OrderItemProducerStatus.Delivered))
+        {
+            target = OrderStatus.Shipped;
+        }
+        else if (live.Any(i => i.ProducerStatus is OrderItemProducerStatus.Accepted or OrderItemProducerStatus.Processing
+            or OrderItemProducerStatus.Shipped or OrderItemProducerStatus.Delivered))
+        {
+            target = OrderStatus.Processing;
+        }
+
+        static int Rank(OrderStatus s) => s switch { OrderStatus.Pending => 0, OrderStatus.Processing => 1, OrderStatus.Shipped => 2, _ => 3 };
+        if (Rank(target) <= Rank(order.Status))
+        {
+            return;
+        }
+
+        string note;
+        switch (target)
+        {
+            case OrderStatus.Shipped:
+                var shipped = live.FirstOrDefault(i => !string.IsNullOrWhiteSpace(i.TrackingNumber));
+                order.TrackingNumber ??= shipped?.TrackingNumber;
+                order.Carrier ??= shipped?.Carrier;
+                note = shipped is null
+                    ? "Your order has been shipped."
+                    : $"Shipped via {shipped.Carrier}, tracking number {shipped.TrackingNumber}.";
+                break;
+            case OrderStatus.Delivered:
+                note = "Order delivered.";
+                break;
+            default:
+                note = "The producer accepted your order and is preparing it.";
+                break;
+        }
+
+        order.Status = target;
+        order.UpdatedAt = DateTime.UtcNow;
+        await RecordStatusEventAsync(order, target, note, cancellationToken);
+        await _orderRepository.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task HandleShipmentDeliveredAsync(Guid orderId, string trackingNumber, CancellationToken cancellationToken)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        if (order is null)
+        {
+            return;
+        }
+
+        var now = DateTime.UtcNow;
+        var changed = false;
+        foreach (var item in order.Items.Where(i => i.ProducerStatus == OrderItemProducerStatus.Shipped
+            && string.Equals(i.TrackingNumber, trackingNumber, StringComparison.OrdinalIgnoreCase)))
+        {
+            item.ProducerStatus = OrderItemProducerStatus.Delivered;
+            item.DeliveredAt = now;
+            changed = true;
+        }
+
+        if (changed)
+        {
+            await _orderRepository.SaveChangesAsync(cancellationToken);
+            await SyncStatusFromFulfillmentAsync(orderId, cancellationToken);
+        }
+    }
+
+    private async Task<decimal> RefundPaidPaymentsAsync(Order order, CancellationToken cancellationToken)
+    {
+        decimal total = 0;
+        var payments = await _paymentRepository.GetByOrderIdAsync(order.Id, cancellationToken);
+        foreach (var payment in payments.Where(p => p.Status is PaymentStatus.Paid or PaymentStatus.PartiallyRefunded))
+        {
+            var remaining = payment.Amount - payment.RefundedAmount;
+            if (remaining <= 0)
+            {
+                continue;
+            }
+
+            await _paymentService.RefundAsync(payment.Id, new DTOs.Commerce.RefundPaymentRequest { Amount = remaining, Reason = "Order cancelled" }, cancellationToken);
+            total += remaining;
+        }
+
+        return total;
     }
 
     public async Task<OrderDto> RequestReturnAsync(Guid id, Guid currentUserId, bool isAdmin, ReturnOrderRequest request, CancellationToken cancellationToken)

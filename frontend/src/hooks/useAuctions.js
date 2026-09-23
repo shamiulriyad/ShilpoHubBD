@@ -16,6 +16,22 @@ export function useAuction(id) {
   });
 }
 
+export function useMyAuctions(params = {}) {
+  return useQuery({
+    queryKey: ['auctions', 'mine', params],
+    queryFn: () => auctionsService.mine(params),
+  });
+}
+
+export function useProducerAuctionMutations() {
+  const queryClient = useQueryClient();
+  // Both the producer's own list and the public (customer) lists change.
+  const invalidate = () => queryClient.invalidateQueries({ queryKey: ['auctions'] });
+  const create = useMutation({ mutationFn: (payload) => auctionsService.create(payload), onSuccess: invalidate });
+  const cancel = useMutation({ mutationFn: (id) => auctionsService.cancel(id), onSuccess: invalidate });
+  return { create, cancel };
+}
+
 export function usePlaceBid(id) {
   const queryClient = useQueryClient();
   return useMutation({

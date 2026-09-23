@@ -149,7 +149,7 @@ The dense model is set in `.env` and not changed by this pipeline (`EMBEDDING_PR
 |------|--------------------|------------------|-------|
 | Local, fast, English (current) | `huggingface` | `sentence-transformers/all-MiniLM-L6-v2` | 384-dim, 256-token limit, English only |
 | Local, multilingual | `huggingface` | `BAAI/bge-m3` | 1024-dim, much heavier |
-| Gemini | `google` | `gemini-embedding-001` | needs `GOOGLE_API_KEY`, 3072-dim |
+| Gemini | `google` | `gemini-embedding-001` | needs `Gemini__ApiKey` (repo-root `.env`), 3072-dim |
 
 After changing either variable re-ingest with `--recreate`: vectors from two models are not
 comparable, and `index_meta.py` stops with a clear message if `.env` no longer matches the index.

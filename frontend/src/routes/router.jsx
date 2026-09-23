@@ -75,6 +75,7 @@ import Auctions from '../pages/Marketplace/Auctions';
 import TourismHome from '../pages/Tourism/TourismHome';
 import HeritageMap from '../pages/Tourism/HeritageMap';
 import HeritagePlaceDetails from '../pages/Tourism/HeritagePlaceDetails';
+import TourismLocationDetails from '../pages/Tourism/TourismLocationDetails';
 import FestivalDirectory from '../pages/Tourism/FestivalDirectory';
 import CulturalEvents from '../pages/Tourism/CulturalEvents';
 import VillageExplorer from '../pages/Tourism/VillageExplorer';
@@ -84,6 +85,7 @@ import TouristServices from '../pages/Tourism/TouristServices';
 import TouristServiceDetails from '../pages/Tourism/TouristServiceDetails';
 import MyBookings from '../pages/Tourism/MyBookings';
 import AiTourismPlanner from '../pages/Tourism/AiTourismPlanner';
+import MyTripPlans from '../pages/Tourism/MyTripPlans';
 import TravelPassport from '../pages/Tourism/TravelPassport';
 
 import CourseCatalog from '../pages/Academy/CourseCatalog';
@@ -147,6 +149,8 @@ import ShoppingCart from '../pages/Customer/ShoppingCart';
 import CustomerCheckout from '../pages/Customer/Checkout';
 import OrderSuccess from '../pages/Customer/OrderSuccess';
 import CustomOrder from '../pages/Customer/CustomOrder';
+import ProducerCustomOrders from '../pages/Producer/CustomOrders';
+import ProducerAuctions from '../pages/Producer/Auctions';
 import LiveShopping from '../pages/Customer/LiveShopping';
 import AuctionMarketplace from '../pages/Customer/AuctionMarketplace';
 import AuctionDetails from '../pages/Customer/AuctionDetails';
@@ -226,6 +230,7 @@ const router = createBrowserRouter([
       { path: routePaths.tourism, element: <TourismHome /> },
       { path: routePaths.tourismMap, element: <HeritageMap /> },
       { path: routePaths.tourismPlaceDetails, element: <HeritagePlaceDetails /> },
+      { path: routePaths.tourismLocationDetails, element: <TourismLocationDetails /> },
       { path: routePaths.tourismFestivals, element: <FestivalDirectory /> },
       { path: routePaths.tourismEvents, element: <CulturalEvents /> },
       { path: "/updates/:kind/:id", element: <PublishedContentDetails /> },
@@ -234,7 +239,6 @@ const router = createBrowserRouter([
       { path: routePaths.tourismCuisines, element: <LocalCuisines /> },
       { path: routePaths.tourismServices, element: <TouristServices /> },
       { path: routePaths.tourismServiceDetails, element: <TouristServiceDetails /> },
-      { path: routePaths.tourismAiPlanner, element: <AiTourismPlanner /> },
 
       { path: routePaths.academy, element: <CourseCatalog /> },
       { path: routePaths.academyCourseDetails, element: <CourseDetails /> },
@@ -256,6 +260,8 @@ const router = createBrowserRouter([
           { path: routePaths.marketplaceCheckout, element: <Checkout /> },
           { path: routePaths.tourismPassport, element: <TravelPassport /> },
           { path: routePaths.tourismBookings, element: <MyBookings /> },
+          { path: routePaths.tourismAiPlanner, element: <AiTourismPlanner /> },
+          { path: routePaths.tourismMyPlans, element: <MyTripPlans /> },
           { path: routePaths.researchWorkspace, element: <ResearchWorkspace /> },
           { path: routePaths.researchAiAssistant, element: <ResearchAiAssistant /> },
           { path: routePaths.researchFieldResearch, element: <FieldResearch /> },
@@ -470,6 +476,8 @@ const router = createBrowserRouter([
           { path: routePaths.producerInventory, element: <ProducerInventory /> },
           { path: routePaths.producerProducts, element: <ProducerProducts /> },
           { path: routePaths.producerOrders, element: <ProducerOrders /> },
+          { path: routePaths.producerCustomOrders, element: <ProducerCustomOrders /> },
+          { path: routePaths.producerAuctions, element: <ProducerAuctions /> },
           { path: routePaths.producerSustainability, element: <ProducerSustainability /> },
           { path: routePaths.producerAiAssistant, element: <ProducerAiBusinessAssistant /> },
           { path: routePaths.producerLiveShopping, element: <ProducerLiveShoppingManager /> },

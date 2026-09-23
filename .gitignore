@@ -57,3 +57,6 @@ SELENIUM_TESTING.md
 # ...except files the RAG pipeline needs at runtime / to install
 !rag/prompts/*.txt
 !rag/requirements.txt
+
+# QA bug report (screenshots) - local only
+faulty.docx

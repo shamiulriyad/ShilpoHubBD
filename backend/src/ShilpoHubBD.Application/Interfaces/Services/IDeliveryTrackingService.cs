@@ -11,6 +11,11 @@ public interface IDeliveryTrackingService
     Task<PagedResult<ShipmentListItemDto>> GetPagedAsync(
         Guid currentUserId, bool isAdmin, ShipmentQueryParameters query, CancellationToken cancellationToken);
 
+    // A producer hands an order item over to a chosen logistics partner: creates the partner's shipment
+    // for the order (returned tracking number is what the customer sees). Not a partner-facing action.
+    Task<ShipmentDto> CreateForOrderHandoffAsync(
+        Guid logisticsPartnerProfileId, Guid producerUserId, string producerName, OrderHandoffDetails order,
+        CancellationToken cancellationToken);
     Task<ShipmentDto> GetByIdAsync(Guid currentUserId, bool isAdmin, Guid id, CancellationToken cancellationToken);
 
     /// <summary>Public, PII-light tracking lookup by tracking number. No authorization.</summary>

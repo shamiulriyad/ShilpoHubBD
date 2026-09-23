@@ -8,4 +8,6 @@ public class TouristServiceSummaryDto
     public decimal Price { get; set; }
     public int? DurationMinutes { get; set; }
     public string DistrictName { get; set; } = string.Empty;
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
 }

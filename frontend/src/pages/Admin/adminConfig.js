@@ -33,7 +33,7 @@ const district = text('districtId', 'District', true, {
   lookup: '/districts'
 });
 const publish = bool('publish', 'Publish now');
-export const adminGroups = [['users', 'User Management', [['directory', 'User directory'], ['verification', 'User Verification'], ['roles', 'Role Management'], ['permissions', 'Permissions'], ['identity', 'Identity Verification']]], ['heritage', 'Heritage Management', [['categories', 'Craft Categories'], ['villages', 'Heritage Villages'], ['places', 'Heritage Places'], ['districts', 'Districts'], ['festivals', 'Festivals']]], ['marketplace', 'Marketplace', [['approval', 'Product Approval'], ['monitoring', 'Marketplace Monitoring'], ['refunds', 'Refund Management'], ['fraud', 'Fraud Control']]], ['cms', 'CMS', [['homepage', 'Homepage'], ['blogs', 'Blogs'], ['news', 'News'], ['events', 'Events'], ['announcements', 'Announcements']]], ['moderation', 'AI Moderation', [['reviews', 'Fake Reviews'], ['spam', 'Spam Detection'], ['content', 'Content Moderation'], ['images', 'Image Moderation']]], ['security', 'Security', [['audit', 'Audit Logs'], ['backups', 'Backups'], ['health', 'System Monitoring'], ['keys', 'API Management'], ['threats', 'Threat Detection']]]];
+export const adminGroups = [['users', 'User Management', [['directory', 'User directory'], ['verification', 'User Verification'], ['roles', 'Role Management'], ['permissions', 'Permissions'], ['identity', 'Identity Verification']]], ['heritage', 'Heritage Management', [['categories', 'Craft Categories'], ['villages', 'Heritage Villages'], ['places', 'Heritage Places'], ['locations', 'Tourism Locations'], ['districts', 'Districts'], ['festivals', 'Festivals']]], ['marketplace', 'Marketplace', [['approval', 'Product Approval'], ['monitoring', 'Marketplace Monitoring'], ['refunds', 'Refund Management'], ['fraud', 'Fraud Control']]], ['cms', 'CMS', [['homepage', 'Homepage'], ['blogs', 'Blogs'], ['news', 'News'], ['events', 'Events'], ['announcements', 'Announcements']]], ['moderation', 'AI Moderation', [['reviews', 'Fake Reviews'], ['spam', 'Spam Detection'], ['content', 'Content Moderation'], ['images', 'Image Moderation']]], ['security', 'Security', [['audit', 'Audit Logs'], ['backups', 'Backups'], ['health', 'System Monitoring'], ['keys', 'API Management'], ['threats', 'Threat Detection']]]];
 export const resources = {
   categories: {
     path: '/categories',
@@ -52,6 +52,12 @@ export const resources = {
     fields: [name, long('description', 'Description'), text('placeType', 'Place type', true, { options: ['Village', 'HistoricalSite', 'Museum', 'Temple', 'Monument', 'CraftCenter', 'NaturalSite', 'Other'] }), district, text('address', 'Address', false), text('latitude', 'Latitude', true, { type: 'number', min: -90, max: 90 }), text('longitude', 'Longitude', true, { type: 'number', min: -180, max: 180 }), image, bool('isFeatured', 'Featured')],
     update: [active],
     columns: ['name', 'placeType', 'districtName', 'isFeatured', 'isActive']
+  },
+  locations: {
+    path: '/tourism-locations',
+    fields: [name, long('description', 'Description'), text('type', 'Type', true, { options: ['Hotel', 'Resort', 'Hostel', 'TouristPlace', 'HeritageSite', 'Restaurant', 'Attraction'] }), district, text('address', 'Address', false), text('latitude', 'Latitude', true, { type: 'number', min: -90, max: 90 }), text('longitude', 'Longitude', true, { type: 'number', min: -180, max: 180 }), text('price', 'Price / price per night', false, { type: 'number' }), text('entryFee', 'Entry fee', false, { type: 'number' }), text('openingHours', 'Opening hours', false), text('contactInfo', 'Contact info', false), long('facilities', 'Facilities', false, 1000), image],
+    update: [active, bool('isVerified', 'Verified')],
+    columns: ['name', 'type', 'districtName', 'isActive', 'isVerified']
   },
   districts: {
     path: '/districts',

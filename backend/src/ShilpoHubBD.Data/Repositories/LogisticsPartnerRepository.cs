@@ -30,6 +30,14 @@ public class LogisticsPartnerRepository : ILogisticsPartnerRepository
             .AsSplitQuery()
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
+    public Task<List<LogisticsPartnerProfile>> GetAvailableForHandoffAsync(CancellationToken cancellationToken)
+        => _context.LogisticsPartnerProfiles
+            .AsNoTracking()
+            .Include(p => p.BaseDistrict)
+            .Where(p => p.VerificationStatus == LogisticsPartnerVerificationStatus.Verified && p.IsAcceptingRequests)
+            .OrderBy(p => p.CompanyName)
+            .ToListAsync(cancellationToken);
+
     public Task<LogisticsPartnerProfile?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
         => _context.LogisticsPartnerProfiles
             .Include(p => p.User)

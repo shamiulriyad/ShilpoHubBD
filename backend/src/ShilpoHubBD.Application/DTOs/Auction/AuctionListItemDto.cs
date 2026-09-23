@@ -14,4 +14,5 @@ public class AuctionListItemDto
     public DateTime EndAt { get; set; }
     public long TimeRemainingSeconds { get; set; }
     public int BidCount { get; set; }
+    public string? WinnerName { get; set; }
 }

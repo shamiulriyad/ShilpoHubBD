@@ -34,6 +34,12 @@ public class AuctionsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = $"{RoleNames.Producer},{RoleNames.SuperAdmin}")]
+    [HttpGet("mine")]
+    public async Task<ActionResult<PagedResult<AuctionListItemDto>>> GetMine(
+        int page = 1, int pageSize = 20, CancellationToken cancellationToken = default)
+        => Ok(await _auctionService.GetMineAsync(CurrentUserId, page, pageSize, cancellationToken));
+
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<AuctionDto>> GetById(Guid id, CancellationToken cancellationToken)
     {

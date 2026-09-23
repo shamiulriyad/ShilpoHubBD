@@ -1,0 +1,834 @@
+{
+ "BD-DHK-001": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Lalbagh Fort, Dhaka, Bangladesh",
+  "lat": 23.71884,
+  "lng": 90.38815,
+  "matched": "লালবাগ কেল্লা, শায়েস্তা খান সড়ক, খাজে দেওয়ান, লালবাগ, ঢাকা, ঢাকা মহানগর, ঢাকা জেলা, ঢাকা বিভাগ, 1211, বাংলাদেশ"
+ },
+ "BD-DHK-002": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Dhaka, Bangladesh",
+  "lat": 23.76439,
+  "lng": 90.38901,
+  "matched": "ঢাকা, ঢাকা মহানগর, ঢাকা জেলা, ঢাকা বিভাগ, 1215, বাংলাদেশ"
+ },
+ "BD-DHK-003": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "University of Dhaka, Shahbag, Dhaka, Bangladesh",
+  "lat": 23.73172,
+  "lng": 90.39649,
+  "matched": "World War Memorial, শহীদ মিনার সড়ক, কাঁটাবন, শাহবাগ, ঢাকা, ঢাকা মহানগর, ঢাকা জেলা, ঢাকা বিভাগ, 1000, বাংলাদেশ"
+ },
+ "BD-DHK-004": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Dhaka, Bangladesh",
+  "lat": 23.76439,
+  "lng": 90.38901,
+  "matched": "ঢাকা, ঢাকা মহানগর, ঢাকা জেলা, ঢাকা বিভাগ, 1215, বাংলাদেশ"
+ },
+ "BD-DHK-005": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Dhaka, Bangladesh",
+  "lat": 23.76439,
+  "lng": 90.38901,
+  "matched": "ঢাকা, ঢাকা মহানগর, ঢাকা জেলা, ঢাকা বিভাগ, 1215, বাংলাদেশ"
+ },
+ "BD-DHK-006": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Panam City, Narayanganj, Bangladesh",
+  "lat": 23.65602,
+  "lng": 90.60414,
+  "matched": "পানাম নগর, Panam Bridge, কৃষ্ণপাড়া, সোনারগাঁও, সোনারগাঁও উপজেলা, নারায়নগঞ্জ জেলা, ঢাকা বিভাগ, 1440, বাংলাদেশ"
+ },
+ "BD-DHK-007": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Noapara, Tarabo, Rupganj, Narayanganj, Bangladesh",
+  "lat": 23.73027,
+  "lng": 90.50856,
+  "matched": "Noapara Markajul Quran Madrasa, R201, চনপাড়া পুনর্বাসন, মুগরাকুল, তারাবো, রূপগঞ্জ উপজেলা, নারায়নগঞ্জ জেলা, ঢাকা বিভাগ, 1360, বাংলাদেশ"
+ },
+ "BD-DHK-008": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Narayanganj, Bangladesh",
+  "lat": 23.62367,
+  "lng": 90.49881,
+  "matched": "নারায়ণগঞ্জ, নারায়ণগঞ্জ সদর উপজেলা, নারায়নগঞ্জ জেলা, ঢাকা বিভাগ, 1400, বাংলাদেশ"
+ },
+ "BD-DHK-009": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Pathrail, Delduar, Tangail, Bangladesh",
+  "lat": 24.19787,
+  "lng": 89.92824,
+  "matched": "Pathrail, দেলদুয়ার উপজেলা, টাঙ্গাইল জেলা, ঢাকা বিভাগ, 1902, বাংলাদেশ"
+ },
+ "BD-DHK-010": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Tangail, Bangladesh",
+  "lat": 24.27385,
+  "lng": 89.93759,
+  "matched": "টাঙ্গাইল রেলওয়ে স্টেশন, Tangail City Bypass Road, টাঙ্গাইল, টাঙ্গাইল সদর উপজেলা, টাঙ্গাইল জেলা, ঢাকা বিভাগ, 1900, বাংলাদেশ"
+ },
+ "BD-DHK-011": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Belabo, Narsingdi, Bangladesh",
+  "lat": 24.10485,
+  "lng": 90.85205,
+  "matched": "বেলাবো, বেলাবো উপজেলা, নরসিংদী জেলা, ঢাকা বিভাগ, 1640, বাংলাদেশ"
+ },
+ "BD-DHK-012": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Narsingdi, Bangladesh",
+  "lat": 23.91972,
+  "lng": 90.7153,
+  "matched": "নরসিংদী, নরসিংদী সদর উপজেলা, নরসিংদী জেলা, ঢাকা বিভাগ, 1602, বাংলাদেশ"
+ },
+ "BD-DHK-013": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Saturia, Manikganj, Bangladesh",
+  "lat": 23.97143,
+  "lng": 90.03719,
+  "matched": "সাটুরিয়া, সাটুরিয়া উপজেলা, মানিকগঞ্জ জেলা, ঢাকা বিভাগ, 1810, বাংলাদেশ"
+ },
+ "BD-DHK-014": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Manikganj, Bangladesh",
+  "lat": 23.83298,
+  "lng": 89.96669,
+  "matched": "মানিকগঞ্জ জেলা, ঢাকা বিভাগ, বাংলাদেশ"
+ },
+ "BD-DHK-015": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Faridpur, Bangladesh",
+  "lat": 23.60402,
+  "lng": 89.84155,
+  "matched": "ফরিদপুর, ফরিদপুর সদর উপজেলা, ফরিদপুর জেলা, ঢাকা বিভাগ, বাংলাদেশ"
+ },
+ "BD-DHK-016": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Faridpur, Bangladesh",
+  "lat": 23.60402,
+  "lng": 89.84155,
+  "matched": "ফরিদপুর, ফরিদপুর সদর উপজেলা, ফরিদপুর জেলা, ঢাকা বিভাগ, বাংলাদেশ"
+ },
+ "BD-DHK-017": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Faridpur, Bangladesh",
+  "lat": 23.60402,
+  "lng": 89.84155,
+  "matched": "ফরিদপুর, ফরিদপুর সদর উপজেলা, ফরিদপুর জেলা, ঢাকা বিভাগ, বাংলাদেশ"
+ },
+ "BD-DHK-018": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Faridpur, Bangladesh",
+  "lat": 23.60402,
+  "lng": 89.84155,
+  "matched": "ফরিদপুর, ফরিদপুর সদর উপজেলা, ফরিদপুর জেলা, ঢাকা বিভাগ, বাংলাদেশ"
+ },
+ "BD-DHK-019": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Idrakpur Fort, Munshiganj, Bangladesh",
+  "lat": 23.54733,
+  "lng": 90.53401,
+  "matched": "Idrakpur Kella, Sadar Road, মুন্সিগঞ্জ, মুন্সীগঞ্জ সদর উপজেলা, মুন্সিগঞ্জ জেলা, ঢাকা বিভাগ, 1502, বাংলাদেশ"
+ },
+ "BD-DHK-020": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Kishoreganj, Bangladesh",
+  "lat": 24.43398,
+  "lng": 90.78572,
+  "matched": "কিশোরগঞ্জ, কিশোরগঞ্জ সদর উপজেলা, কিশোরগঞ্জ জেলা, ঢাকা বিভাগ, 2300, বাংলাদেশ"
+ },
+ "BD-DHK-021": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Gopalganj, Bangladesh",
+  "lat": 23.00499,
+  "lng": 89.83032,
+  "matched": "গোপালগঞ্জ, গোপালগঞ্জ সদর উপজেলা, গোপালগঞ্জ জেলা, ঢাকা বিভাগ, 8100, বাংলাদেশ"
+ },
+ "BD-CTG-022": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Chattogram city, Chattogram, Bangladesh",
+  "lat": 22.33378,
+  "lng": 91.83443,
+  "matched": "চট্টগ্রাম, চট্টগ্রাম শহর, চট্টগ্রাম জেলা, চট্টগ্রাম বিভাগ, 4000, বাংলাদেশ"
+ },
+ "BD-CTG-023": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Chandranath Temple, Chattogram, Bangladesh",
+  "lat": 22.63349,
+  "lng": 91.68466,
+  "matched": "Chandranath Temple, College Rd, Sitakund, Chittagong, সীতাকুণ্ড, সীতাকুণ্ড উপজেলা, চট্টগ্রাম জেলা, চট্টগ্রাম বিভাগ, বাংলাদেশ"
+ },
+ "BD-CTG-024": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Shalban Vihara, Cumilla, Bangladesh",
+  "lat": 23.42518,
+  "lng": 91.1375,
+  "matched": "Shalban Vihara, লালমাই - কোটবাড়ী - পলিটেকনিক লিংক রোড, খানবাড়ী, কুমিল্লা, কুমিল্লা আদর্শ সদর উপজেলা, কুমিল্লা জেলা, চট্টগ্রাম বিভাগ, 3506, বাংলাদেশ"
+ },
+ "BD-CTG-025": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Cumilla, Bangladesh",
+  "lat": 23.46098,
+  "lng": 91.18122,
+  "matched": "কুমিল্লা, কুমিল্লা আদর্শ সদর উপজেলা, কুমিল্লা জেলা, চট্টগ্রাম বিভাগ, 3500, বাংলাদেশ"
+ },
+ "BD-CTG-026": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Brahmanbaria, Bangladesh",
+  "lat": 23.9606,
+  "lng": 91.11909,
+  "matched": "ব্রাহ্মণবাড়িয়া জেলা, চট্টগ্রাম বিভাগ, বাংলাদেশ"
+ },
+ "BD-CTG-027": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Laboni beach, Cox's Bazar, Bangladesh",
+  "lat": 21.4308,
+  "lng": 91.97517,
+  "matched": "Laboni Beach Road, হোটেল মোটেল অঞ্চল, কক্সবাজার সদর উপজেলা, কক্সবাজার জেলা, চট্টগ্রাম বিভাগ, 4700, বাংলাদেশ"
+ },
+ "BD-CTG-028": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Ramu, Cox's Bazar, Bangladesh",
+  "lat": 21.44549,
+  "lng": 92.09963,
+  "matched": "রামু, কক্সবাজার জেলা, চট্টগ্রাম বিভাগ, বাংলাদেশ"
+ },
+ "BD-CTG-029": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Adinath Temple, Cox's Bazar, Bangladesh",
+  "lat": 21.52842,
+  "lng": 91.97499,
+  "matched": "Adinath Temple, Dhighi Road, মহেশখালী উপজেলা, কক্সবাজার জেলা, চট্টগ্রাম বিভাগ, 4702, বাংলাদেশ"
+ },
+ "BD-CTG-030": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Rangamati, Bangladesh",
+  "lat": 22.65092,
+  "lng": 92.18143,
+  "matched": "রাঙ্গামাটি, রাঙ্গামাটি সদর উপজেলা, রাঙ্গামাটি পার্বত্য জেলা, চট্টগ্রাম বিভাগ, 0351, বাংলাদেশ"
+ },
+ "BD-CTG-031": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Kaptai Lake, Rangamati, Bangladesh",
+  "lat": 22.75953,
+  "lng": 92.27607,
+  "matched": "কাপ্তাই হ্রদ, বরকল উপজেলা, রাঙ্গামাটি পার্বত্য জেলা, চট্টগ্রাম বিভাগ, 4500, বাংলাদেশ"
+ },
+ "BD-CTG-032": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Alutila cave, Khagrachhari, Bangladesh",
+  "lat": 23.08752,
+  "lng": 91.95635,
+  "matched": "Alutila Cave Rd, খাগড়াছড়ি, খাগড়াছড়ি সদর উপজেলা, খাগড়াছড়ি পার্বত্য জেলা, চট্টগ্রাম বিভাগ, 4400, বাংলাদেশ"
+ },
+ "BD-CTG-033": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Khagrachhari, Bangladesh",
+  "lat": 23.1078,
+  "lng": 91.989,
+  "matched": "খাগড়াছড়ি, খাগড়াছড়ি সদর উপজেলা, খাগড়াছড়ি পার্বত্য জেলা, চট্টগ্রাম বিভাগ, 4400, বাংলাদেশ"
+ },
+ "BD-CTG-034": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Bandarban, Bangladesh",
+  "lat": 21.78748,
+  "lng": 92.41248,
+  "matched": "বান্দরবান পার্বত্য জেলা, চট্টগ্রাম বিভাগ, 4640, বাংলাদেশ"
+ },
+ "BD-CTG-035": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Bandarban, Bangladesh",
+  "lat": 21.78748,
+  "lng": 92.41248,
+  "matched": "বান্দরবান পার্বত্য জেলা, চট্টগ্রাম বিভাগ, 4640, বাংলাদেশ"
+ },
+ "BD-CTG-036": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Hatiya, Noakhali, Bangladesh",
+  "lat": 22.2909,
+  "lng": 91.1405,
+  "matched": "হাতিয়া উপজেলা, নোয়াখালী জেলা, চট্টগ্রাম বিভাগ, বাংলাদেশ"
+ },
+ "BD-CTG-037": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Chandpur, Bangladesh",
+  "lat": 23.22604,
+  "lng": 90.65504,
+  "matched": "চাঁদপুর, চাঁদপুর সদর উপজেলা, চাঁদপুর জেলা, চট্টগ্রাম বিভাগ, 3602, বাংলাদেশ"
+ },
+ "BD-RAJ-038": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Rajshahi, Bangladesh",
+  "lat": 24.62854,
+  "lng": 89.03769,
+  "matched": "রাজশাহী বিভাগ, বাংলাদেশ"
+ },
+ "BD-RAJ-039": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Puthia Rajbari, Rajshahi, Bangladesh",
+  "lat": 24.36168,
+  "lng": 88.83646,
+  "matched": "Puthia Rajbari, Shib pukur par, পুঠিয়া, পুঠিয়া উপজেলা, রাজশাহী জেলা, রাজশাহী বিভাগ, 6260, বাংলাদেশ"
+ },
+ "BD-RAJ-040": {
+  "status": "approximate_unverified",
+  "precision": "place",
+  "query": "Bagha Mosque, Rajshahi, Bangladesh",
+  "lat": 24.19606,
+  "lng": 88.83946,
+  "matched": "Bagha Mosque, Chandipur, বাঘা, বাঘা উপজেলা, রাজশাহী জেলা, রাজশাহী বিভাগ, 6280, বাংলাদেশ"
+ },
+ "BD-RAJ-041": {
+  "status": "approximate_unverified",
+  "precision": "place",
+  "query": "Paharpur Somapura Mahavihara, Naogaon, Bangladesh",
+  "lat": 25.03145,
+  "lng": 88.97809,
+  "matched": "Somapura Mahavihara, Jamalganj-Paharpur Rd, Joypurhat, বদলগাছী উপজেলা, নওগাঁ জেলা, রাজশাহী বিভাগ, 6570, বাংলাদেশ"
+ },
+ "BD-RAJ-042": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Bogura, Bangladesh",
+  "lat": 24.85007,
+  "lng": 89.37284,
+  "matched": "বগুড়া, বগুড়া জেলা, রাজশাহী বিভাগ, 5800, বাংলাদেশ"
+ },
+ "BD-RAJ-043": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Bogura, Bangladesh",
+  "lat": 24.85007,
+  "lng": 89.37284,
+  "matched": "বগুড়া, বগুড়া জেলা, রাজশাহী বিভাগ, 5800, বাংলাদেশ"
+ },
+ "BD-RAJ-044": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Shibganj, Chapai Nawabganj, Bangladesh",
+  "lat": 24.60129,
+  "lng": 88.24637,
+  "matched": "Nawabganj - Shibganj Rd, চাঁপাইনবাবগঞ্জ, নবাবগঞ্জ উপজেলা, চাঁপাইনবাবগঞ্জ জেলা, রাজশাহী বিভাগ, বাংলাদেশ"
+ },
+ "BD-RAJ-045": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Chapai Nawabganj, Bangladesh",
+  "lat": 24.59989,
+  "lng": 88.28505,
+  "matched": "Chapai Nawabganj, চাঁপাইনবাবগঞ্জ, নবাবগঞ্জ উপজেলা, চাঁপাইনবাবগঞ্জ জেলা, রাজশাহী বিভাগ, 6300, বাংলাদেশ"
+ },
+ "BD-RAJ-046": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Natore Rajbari, Natore, Bangladesh",
+  "lat": 24.42001,
+  "lng": 88.99154,
+  "matched": "Natore Rajbari, রাজবাড়ি, নাটোর, নাটোর সদর উপজেলা, নাটোর জেলা, রাজশাহী বিভাগ, বাংলাদেশ"
+ },
+ "BD-RAJ-047": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Sirajganj, Bangladesh",
+  "lat": 24.45722,
+  "lng": 89.7057,
+  "matched": "সিরাজগঞ্জ, সিরাজগঞ্জ সদর উপজেলা, সিরাজগঞ্জ জেলা, রাজশাহী বিভাগ, 6700, বাংলাদেশ"
+ },
+ "BD-RAJ-048": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Pabna, Bangladesh",
+  "lat": 24.00681,
+  "lng": 89.24483,
+  "matched": "পাবনা, পাবনা সদর উপজেলা, পাবনা জেলা, রাজশাহী বিভাগ, 6600, বাংলাদেশ"
+ },
+ "BD-RAJ-049": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Joypurhat, Bangladesh",
+  "lat": 25.11114,
+  "lng": 88.98845,
+  "matched": "Joypurhat, জয়পুরহাট, জয়পুরহাট সদর উপজেলা, জয়পুরহাট জেলা, রাজশাহী বিভাগ, 5900, বাংলাদেশ"
+ },
+ "BD-KHL-050": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Sixty Dome Mosque, Bagerhat, Bangladesh",
+  "lat": 22.6745,
+  "lng": 89.74182,
+  "matched": "Sixty Dome Mosque, Old Rupsa Bagerhat Road, বাগেরহাট, বাগেরহাট সদর উপজেলা, বাগেরহাট জেলা, খুলনা বিভাগ, 9300, বাংলাদেশ"
+ },
+ "BD-KHL-051": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Bagerhat, Bangladesh",
+  "lat": 22.65548,
+  "lng": 89.79418,
+  "matched": "বাগেরহাট, বাগেরহাট সদর উপজেলা, বাগেরহাট জেলা, খুলনা বিভাগ, 9300, বাংলাদেশ"
+ },
+ "BD-KHL-052": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Satkhira, Bangladesh",
+  "lat": 22.71665,
+  "lng": 89.07499,
+  "matched": "সাতক্ষীরা, সাতক্ষীরা সদর উপজেলা, সাতক্ষীরা জেলা, খুলনা বিভাগ, 9400, বাংলাদেশ"
+ },
+ "BD-KHL-053": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Sagardari, Keshabpur, Jashore, Bangladesh",
+  "lat": 22.83853,
+  "lng": 89.1671,
+  "matched": "Sagardari, কেশবপুর উপজেলা, যশোর জেলা, খুলনা বিভাগ, বাংলাদেশ"
+ },
+ "BD-KHL-054": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Jashore, Bangladesh",
+  "lat": 23.16653,
+  "lng": 89.20944,
+  "matched": "যশোর, যশোর জেলা, খুলনা বিভাগ, বাংলাদেশ"
+ },
+ "BD-KHL-055": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Kushtia, Bangladesh",
+  "lat": 23.8988,
+  "lng": 89.12955,
+  "matched": "কুষ্টিয়া, মিরপুর, কুষ্টিয়া জেলা, খুলনা বিভাগ, 7001, বাংলাদেশ"
+ },
+ "BD-KHL-056": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Shilaidaha Kuthibari, Kushtia, Bangladesh",
+  "lat": 23.91976,
+  "lng": 89.22,
+  "matched": "Shilaidaha Kuthibari, Choraikal-Shilaidaha Road, কুমারখালী, কুমারখালী উপজেলা, কুষ্টিয়া জেলা, খুলনা বিভাগ, বাংলাদেশ"
+ },
+ "BD-KHL-057": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Kushtia, Bangladesh",
+  "lat": 23.8988,
+  "lng": 89.12955,
+  "matched": "কুষ্টিয়া, মিরপুর, কুষ্টিয়া জেলা, খুলনা বিভাগ, 7001, বাংলাদেশ"
+ },
+ "BD-KHL-058": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Mujibnagar, Meherpur, Bangladesh",
+  "lat": 23.64751,
+  "lng": 88.59479,
+  "matched": "Mujibnagar Ambagan, মুজিবনগর, মেহেরপুর সদর উপজেলা, মেহেরপুর জেলা, খুলনা বিভাগ, বাংলাদেশ"
+ },
+ "BD-KHL-059": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Narail, Bangladesh",
+  "lat": 25.07488,
+  "lng": 90.39165,
+  "matched": "Narail, হালুয়াঘাট উপজেলা, ময়মনসিংহ জেলা, ময়মনসিংহ বিভাগ, বাংলাদেশ"
+ },
+ "BD-KHL-060": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Jhenaidah, Bangladesh",
+  "lat": 23.5447,
+  "lng": 89.17319,
+  "matched": "ঝিনাইদহ, ঝিনাইদহ সদর উপজেলা, ঝিনাইদহ জেলা, খুলনা বিভাগ, 7301, বাংলাদেশ"
+ },
+ "BD-BAR-061": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Oxford Mission Church, Barishal, Bangladesh",
+  "lat": 22.70432,
+  "lng": 90.36283,
+  "matched": "অক্সফোর্ড মিশন গির্জা, Oxford Mission Chaurch, বগুড়া রোড, বরিশাল, বরিশাল সদর উপজেলা, বরিশাল জেলা, বরিশাল বিভাগ, 8200, বাংলাদেশ"
+ },
+ "BD-BAR-062": {
+  "status": "approximate_unverified",
+  "precision": "place",
+  "query": "Bhimruli floating guava market, Jhalokathi, Bangladesh",
+  "lat": 22.71375,
+  "lng": 90.16284,
+  "matched": "Bhimruli Floating Guava Market, Bhimruli-Baukathi Rd, ঝালকাঠী, ঝালকাঠি সদর উপজেলা, ঝালকাঠি জেলা, বরিশাল বিভাগ, বাংলাদেশ"
+ },
+ "BD-BAR-063": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Pirojpur, Bangladesh",
+  "lat": 22.50956,
+  "lng": 90.00725,
+  "matched": "পিরোজপুর জেলা, বরিশাল বিভাগ, বাংলাদেশ"
+ },
+ "BD-BAR-064": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Pirojpur, Bangladesh",
+  "lat": 22.50956,
+  "lng": 90.00725,
+  "matched": "পিরোজপুর জেলা, বরিশাল বিভাগ, বাংলাদেশ"
+ },
+ "BD-BAR-065": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Patuakhali, Bangladesh",
+  "lat": 22.00842,
+  "lng": 90.38268,
+  "matched": "পটুয়াখালী জেলা, বরিশাল বিভাগ, বাংলাদেশ"
+ },
+ "BD-BAR-066": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Kalapara / Kuakata, Patuakhali, Bangladesh",
+  "lat": 21.98777,
+  "lng": 90.21778,
+  "matched": "Kalapara Upazila Health Complex, ঢাকা-কুয়াকাটা মহাসড়ক, কলাপাড়া, কলাপাড়া উপজেলা, পটুয়াখালী জেলা, বরিশাল বিভাগ, 8650, বাংলাদেশ"
+ },
+ "BD-BAR-067": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Kuakata beach, Patuakhali, Bangladesh",
+  "lat": 21.81308,
+  "lng": 90.12265,
+  "matched": "কুয়াকাটা সমুদ্র সৈকত, কুয়াকাটা, কলাপাড়া উপজেলা, পটুয়াখালী জেলা, বরিশাল বিভাগ, 8652, বাংলাদেশ"
+ },
+ "BD-BAR-068": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Barguna, Bangladesh",
+  "lat": 22.13134,
+  "lng": 90.11724,
+  "matched": "বরগুনা জেলা, বরিশাল বিভাগ, বাংলাদেশ"
+ },
+ "BD-BAR-069": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Char Kukri Mukri, Bhola, Bangladesh",
+  "lat": 21.93497,
+  "lng": 90.65221,
+  "matched": "চর কুকরি মুকরি বন্যপ্রাণী অভয়ারণ্য, চরফ্যাশন উপজেলা, ভোলা জেলা, বরিশাল বিভাগ, বাংলাদেশ"
+ },
+ "BD-SYL-070": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Sylhet, Bangladesh",
+  "lat": 24.73589,
+  "lng": 91.68525,
+  "matched": "সিলেট বিভাগ, বাংলাদেশ"
+ },
+ "BD-SYL-071": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Sylhet city, Sylhet, Bangladesh",
+  "lat": 24.89922,
+  "lng": 91.86853,
+  "matched": "সিলেট, সিলেট সদর উপজেলা, সিলেট জেলা, সিলেট বিভাগ, 3100, বাংলাদেশ"
+ },
+ "BD-SYL-072": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Gowainghat, Sylhet, Bangladesh",
+  "lat": 25.05473,
+  "lng": 91.96447,
+  "matched": "গোয়াইনঘাট উপজেলা, সিলেট জেলা, সিলেট বিভাগ, বাংলাদেশ"
+ },
+ "BD-SYL-073": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Moulvibazar, Bangladesh",
+  "lat": 24.48808,
+  "lng": 91.76302,
+  "matched": "মৌলভীবাজার, মৌলভীবাজার সদর উপজেলা, মৌলভীবাজার জেলা, সিলেট বিভাগ, 3200, বাংলাদেশ"
+ },
+ "BD-SYL-074": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Sreemangal, Moulvibazar, Bangladesh",
+  "lat": 24.32699,
+  "lng": 91.73731,
+  "matched": "Ajmir Flour Mill, Sreemangal, Dhaka - Moulvibazar Highway, শ্রীমঙ্গল উপজেলা, মৌলভীবাজার সদর উপজেলা, মৌলভীবাজার জেলা, সিলেট বিভাগ, 3310, বাংলাদেশ"
+ },
+ "BD-SYL-075": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Lawachara National Park, Moulvibazar, Bangladesh",
+  "lat": 24.32923,
+  "lng": 91.78793,
+  "matched": "লাউয়াছড়া জাতীয় উদ্যান, ডলুছড়া, কমলগঞ্জ উপজেলা, মৌলভীবাজার জেলা, সিলেট বিভাগ, বাংলাদেশ"
+ },
+ "BD-SYL-076": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Tanguar Haor, Sunamganj, Bangladesh",
+  "lat": 25.14839,
+  "lng": 91.05492,
+  "matched": "Tanguar Haor, Uttar Bangshikunda, ধর্মপাশা উপজেলা, সুনামগঞ্জ জেলা, সিলেট বিভাগ, বাংলাদেশ"
+ },
+ "BD-SYL-077": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Sunamganj, Bangladesh",
+  "lat": 25.0671,
+  "lng": 91.39858,
+  "matched": "সুনামগঞ্জ, সুনামগঞ্জ সদর উপজেলা, সুনামগঞ্জ জেলা, সিলেট বিভাগ, বাংলাদেশ"
+ },
+ "BD-SYL-078": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Satchari National Park, Habiganj, Bangladesh",
+  "lat": 24.13414,
+  "lng": 91.4428,
+  "matched": "সাতছড়ি জাতীয় উদ্যান, সাতছড়ি ত্রিপুরা বস্তি, চুনারুঘাট উপজেলা, হবিগঞ্জ জেলা, সিলেট বিভাগ, বাংলাদেশ"
+ },
+ "BD-MYM-079": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Mymensingh city, Mymensingh, Bangladesh",
+  "lat": 24.74821,
+  "lng": 90.40992,
+  "matched": "ময়মনসিংহ, ময়মনসিংহ সদর উপজেলা, ময়মনসিংহ জেলা, ময়মনসিংহ বিভাগ, 2200, বাংলাদেশ"
+ },
+ "BD-MYM-080": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Muktagacha, Mymensingh, Bangladesh",
+  "lat": 24.76516,
+  "lng": 90.25837,
+  "matched": "মুক্তাগাছা, মুক্তাগাছা উপজেলা, ময়মনসিংহ জেলা, ময়মনসিংহ বিভাগ, বাংলাদেশ"
+ },
+ "BD-MYM-081": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Amlapara, Jamalpur, Bangladesh",
+  "lat": 24.93309,
+  "lng": 89.94259,
+  "matched": "Amlapara Jame Mosque, Station Road, সরকার পাড়া, জামালপুর, জামালপুর সদর উপজেলা, জামালপুর জেলা, ময়মনসিংহ বিভাগ, 2000, বাংলাদেশ"
+ },
+ "BD-MYM-082": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Jamalpur, Bangladesh",
+  "lat": 24.92559,
+  "lng": 89.94367,
+  "matched": "জামালপুর, জামালপুর সদর উপজেলা, জামালপুর জেলা, ময়মনসিংহ বিভাগ, 2000, বাংলাদেশ"
+ },
+ "BD-MYM-083": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Netrokona, Bangladesh",
+  "lat": 24.88459,
+  "lng": 90.73285,
+  "matched": "নেত্রকোনা, Netrokona Sadar, নেত্রকোনা জেলা, ময়মনসিংহ বিভাগ, 2400, বাংলাদেশ"
+ },
+ "BD-MYM-084": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Sherpur, Bangladesh",
+  "lat": 25.02284,
+  "lng": 90.01497,
+  "matched": "শেরপুর, শেরপুর সদর উপজেলা, শেরপুর জেলা, ময়মনসিংহ বিভাগ, 2100, বাংলাদেশ"
+ },
+ "BD-MYM-085": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Mymensingh city, Mymensingh, Bangladesh",
+  "lat": 24.74821,
+  "lng": 90.40992,
+  "matched": "ময়মনসিংহ, ময়মনসিংহ সদর উপজেলা, ময়মনসিংহ জেলা, ময়মনসিংহ বিভাগ, 2200, বাংলাদেশ"
+ },
+ "BD-RNG-086": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Rangpur, Bangladesh",
+  "lat": 25.63761,
+  "lng": 89.08264,
+  "matched": "রংপুর বিভাগ, বাংলাদেশ"
+ },
+ "BD-RNG-087": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Rangpur city, Rangpur, Bangladesh",
+  "lat": 25.76009,
+  "lng": 89.26736,
+  "matched": "Rangpur City, রংপুর মহানগরী, রংপুর জেলা, রংপুর বিভাগ, বাংলাদেশ"
+ },
+ "BD-RNG-088": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Dinajpur, Bangladesh",
+  "lat": 25.62607,
+  "lng": 88.63462,
+  "matched": "দিনাজপুর শহর, দিনাজপুর সদর উপজেলা, দিনাজপুর জেলা, রংপুর বিভাগ, 5216, বাংলাদেশ"
+ },
+ "BD-RNG-089": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Ramsagar, Dinajpur, Bangladesh",
+  "lat": 25.55457,
+  "lng": 88.62561,
+  "matched": "রামসাগর জাতীয় উদ্যান, আস্করপুর, আস্করপুর ইউনিয়ন, দিনাজপুর সদর উপজেলা, দিনাজপুর জেলা, রংপুর বিভাগ, বাংলাদেশ"
+ },
+ "BD-RNG-090": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Tetulia, Panchagarh, Bangladesh",
+  "lat": 26.49208,
+  "lng": 88.34331,
+  "matched": "তেঁতুলিয়া, তেঁতুলিয়া ইউনিয়ন, তেঁতুলিয়া উপজেলা, পঞ্চগড় জেলা, রংপুর বিভাগ, বাংলাদেশ"
+ },
+ "BD-RNG-091": {
+  "status": "approximate_unverified",
+  "precision": "spot",
+  "query": "Chini Mosque, Nilphamari, Bangladesh",
+  "lat": 25.79424,
+  "lng": 88.89028,
+  "matched": "Chini Mosjid, Nilphamari, Mosque, Saidpur City Bypass, সৈয়দপুর শহর, সৈয়দপুর উপজেলা, নীলফামারী জেলা, রংপুর বিভাগ, 5310, বাংলাদেশ"
+ },
+ "BD-RNG-092": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Tushbhandar, Kaliganj, Lalmonirhat, Bangladesh",
+  "lat": 25.96835,
+  "lng": 89.20591,
+  "matched": "তুষভান্ডার, তুষভান্ডার ইউনিয়ন, কালীগঞ্জ উপজেলা, লালমনিরহাট জেলা, রংপুর বিভাগ, বাংলাদেশ"
+ },
+ "BD-RNG-093": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Chilmari, Kurigram, Bangladesh",
+  "lat": 25.58557,
+  "lng": 89.66785,
+  "matched": "Chilmari Degree College, Ulipur Chilmari Road, থানাহাট, থানাহাট ইউনিয়ন, চিলমারী উপজেলা, কুড়িগ্রাম জেলা, রংপুর বিভাগ, 5630, বাংলাদেশ"
+ },
+ "BD-RNG-094": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Ranisankail, Thakurgaon, Bangladesh",
+  "lat": 25.89871,
+  "lng": 88.2023,
+  "matched": "Ranisankail-Haripur Road, হোসেনগাঁও ইউনিয়ন, রাণীশংকৈল উপজেলা, ঠাকুরগাঁও জেলা, রংপুর বিভাগ, বাংলাদেশ"
+ },
+ "BD-DHK-095": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Joydebpur, Gazipur Sadar, Gazipur, Bangladesh",
+  "lat": 24.00012,
+  "lng": 90.42353,
+  "matched": "জয়দেবপুর, গাজীপুর, গাজীপুর সদর উপজেলা, গাজীপুর জেলা, ঢাকা বিভাগ, 1701, বাংলাদেশ"
+ },
+ "BD-DHK-096": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Madaripur, Bangladesh",
+  "lat": 23.16752,
+  "lng": 90.20473,
+  "matched": "মাদারীপুর, মাদারীপুর সদর উপজেলা, মাদারীপুর জেলা, ঢাকা বিভাগ, 7900, বাংলাদেশ"
+ },
+ "BD-DHK-097": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Rajbari, Bangladesh",
+  "lat": 23.73984,
+  "lng": 89.57041,
+  "matched": "রাজবাড়ী জেলা, ঢাকা বিভাগ, বাংলাদেশ"
+ },
+ "BD-DHK-098": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Shariatpur, Bangladesh",
+  "lat": 23.21328,
+  "lng": 90.34812,
+  "matched": "শরিয়তপুর, শরীয়তপুর সদর উপজেলা, শরিয়তপুর জেলা, ঢাকা বিভাগ, 8000, বাংলাদেশ"
+ },
+ "BD-CTG-099": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Feni, Bangladesh",
+  "lat": 23.01276,
+  "lng": 91.40492,
+  "matched": "ফেনী জেলা, চট্টগ্রাম বিভাগ, বাংলাদেশ"
+ },
+ "BD-CTG-100": {
+  "status": "approximate_unverified",
+  "precision": "place",
+  "query": "Dalal Bazar Zamindar Bari, Lakshmipur, Bangladesh",
+  "lat": 22.96828,
+  "lng": 90.80441,
+  "matched": "Dalal Bazar Zamindar Bari, Lakshmipur-Raipur Road, লক্ষ্মীপুর, লক্ষ্মীপুর সদর উপজেলা, লক্ষ্মীপুর জেলা, চট্টগ্রাম বিভাগ, 3701, বাংলাদেশ"
+ },
+ "BD-KHL-101": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Chuadanga, Bangladesh",
+  "lat": 23.64366,
+  "lng": 88.84645,
+  "matched": "চুয়াডাঙ্গা, চুয়াডাঙ্গা সদর উপজেলা, চুয়াডাঙ্গা জেলা, খুলনা বিভাগ, 7200, বাংলাদেশ"
+ },
+ "BD-KHL-102": {
+  "status": "approximate_unverified",
+  "precision": "area",
+  "query": "Mohammadpur, Magura, Bangladesh",
+  "lat": 23.49074,
+  "lng": 89.43357,
+  "matched": "Mohammadpur Road, মাগুরা, মাগুরা সদর উপজেলা, মাগুরা জেলা, খুলনা বিভাগ, 7600, বাংলাদেশ"
+ },
+ "BD-RNG-103": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Gaibandha, Bangladesh",
+  "lat": 25.33151,
+  "lng": 89.54811,
+  "matched": "Gaibandha, গাইবান্ধা শহর, গাইবান্ধা সদর উপজেলা, গাইবান্ধা জেলা, রংপুর বিভাগ, 5700, বাংলাদেশ"
+ },
+ "BD-KHL-104": {
+  "status": "approximate_unverified",
+  "precision": "district",
+  "query": "Khulna, Bangladesh",
+  "lat": 22.93721,
+  "lng": 89.28527,
+  "matched": "খুলনা বিভাগ, বাংলাদেশ"
+ }
+}

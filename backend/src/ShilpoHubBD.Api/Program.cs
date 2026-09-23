@@ -35,7 +35,8 @@ if (builder.Environment.IsDevelopment())
 	var envFile = envCandidates.FirstOrDefault(File.Exists);
 	if (envFile is not null)
 	{
-		DotNetEnv.Env.Load(envFile);
+		// clobberExistingVars: the root .env wins over a stale Windows/user environment variable of the same name.
+		DotNetEnv.Env.Load(envFile, new DotNetEnv.LoadOptions(clobberExistingVars: true));
 		builder.Configuration.AddEnvironmentVariables();
 	}
 }
@@ -217,11 +218,24 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Reports only WHETHER the Gemini key is loaded (plus a short hash to compare with the RAG
+// service's /health) -- the key itself is never logged.
+{
+	var geminiKey = builder.Configuration["Gemini:ApiKey"];
+	var fingerprint = string.IsNullOrWhiteSpace(geminiKey)
+		? null
+		: Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(geminiKey)))[..8].ToLowerInvariant();
+	app.Logger.LogInformation("Gemini API key: {Status} (fingerprint {Fingerprint})",
+		fingerprint is null ? "NOT loaded -- set Gemini__ApiKey in the root .env" : "loaded", fingerprint ?? "-");
+}
+
 // Keep the public craft directory complete for new and existing installations.
 using (var referenceDataScope = app.Services.CreateScope())
 {
 	var dbContext = referenceDataScope.ServiceProvider.GetRequiredService<ShilpoHubDbContext>();
 	await MarketplaceReferenceDataSeeder.SeedCraftCategoriesAsync(dbContext);
+	await TourismLocationSeeder.SeedAsync(dbContext);
+	await TransportOptionSeeder.SeedAsync(dbContext);
 }
 
 // Configure the HTTP request pipeline.

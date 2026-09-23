@@ -4,6 +4,9 @@ import apiClient from './apiClient';
 export const customOrdersService = {
   create: (payload) => apiClient.post('/custom-orders', payload).then((res) => res.data),
   mine: () => apiClient.get('/custom-orders/mine/customer').then((res) => res.data),
+  // Producer side: requests customers sent to me, and my answer (Accepted / Rejected / InProgress / Completed).
+  mineAsProducer: () => apiClient.get('/custom-orders/mine/producer').then((res) => res.data),
+  respond: (id, payload) => apiClient.post(`/custom-orders/${id}/respond`, payload).then((res) => res.data),
   getById: (id) => apiClient.get(`/custom-orders/${id}`).then((res) => res.data),
   cancel: (id) => apiClient.post(`/custom-orders/${id}/cancel`).then((res) => res.data),
 };

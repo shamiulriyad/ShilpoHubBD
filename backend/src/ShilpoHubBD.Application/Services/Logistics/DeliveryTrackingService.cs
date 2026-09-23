@@ -48,11 +48,61 @@ public class DeliveryTrackingService : IDeliveryTrackingService
     private readonly IDeliveryTrackingRepository _repository;
     private readonly ILogisticsPartnerRepository _partnerRepository;
 
+    private readonly IOrderService _orderService;
+
     public DeliveryTrackingService(
-        IDeliveryTrackingRepository repository, ILogisticsPartnerRepository partnerRepository)
+        IDeliveryTrackingRepository repository, ILogisticsPartnerRepository partnerRepository, IOrderService orderService)
     {
         _repository = repository;
         _partnerRepository = partnerRepository;
+        _orderService = orderService;
+    }
+
+    public async Task<ShipmentDto> CreateForOrderHandoffAsync(
+        Guid logisticsPartnerProfileId, Guid producerUserId, string producerName, OrderHandoffDetails order,
+        CancellationToken cancellationToken)
+    {
+        var profile = await _partnerRepository.GetByIdAsync(logisticsPartnerProfileId, cancellationToken)
+            ?? throw new ConflictException("The chosen logistics partner was not found.");
+        if (profile.VerificationStatus != LogisticsPartnerVerificationStatus.Verified || !profile.IsAcceptingRequests)
+        {
+            throw new ConflictException("The chosen logistics partner is not currently accepting shipments.");
+        }
+
+        var now = DateTime.UtcNow;
+        var shipment = new Shipment
+        {
+            Id = Guid.NewGuid(),
+            TrackingNumber = await UniqueTrackingNumberAsync(now, cancellationToken),
+            LogisticsPartnerProfileId = profile.Id,
+            CreatedByUserId = producerUserId,
+            Status = ShipmentStatus.Created,
+            ServiceLevel = ShipmentServiceLevel.Standard,
+            OrderId = order.OrderId,
+            // The producer has no pickup address on file, so the partner arranges collection with them.
+            OriginContactName = producerName,
+            OriginPhone = "Via ShilpoHub messages",
+            OriginAddressLine = "Producer workshop - pickup address to be confirmed with the producer",
+            OriginCity = "To be confirmed",
+            RecipientName = order.RecipientName,
+            RecipientPhone = order.RecipientPhone,
+            DestinationAddressLine = order.DestinationAddressLine,
+            DestinationCity = order.DestinationCity,
+            DestinationDistrictId = order.DestinationDistrictId,
+            ParcelCount = order.ParcelCount < 1 ? 1 : order.ParcelCount,
+            DeclaredValue = order.DeclaredValue,
+            DimensionsNote = order.Description is { Length: > 400 } d ? d[..400] : order.Description,
+            LastStatusAt = now,
+            CreatedAt = now,
+            UpdatedAt = now,
+        };
+
+        AddEvent(shipment, ShipmentEventType.Created, producerUserId, now, null, ShipmentStatus.Created,
+            null, null, null, null, "Handed over by the producer for delivery.");
+
+        await _repository.AddAsync(shipment, cancellationToken);
+        await _repository.SaveChangesAsync(cancellationToken);
+        return (await _repository.GetByIdAsync(shipment.Id, cancellationToken))!.ToDto();
     }
 
     public async Task<ShipmentDto> CreateAsync(
@@ -462,6 +512,7 @@ public class DeliveryTrackingService : IDeliveryTrackingService
         shipment.LastStatusAt = now;
         shipment.UpdatedAt = now;
         await _repository.SaveChangesAsync(cancellationToken);
+        await NotifyOrderDeliveredAsync(shipment, cancellationToken);
 
         return (await _repository.GetByIdAsync(shipment.Id, cancellationToken))!.ToDto();
     }
@@ -497,8 +548,19 @@ public class DeliveryTrackingService : IDeliveryTrackingService
 
         shipment.UpdatedAt = now;
         await _repository.SaveChangesAsync(cancellationToken);
+        await NotifyOrderDeliveredAsync(shipment, cancellationToken);
 
         return (await _repository.GetByIdAsync(shipment.Id, cancellationToken))!.ToDto();
+    }
+
+    // When the partner delivers, the order items handed over under this tracking number become
+    // Delivered and the customer-facing order status rolls up (so the customer is told).
+    private async Task NotifyOrderDeliveredAsync(Shipment shipment, CancellationToken cancellationToken)
+    {
+        if (shipment.OrderId.HasValue && shipment.Status == ShipmentStatus.Delivered)
+        {
+            await _orderService.HandleShipmentDeliveredAsync(shipment.OrderId.Value, shipment.TrackingNumber, cancellationToken);
+        }
     }
 
     public async Task<ShipmentDto> CancelAsync(
