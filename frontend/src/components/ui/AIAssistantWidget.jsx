@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import {
-  findHeritageDemoAnswer,
-  HERITAGE_DEMO_FALLBACK_ID,
-  heritageDemoSuggestions,
-} from '../../data/heritageDemoQuestions';
+import apiClient from '../../services/apiClient';
+import { heritageDemoSuggestions } from '../../data/heritageDemoQuestions';
 import { routePaths } from '../../routes/routePaths';
 
 /* ---------------------------------------------------------------------------
@@ -86,42 +83,29 @@ const CheckIcon = (props) => (
   </Icon>
 );
 
-/* ---------------------------------------------------------------------------
- * Answer source — the one seam between the UI and where answers come from.
- *
- * Today it resolves against the static dataset in `data/heritageDemoQuestions`
- * (no API, RAG or DB call before login). To go live, replace the body of
- * `requestHeritageAnswer` with the real call, e.g.
- *
- *   const { data } = await api.post('/ai/heritage-assistant/ask', { question });
- *   return {
- *     answer: data.answer,
- *     source: data.sources,        // string or string[] — both render
- *     category: data.category,
- *     confidence: data.confidence,
- *   };
- *
- * Nothing below this block needs to change.
- * ------------------------------------------------------------------------- */
-
+/** Suggested-question chips — the sample questions the demo dataset used to answer locally;
+ * the ShilpoHub RAG service covers all three for real now. */
 const SUGGESTIONS = heritageDemoSuggestions;
 
-/** Mimics network latency so the typing indicator has something to cover. */
-const REPLY_DELAY_MS = 900;
+/** question_type the RAG service returns when a question is outside the knowledge base. */
+const OUT_OF_SCOPE_CATEGORY = 'out_of_scope';
 
 /**
- * Before-login boundary: the three demo answers stay open to everyone, and the
- * sign-in CTA only appears once a visitor has actually explored — two distinct
- * demo topics answered, or a question the preview dataset cannot cover.
+ * Before-login boundary: answers stay open to everyone, and the sign-in CTA only
+ * appears once a visitor has actually explored — two distinct question categories
+ * answered, or a question the knowledge base has nothing for. Signed-in users never
+ * see it (they're already in).
  */
 const MIN_TOPICS_BEFORE_CTA = 2;
 
-function shouldShowSignInCta(messages) {
-  const answers = messages.filter((message) => message.role === 'assistant' && message.demoId);
-  if (answers.some((message) => message.demoId === HERITAGE_DEMO_FALLBACK_ID)) return true;
+function shouldShowSignInCta(messages, isAuthenticated) {
+  if (isAuthenticated) return false;
 
-  const topics = new Set(answers.map((message) => message.demoId));
-  topics.delete(HERITAGE_DEMO_FALLBACK_ID);
+  const answers = messages.filter((message) => message.role === 'assistant' && message.category);
+  if (answers.some((message) => message.category === OUT_OF_SCOPE_CATEGORY)) return true;
+
+  const topics = new Set(answers.map((message) => message.category));
+  topics.delete(OUT_OF_SCOPE_CATEGORY);
   return topics.size >= MIN_TOPICS_BEFORE_CTA;
 }
 
@@ -130,10 +114,13 @@ const ERROR_ANSWER = {
   tone: 'error',
 };
 
-function requestHeritageAnswer(question) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(findHeritageDemoAnswer(question)), REPLY_DELAY_MS);
-  });
+async function requestHeritageAnswer(question) {
+  const { data } = await apiClient.post('/ai/heritage-assistant/ask', { question });
+  return {
+    answer: data.answer,
+    source: data.sources?.length ? data.sources : undefined,
+    category: data.category,
+  };
 }
 
 let messageCounter = 0;
@@ -347,10 +334,8 @@ export default function AIAssistantWidget() {
         id: nextId(),
         role: 'assistant',
         text: reply.answer,
-        demoId: reply.id,
         source: reply.source,
         category: reply.category,
-        confidence: reply.confidence,
         tone: reply.tone,
       },
     ]);
@@ -364,11 +349,11 @@ export default function AIAssistantWidget() {
 
   const canSend = inputValue.trim().length > 0 && !isTyping;
   // Hold the CTA back until the reply it follows is on screen.
-  const showSignInCta = !isTyping && shouldShowSignInCta(messages);
+  const showSignInCta = !isTyping && shouldShowSignInCta(messages, isAuthenticated);
 
-  // Pre-login helper only: stay hidden until the session is known, and for signed-in
-  // visitors, who get the in-app support surfaces instead.
-  if (!isHydrated || isAuthenticated) return null;
+  // Stay hidden until the session is known, so it doesn't flash for a moment
+  // before login state resolves.
+  if (!isHydrated) return null;
 
   return (
     <>

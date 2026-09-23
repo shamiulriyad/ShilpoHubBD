@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Infrastructure.AIBusiness;
 using ShilpoHubBD.Infrastructure.AIBusinessPartner;
@@ -26,6 +27,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
+        services.Configure<RagServiceOptions>(configuration.GetSection("RagService"));
 
         services.AddScoped<ITokenService, JwtTokenService>();
         services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
@@ -47,7 +49,12 @@ public static class DependencyInjection
 
         services.AddScoped<IBackupRunner, PgDumpBackupRunner>();
 
-        services.AddScoped<IHeritageAssistantProvider, RuleBasedHeritageAssistantProvider>();
+        services.AddHttpClient<IHeritageAssistantProvider, RagHeritageAssistantProvider>((sp, client) =>
+        {
+            var ragOptions = sp.GetRequiredService<IOptions<RagServiceOptions>>().Value;
+            client.BaseAddress = new Uri(ragOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(ragOptions.TimeoutSeconds);
+        });
         services.AddScoped<ICounterfeitDetectionProvider, RuleBasedCounterfeitDetectionProvider>();
         services.AddScoped<IStoryGeneratorProvider, RuleBasedStoryGeneratorProvider>();
         services.AddScoped<ISentimentAnalysisProvider, RuleBasedSentimentAnalysisProvider>();

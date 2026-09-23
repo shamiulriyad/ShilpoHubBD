@@ -7,7 +7,10 @@ namespace ShilpoHubBD.Infrastructure.HeritageAssistant;
 /// LLM call. Swap in a real model-backed <see cref="IHeritageAssistantProvider"/> later if desired.</summary>
 public class RuleBasedHeritageAssistantProvider : IHeritageAssistantProvider
 {
-    public HeritageAssistantAnswerDto Answer(HeritageAssistantContext context)
+    public Task<HeritageAssistantAnswerDto> AnswerAsync(HeritageAssistantContext context, CancellationToken cancellationToken)
+        => Task.FromResult(Answer(context));
+
+    private static HeritageAssistantAnswerDto Answer(HeritageAssistantContext context)
     {
         var question = context.Question;
 
