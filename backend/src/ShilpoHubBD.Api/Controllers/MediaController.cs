@@ -21,7 +21,7 @@ public class MediaController : ControllerBase
     [HttpPost("images")]
     [RequestSizeLimit(20 * 1024 * 1024)]
     [RequestFormLimits(MultipartBodyLengthLimit = 20 * 1024 * 1024)]
-    public async Task<ActionResult<object>> UploadImage([FromForm] IFormFile file, CancellationToken cancellationToken)
+    public async Task<ActionResult<object>> UploadImage(IFormFile file, CancellationToken cancellationToken)
     {
         if (file.Length == 0 || file.Length > 20 * 1024 * 1024)
             return BadRequest(new { message = "Choose an image smaller than 20 MB." });
