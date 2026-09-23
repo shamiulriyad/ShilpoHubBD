@@ -87,11 +87,13 @@ def _pack(parts: List[str], fits: Callable[[str], bool]) -> List[str]:
     return bodies
 
 
+_DOC_TYPE_LABELS = {"craft": "Craft", "reference": "Reference"}
+
+
 def _header(doc: Dict[str, Any], aspect: str) -> str:
-    if doc["doc_type"] == "craft":
-        name = doc["name_en"] + (f" ({doc['name_bn']})" if doc.get("name_bn") else "")
-        return f"Craft: {name} | Source: {doc['source_file']} | Aspect: {aspect}"
-    return f"Reference: {doc['name_en']} | Source: {doc['source_file']} | Aspect: {aspect}"
+    label = _DOC_TYPE_LABELS.get(doc["doc_type"], doc["doc_type"].replace("_", " ").title())
+    name = doc["name_en"] + (f" ({doc['name_bn']})" if doc.get("name_bn") else "")
+    return f"{label}: {name} | Source: {doc['source_file']} | Aspect: {aspect}"
 
 
 def _mentioned(values: List[str], text: str) -> List[str]:
@@ -140,6 +142,10 @@ def chunk_documents(docs: List[Dict[str, Any]], max_tokens: int = None, count_to
                     "risk_level": doc["risk_level"],
                     "is_unesco": doc["is_unesco"],
                     "is_gi": doc["is_gi"],
+                    # Optional, non-craft metadata (e.g. Travel Planner places): absent/None on
+                    # every existing craft/reference document, so this is a no-op for them.
+                    "area": doc.get("area"),
+                    "themes": doc.get("themes") or [],
                     "chunk_key": f"{doc['doc_id']}#{aspect}#{n}",   # stable identity -> stable Qdrant id
                     "chunk_index": n,
                 }))
