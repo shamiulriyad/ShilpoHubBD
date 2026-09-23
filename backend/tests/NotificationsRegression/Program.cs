@@ -1,0 +1,41 @@
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using ShilpoHubBD.Data;
+using ShilpoHubBD.Domain.Entities.Identity;
+using ShilpoHubBD.Domain.Entities.TouristBooking;
+using ShilpoHubBD.Domain.Entities.Contracts;
+using ShilpoHubBD.Domain.Entities.Learning;
+
+// No live database, accounts, or notifications are modified by these checks.
+using var db = new ShilpoHubDbContext(new DbContextOptionsBuilder<ShilpoHubDbContext>().UseNpgsql("Host=localhost;Database=unused").Options);
+var builder = typeof(ShilpoHubDbContext).GetMethod("BuildNotificationsAsync", BindingFlags.Instance | BindingFlags.NonPublic)!;
+async Task<List<UserNotification>> Build() => await (Task<List<UserNotification>>)builder.Invoke(db, new object[] { CancellationToken.None })!;
+void Check(bool condition, string label) { if (!condition) throw new Exception(label); Console.WriteLine("PASS: " + label); }
+var tourist = Guid.NewGuid();
+var producer = Guid.NewGuid();
+var booking = new Booking { Id = Guid.NewGuid(), TouristId = tourist, ProducerId = producer };
+db.Attach(booking);
+booking.Status = BookingStatus.Confirmed;
+var notifications = await Build();
+Check(notifications.Count == 2 && notifications.Select(n => n.UserId).ToHashSet().SetEquals(new[] { tourist, producer }), "Booking change reaches only the tourist and service producer");
+Check(notifications.Single(n => n.UserId == tourist).TargetPath == "/tourism/bookings", "Tourist receives the booking destination");
+db.ChangeTracker.Clear();
+db.Attach(booking);
+booking.Notes = "Unrelated text edit";
+Check((await Build()).Count == 0, "Unchanged status does not create duplicate notifications");
+db.ChangeTracker.Clear();
+var partner = Guid.NewGuid();
+db.Add(new Contract { Id = Guid.NewGuid(), ProducerId = producer, BusinessPartnerId = partner });
+notifications = await Build();
+Check(notifications.Count == 2 && notifications.Single(n => n.UserId == partner).TargetPath == "/business-partner/contracts", "Contract participants receive their own workspace destinations");
+db.ChangeTracker.Clear();
+db.Add(new CourseEnrollment { Id = Guid.NewGuid(), ApprenticeId = tourist });
+Check((await Build()).Single().UserId == tourist, "Learning activity goes only to the enrolled user");
+db.ChangeTracker.Clear();
+var notification = new UserNotification { UserId = tourist, Title = "Existing notification" };
+db.Attach(notification);
+notification.ReadAt = DateTime.UtcNow;
+Check((await Build()).Count == 0, "Marking read does not generate another notification");
+db.ChangeTracker.Clear();
+db.Add(new UserRole { UserId = partner, RoleId = Guid.NewGuid() });
+Check((await Build()).Single().UserId == partner, "Role assignment informs the affected account");

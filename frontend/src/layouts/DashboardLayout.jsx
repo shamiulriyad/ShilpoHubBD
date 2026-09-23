@@ -31,10 +31,11 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         >
           ☰
         </button>
-        <Link to={activeRole === 'Tourist' ? routePaths.tourist : routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title">
+        <Link to={activeRole === 'Tourist' ? routePaths.tourist : activeRole === 'HeritageInnovationHub' ? routePaths.researcher : routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title">
           <BrandLogo size="sm" className="[&>span:last-child]:hidden sm:[&>span:last-child]:inline" />
         </Link>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-3">
+          <NotificationBell />
           <ProfileDropdown />
         </div>
       </header>

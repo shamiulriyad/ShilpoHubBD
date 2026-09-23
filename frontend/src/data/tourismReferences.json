@@ -1,0 +1,892 @@
+{
+  "retrieved": "2026-09-23",
+  "districts": [
+    {
+      "name": "Barguna",
+      "description": "Barguna District (Bengali: বরগুনা জেলা; Bengali pronunciation: [borˈguna d͡ʒela]) is a district in Barisal Division, in southern Bangladesh. Barguna subdivision was established in 1969 and promoted to a district on 28 February 1984.",
+      "source": "https://en.wikipedia.org/wiki/Barguna_District",
+      "knownFor": "Mangrove walks and estuary landscapes",
+      "image": {
+        "url": "/images/destinations/haringhata.png",
+        "alt": "Haringhata forest",
+        "author": "INANXR",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Haringhata_forest.png",
+        "note": "Resized from the original; displayed with a cropped frame."
+      }
+    },
+    {
+      "name": "Barishal",
+      "description": "Barisal District, officially Barishal District (Bengali: বরিশাল জেলা) or formerly called Bakerganj District, is a district in south-central Bangladesh; it was established as Bakerganj district in 1797. Its headquarters is in Barisal city, which is also the headquarters of Barisal Division.",
+      "source": "https://en.wikipedia.org/wiki/Barisal_District",
+      "knownFor": "Durga Sagar",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Durga_Sagar"
+    },
+    {
+      "name": "Bhola",
+      "description": "Bhola District (Bengali: ভোলা জেলা) is an administrative district of Barisal Division in south-central Bangladesh, which includes Bhola Island, the largest island of Bangladesh. It has an area of 3,403.48 km2.",
+      "source": "https://en.wikipedia.org/wiki/Bhola_District",
+      "knownFor": "Bhola Island",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Bhola_Island"
+    },
+    {
+      "name": "Jhalokati",
+      "description": "Jhalokathi District, officially Jhalakathi District, (Bengali: ঝালকাঠি জেলা) is a district in southern Bangladesh. It is located in the Barisal Division and covers an area of 758.06 km2.",
+      "source": "https://en.wikipedia.org/wiki/Jhalokathi_District",
+      "knownFor": "Floating guava markets and river trading traditions",
+      "image": null,
+      "heritageSource": "https://bangladeshpost.net/posts/us-envoy-visits-jhalkathi-6306"
+    },
+    {
+      "name": "Patuakhali",
+      "description": "Patuakhali District (Bengali: পটুয়াখালী জেলা, romanized: Pôṭuakhali jela) is a district in south-central Bangladesh in Barisal Division. This district is the main entrance for the beach of Kuakata.",
+      "source": "https://en.wikipedia.org/wiki/Patuakhali_District",
+      "knownFor": "Seaside landscapes and coastal communities",
+      "image": null
+    },
+    {
+      "name": "Pirojpur",
+      "description": "Pirojpur District (Bengali: পিরোজপুর জেলা) is a district in south-western Bangladesh. It is a part of Barisal Division.",
+      "source": "https://en.wikipedia.org/wiki/Pirojpur_District",
+      "knownFor": "Swarupkathi guava gardens, floating markets and backwaters",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Nesarabad_Upazila"
+    },
+    {
+      "name": "Bandarban",
+      "description": "Bandarban District (Bengali: বান্দরবান জেলা), officially Bandarban Hill District, is a district in South-Eastern Bangladesh, and a part of the Chittagong Division. It is one of the three hill districts of Bangladesh and a part of the Chittagong Hill Tracts, the others being Rangamati District and Khagrachhari District.",
+      "source": "https://en.wikipedia.org/wiki/Bandarban_District",
+      "knownFor": "The India – Myanmar Sabroom – Cox's Bazar railway link has been proposed to connect Sabroom – Khargachari – Rangamati – Bandarban – Satkania – Cox's Bazar and another rail link connecting Bandarban to Tuipang, India.; Bandarban lies, by bus, eight hours away from Dhaka, two…",
+      "image": null,
+      "heritageHeading": "Tourism"
+    },
+    {
+      "name": "Brahmanbaria",
+      "description": "Brahmanbaria District (Bengali: ব্রাহ্মণবাড়িয়া জেলা, romanized: Brammôṇbaṛiya) is a district in eastern Bangladesh located in the Chittagong Division. Geographically, it is mostly farmland and is topographically part of the Gangetic Plain.",
+      "source": "https://en.wikipedia.org/wiki/Brahmanbaria_District",
+      "knownFor": "Kal Bhairab Temple, Brahmanbaria",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Kal_Bhairab_Temple%2C_Brahmanbaria"
+    },
+    {
+      "name": "Chandpur",
+      "description": "Chandpur District (Bengali: চাঁদপুর জেলা) is a district in Chittagong Division, Bangladesh. Established on 15 February 1984, it is famously known as the \"Home of Hilsa\" (Bengali: ইলিশের বাড়ি) due to its vast production and trade of Hilsa fish.",
+      "source": "https://en.wikipedia.org/wiki/Chandpur_District",
+      "knownFor": "Meghna river and estuary landscapes",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Chandpur_District"
+    },
+    {
+      "name": "Chattogram",
+      "description": "Chittagong District (Bengali: চট্টগ্রাম জেলা),  officially Chattogram District, is a district located in south-eastern Bangladesh. It is a part of the Chittagong Division.",
+      "source": "https://en.wikipedia.org/wiki/Chittagong_District",
+      "knownFor": "Foy's Lake",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Foy%27s_Lake"
+    },
+    {
+      "name": "Cumilla",
+      "description": "Comilla District, officially known as Cumilla District, (Bengali: কুমিল্লা জেলা) is a district located in southeastern Bangladesh. It is a part of the Chittagong Division.",
+      "source": "https://en.wikipedia.org/wiki/Comilla_District",
+      "knownFor": "Buddhist archaeological remains",
+      "image": null
+    },
+    {
+      "name": "Cox’s Bazar",
+      "description": "Cox's Bazar District (Bengali: কক্সবাজার জেলা) is a district in the Chittagong Division of Bangladesh. It is named after the town of Cox's Bazar.",
+      "source": "https://en.wikipedia.org/wiki/Cox%27s_Bazar_District",
+      "knownFor": "Sea beach and coastal scenery",
+      "image": null
+    },
+    {
+      "name": "Feni",
+      "description": "Feni District (Bengali: ফেনী জেলা) is a coastal district situated in the south-east of Bangladesh, within Chittagong Division. One of Bangladesh's smallest districts, it is strategically located along the Dhaka–Chittagong transportation corridor.",
+      "source": "https://en.wikipedia.org/wiki/Feni_District",
+      "knownFor": "Rajazir Dighi and Bijoy Singha Dighi",
+      "image": null,
+      "heritageSource": "https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-doe/2026/4/b45d5ea5-7d1e-413f-925e-fb3931f40b03.pdf"
+    },
+    {
+      "name": "Khagrachhari",
+      "description": "Khagrachhari District (Bengali: খাগড়াছড়ি জেলা), officially Khagrachhari Hill District, is a district in the Chittagong Division of Southeastern Bangladesh. It is a part of the Chittagong Hill Tracts region.",
+      "source": "https://en.wikipedia.org/wiki/Khagrachhari_District",
+      "knownFor": "Alutila Cave",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Alutila_Cave"
+    },
+    {
+      "name": "Lakshmipur",
+      "description": "Lakshmipur District or Laxmipur District (Bengali: লক্ষ্মীপুর জেলা; Bengali pronunciation: [lokʰːiˈpur]) is a district in Bangladesh with an area of 1,440 km2. It is bordered by Chandpur to the north, Bhola and Noakhali districts to the south, Noakhali to the east, and Barisal and Bhola districts to the west.",
+      "source": "https://en.wikipedia.org/wiki/Lakshmipur_District",
+      "knownFor": "Meghna river and coastal landscapes",
+      "image": null,
+      "heritageSource": "https://www.lakshmipur.gov.bd/en/site/page/9UuY-%E0%A6%AD%E0%A7%8C%E0%A6%97%E0%A6%B2%E0%A6%BF%E0%A6%95-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%9A%E0%A6%BF%E0%A6%A4%E0%A6%BF"
+    },
+    {
+      "name": "Noakhali",
+      "description": "Noakhali District (Bengali: নোয়াখালী জেলা), historically known as Bhulua (Bengali: ভুলুয়া), is a district in southeastern Bangladesh, located in Chattogram Division. It was established as a district in 1821, and officially named Noakhali in 1868.",
+      "source": "https://en.wikipedia.org/wiki/Noakhali_District",
+      "knownFor": "Nijhum Dwip",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Nijhum_Dwip"
+    },
+    {
+      "name": "Rangamati",
+      "description": "Rangamati District (Bengali: রাঙ্গামাটি জেলা), officially Rangamati Hill District, is a district in the south-eastern Chittagong Hill Tracts of Bangladesh. It is a part of the Chattogram Division.",
+      "source": "https://en.wikipedia.org/wiki/Rangamati_District",
+      "knownFor": "Lake landscapes and hill communities",
+      "image": null
+    },
+    {
+      "name": "Dhaka",
+      "description": "Dhaka District (Bengali: ঢাকা জেলা, romanised: Ḍhākā jēlā) is a district in central Bangladesh, and is the densest district in the nation. It is a part of the Dhaka Division.",
+      "source": "https://en.wikipedia.org/wiki/Dhaka_District",
+      "knownFor": "Mughal architecture in Old Dhaka · Metal craft and community heritage",
+      "image": {
+        "url": "/images/destinations/lalbagh.jpg",
+        "alt": "Lalbagh Fort",
+        "author": "Farha Fawzia Atashi",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:%E0%A6%B2%E0%A6%BE%E0%A6%B2_%E0%A6%95%E0%A7%87%E0%A6%B2%E0%A7%8D%E0%A6%B2%E0%A6%BE%E0%A6%B0_%E0%A6%AE%E0%A6%BE%E0%A6%AF%E0%A6%BC%E0%A6%BE.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      }
+    },
+    {
+      "name": "Faridpur",
+      "description": "Faridpur District (Bengali: ফরিদপুর জেলা) is a district in south-central Bangladesh. It is a part of Dhaka Division.",
+      "source": "https://en.wikipedia.org/wiki/Faridpur_District",
+      "knownFor": "Mathurapur Deul",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Mathurapur_Deul"
+    },
+    {
+      "name": "Gazipur",
+      "description": "Gazipur District (Bengali: গাজীপুর জেলা) is a district in central Bangladesh, that is part of the Dhaka Division. It has an area of 1806.36 km2.",
+      "source": "https://en.wikipedia.org/wiki/Gazipur_District",
+      "knownFor": "Bhawal National Park",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Bhawal_National_Park"
+    },
+    {
+      "name": "Gopalganj",
+      "description": "Gopalganj may refer to:",
+      "source": "https://en.wikipedia.org/wiki/Gopalganj",
+      "knownFor": "Tungipara and the Sheikh Mujibur Rahman mausoleum",
+      "image": null,
+      "heritageSource": "https://beautifulbangladesh.gov.bd/district-destination/gopalganj/landmarks/230"
+    },
+    {
+      "name": "Kishoreganj",
+      "description": "Kishoreganj District (Bengali: কিশোরগঞ্জ জেলা) is a district in Dhaka Division, Bangladesh. The establishment of the Kishorganj began with 2495.07 km2 of land requisition from Mymensingh district to form Kishoreganj District.",
+      "source": "https://en.wikipedia.org/wiki/Kishoreganj_District",
+      "knownFor": "Jangalbari Fort",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Jangalbari_Fort"
+    },
+    {
+      "name": "Madaripur",
+      "description": "Madaripur District (Bengali: মাদারীপুর জেলা) is a district in central Bangladesh and a part of the Dhaka Division.",
+      "source": "https://en.wikipedia.org/wiki/Madaripur_District",
+      "knownFor": "Raja Ram Temple",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Raja_Ram_Temple"
+    },
+    {
+      "name": "Manikganj",
+      "description": "Manikganj District (Bengali: মানিকগঞ্জ জেলা, romanized: Mānikgoñj Jela; Bengali pronunciation: [mɑnɪkˈɡondʒ]) is a district in central Bangladesh and a part of the Dhaka Division. It was established in 1845 as a subdivision of Faridpur District.",
+      "source": "https://en.wikipedia.org/wiki/Manikganj_District",
+      "knownFor": "Village palaces and architectural heritage",
+      "image": null
+    },
+    {
+      "name": "Munshiganj",
+      "description": "Munshiganj District (Bengali: মুন্সীগঞ্জ জেলা) is a district of Dhaka Division. It is located in central Bangladesh.",
+      "source": "https://en.wikipedia.org/wiki/Munshiganj_District",
+      "knownFor": "Idrakpur Fort",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Idrakpur_Fort"
+    },
+    {
+      "name": "Narayanganj",
+      "description": "Narayanganj District (Bengali: নারায়ণগঞ্জ জেলা, romanized: nārāẏoṇgoñjo jela) is a district in central Bangladesh which is a part of Dhaka Division. It is the smallest district in Bangladesh.",
+      "source": "https://en.wikipedia.org/wiki/Narayanganj_District",
+      "knownFor": "Historic merchant houses and Sonargaon heritage · Folk art, weaving and historic settlements",
+      "image": {
+        "url": "/images/destinations/panam.jpg",
+        "alt": "Panam Nagar",
+        "author": "Fahad Faisal",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:%E0%A6%B8%E0%A7%8B%E0%A6%A8%E0%A6%BE%E0%A6%B0%E0%A6%97%E0%A6%BE%E0%A6%81%E0%A6%93_%E0%A6%AA%E0%A6%BE%E0%A6%A8%E0%A6%BE%E0%A6%AE_%E0%A6%A8%E0%A6%97%E0%A6%B0_%E0%A6%AA%E0%A7%81%E0%A6%B0%E0%A6%BE%E0%A6%A4%E0%A6%A8_%E0%A6%B8%E0%A7%8D%E0%A6%A5%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%BE-2.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      }
+    },
+    {
+      "name": "Narsingdi",
+      "description": "Narsingdi District (Bengali: নরসিংদী জেলা) is a district in central Bangladesh. It is located 50 km north-east of Dhaka, the Bangladeshi capital.",
+      "source": "https://en.wikipedia.org/wiki/Narsingdi_District",
+      "knownFor": "Wari-Bateshwar ruins",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Wari-Bateshwar_ruins"
+    },
+    {
+      "name": "Rajbari",
+      "description": "Rajbari District (Bengali: রাজবাড়ী জেলা) is a district in central Bangladesh, located in Dhaka Division.",
+      "source": "https://en.wikipedia.org/wiki/Rajbari_District",
+      "knownFor": "Mir Mosharraf Hossain’s literary heritage",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/cat/heritage"
+    },
+    {
+      "name": "Shariatpur",
+      "description": "Shariatpur District (Bengali: শরিয়তপুর জেলা) is a district in Dhaka Division of central Bangladesh. Shariatpur is named after the Islamic revivalist, Haji Shariatullah.",
+      "source": "https://en.wikipedia.org/wiki/Shariatpur_District",
+      "knownFor": "Dhanuka Manasa Bari",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/cat/heritage"
+    },
+    {
+      "name": "Tangail",
+      "description": "Tangail District (Bengali: টাঙ্গাইল জেলা, romanised: Ṭāṅgāil Jēlā) is a district (zila) in the central region of Bangladesh. The establishment of the Tangail began with 3269 square kilometres of land requisitioned from Mymensingh.",
+      "source": "https://en.wikipedia.org/wiki/Tangail_District",
+      "knownFor": "Tangail handloom saris and Atia Mosque",
+      "image": null,
+      "heritageSource": "https://tangail.gov.bd/pages/static-pages/6995975d35ce18e1c0786874"
+    },
+    {
+      "name": "Bagerhat",
+      "description": "Bagerhat District (Bengali: বাগেরহাট জেলা) is a district in south-western Bangladesh. It is a part of Khulna Division.",
+      "source": "https://en.wikipedia.org/wiki/Bagerhat_District",
+      "knownFor": "Sultanate architecture and the historic mosque city",
+      "image": {
+        "url": "/images/destinations/sixty-dome.jpg",
+        "alt": "Sixty Dome Mosque",
+        "author": "মোয়ায মাহমুদ",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Sixty_Dome_Mosque,Bagerhat.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      }
+    },
+    {
+      "name": "Chuadanga",
+      "description": "Chuadanga District (Bengali: চুয়াডাঙ্গা জেলা) is a district in south western Bangladesh, specifically Khulna Division, Bangladesh. It is bordered by the Indian state of  West Bengal to the west, Meherpur District to the northwest, Jessore District to the south, Jhenaidah District to the east, and Kushtia District to the north.",
+      "source": "https://en.wikipedia.org/wiki/Chuadanga_District",
+      "knownFor": "Darshana’s border-town and railway identity",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Darshana,_Bangladesh"
+    },
+    {
+      "name": "Jashore",
+      "description": "Jessore District, officially Jashore District (Bengali: যশোর জেলা; Bengali pronunciation: [Jaw-shor Jela]), is a district in southwestern Bangladesh. It is bordered by India to the west, Khulna and Satkhira districts to the south, Khulna and Narail to the east, and Jhenaidah and Magura districts to the north.",
+      "source": "https://en.wikipedia.org/wiki/Jessore_District",
+      "knownFor": "Michael Madhusudan Dutt’s home and literary heritage",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/cat/heritage"
+    },
+    {
+      "name": "Jhenaidah",
+      "description": "Jhenaidah District (Bengali: ঝিনাইদহ জেলা) is a district in southwestern Bangladesh. Part of the Khulna Division, the district has an area of 1,964.77 km2 (758.60 sq mi).",
+      "source": "https://en.wikipedia.org/wiki/Jhenaidah_District",
+      "knownFor": "Folk traditions and date-palm jaggery",
+      "image": null,
+      "heritageSource": "https://jhenaidah.gov.bd/pages/static-pages/6980f698a31054345f1cf559"
+    },
+    {
+      "name": "Khulna",
+      "description": "Khulna District (Bengali: খুলনা জেলা) is a district of Bangladesh. It is located in the Khulna Division, bordered in the north by Jashore District and Narail District, in the south by the Bay of Bengal, in the east by Bagerhat District, and the west by Satkhira District.",
+      "source": "https://en.wikipedia.org/wiki/Khulna_District",
+      "knownFor": "Sundarbans",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Sundarbans"
+    },
+    {
+      "name": "Kushtia",
+      "description": "Kushtia District (Bengali: কুষ্টিয়া জেলা; pronounced [kuʃʈi̯a‿d͡ʒela] ) is an administrative district of the Khulna Division in southwestern Bangladesh. It is also known as the capital of literature and culture.",
+      "source": "https://en.wikipedia.org/wiki/Kushtia_District",
+      "knownFor": "Tagore’s Kuthibari and riverside heritage",
+      "image": null
+    },
+    {
+      "name": "Magura",
+      "description": "Magura District (Bengali: মাগুরা জেলা) is a district in southwestern Bangladesh, and situated 176 kilometers from Dhaka. It is located in Khulna Division.",
+      "source": "https://en.wikipedia.org/wiki/Magura_District",
+      "knownFor": "Palace of Raja Sitaram Roy",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/cat/heritage"
+    },
+    {
+      "name": "Meherpur",
+      "description": "Meherpur District (Bengali: মেহেরপুর জেলা) is a northwestern district of Khulna Division in southwestern Bangladesh. It is bordered by West Bengal, India in the west, and by the Bangladeshi districts of Kushtia and Chuadanga to the east.",
+      "source": "https://en.wikipedia.org/wiki/Meherpur_District",
+      "knownFor": "Mujibnagar",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Mujibnagar"
+    },
+    {
+      "name": "Narail",
+      "description": "Narail District (Bengali: নড়াইল জেলা) is a district in south-western Bangladesh. It is a part of Khulna Division.",
+      "source": "https://en.wikipedia.org/wiki/Narail_District",
+      "knownFor": "Sultan Complex and the artistic legacy of S. M. Sultan",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/district-destination/narail/landmarks/233"
+    },
+    {
+      "name": "Satkhira",
+      "description": "Satkhira District (Bengali: সাতক্ষীরা জেলা; lit. 'Seven cucumbers') is a district in southwestern Bangladesh and is part of Khulna Division.",
+      "source": "https://en.wikipedia.org/wiki/Satkhira_District",
+      "knownFor": "Sundarbans",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Sundarbans"
+    },
+    {
+      "name": "Jamalpur",
+      "description": "Jamalpur District (Bengali: জামালপুর জেলা) is a district in Bangladesh, and part of Mymensingh Division. It was established in 1978 during the rule of Ziaur Rahman.",
+      "source": "https://en.wikipedia.org/wiki/Jamalpur_District",
+      "knownFor": "Nakshi Kantha and Doyamoyi temple",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/cat/heritage"
+    },
+    {
+      "name": "Mymensingh",
+      "description": "Mymensingh District (Bengali: ময়মনসিংহ জেলা) is a district in Mymensingh Division Bangladesh, and is bordered in the north by Meghalaya, India and the Garo Hills, in the south by Gazipur District, in the east by the districts of Netrokona and Kishoreganj and in the west by the districts of Sherpur, Jamalpur and Tangail. Mymensingh is the 8th administrative divisional headquarters and 12th city corporation of Bangladesh.",
+      "source": "https://en.wikipedia.org/wiki/Mymensingh_District",
+      "knownFor": "Shashi Lodge",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Shashi_Lodge"
+    },
+    {
+      "name": "Netrokona",
+      "description": "Netrokona District, also spelt Netrakona District (Bengali: নেত্রকোণা জেলা), is a district of Mymensingh Division in north-eastern Bangladesh.",
+      "source": "https://en.wikipedia.org/wiki/Netrokona_District",
+      "knownFor": "Birishiri Cultural Academy",
+      "image": null,
+      "heritageSource": "https://www.gis.beautifulbangladesh.gov.bd/spot/birishiri-cultural-academy"
+    },
+    {
+      "name": "Sherpur",
+      "description": "Sherpur District (Bengali: শেরপুর জেলা) is a district in northern Bangladesh. It is a part of Mymensingh Division.",
+      "source": "https://en.wikipedia.org/wiki/Sherpur_District",
+      "knownFor": "Mai Saheba Mosque",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/district-destination/sherpur/heritage/204"
+    },
+    {
+      "name": "Bogura",
+      "description": "Bogra District, officially Bogura District (Bengali: বগুড়া জেলা), is a district in the northern part of Bangladesh, in Rajshahi Division. Bogra is an industrial city where many small and mid-sized companies are sited.",
+      "source": "https://en.wikipedia.org/wiki/Bogra_District",
+      "knownFor": "Ancient Pundranagara and archaeological remains",
+      "image": {
+        "url": "/images/destinations/mahasthan.jpg",
+        "alt": "Mahasthangarh",
+        "author": "Picture taken by P.K.Niyogi, people removed by GreenComputer",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "source": "https://commons.wikimedia.org/wiki/File:BD_Mahasthangarh1_without_people.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      }
+    },
+    {
+      "name": "Joypurhat",
+      "description": "Joypurhat District (Bengali: জয়পুরহাট জেলা) is a district in northern Bangladesh, and part of Rajshahi Division.",
+      "source": "https://en.wikipedia.org/wiki/Joypurhat_District",
+      "knownFor": "Hinda-Qasbah Shahi Mosque",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/cat/heritage"
+    },
+    {
+      "name": "Naogaon",
+      "description": "Naogaon District (Bengali: নওগাঁ জেলা) is a district in northern Bangladesh, and part of Rajshahi Division. It is named after its headquarters, the city of Naogaon in Naogaon Sadar Upazila.",
+      "source": "https://en.wikipedia.org/wiki/Naogaon_District",
+      "knownFor": "Buddhist monastic heritage at Paharpur",
+      "image": {
+        "url": "/images/destinations/paharpur.jpg",
+        "alt": "Somapura Mahavihara",
+        "author": "Abdulmominbd",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Paharpur_Buddhist_Bihar.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      }
+    },
+    {
+      "name": "Natore",
+      "description": "Natore District (Bengali: নাটোর জেলা) is a district in Rajshahi Division located in northern Bangladesh. It borders the metropolitan city of Rajshahi and used to be a part of Rajshahi District.",
+      "source": "https://en.wikipedia.org/wiki/Natore_District",
+      "knownFor": "Natore Rajbari",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Natore_Rajbari"
+    },
+    {
+      "name": "Chapainawabganj",
+      "description": "Chapainawabganj (Bengali: চাঁপাইনবাবগঞ্জ), often colloquially simply called Chapai (Bengali: চাঁপাই pronounced Cām̐pāi) is a district of the Rajshahi Division. This district is the north-western most part of Bangladesh.",
+      "source": "https://en.wikipedia.org/wiki/Chapai_Nawabganj_District",
+      "knownFor": "Choto Sona Mosque",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Choto_Sona_Mosque"
+    },
+    {
+      "name": "Pabna",
+      "description": "Pabna District (Bengali: পাবনা জেলা) is a district in west central Bangladesh. It is a geographically and economically important district.",
+      "source": "https://en.wikipedia.org/wiki/Pabna_District",
+      "knownFor": "Handloom weaving and Gajnar Beel",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/newsletter/single/369"
+    },
+    {
+      "name": "Rajshahi",
+      "description": "Rajshahi District (Bengali: রাজশাহী জেলা) is a district in mid-western Bangladesh. It is a part of Rajshahi Division.",
+      "source": "https://en.wikipedia.org/wiki/Rajshahi_District",
+      "knownFor": "Temple architecture and terracotta ornament",
+      "image": {
+        "url": "/images/destinations/puthia.jpg",
+        "alt": "Puthia Temple Complex",
+        "author": "Tanweer Morshed",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Shiva_temple_at_Puthia,_Rajshahi.JPG",
+        "note": "Resized from the original; displayed with a cropped frame."
+      }
+    },
+    {
+      "name": "Sirajganj",
+      "description": "Sirajganj District (Bengali: সিরাজগঞ্জ জেলা) is a district in North Bengal, Bangladesh, it is located in Rajshahi Division. It is the 25th largest district by area and 9th largest district by population in Bangladesh.",
+      "source": "https://en.wikipedia.org/wiki/Sirajganj_District",
+      "knownFor": "Shahjadpur Kachharibari",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Shahjadpur_Kachharibari"
+    },
+    {
+      "name": "Dinajpur",
+      "description": "Dinajpur District may refer to:  Dinajpur District, Bangladesh West Dinajpur district, West Bengal, India. It was split in 1992 into: Dakshin Dinajpur district Uttar Dinajpur district  ",
+      "source": "https://en.wikipedia.org/wiki/Dinajpur_District",
+      "knownFor": "Terracotta temple art",
+      "image": {
+        "url": "/images/destinations/kantajew.jpg",
+        "alt": "Kantajew Temple",
+        "author": "Shahnoor Habib Munmun",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Kantaji_Temple_Dinajpur_Bangladesh_(12).JPG",
+        "note": "Resized from the original; displayed with a cropped frame."
+      }
+    },
+    {
+      "name": "Gaibandha",
+      "description": "Gaibandha District (Bengali: গাইবান্ধা জেলা) is a district in northern Bangladesh, located within Rangpur Division. Covering an area of 2,179.27 square kilometers (841.42 sq mi), it had a population of 2,562,232 as of the 2022 census.",
+      "source": "https://en.wikipedia.org/wiki/Gaibandha_District",
+      "knownFor": "Brahmaputra river landscapes",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Gaibandha_District"
+    },
+    {
+      "name": "Kurigram",
+      "description": "Kurigram District (Bengali: কুড়িগ্রাম জেলা) is a district of Bangladesh in Rangpur Division. The district is located in northern Bangladesh along the country's border with India.",
+      "source": "https://en.wikipedia.org/wiki/Kurigram_District",
+      "knownFor": "The Shahi Mosque and river landscapes",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/district-destination/kurigram/heritage/218"
+    },
+    {
+      "name": "Lalmonirhat",
+      "description": "Lalmonirhat District (Bengali: লালমনিরহাট জেলা) is a District, situated at the northern border of Bangladesh. It is a part of the Rangpur Division.",
+      "source": "https://en.wikipedia.org/wiki/Lalmonirhat_District",
+      "knownFor": "Nidaria Mosque",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/cat/heritage"
+    },
+    {
+      "name": "Nilphamari",
+      "description": "Nilphamari District (Bengali: নীলফামারী জেলা) is a district in Northern Bangladesh. It is a part of Rangpur Division.",
+      "source": "https://en.wikipedia.org/wiki/Nilphamari_District",
+      "knownFor": "Chini Mosque",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Chini_Mosque"
+    },
+    {
+      "name": "Panchagarh",
+      "description": "Panchagarh District (Bengali: পঞ্চগড় জেলা) is a district of the Rangpur Division in Northern Bangladesh. Panchagarh is the northernmost district of Bangladesh.",
+      "source": "https://en.wikipedia.org/wiki/Panchagarh_District",
+      "knownFor": "Bhitargarh",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Bhitargarh"
+    },
+    {
+      "name": "Rangpur",
+      "description": "Rangpur District (Bengali: রংপুর জেলা) is a district in northern Bengal, It is a part of Rangpur Division, Bangladesh.",
+      "source": "https://en.wikipedia.org/wiki/Rangpur_District",
+      "knownFor": "Palace architecture and museum collections",
+      "image": null
+    },
+    {
+      "name": "Thakurgaon",
+      "description": "Thakurgaon District (Bengali: ঠাকুরগাঁও জেলা) is a district located in the northwestern region of Bangladesh under the administrative jurisdiction of Rangpur Division. The district is bordered by Panchagarh District to the north and east, Dinajpur District to the east, and the Indian state of West Bengal to the south and west.",
+      "source": "https://en.wikipedia.org/wiki/Thakurgaon_District",
+      "knownFor": "Balia Mosque",
+      "image": null,
+      "heritageSource": "https://www.beautifulbangladesh.gov.bd/district-destination/thakurgaon/heritage/237"
+    },
+    {
+      "name": "Habiganj",
+      "description": "Habiganj District (Bengali: হবিগঞ্জ জেলা; Bengali pronunciation: [ɦobigɔnd͡ʒ d͡ʒela]), formerly known as Habibganj District (Bengali: হাবিবগঞ্জ জেলা), is a district in Bangladesh, located in the Sylhet Division. Habiganj is an administrative district in the Sylhet Division of northeastern Bangladesh.",
+      "source": "https://en.wikipedia.org/wiki/Habiganj_District",
+      "knownFor": "Rema-Kalenga Wildlife Sanctuary",
+      "image": null,
+      "heritageSource": "https://en.wikipedia.org/wiki/Rema-Kalenga_Wildlife_Sanctuary"
+    },
+    {
+      "name": "Moulvibazar",
+      "description": "Moulvibazar District (Bengali: মৌলভীবাজার জেলা), formerly South Sylhet Subdivision  is the southeastern district of Sylhet Division in northeastern Bangladesh, named after the town of Moulvibazar. It is bordered by the Indian states of Tripura and Assam to the south and east, respectively; by the Bangladeshi districts of Habiganj to the west and Sylhet to the north.",
+      "source": "https://en.wikipedia.org/wiki/Moulvibazar_District",
+      "knownFor": "Forest trails and biodiversity",
+      "image": null
+    },
+    {
+      "name": "Sunamganj",
+      "description": "Sunamganj District (Bengali: সুনামগঞ্জ জেলা) is a district located in north-eastern Bangladesh in Sylhet Division.",
+      "source": "https://en.wikipedia.org/wiki/Sunamganj_District",
+      "knownFor": "Haor landscapes and wetland livelihoods",
+      "image": null
+    },
+    {
+      "name": "Sylhet",
+      "description": "Sylhet District (Bengali: সিলেট জেলা), located in north-east Bangladesh, is one of the four districts in Sylhet Division, which contains Sylhet, the regional capital. ",
+      "source": "https://en.wikipedia.org/wiki/Sylhet_District",
+      "knownFor": "Freshwater swamp forest",
+      "image": null
+    }
+  ],
+  "places": [
+    {
+      "id": "haringhata",
+      "name": "Haringhata forest",
+      "districtName": "Barguna",
+      "placeType": "Coastal forest",
+      "knownFor": "Mangrove walks and estuary landscapes",
+      "description": "Haringhata Forest (হরিণঘাটা বন), also spelt Horinghata, is a mangrove forest and designated eco-park located in Patharghata Upazila of Barguna District in southern Bangladesh. Situated at the confluence of the Baleshwar River and the Bishkhali River near the Bay of Bengal, the forest covers approximately 3,685 acres (14.91 km2; 1,491 ha) under the Patharghata Forest Range of the Patuakhali Coastal Forest Division.",
+      "latitude": 21.82,
+      "longitude": 89.98,
+      "source": "https://en.wikipedia.org/wiki/Haringhata_forest",
+      "image": {
+        "url": "/images/destinations/haringhata.png",
+        "alt": "Haringhata forest",
+        "author": "INANXR",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Haringhata_forest.png",
+        "note": "Resized from the original; displayed with a cropped frame."
+      },
+      "reference": true
+    },
+    {
+      "id": "panam",
+      "name": "Panam Nagar",
+      "districtName": "Narayanganj",
+      "placeType": "Built heritage",
+      "knownFor": "Historic merchant houses and Sonargaon heritage",
+      "description": "Panam Nagar (Bengali: পানাম নগর, romanized: panam nogor, lit. 'Panam City') was an ancient settlement in Bangladesh, a portion of archaeological remains of which is situated at Sonargaon Upazila in Narayanganj District.",
+      "latitude": 23.656,
+      "longitude": 90.6042,
+      "source": "https://en.wikipedia.org/wiki/Panam_Nagar",
+      "image": {
+        "url": "/images/destinations/panam.jpg",
+        "alt": "Panam Nagar",
+        "author": "Fahad Faisal",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:%E0%A6%B8%E0%A7%8B%E0%A6%A8%E0%A6%BE%E0%A6%B0%E0%A6%97%E0%A6%BE%E0%A6%81%E0%A6%93_%E0%A6%AA%E0%A6%BE%E0%A6%A8%E0%A6%BE%E0%A6%AE_%E0%A6%A8%E0%A6%97%E0%A6%B0_%E0%A6%AA%E0%A7%81%E0%A6%B0%E0%A6%BE%E0%A6%A4%E0%A6%A8_%E0%A6%B8%E0%A7%8D%E0%A6%A5%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%BE-2.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      },
+      "reference": true
+    },
+    {
+      "id": "sixty-dome",
+      "name": "Sixty Dome Mosque",
+      "districtName": "Bagerhat",
+      "placeType": "Built heritage",
+      "knownFor": "Sultanate architecture and the historic mosque city",
+      "description": "The Sixty Dome Mosque (Bengali: ষাট গম্বুজ মসজিদ) is a historical mosque, located in Bagerhat, in the Khulna Division of Bangladesh. It is a part of the Mosque City of Bagerhat, a UNESCO World Heritage Site.",
+      "latitude": 22.67444444,
+      "longitude": 89.74194444,
+      "source": "https://en.wikipedia.org/wiki/Sixty_Dome_Mosque",
+      "image": {
+        "url": "/images/destinations/sixty-dome.jpg",
+        "alt": "Sixty Dome Mosque",
+        "author": "মোয়ায মাহমুদ",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Sixty_Dome_Mosque,Bagerhat.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      },
+      "reference": true
+    },
+    {
+      "id": "paharpur",
+      "name": "Somapura Mahavihara",
+      "districtName": "Naogaon",
+      "placeType": "Archaeology",
+      "knownFor": "Buddhist monastic heritage at Paharpur",
+      "description": "Somapura Mahavihara (Bengali: সোমপুর মহাবিহার, romanized: Sōmpur Môhābihār), also known as Paharpur Buddhist Vihara (Bengali: পাহাড়পুর বৌদ্ধবিহার, romanized: Pāhāṛpur Bôuddhôbihār), is a major Mahayana and Vajrayana Buddhist monastery (mahavihara) in Paharpur, Badalgachhi, Naogaon, Bangladesh. It is among the best known Buddhist viharas in the Indian subcontinent and one of the most important archaeological sites in the country.",
+      "latitude": 25.03111111,
+      "longitude": 88.97694444,
+      "source": "https://en.wikipedia.org/wiki/Somapura_Mahavihara",
+      "image": {
+        "url": "/images/destinations/paharpur.jpg",
+        "alt": "Somapura Mahavihara",
+        "author": "Abdulmominbd",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Paharpur_Buddhist_Bihar.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      },
+      "reference": true
+    },
+    {
+      "id": "mahasthan",
+      "name": "Mahasthangarh",
+      "districtName": "Bogura",
+      "placeType": "Archaeology",
+      "knownFor": "Ancient Pundranagara and archaeological remains",
+      "description": "Mahasthangarh is the earliest urban archaeological sites discovered thus far in Bangladesh. The village Mahasthan in Shibganj upazila of Bogra District contains the remains of an ancient city which was called Pundranagara or Paundravardhanapura in the territory of Pundravardhana.",
+      "latitude": 24.96111111,
+      "longitude": 89.34277778,
+      "source": "https://en.wikipedia.org/wiki/Mahasthangarh",
+      "image": {
+        "url": "/images/destinations/mahasthan.jpg",
+        "alt": "Mahasthangarh",
+        "author": "Picture taken by P.K.Niyogi, people removed by GreenComputer",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "source": "https://commons.wikimedia.org/wiki/File:BD_Mahasthangarh1_without_people.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      },
+      "reference": true
+    },
+    {
+      "id": "lalbagh",
+      "name": "Lalbagh Fort",
+      "districtName": "Dhaka",
+      "placeType": "Built heritage",
+      "knownFor": "Mughal architecture in Old Dhaka",
+      "description": "The Lalbagh Fort (Bengali: লালবাগ কেল্লা, romanized: Lālbāg Kēllā) is a historic fort situated in the old city of Dhaka, Bangladesh. Its name is derived from its neighbourhood, Lalbagh, which means Red Garden.",
+      "latitude": 23.719033,
+      "longitude": 90.388058,
+      "source": "https://en.wikipedia.org/wiki/Lalbagh_Fort",
+      "image": {
+        "url": "/images/destinations/lalbagh.jpg",
+        "alt": "Lalbagh Fort",
+        "author": "Farha Fawzia Atashi",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:%E0%A6%B2%E0%A6%BE%E0%A6%B2_%E0%A6%95%E0%A7%87%E0%A6%B2%E0%A7%8D%E0%A6%B2%E0%A6%BE%E0%A6%B0_%E0%A6%AE%E0%A6%BE%E0%A6%AF%E0%A6%BC%E0%A6%BE.jpg",
+        "note": "Resized from the original; displayed with a cropped frame."
+      },
+      "reference": true,
+      "coordinateSource": "https://www.wikidata.org/wiki/Q1801226"
+    },
+    {
+      "id": "puthia",
+      "name": "Puthia Temple Complex",
+      "districtName": "Rajshahi",
+      "placeType": "Built heritage",
+      "knownFor": "Temple architecture and terracotta ornament",
+      "description": "The Puthia Temple Complex consists of a cluster of notable old Hindu temples in Puthia Upazila, Rajshahi District, Bangladesh. Located 23 km to the east of Rajshahi city, it has the largest number of historic temples in Bangladesh.",
+      "latitude": 24.3681,
+      "longitude": 88.8667,
+      "source": "https://en.wikipedia.org/wiki/Puthia_Temple_Complex",
+      "image": {
+        "url": "/images/destinations/puthia.jpg",
+        "alt": "Puthia Temple Complex",
+        "author": "Tanweer Morshed",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Shiva_temple_at_Puthia,_Rajshahi.JPG",
+        "note": "Resized from the original; displayed with a cropped frame."
+      },
+      "reference": true
+    },
+    {
+      "id": "kantajew",
+      "name": "Kantajew Temple",
+      "districtName": "Dinajpur",
+      "placeType": "Built heritage",
+      "knownFor": "Terracotta temple art",
+      "description": "Kantanagar Temple, commonly known as Kantaji Temple or Kantajew Temple (Bengali: কান্তজিউ মন্দির) at Kantanagar, is a Hindu temple in Dinajpur, Bangladesh. The temple is an 18th century religious edifice.",
+      "latitude": 25.79055556,
+      "longitude": 88.66666667,
+      "source": "https://en.wikipedia.org/wiki/Kantajew_Temple",
+      "image": {
+        "url": "/images/destinations/kantajew.jpg",
+        "alt": "Kantajew Temple",
+        "author": "Shahnoor Habib Munmun",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Kantaji_Temple_Dinajpur_Bangladesh_(12).JPG",
+        "note": "Resized from the original; displayed with a cropped frame."
+      },
+      "reference": true
+    },
+    {
+      "id": "tajhat",
+      "name": "Tajhat Palace",
+      "districtName": "Rangpur",
+      "placeType": "Built heritage",
+      "knownFor": "Palace architecture and museum collections",
+      "description": "Tajhat Palace (Bengali: তাজহাট রাজবাড়ী Tājahāṭa Rājabāṛī) or Tajhat Rajbari is a historic palace in Rangpur, Bangladesh. This palace now holds the Rangpur museum.",
+      "latitude": 25.7251,
+      "longitude": 89.2804,
+      "source": "https://en.wikipedia.org/wiki/Tajhat_Palace",
+      "image": null,
+      "reference": true
+    },
+    {
+      "id": "kuakata",
+      "name": "Kuakata",
+      "districtName": "Patuakhali",
+      "placeType": "Coast",
+      "knownFor": "Seaside landscapes and coastal communities",
+      "description": "Kuakata (Bengali: কুয়াকাটা) is a town of Patuakhali located in southern Bangladesh known for its panoramic sea beach. Kuakata beach is a sandy expanse 18 kilometres (11 mi) long and 3 kilometres (1.9 mi) wide.",
+      "latitude": 21.8167,
+      "longitude": 90.1167,
+      "source": "https://en.wikipedia.org/wiki/Kuakata",
+      "image": null,
+      "reference": true,
+      "coordinateSource": "https://www.wikidata.org/wiki/Q6440964"
+    },
+    {
+      "id": "ratargul",
+      "name": "Ratargul Swamp Forest",
+      "districtName": "Sylhet",
+      "placeType": "Nature",
+      "knownFor": "Freshwater swamp forest",
+      "description": "Ratargul Swamp Forest (Bengali: রাতারগুল জলাবন) is a freshwater swamp forest located in Gowain River, Fatehpur Union, Gowainghat, Sylhet, Bangladesh. Ratargul was once thought to be the only swamp forest in Bangladesh, and one of the few freshwater swamp forests in the world.",
+      "latitude": 25.0176,
+      "longitude": 91.9317,
+      "source": "https://en.wikipedia.org/wiki/Ratargul_Swamp_Forest",
+      "image": null,
+      "reference": true,
+      "coordinateSource": "https://www.wikidata.org/wiki/Q7295485"
+    },
+    {
+      "id": "lawachara",
+      "name": "Lawachara National Park",
+      "districtName": "Moulvibazar",
+      "placeType": "Nature",
+      "knownFor": "Forest trails and biodiversity",
+      "description": "Lawachara National Park (Bengali: লাউয়াছড়া জাতীয় উদ্যান) is a national park and nature reserve in Bangladesh, located in Kamalganj Upazila and Moulvibazar District in the northeastern region of the country. It is located within the 2,740 ha (27.4 km2) West Bhanugach Reserved Forest.",
+      "latitude": 24.31972222,
+      "longitude": 91.78361111,
+      "source": "https://en.wikipedia.org/wiki/Lawachara_National_Park",
+      "image": null,
+      "reference": true
+    },
+    {
+      "id": "tanguar",
+      "name": "Tanguar Haor",
+      "districtName": "Sunamganj",
+      "placeType": "Wetland",
+      "knownFor": "Haor landscapes and wetland livelihoods",
+      "description": "Tanguar Haor (Bengali: টাঙ্গুয়ার হাওর) is a wetland ecosystem located in the Dharmapasha and Tahirpur upazilas of Sunamganj District in Bangladesh. The area of Tanguar Haor including 46 villages within the haor is about 100 square kilometres (39 sq mi) of which 2,802.36 ha2 is wetland.",
+      "latitude": 25.15,
+      "longitude": 91.06666667,
+      "source": "https://en.wikipedia.org/wiki/Tanguar_Haor",
+      "image": null,
+      "reference": true
+    },
+    {
+      "id": "baliati",
+      "name": "Baliati Zamindari",
+      "districtName": "Manikganj",
+      "placeType": "Built heritage",
+      "knownFor": "Village palaces and architectural heritage",
+      "description": "Baliati Zamindar Bari (Bengali: বালিয়াটি জমিদার বাড়ি) is in the village of Baliati, in Saturia Upazila in Manikganj District, Bangladesh. It is the palace of the Zamindars, the Baliati Zamindari who ruled over a large area.",
+      "latitude": 23.9952,
+      "longitude": 90.0419,
+      "source": "https://en.wikipedia.org/wiki/Baliati_Zamindari",
+      "image": null,
+      "reference": true
+    },
+    {
+      "id": "shilaidaha",
+      "name": "Shilaidaha",
+      "districtName": "Kushtia",
+      "placeType": "Literary heritage",
+      "knownFor": "Tagore’s Kuthibari and riverside heritage",
+      "description": "Shilaidaha (Bengali: শিলাইদহ) is a village in Shilaidaha Union, Kumarkhali Upazila of Kushtia District in Bangladesh. The place is famous for Shilaidaha Kuthibari; a country house built by Dwarkanath Tagore.",
+      "latitude": 23.9199,
+      "longitude": 89.22,
+      "source": "https://en.wikipedia.org/wiki/Shilaidaha",
+      "image": null,
+      "reference": true
+    },
+    {
+      "id": "mainamati",
+      "name": "Mainamati",
+      "districtName": "Cumilla",
+      "placeType": "Archaeology",
+      "knownFor": "Buddhist archaeological remains",
+      "description": "Moinamoti (Bengali: ময়নামতি, romanized: Môynamoti) is an isolated low, dimpled range of hills, dotted with more than 50 ancient Buddhist settlements dating between the 8th and 12th century, Starting from 1875. CE.",
+      "latitude": 23.4261,
+      "longitude": 91.1378,
+      "source": "https://en.wikipedia.org/wiki/Mainamati",
+      "image": null,
+      "reference": true
+    },
+    {
+      "id": "coxsbazar",
+      "name": "Cox's Bazar Beach",
+      "districtName": "Cox’s Bazar",
+      "placeType": "Coast",
+      "knownFor": "Sea beach and coastal scenery",
+      "description": "Cox's Bazar Beach (Bengali: কক্সবাজার সমুদ্র সৈকত), located at Cox's Bazar, Bangladesh, is the longest natural sea beach in Asia running 120 kilometres (75 mi) and 5th longest beach after Praia do Cassino of Brazil,  Padre Island on the US Gulf Coast, Eighty Mile Beach in Western Australia, and Ninety Mile Beach of Australia. It is the top tourist destination of Bangladesh.",
+      "latitude": 21.4143,
+      "longitude": 91.9832,
+      "source": "https://en.wikipedia.org/wiki/Cox%27s_Bazar_Beach",
+      "image": null,
+      "reference": true
+    },
+    {
+      "id": "kaptai",
+      "name": "Kaptai Lake",
+      "districtName": "Rangamati",
+      "placeType": "Lake",
+      "knownFor": "Lake landscapes and hill communities",
+      "description": "Kaptai Lake is the largest man-made lake in Bangladesh. It is located in the Kaptai Upazila under Rangamati District of Chittagong Division.",
+      "latitude": 22.49583333,
+      "longitude": 92.22916667,
+      "source": "https://en.wikipedia.org/wiki/Kaptai_Lake",
+      "image": null,
+      "reference": true
+    },
+    {
+      "id": "dhamrai",
+      "name": "Dhamrai Upazila",
+      "districtName": "Dhaka",
+      "placeType": "Craft community",
+      "knownFor": "Metal craft and community heritage",
+      "description": "Dhamrai (Bengali: ধামরাই) is an upazila of Dhaka district in Dhaka division, Bangladesh. It is the largest upazila in the district by land area.",
+      "latitude": 23.90833333,
+      "longitude": 90.21666667,
+      "source": "https://en.wikipedia.org/wiki/Dhamrai_Upazila",
+      "image": null,
+      "reference": true
+    },
+    {
+      "id": "sonargaon",
+      "name": "Sonargaon",
+      "districtName": "Narayanganj",
+      "placeType": "Craft community",
+      "knownFor": "Folk art, weaving and historic settlements",
+      "description": "Sonargaon or Șonargă (Bengali: সোনারগাঁও; Bengali pronunciation: [ˈʃonaɾɡãʋ]; lit. Golden Hamlet) is a historic city in central Bangladesh.",
+      "latitude": 23.6475,
+      "longitude": 90.59777778,
+      "source": "https://en.wikipedia.org/wiki/Sonargaon",
+      "image": null,
+      "reference": true
+    }
+  ]
+}

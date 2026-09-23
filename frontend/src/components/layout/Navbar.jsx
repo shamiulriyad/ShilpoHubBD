@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import Button from '../ui/Button';
 import MegaMenu from './MegaMenu';
 import ProfileDropdown from './ProfileDropdown';
+import NotificationBell from '../notifications/NotificationBell';
 import BrandLogo from '../brand/BrandLogo';
 
 export default function Navbar() {
@@ -52,7 +53,7 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-2 lg:flex">
           {isAuthenticated ? (
-            <ProfileDropdown />
+            <div className="flex items-center gap-3"><NotificationBell /><ProfileDropdown /></div>
           ) : (
             <>
               <Link to={routePaths.login}>

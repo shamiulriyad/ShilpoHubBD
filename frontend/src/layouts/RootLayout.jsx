@@ -12,7 +12,12 @@ export default function RootLayout() {
 
   const explorePage = pathname === '/explore' || pathname.startsWith('/explore/');
   const tourismPage = pathname === '/tourism' || pathname.startsWith('/tourism/');
-  if (isAuthenticated && ((activeRole === 'LogisticsPartner' && explorePage) || (activeRole === 'Tourist' && (explorePage || tourismPage)))) {
+  const marketplacePage = pathname === '/marketplace' || pathname.startsWith('/marketplace/');
+  const innovationPage = pathname.startsWith('/research/');
+  if (isAuthenticated && activeRole === 'HeritageInnovationHub' && (innovationPage || explorePage)) {
+    return <div className={theme} data-theme={theme}><DashboardLayout /></div>;
+  }
+  if (isAuthenticated && ((activeRole === 'LogisticsPartner' && explorePage) || (activeRole === 'Tourist' && (explorePage || tourismPage || marketplacePage)))) {
     return <div className={theme} data-theme={theme}><DashboardLayout /></div>;
   }
 

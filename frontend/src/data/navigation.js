@@ -7,7 +7,7 @@ export const mainNav = [
   { label: 'Marketplace', path: routePaths.marketplace, menu: 'marketplace' },
   { label: 'Tourism', path: routePaths.tourism, menu: 'tourism' },
   { label: 'Academy', path: routePaths.academy, menu: 'academy' },
-  { label: 'Innovation Hub', path: routePaths.research, menu: 'research' },
+  { label: 'Innovation Hub', path: routePaths.research },
   { label: 'About', path: routePaths.about },
 ];
 
@@ -305,6 +305,7 @@ export const touristSidebarNav = [
   {
     section: 'Discover',
     items: [
+      { label: 'Crafts & GI Heritage', path: routePaths.exploreCrafts, icon: '🧵' },
       { label: 'Heritage Map', path: routePaths.tourismMap, icon: '🗺️' },
       { label: 'Festivals', path: routePaths.tourismFestivals, icon: '🎉' },
       { label: 'Cultural Events', path: routePaths.tourismEvents, icon: '📅' },

@@ -1,48 +1,26 @@
-import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Badge, AsyncState } from '../../components/ui';
+import { useSearchParams } from 'react-router-dom';
+import { PageHeader } from '../../components/ui';
 import { useVillageTourStops } from '../../hooks/useVillageTour';
 import SafeImage from '../../components/media/SafeImage';
+import { villageGuides } from '../../data/tourismGuides';
+import { DirectoryFilters, TravelPhoto, EmptyResults, LiveDataNotice } from '../../components/tourism/TravelUI';
 
 export default function VillageExplorer() {
-  const { data, isLoading, isError, error } = useVillageTourStops({ pageSize: 50 });
-  const stops = data?.items || [];
-
-  return (
-    <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <PageHeader
-        breadcrumbs={[
-          { label: 'Home', path: routePaths.home },
-          { label: 'Tourism', path: routePaths.tourism },
-          { label: 'Village Explorer' },
-        ]}
-        title="Village Explorer"
-        description="Immersive 360°/video stops from Bangladesh's heritage craft villages — explore before you visit."
-      />
-      <AsyncState isLoading={isLoading} isError={isError} error={error}>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {stops.map((stop) => (
-            <div key={stop.id} className="overflow-hidden rounded-xl border border-border bg-surface">
-              <div className="flex aspect-square items-center justify-center bg-background text-xs text-body/40">
-                {stop.mediaType === 'Video' || stop.mediaType === 'Video360' ? (
-                  <video src={stop.mediaUrl} poster={stop.thumbnailUrl} className="h-full w-full object-cover" controls />
-                ) : stop.thumbnailUrl || stop.mediaUrl ? (
-                  <SafeImage src={stop.thumbnailUrl || stop.mediaUrl} alt={stop.title} className="h-full w-full object-cover" />
-                ) : (
-                  stop.mediaType
-                )}
-              </div>
-              <div className="space-y-1 p-3">
-                <Badge tone="secondary">{stop.mediaType}</Badge>
-                <p className="text-sm font-medium text-heading">{stop.title}</p>
-                <p className="text-xs text-body/60">{stop.heritagePlaceName}</p>
-              </div>
-            </div>
-          ))}
-          {stops.length === 0 && (
-            <p className="col-span-full text-sm text-body/60">No village tour stops published yet.</p>
-          )}
-        </div>
-      </AsyncState>
-    </div>
-  );
+  const [params,setParams]=useSearchParams();
+  const query=useVillageTourStops({pageSize:50});
+  const search=params.get('q')||'',district=params.get('district')||'';
+  const change=(key,value)=>{const next=new URLSearchParams(params);if(value)next.set(key,value);else next.delete(key);setParams(next,{replace:true});};
+  const guides=villageGuides.filter(v=>(!district||v.districtName===district)&&[v.name,v.craft,v.districtName].join(' ').toLowerCase().includes(search.toLowerCase().trim()));
+  const stops=query.data?.items||[];
+  return <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
+    <PageHeader title="Village & community explorer" description="Meet the places behind the craft. Discover weaving communities, rural heritage and practical ideas for respectful visits." breadcrumbs={[{label:'Home',path:'/'},{label:'Village Explorer'}]}/>
+    <DirectoryFilters search={search} onSearch={v=>change('q',v)} filters={[{label:'District',value:district,onChange:v=>change('district',v),options:[...new Set(villageGuides.map(v=>v.districtName))].sort()}]} onClear={()=>setParams({})}/>
+    <p role="status" className="mb-4 text-sm text-body/65">{guides.length} community guides</p>
+    <div className="grid gap-5 md:grid-cols-2">{guides.map(v=><article key={v.id} className="overflow-hidden rounded-xl border border-border bg-surface"><TravelPhoto image={v.image}/><div className="p-6"><p className="text-xs font-semibold uppercase tracking-wide text-primary">{v.districtName} · {v.craft}</p><h2 className="mt-3 text-xl font-semibold text-heading">{v.name}</h2><p className="mt-3 text-sm leading-7 text-body/80">{v.description}</p><div className="mt-5 rounded-lg bg-background p-4"><h3 className="text-sm font-semibold">Planning a visit</h3><p className="mt-2 text-sm leading-6 text-body/75">{v.visit}</p></div><div className="mt-5 flex flex-wrap gap-4 text-sm"><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.search)}`} target="_blank" rel="noreferrer" className="font-semibold text-link">Find the area ↗</a><a href={v.source} target="_blank" rel="noreferrer" className="text-link underline">{v.sourceLabel} ↗</a></div></div></article>)}</div>
+    {!guides.length&&<EmptyResults onClear={()=>setParams({})}/>}
+    <section className="mt-9"><h2 className="mb-3 text-xl font-semibold">Published virtual visits</h2><LiveDataNotice query={query} label="Virtual visits"/>
+      <div className="grid gap-5 md:grid-cols-2">{stops.map(stop=><article key={stop.id} className="overflow-hidden rounded-xl border border-border bg-surface">{['Video','Video360'].includes(stop.mediaType)?<video src={stop.mediaUrl} poster={stop.thumbnailUrl} controls preload="none" aria-label={stop.title} className="aspect-video w-full"/>:<SafeImage src={stop.thumbnailUrl||stop.mediaUrl} alt={stop.title} className="aspect-video w-full object-cover"/>}<div className="p-5"><h3 className="font-semibold">{stop.title}</h3><p className="mt-2 text-sm">{stop.heritagePlaceName}</p></div></article>)}</div>
+      {query.isSuccess&&!stops.length&&<p className="rounded-xl border border-border bg-surface p-5 text-sm text-body/75">Virtual tours have not been published yet. Use the community guides above to plan a visit.</p>}
+    </section>
+  </div>;
 }
