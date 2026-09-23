@@ -3,6 +3,7 @@ import { Link, Outlet } from 'react-router-dom';
 import Footer from '../components/layout/Footer';
 import Sidebar from '../components/layout/Sidebar';
 import ProfileDropdown from '../components/layout/ProfileDropdown';
+import NotificationBell from '../components/notifications/NotificationBell';
 import { sidebarNav, roleSidebars } from '../data/navigation';
 import { routePaths } from '../routes/routePaths';
 import { useAuth } from '../hooks/useAuth';

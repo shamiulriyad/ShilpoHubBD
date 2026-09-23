@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Badge, Button, SectionHeader } from '../../components/ui';
+import { PageHeader, Badge, Button, SectionHeader, QueryStatusBanner } from '../../components/ui';
 import { useDistricts } from '../../hooks/useDistricts';
 import { useTourPlan } from '../../hooks/useAITourism';
 
@@ -34,40 +34,49 @@ export default function AiTourismPlanner() {
       />
 
       <form onSubmit={handleSubmit} className="mb-10 grid gap-4 rounded-xl border border-border bg-surface p-6 sm:grid-cols-3">
-        <select aria-label="District Id"
-          value={form.districtId}
-          onChange={(event) => setForm((prev) => ({ ...prev, districtId: event.target.value }))}
-          className="rounded-md border border-border bg-background px-3 py-2 text-sm"
-        >
-          <option value="">Any district</option>
-          {(districtsQuery.data || []).map((district) => (
-            <option key={district.id} value={district.id}>
-              {district.name}
-            </option>
-          ))}
-        </select>
-        <input aria-label="Duration"
-          type="number"
-          min={1}
-          max={30}
-          value={form.durationDays}
-          onChange={(event) => setForm((prev) => ({ ...prev, durationDays: event.target.value }))}
-          placeholder="Duration (days)"
-          className="rounded-md border border-border bg-background px-3 py-2 text-sm"
-        />
-        <input aria-label="Party size"
-          type="number"
-          min={1}
-          max={100}
-          value={form.partySize}
-          onChange={(event) => setForm((prev) => ({ ...prev, partySize: event.target.value }))}
-          placeholder="Party size"
-          className="rounded-md border border-border bg-background px-3 py-2 text-sm"
-        />
+        <label className="block text-sm">
+          <span className="mb-1.5 block font-medium text-heading">District</span>
+          <select
+            value={form.districtId}
+            onChange={(event) => setForm((prev) => ({ ...prev, districtId: event.target.value }))}
+            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+          >
+            <option value="">Any district</option>
+            {(districtsQuery.data || []).map((district) => (
+              <option key={district.id} value={district.id}>
+                {district.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="block text-sm">
+          <span className="mb-1.5 block font-medium text-heading">Duration (days)</span>
+          <input
+            type="number"
+            min={1}
+            max={30}
+            value={form.durationDays}
+            onChange={(event) => setForm((prev) => ({ ...prev, durationDays: event.target.value }))}
+            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+          />
+        </label>
+        <label className="block text-sm">
+          <span className="mb-1.5 block font-medium text-heading">Number of travelers</span>
+          <input
+            type="number"
+            min={1}
+            max={100}
+            value={form.partySize}
+            onChange={(event) => setForm((prev) => ({ ...prev, partySize: event.target.value }))}
+            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+          />
+        </label>
         <Button type="submit" variant="primary" className="sm:col-span-3" disabled={tourPlan.isPending}>
           {tourPlan.isPending ? 'Planning…' : 'Generate Itinerary'}
         </Button>
       </form>
+
+      <QueryStatusBanner queries={[tourPlan]} loadingLabel="Building your itinerary…" />
 
       {plan && (
         <div>

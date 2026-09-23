@@ -93,15 +93,15 @@ function GroupedNav({ groups, onNavigate }) {
               type="button"
               onClick={() => toggle(group.section)}
               aria-expanded={!isCollapsed}
-              className="mb-1.5 flex w-full items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-body/65 hover:text-body"
+              className="group flex w-full items-center justify-between px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-body/50 transition-colors hover:text-primary"
             >
               <span>{group.section}</span>
-              <span aria-hidden="true" className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}>
+              <span aria-hidden="true" className={`text-body/40 transition-transform group-hover:text-primary ${isCollapsed ? '' : 'rotate-90'}`}>
                 ›
               </span>
             </button>
             {!isCollapsed && (
-              <div className="space-y-1">
+              <div className="ml-3.5 mt-1 space-y-1 border-l border-border pl-2.5">
                 {group.items.map((item) => (
                   <NavItem key={item.label} item={item} onNavigate={onNavigate} />
                 ))}
@@ -134,7 +134,6 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
         </div>
       </div>
 
-      <div className="mb-5"><NavItem item={{ label: 'Notifications', path: '/dashboard/notifications', icon: '◉' }} onNavigate={onNavigate} /></div>
       {grouped ? <GroupedNav groups={items} onNavigate={onNavigate} /> : <FlatNav items={items} onNavigate={onNavigate} />}
     </aside>
   );

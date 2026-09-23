@@ -62,6 +62,7 @@ public class MonitoringFlagEventConfiguration : IEntityTypeConfiguration<Monitor
     {
         builder.ToTable("MonitoringFlagEvents");
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.Type).IsRequired().HasConversion<string>().HasMaxLength(20);
         builder.Property(e => e.Note).HasMaxLength(2000);
@@ -145,6 +146,7 @@ public class ComplaintUpdateConfiguration : IEntityTypeConfiguration<ComplaintUp
     {
         builder.ToTable("ComplaintUpdates");
         builder.HasKey(u => u.Id);
+        builder.Property(u => u.Id).ValueGeneratedNever();
 
         builder.Property(u => u.Message).IsRequired().HasMaxLength(4000);
         builder.Property(u => u.FromStatus).HasConversion<string>().HasMaxLength(20);

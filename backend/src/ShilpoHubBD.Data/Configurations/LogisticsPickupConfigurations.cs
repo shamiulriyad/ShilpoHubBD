@@ -182,6 +182,7 @@ public class PickupEventConfiguration : IEntityTypeConfiguration<PickupEvent>
     {
         builder.ToTable("PickupEvents");
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.Type).IsRequired().HasConversion<string>().HasMaxLength(20);
         builder.Property(e => e.FromStatus).HasConversion<string>().HasMaxLength(20);

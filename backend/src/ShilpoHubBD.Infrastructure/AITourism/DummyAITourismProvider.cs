@@ -55,7 +55,7 @@ public class DummyAITourismProvider : IAITourismProvider
                 {
                     Type = "FreeTime",
                     Name = "Free time / local exploration",
-                    Notes = "No more curated stops are available for this district yet.",
+                    Notes = "No curated stops here yet - use this time to explore the area on your own.",
                 });
             }
 
@@ -76,10 +76,13 @@ public class DummyAITourismProvider : IAITourismProvider
 
         var coveredPlaces = Math.Min(placeStops.Count, placeIndex);
         var coveredServices = Math.Min(serviceStops.Count, serviceIndex);
-        var summary =
-            $"{context.DurationDays}-day itinerary for {context.PartySize} traveler(s) in {context.DistrictName}, " +
-            $"covering {coveredPlaces} heritage site(s)" +
-            (coveredServices > 0 ? $" and {coveredServices} curated experience(s)." : ".");
+        var summary = coveredPlaces == 0 && coveredServices == 0
+            ? $"No curated heritage places or experiences have been added for {context.DistrictName} yet, " +
+              $"so this {context.DurationDays}-day plan is left as free time for local exploration. " +
+              "Check back later as more places are added, or try another district."
+            : $"{context.DurationDays}-day itinerary for {context.PartySize} traveler(s) in {context.DistrictName}, " +
+              $"covering {coveredPlaces} heritage site(s)" +
+              (coveredServices > 0 ? $" and {coveredServices} curated experience(s)." : ".");
 
         return Task.FromResult(new TourPlanResult
         {

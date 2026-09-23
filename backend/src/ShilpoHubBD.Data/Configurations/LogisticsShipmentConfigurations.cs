@@ -102,6 +102,7 @@ public class ShipmentTrackingEventConfiguration : IEntityTypeConfiguration<Shipm
     {
         builder.ToTable("ShipmentTrackingEvents");
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever();
 
         builder.Property(e => e.EventType).IsRequired().HasConversion<string>().HasMaxLength(30);
         builder.Property(e => e.FromStatus).HasConversion<string>().HasMaxLength(20);
