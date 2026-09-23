@@ -1,79 +1,35 @@
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Badge, AsyncState } from '../../components/ui';
-import { useDistricts } from '../../hooks/useDistricts';
+import { useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { PageHeader } from '../../components/ui';
 import { useHeritagePlaces } from '../../hooks/useHeritagePlaces';
+import HeritageLeafletMap from '../../components/tourism/HeritageLeafletMap';
+import { DirectoryFilters, TravelPhoto, LiveDataNotice, EmptyResults } from '../../components/tourism/TravelUI';
+import { destinationReferences, normaliseDistrict, hasCoordinates } from '../../data/tourismGuides';
+import { routePaths } from '../../routes/routePaths';
 
 export default function HeritageMap() {
-  const [districtId, setDistrictId] = useState(null);
-  const [search, setSearch] = useState('');
-  const districtsQuery = useDistricts();
-  const placesQuery = useHeritagePlaces({ districtId: districtId || undefined, pageSize: 20 });
-  const places = useMemo(() => (placesQuery.data?.items || []).filter(place => !search.trim() || `${place.name} ${place.description} ${place.districtName}`.toLowerCase().includes(search.trim().toLowerCase())), [placesQuery.data, search]);
-  const point = (place) => ({ left: `${Math.max(4, Math.min(96, ((place.longitude - 88) / 5) * 100))}%`, top: `${Math.max(4, Math.min(96, ((26.8 - place.latitude) / 6.3) * 100))}%` });
-
-  return (
-    <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <PageHeader
-        breadcrumbs={[
-          { label: 'Home', path: routePaths.home },
-          { label: 'Tourism', path: routePaths.tourism },
-          { label: 'Heritage Map' },
-        ]}
-        title="Heritage Map"
-        description="Explore heritage sites, villages and events across Bangladesh."
-      />
-      <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <div className="space-y-3">
-          <label className="block text-sm font-medium">Search places<input type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="Name, district or description" className="mt-2 block min-h-11 w-full rounded-lg border border-border bg-surface px-4" /></label>
-          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-sky-50 via-amber-50 to-emerald-50" role="img" aria-label={`Map visualization with ${places.length} heritage places`}><div className="absolute inset-[7%_20%] rounded-[45%_55%_62%_38%/38%_42%_58%_62%] border-2 border-emerald-200 bg-emerald-100/70 shadow-inner" />{places.filter(place => Number.isFinite(place.latitude) && Number.isFinite(place.longitude)).map(place => <Link key={place.id} title={`${place.name}, ${place.districtName}`} aria-label={`Open ${place.name} details`} to={routePaths.tourismPlaceDetails.replace(':placeId',place.id)} style={point(place)} className="absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-primary p-2 shadow-lg transition hover:scale-125 focus:outline focus:outline-2 focus:outline-primary"><span className="sr-only">{place.name}</span></Link>)}</div>
-          <AsyncState isLoading={placesQuery.isLoading} isError={placesQuery.isError} error={placesQuery.error}>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {places.map((place) => (
-                <Link to={routePaths.tourismPlaceDetails.replace(':placeId', place.id)} key={place.id} className="rounded-xl border border-border bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-md">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold text-heading">{place.name}</p>
-                    <Badge tone="secondary">{place.placeType}</Badge>
-                  </div>
-                  <p className="mt-1 text-xs text-body/60">{place.districtName}</p>
-                  {place.averageRating > 0 && (
-                    <p className="mt-1 text-xs text-secondary">★ {place.averageRating.toFixed(1)} ({place.reviewCount})</p>
-                  )}
-                  <p className="mt-3 text-sm font-medium text-primary">View place details →</p>
-                </Link>
-              ))}
-              {places.length === 0 && (
-                <p className="col-span-full text-sm text-body/60">No heritage places found for this district.</p>
-              )}
-            </div>
-          </AsyncState>
-        </div>
-        <div className="space-y-2">
-          <p className="mb-2 text-sm font-semibold text-heading">Districts</p>
-          <button
-            type="button"
-            onClick={() => setDistrictId(null)}
-            className={`block w-full rounded-lg border px-3 py-2 text-left text-sm ${
-              !districtId ? 'border-primary text-primary' : 'border-border bg-surface text-body hover:border-primary hover:text-primary'
-            }`}
-          >
-            All Districts
-          </button>
-          {(districtsQuery.data || []).map((district) => (
-            <button
-              key={district.id}
-              type="button"
-              onClick={() => setDistrictId(district.id)}
-              className={`block w-full rounded-lg border px-3 py-2 text-left text-sm ${
-                districtId === district.id ? 'border-primary text-primary' : 'border-border bg-surface text-body hover:border-primary hover:text-primary'
-              }`}
-            >
-              {district.name}
-            </button>
-          ))}
-        </div>
-      </div>
+  const [params,setParams]=useSearchParams();
+  const query=useHeritagePlaces({pageSize:100});
+  const search=params.get('q')||'', district=params.get('district')||'', type=params.get('type')||'';
+  const places=useMemo(()=>{
+    const live=(query.data?.items||[]).map(p=>({...p,reference:false}));
+    return [...live,...destinationReferences.filter(p=>!live.some(l=>l.name.toLowerCase()===p.name.toLowerCase()))];
+  },[query.data]);
+  const filtered=useMemo(()=>places.filter(p=>(!district||normaliseDistrict(p.districtName)===normaliseDistrict(district))&&(!type||p.placeType===type)&&[p.name,p.districtName,p.description,p.knownFor].join(' ').toLowerCase().includes(search.trim().toLowerCase())),[places,district,type,search]);
+  const selected=filtered.find(p=>p.id===params.get('place'));
+  const change=(key,value)=>{const next=new URLSearchParams(params);if(value)next.set(key,value);else next.delete(key);if(key!=='place')next.delete('place');setParams(next,{replace:key==='q'});};
+  return <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
+    <PageHeader title="Heritage Map" description="Find the places behind Bangladesh’s stories. Explore real locations, then plan your visit." breadcrumbs={[{label:'Dashboard',path:routePaths.tourist},{label:'Heritage Map'}]}/>
+    <DirectoryFilters search={search} onSearch={v=>change('q',v)} onClear={()=>setParams({})} filters={[{label:'District',value:district,onChange:v=>change('district',v),options:[...new Set(places.map(p=>p.districtName).filter(Boolean))].sort()},{label:'Experience',value:type,onChange:v=>change('type',v),options:[...new Set(places.map(p=>p.placeType).filter(Boolean))].sort()}]}/>
+    <LiveDataNotice query={query} label="Published places"/>
+    <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(260px,1fr)]">
+      <HeritageLeafletMap places={filtered} selectedId={selected?.id} onSelect={id=>change('place',id)}/>
+      <aside aria-label="Place details" className="overflow-hidden rounded-xl border border-border bg-surface">
+        {selected ? <><TravelPhoto image={selected.image}/><div className="p-5"><p className="text-xs font-semibold uppercase tracking-wide text-primary">{selected.districtName} · {selected.placeType}</p><h2 className="mt-2 text-2xl font-semibold text-heading">{selected.name}</h2><p className="mt-3 text-sm leading-7 text-body/80">{selected.description || selected.knownFor}</p>{hasCoordinates(selected)&&<a target="_blank" rel="noreferrer" className="mt-5 inline-flex rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white" href={`https://www.openstreetmap.org/?mlat=${selected.latitude}&mlon=${selected.longitude}#map=15/${selected.latitude}/${selected.longitude}`}>Open larger map ↗</a>}{selected.reference?<a href={selected.source} target="_blank" rel="noreferrer" className="mt-4 block text-sm text-link underline">Read destination reference ↗</a>:<Link to={routePaths.tourismPlaceDetails.replace(':placeId',selected.id)} className="mt-4 block text-sm text-link underline">View published place details →</Link>}<button onClick={()=>change('place','')} className="mt-5 block text-sm text-body/70 underline">Clear selection</button></div></>:<div className="p-7"><p className="text-xs font-semibold uppercase tracking-widest text-primary">Start exploring</p><h2 className="mt-3 text-2xl font-semibold">A place for every curiosity.</h2><p className="mt-4 text-sm leading-7 text-body/75">Select a marker or a place below to see its story, photograph and location. Filter for architecture, nature, craft communities and more.</p><p className="mt-6 border-t border-border pt-4 text-sm">{filtered.filter(hasCoordinates).length} locations on the map</p></div>}
+      </aside>
     </div>
-  );
+    <div className="mb-4 mt-8 flex items-center justify-between"><h2 className="text-xl font-semibold text-heading">Explore places</h2><p role="status" className="text-sm text-body/65">{filtered.length} places</p></div>
+    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{filtered.map(p=><button key={p.id} onClick={()=>change('place',p.id)} aria-pressed={selected?.id===p.id} className={`rounded-xl border p-5 text-left transition hover:border-primary ${selected?.id===p.id?'border-primary bg-primary/5':'border-border bg-surface'}`}><span className="text-xs text-primary">{p.districtName} · {p.placeType}</span><span className="mt-2 block font-semibold text-heading">{p.name}</span><span className="mt-2 block text-sm text-body/70">{p.knownFor || 'Select for details'}</span>{!hasCoordinates(p)&&<span className="mt-2 block text-xs">Location not yet mapped</span>}</button>)}</div>
+    {!filtered.length&&<EmptyResults onClear={()=>setParams({})}/>}
+  </div>;
 }
