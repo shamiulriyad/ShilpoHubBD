@@ -74,7 +74,7 @@ export default function ProductDetails() {
                       onClick={() => setView360((prev) => !prev)}
                       className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-body hover:bg-background"
                     >
-                      {view360 ? 'Show Gallery' : 'Show 360Â° View'}
+                      {view360 ? 'Show Gallery' : 'Show 360° View'}
                     </button>
                   </div>
                 )}
@@ -100,10 +100,10 @@ export default function ProductDetails() {
               <div>
                 <Badge tone="secondary">{toProductCardItem(product).category}</Badge>
                 <p className="mt-3 text-2xl font-semibold text-primary">
-                  à§³ {(product.discountPrice ?? product.price).toLocaleString()}
+                  ৳ {(product.discountPrice ?? product.price).toLocaleString()}
                   {product.discountPrice && (
                     <span className="ml-2 text-base font-normal text-body/40 line-through">
-                      à§³ {product.price.toLocaleString()}
+                      ৳ {product.price.toLocaleString()}
                     </span>
                   )}
                 </p>
@@ -120,7 +120,7 @@ export default function ProductDetails() {
                     disabled={!isAuthenticated || addToCart.isPending || product.stock <= 0 || !Number.isInteger(quantity) || quantity < 1 || quantity > product.stock}
                     onClick={() => addToCart.mutate({ productId: product.id, quantity })}
                   >
-                    {product.stock <= 0 ? 'Out of stock' : addToCart.isPending ? 'Addingâ€¦' : 'Add to Cart'}
+                    {product.stock <= 0 ? 'Out of stock' : addToCart.isPending ? 'Adding…' : 'Add to Cart'}
                   </Button>
                   <div className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2">
                     <WishlistButton
@@ -246,7 +246,7 @@ export default function ProductDetails() {
                         .map((ev) => ({
                           marker: ev.eventDate ? new Date(ev.eventDate).getFullYear() : undefined,
                           title: ev.title,
-                          description: `${ev.description}${ev.location ? ` Â· ${ev.location}` : ''}`,
+                          description: `${ev.description}${ev.location ? ` · ${ev.location}` : ''}`,
                         }))}
                     />
                   ) : (
@@ -277,11 +277,11 @@ export default function ProductDetails() {
                     <input aria-label="Enter authenticity code"
                       value={qrCode}
                       onChange={(event) => setQrCode(event.target.value)}
-                      placeholder="Enter authenticity codeâ€¦"
+                      placeholder="Enter authenticity code…"
                       className="min-w-0 flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
                     />
                     <Button type="submit" variant="primary" disabled={verifyQr.isPending}>
-                      {verifyQr.isPending ? 'Verifyingâ€¦' : 'Verify'}
+                      {verifyQr.isPending ? 'Verifying…' : 'Verify'}
                     </Button>
                   </form>
 
@@ -299,7 +299,7 @@ export default function ProductDetails() {
                       <p className="mt-1 text-body/70">{verifyQr.data.message}</p>
                       {verifyQr.data.isValid && (
                         <p className="mt-1 text-body/60">
-                          {verifyQr.data.productName} Â· {verifyQr.data.producerName} Â· {verifyQr.data.district}
+                          {verifyQr.data.productName} · {verifyQr.data.producerName} · {verifyQr.data.district}
                         </p>
                       )}
                     </div>
@@ -347,13 +347,13 @@ export default function ProductDetails() {
                       <textarea aria-label="Share your experience with this product"
                         required
                         rows={3}
-                        placeholder="Share your experience with this productâ€¦"
+                        placeholder="Share your experience with this product…"
                         value={newReview.comment}
                         onChange={(event) => setNewReview((prev) => ({ ...prev, comment: event.target.value }))}
                         className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
                       />
                       <Button type="submit" variant="primary" disabled={createReview.isPending}>
-                        {createReview.isPending ? 'Postingâ€¦' : 'Post Review'}
+                        {createReview.isPending ? 'Posting…' : 'Post Review'}
                       </Button>
                     </form>
                   )}
@@ -365,7 +365,7 @@ export default function ProductDetails() {
                       />
                     ))}
                     {reviewsQuery.data?.items.length === 0 && (
-                      <p className="text-sm text-body/60">No reviews yet â€” be the first to share your experience.</p>
+                      <p className="text-sm text-body/60">No reviews yet — be the first to share your experience.</p>
                     )}
                   </AsyncState>
                 </div>
