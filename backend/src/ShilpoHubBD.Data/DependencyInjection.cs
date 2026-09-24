@@ -107,6 +107,9 @@ public static class DependencyInjection
 		services.AddScoped<ILocalCuisineRepository, LocalCuisineRepository>();
 		services.AddScoped<IHeritageRouteRepository, HeritageRouteRepository>();
 		services.AddScoped<IUnescoRecordRepository, UnescoRecordRepository>();
+		services.AddScoped<ITourismLocationRepository, TourismLocationRepository>();
+		services.AddScoped<ISavedTourPlanRepository, SavedTourPlanRepository>();
+		services.AddScoped<ITransportOptionRepository, TransportOptionRepository>();
 
 		services.AddScoped<ITouristServiceRepository, TouristServiceRepository>();
 		services.AddScoped<IServiceAvailabilitySlotRepository, ServiceAvailabilitySlotRepository>();

@@ -4,16 +4,19 @@ import { PageHeader, Button, AsyncState } from '../../components/ui';
 import { useProducts, useProduct } from '../../hooks/useProducts';
 import { useMyCustomOrders, useCustomOrderMutations } from '../../hooks/useCustomOrders';
 
+// Mirrors the backend CustomOrderStatus enum (the API sends the names; the numbers are a fallback).
 const statusLabel = {
   0: 'Pending',
-  1: 'Quoted',
-  2: 'Accepted',
-  3: 'Declined',
-  4: 'Cancelled',
+  1: 'Accepted',
+  2: 'Rejected',
+  3: 'In progress',
+  4: 'Completed',
+  5: 'Cancelled',
   Pending: 'Pending',
-  Quoted: 'Quoted',
   Accepted: 'Accepted',
-  Declined: 'Declined',
+  Rejected: 'Rejected',
+  InProgress: 'In progress',
+  Completed: 'Completed',
   Cancelled: 'Cancelled',
 };
 
@@ -163,12 +166,13 @@ export default function CustomOrder() {
                     {req.producerName} · {new Date(req.createdAt).toLocaleDateString()}
                     {req.quotedPrice ? ` · Quoted ৳ ${req.quotedPrice.toLocaleString()}` : ''}
                   </p>
+                  {req.producerResponse && <p className="mt-1 text-xs text-body/70">Producer: “{req.producerResponse}”</p>}
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-xs font-medium text-body/70">
                     {statusLabel[req.status] ?? req.status}
                   </span>
-                  {(statusLabel[req.status] === 'Pending' || statusLabel[req.status] === 'Quoted') && (
+                  {statusLabel[req.status] === 'Pending' && (
                     <button
                       type="button"
                       onClick={() => cancel.mutate(req.id)}

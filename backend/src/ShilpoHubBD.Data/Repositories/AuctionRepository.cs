@@ -41,6 +41,21 @@ public class AuctionRepository : IAuctionRepository
         return (items, totalCount);
     }
 
+    public Task<List<Auction>> GetDueForSyncAsync(DateTime utcNow, CancellationToken cancellationToken)
+        => WithDetails()
+            .Where(a => (a.Status == AuctionStatus.Scheduled && a.StartAt <= utcNow)
+                || ((a.Status == AuctionStatus.Scheduled || a.Status == AuctionStatus.Active) && a.EndAt <= utcNow))
+            .ToListAsync(cancellationToken);
+
+    public async Task<(List<Auction> Items, int TotalCount)> GetPagedForProducerAsync(
+        Guid producerId, int page, int pageSize, CancellationToken cancellationToken)
+    {
+        var auctions = WithDetails().Where(a => a.ProducerId == producerId).OrderByDescending(a => a.CreatedAt);
+        var totalCount = await auctions.CountAsync(cancellationToken);
+        var items = await auctions.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+        return (items, totalCount);
+    }
+
     public Task<Auction?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => WithDetails().FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
 

@@ -68,6 +68,9 @@ public class TouristServiceService : ITouristServiceService
             DurationMinutes = request.DurationMinutes,
             DefaultCapacity = request.DefaultCapacity,
             Location = request.Location?.Trim(),
+            Facilities = request.Facilities?.Trim(),
+            Latitude = request.Latitude,
+            Longitude = request.Longitude,
             ImageUrl = request.ImageUrl?.Trim(),
             DistrictId = request.DistrictId,
             ProducerId = producerId,
@@ -100,6 +103,9 @@ public class TouristServiceService : ITouristServiceService
         service.DurationMinutes = request.DurationMinutes;
         service.DefaultCapacity = request.DefaultCapacity;
         service.Location = request.Location?.Trim();
+        service.Facilities = request.Facilities?.Trim();
+        service.Latitude = request.Latitude;
+        service.Longitude = request.Longitude;
         service.ImageUrl = request.ImageUrl?.Trim();
         service.DistrictId = request.DistrictId;
         service.IsActive = request.IsActive;
@@ -143,6 +149,9 @@ public class TouristServiceService : ITouristServiceService
         DurationMinutes = service.DurationMinutes,
         DefaultCapacity = service.DefaultCapacity,
         Location = service.Location,
+        Facilities = service.Facilities,
+        Latitude = service.Latitude,
+        Longitude = service.Longitude,
         ImageUrl = service.ImageUrl,
         IsActive = service.IsActive,
         AverageRating = service.AverageRating,

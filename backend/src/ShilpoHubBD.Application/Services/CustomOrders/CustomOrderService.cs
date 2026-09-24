@@ -105,6 +105,12 @@ public class CustomOrderService : ICustomOrderService
             throw new ConflictException("This custom order request is already closed and cannot be updated.");
         }
 
+        // A producer answers a request; Pending and Cancelled are not answers (Cancelled is the customer's action).
+        if (request.Status is CustomOrderStatus.Pending or CustomOrderStatus.Cancelled)
+        {
+            throw new ConflictException("A custom order can only be accepted, rejected, started or completed by the producer.");
+        }
+
         customOrder.Status = request.Status;
         customOrder.QuotedPrice = request.QuotedPrice;
         customOrder.ProducerResponse = string.IsNullOrWhiteSpace(request.ResponseMessage) ? null : request.ResponseMessage.Trim();

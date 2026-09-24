@@ -13,6 +13,9 @@ public class TouristService
     public int? DurationMinutes { get; set; }
     public int DefaultCapacity { get; set; } = 1;
     public string? Location { get; set; }
+    public string? Facilities { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
     public string? ImageUrl { get; set; }
     public bool IsActive { get; set; } = true;
     public decimal AverageRating { get; set; }

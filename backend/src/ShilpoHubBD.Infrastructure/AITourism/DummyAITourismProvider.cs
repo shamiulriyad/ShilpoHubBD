@@ -31,17 +31,41 @@ public class DummyAITourismProvider : IAITourismProvider
             })
             .ToList();
 
+        var accommodationStops = context.TourismLocations
+            .Where(l => l.Type is "Hotel" or "Resort" or "Hostel")
+            .OrderByDescending(l => l.IsVerified)
+            .Select(l => new TourStopDto { ReferenceId = l.Id, Type = "TourismLocation", Name = l.Name, Notes = BuildLocationNote(l) })
+            .ToList();
+
+        var attractionStops = context.TourismLocations
+            .Where(l => l.Type is not ("Hotel" or "Resort" or "Hostel"))
+            .OrderByDescending(l => l.IsVerified)
+            .ThenBy(l => l.Name)
+            .Select(l => new TourStopDto { ReferenceId = l.Id, Type = "TourismLocation", Name = l.Name, Notes = BuildLocationNote(l) })
+            .ToList();
+
         var days = new List<TourDayPlanDto>();
         var placeIndex = 0;
         var serviceIndex = 0;
+        var attractionIndex = 0;
 
         for (var day = 1; day <= Math.Max(1, context.DurationDays); day++)
         {
             var stops = new List<TourStopDto>();
 
+            if (day == 1 && accommodationStops.Count > 0)
+            {
+                stops.Add(accommodationStops[0]);
+            }
+
             for (var i = 0; i < PlacesPerDay && placeIndex < placeStops.Count; i++)
             {
                 stops.Add(placeStops[placeIndex++]);
+            }
+
+            if (attractionIndex < attractionStops.Count)
+            {
+                stops.Add(attractionStops[attractionIndex++]);
             }
 
             if (day % 2 == 0 && serviceIndex < serviceStops.Count)
@@ -76,12 +100,14 @@ public class DummyAITourismProvider : IAITourismProvider
 
         var coveredPlaces = Math.Min(placeStops.Count, placeIndex);
         var coveredServices = Math.Min(serviceStops.Count, serviceIndex);
-        var summary = coveredPlaces == 0 && coveredServices == 0
+        var coveredLocations = Math.Min(attractionStops.Count, attractionIndex) + Math.Min(accommodationStops.Count, 1);
+        var summary = coveredPlaces == 0 && coveredServices == 0 && coveredLocations == 0
             ? $"No curated heritage places or experiences have been added for {context.DistrictName} yet, " +
               $"so this {context.DurationDays}-day plan is left as free time for local exploration. " +
               "Check back later as more places are added, or try another district."
             : $"{context.DurationDays}-day itinerary for {context.PartySize} traveler(s) in {context.DistrictName}, " +
               $"covering {coveredPlaces} heritage site(s)" +
+              (coveredLocations > 0 ? $", {coveredLocations} tourism location(s)" : string.Empty) +
               (coveredServices > 0 ? $" and {coveredServices} curated experience(s)." : ".");
 
         return Task.FromResult(new TourPlanResult
@@ -89,6 +115,7 @@ public class DummyAITourismProvider : IAITourismProvider
             Days = days,
             HighlightedFestivals = highlightedFestivals,
             Summary = summary,
+            IsAiGenerated = false,
         });
     }
 
@@ -322,6 +349,15 @@ public class DummyAITourismProvider : IAITourismProvider
 
         var reason = reasons.Count > 0 ? $"Recommended: {string.Join(", ", reasons)}." : "Cultural highlight in this district.";
         return (Math.Clamp(score, 0m, 100m), reason);
+    }
+
+    private static string BuildLocationNote(TourismLocationSummaryDto location)
+    {
+        var priceText = location.Price.HasValue
+            ? $"৳{location.Price:N0}/night"
+            : location.EntryFee.HasValue ? $"Entry ৳{location.EntryFee:N0}" : null;
+        var verification = location.IsVerified ? "Verified listing" : "Unverified - sample data, confirm before booking";
+        return string.Join(" - ", new[] { location.Type, priceText, verification }.Where(s => !string.IsNullOrWhiteSpace(s)));
     }
 
     private static bool MatchesInterests(string name, string description, List<string> interests)

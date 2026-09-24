@@ -8,17 +8,22 @@
       (re-indexes craft.json, craftDetails.json and GEO.json from DATA_DIR - no body)
     POST   /api/kb/{collection}/query   {question, similarity_threshold?}
                                                               -> {answer, question_type, sources: [{source_file, doc_id, source_ids}]}
+    POST   /api/kb/{collection}/retrieve {query, district?, placeType?, interests?, topK?}
+                                                              -> {results: [{text, sourceFile, docId, districts, placeType, themes, score}]}
+      (plain retrieval, no Gemini classification/generation - built for the isolated
+      "travel-planner" Knowledge Base; the caller does its own generation. See rag/travel/.)
     DELETE /api/kb/{collection}/documents/{document_id}      -> 204   (document_id = a dataset file name)
     DELETE /api/kb/{collection}                              -> 204
 
 Every route is scoped to one `collection` path segment, so a collection is never shared
 between Knowledge Bases by accident.
 
-This file only exposes api/ingest.py, api/chat.py and the step0N_* pipeline modules over
-HTTP - it holds no RAG logic of its own. Needs **Qdrant in server mode** (`QDRANT_URL`,
-no `QDRANT_PATH`): embedded on-disk Qdrant allows only one open handle, so a running
-service cannot also write to it - in that mode ingest/query return 501 and you use the
-`python ingest.py` / `ask.py` CLIs instead.
+This file only exposes api/ingest.py, api/chat.py, rag/travel/retrieve.py and the step0N_*
+pipeline modules over HTTP - it holds no RAG logic of its own. Needs **Qdrant in server
+mode** (`QDRANT_URL`, no `QDRANT_PATH`) for /ingest specifically: embedded on-disk Qdrant
+allows only one open handle, so a running service cannot also write to it, and /ingest
+returns 501 in that mode - use the `python ingest.py` / `python ingest_travel.py` CLIs
+instead. /query and /retrieve only read, so they work in either mode.
 """
 
 import re
@@ -44,6 +49,7 @@ from api.ingest import ingest_dataset
 from rag.pipeline import build_context
 from rag.step05_embedding import get_embeddings, get_sparse_embeddings
 from rag.step06_vector_store import delete_collection, delete_document, get_client
+from rag.travel.retrieve import retrieve_travel_context
 
 # The embedding models and LLMs are process-wide (one embedding model per service,
 # configured via .env) and built once. The Qdrant collection is per-request, never cached.
@@ -105,9 +111,33 @@ class IngestOut(BaseModel):
     chunks: int
 
 
+class RetrieveIn(BaseModel):
+    query: str
+    district: Optional[str] = None
+    placeType: Optional[str] = None
+    interests: Optional[List[str]] = None
+    topK: Optional[int] = None
+
+
+class RetrievedSnippet(BaseModel):
+    text: str
+    sourceFile: Optional[str] = None
+    docId: Optional[str] = None
+    districts: List[str] = []
+    placeType: Optional[str] = None
+    themes: List[str] = []
+    score: float
+
+
+class RetrieveOut(BaseModel):
+    results: List[RetrievedSnippet]
+
+
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "ready": bool(_state.get("ready")), "qdrant": "healthy" if qdrant_is_healthy() else "down"}
+    key = config.gemini_key_status()
+    return {"status": "ok", "ready": bool(_state.get("ready")), "qdrant": "healthy" if qdrant_is_healthy() else "down",
+            "gemini_key_loaded": key["loaded"], "gemini_key_fingerprint": key["fingerprint"]}
 
 
 def _require_server_mode() -> None:
@@ -166,6 +196,32 @@ def query(collection: str, body: QueryIn) -> AnswerOut:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     return AnswerOut(**result)
+
+
+@app.post("/api/kb/{collection}/retrieve", response_model=RetrieveOut)
+def retrieve(collection: str, body: RetrieveIn) -> RetrieveOut:
+    """Plain retrieval, no question-type classification, no Gemini answer generation -- the
+    Travel Planner's caller (the .NET backend) generates its own answer from this context.
+    Never touches the craft-only QUESTION_TYPES/ROUTES/prompts, so `/query` is unaffected."""
+    collection = _validate_collection(collection)
+    query_text = body.query.strip()
+    if not query_text:
+        raise HTTPException(status_code=400, detail="query is required")
+
+    try:
+        _ensure_ready()
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(status_code=503, detail=f"RAG service not ready: {exc}") from exc
+
+    if not get_client().collection_exists(collection):
+        raise HTTPException(status_code=503, detail=f"Knowledge Base '{collection}' has not been indexed yet.")
+
+    results = retrieve_travel_context(
+        ctx=_state["ctx"], collection_name=collection, query_text=query_text,
+        district=body.district, place_type=body.placeType, interests=body.interests,
+        top_k=body.topK or 6,
+    )
+    return RetrieveOut(results=[RetrievedSnippet(**r) for r in results])
 
 
 @app.delete("/api/kb/{collection}/documents/{document_id}", status_code=204)

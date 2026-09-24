@@ -18,8 +18,36 @@ public class AuctionService : IAuctionService
         _productRepository = productRepository;
     }
 
+    // Statuses are stored, but they depend on the clock. Without bringing them up to date the
+    // "Active" list stayed empty for a Scheduled auction until someone happened to open its detail
+    // page, so customers saw "No active auctions" while a producer's auction was already running.
+    private async Task SyncDueAuctionsAsync(CancellationToken cancellationToken)
+    {
+        var due = await _auctionRepository.GetDueForSyncAsync(DateTime.UtcNow, cancellationToken);
+        if (due.Count > 0 && due.Aggregate(false, (changed, a) => SyncStatus(a) || changed))
+        {
+            await _auctionRepository.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    public async Task<PagedResult<AuctionListItemDto>> GetMineAsync(Guid producerId, int page, int pageSize, CancellationToken cancellationToken)
+    {
+        page = Math.Max(1, page);
+        pageSize = Math.Clamp(pageSize, 1, 50);
+        await SyncDueAuctionsAsync(cancellationToken);
+        var (items, totalCount) = await _auctionRepository.GetPagedForProducerAsync(producerId, page, pageSize, cancellationToken);
+        return new PagedResult<AuctionListItemDto>
+        {
+            Items = items.Select(ToListItemDto).ToList(),
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize,
+        };
+    }
+
     public async Task<PagedResult<AuctionListItemDto>> GetAllAsync(AuctionQueryParameters query, CancellationToken cancellationToken)
     {
+        await SyncDueAuctionsAsync(cancellationToken);
         var (items, totalCount) = await _auctionRepository.GetPagedAsync(query.Status, query.Page, query.PageSize, cancellationToken);
         return new PagedResult<AuctionListItemDto>
         {
@@ -207,6 +235,7 @@ public class AuctionService : IAuctionService
         EndAt = auction.EndAt,
         TimeRemainingSeconds = TimeRemainingSeconds(auction),
         BidCount = auction.Bids.Count,
+        WinnerName = auction.Winner?.FullName,
     };
 
     private static AuctionDto ToDto(Domain.Entities.Auction.Auction auction) => new()

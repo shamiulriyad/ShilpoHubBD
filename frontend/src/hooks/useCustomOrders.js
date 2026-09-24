@@ -9,6 +9,14 @@ export function useMyCustomOrders(enabled = true) {
   });
 }
 
+export function useProducerCustomOrders(enabled = true) {
+  return useQuery({
+    queryKey: ['custom-orders', 'producer'],
+    queryFn: () => customOrdersService.mineAsProducer(),
+    enabled,
+  });
+}
+
 export function useCustomOrder(id) {
   return useQuery({
     queryKey: ['custom-orders', id],
@@ -30,5 +38,10 @@ export function useCustomOrderMutations() {
     onSuccess: invalidate,
   });
 
-  return { create, cancel };
+  const respond = useMutation({
+    mutationFn: ({ id, payload }) => customOrdersService.respond(id, payload),
+    onSuccess: invalidate,
+  });
+
+  return { create, cancel, respond };
 }

@@ -34,6 +34,7 @@ using ShilpoHubBD.Application.Services.FieldResearch;
 using ShilpoHubBD.Application.Services.Governance;
 using ShilpoHubBD.Application.Services.HeritageDatabase;
 using ShilpoHubBD.Application.Services.HeritageDiscovery;
+using ShilpoHubBD.Application.Services.Tourism;
 using ShilpoHubBD.Application.Services.HeritageIdentity;
 using ShilpoHubBD.Application.Services.Impact;
 using ShilpoHubBD.Application.Services.Innovation;
@@ -187,6 +188,8 @@ public static class DependencyInjection
         services.AddScoped<ICulturalEventService, CulturalEventService>();
         services.AddScoped<ILocalCuisineService, LocalCuisineService>();
         services.AddScoped<IHeritageRouteService, HeritageRouteService>();
+        services.AddScoped<ITourismLocationService, TourismLocationService>();
+        services.AddScoped<ISavedTourPlanService, SavedTourPlanService>();
 
         services.AddScoped<ITouristServiceService, TouristServiceService>();
         services.AddScoped<IServiceAvailabilityService, ServiceAvailabilityService>();

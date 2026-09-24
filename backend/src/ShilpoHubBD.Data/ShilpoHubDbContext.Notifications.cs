@@ -8,6 +8,7 @@ using ShilpoHubBD.Domain.Entities.Logistics;
 using ShilpoHubBD.Domain.Entities.TouristBooking;
 using ShilpoHubBD.Domain.Entities.Contracts;
 using ShilpoHubBD.Domain.Entities.Learning;
+using ShilpoHubBD.Domain.Entities.CustomOrders;
 
 namespace ShilpoHubBD.Data;
 
@@ -19,6 +20,8 @@ public partial class ShilpoHubDbContext
     {
         var notifications = await BuildNotificationsAsync(cancellationToken);
         UserNotifications.AddRange(notifications);
+        ChangeTracker.DetectChanges();
+        AssignMissingGuidKeys();
         try { return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken); }
         catch
         {
@@ -101,6 +104,12 @@ public partial class ShilpoHubDbContext
             {
                 Add(contract.ProducerId, "Contract updated", $"Your contract is {state}.", "Partnerships", "/producer/contracts");
                 Add(contract.BusinessPartnerId, "Contract updated", $"Your contract is {state}.", "Partnerships", "/business-partner/contracts");
+                continue;
+            }
+            else if (entry.Entity is CustomOrderRequest customOrder)
+            {
+                if (added) Add(customOrder.ProducerId, "New custom order request", "A customer asked you for a custom piece. Review the request and send a quote.", "Orders", "/producer/custom-orders");
+                else Add(customOrder.CustomerId, "Custom order updated", $"Your custom order request is {state}.", "Orders", "/customer/custom-order");
                 continue;
             }
             else if (entry.Entity is CourseEnrollment) { category = "Learning"; path = "/dashboard/academy"; }

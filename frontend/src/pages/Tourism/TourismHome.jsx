@@ -15,6 +15,7 @@ const links = [
   { title: 'Tourist Services', description: 'Book guides, workshops, homestays and transport', to: routePaths.tourismServices },
   { title: 'My Bookings', description: 'Manage your service bookings', to: routePaths.tourismBookings },
   { title: 'AI Trip Planner', description: 'Get an AI-generated day-by-day itinerary', to: routePaths.tourismAiPlanner },
+  { title: 'My Trip Plans', description: 'Your saved AI itineraries, ready to reopen', to: routePaths.tourismMyPlans },
 ];
 
 export default function TourismHome() {

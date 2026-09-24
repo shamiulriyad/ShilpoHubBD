@@ -59,6 +59,8 @@ Abstract providers (swap the implementation without touching callers):
    - `ConnectionStrings__DefaultConnection` — your Supabase/Postgres connection string
    - `Jwt__Issuer`, `Jwt__Audience`, `Jwt__Key` — JWT signing config (`Jwt__Key` should be a long random secret)
    - Optionally `Seed__SuperAdminEmail` / `Seed__SuperAdminPassword` to auto-seed a SuperAdmin user on first run (Development only)
+   - Optionally `Gemini__ApiKey` (a [Google AI Studio](https://aistudio.google.com/apikey) key) to enable real AI-generated itineraries and translation for the Tourist AI Travel Planner (`api/ai-tourism/*`). Without it, those endpoints automatically fall back to the deterministic rule-based planner — nothing breaks, the itinerary is just less conversational.
+   - No key needed for geocoding/routing in the Travel Planner — it uses the free, keyless public **Nominatim** (`Nominatim:*`) and **OSRM demo** (`Osrm:*`) services by default. Both are fine for development but are public demo instances not meant for production load; for production, self-host Nominatim/OSRM or point `Nominatim:BaseUrl`/`Osrm:BaseUrl` at a paid provider behind the same `IGeocodingProvider`/`IRoutingProvider` interfaces.
 
    The API loads `.env` automatically in Development from the repo root, `backend/`, or `backend/src/ShilpoHubBD.Api/` (first one found wins).
 

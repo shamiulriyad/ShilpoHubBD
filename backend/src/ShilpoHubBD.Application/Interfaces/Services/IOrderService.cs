@@ -5,6 +5,12 @@ namespace ShilpoHubBD.Application.Interfaces.Services;
 
 public interface IOrderService
 {
+    // Brings the customer-facing Order.Status in line with what the producers have done to its items.
+    Task SyncStatusFromFulfillmentAsync(Guid orderId, CancellationToken cancellationToken);
+    // A logistics partner delivered a shipment: the items handed over under that tracking number become
+    // Delivered and the order status rolls up.
+    Task HandleShipmentDeliveredAsync(Guid orderId, string trackingNumber, CancellationToken cancellationToken);
+
     Task<PagedResult<OrderListItemDto>> GetMyOrdersAsync(Guid userId, OrderQueryParameters query, CancellationToken cancellationToken);
     Task<OrderDto> GetByIdAsync(Guid id, Guid currentUserId, bool isAdmin, CancellationToken cancellationToken);
     Task<OrderTrackingDto> GetTrackingAsync(Guid id, Guid currentUserId, bool isAdmin, CancellationToken cancellationToken);

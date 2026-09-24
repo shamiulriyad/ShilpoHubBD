@@ -1,4 +1,5 @@
 using ShilpoHubBD.Application.DTOs.Common;
+using ShilpoHubBD.Application.DTOs.Logistics;
 using ShilpoHubBD.Application.DTOs.ProducerBusiness;
 using ShilpoHubBD.Application.Exceptions;
 using ShilpoHubBD.Application.Interfaces.Repositories;
@@ -21,10 +22,17 @@ public class ProducerOrderService : IProducerOrderService
     private readonly IProducerOrderRepository _producerOrderRepository;
     private readonly IProductRepository _productRepository;
 
-    public ProducerOrderService(IProducerOrderRepository producerOrderRepository, IProductRepository productRepository)
+    private readonly IOrderService _orderService;
+    private readonly IDeliveryTrackingService _deliveryTrackingService;
+
+    public ProducerOrderService(
+        IProducerOrderRepository producerOrderRepository, IProductRepository productRepository, IOrderService orderService,
+        IDeliveryTrackingService deliveryTrackingService)
     {
         _producerOrderRepository = producerOrderRepository;
         _productRepository = productRepository;
+        _orderService = orderService;
+        _deliveryTrackingService = deliveryTrackingService;
     }
 
     public async Task<PagedResult<ProducerOrderItemDto>> GetOrdersAsync(
@@ -60,6 +68,7 @@ public class ProducerOrderService : IProducerOrderService
         item.ProducerRespondedAt = DateTime.UtcNow;
 
         await _producerOrderRepository.SaveChangesAsync(cancellationToken);
+        await _orderService.SyncStatusFromFulfillmentAsync(item.OrderId, cancellationToken);
         return await ToDtoWithCustomerAsync(item, cancellationToken);
     }
 
@@ -74,6 +83,7 @@ public class ProducerOrderService : IProducerOrderService
         item.ProducerRespondedAt = DateTime.UtcNow;
 
         await _producerOrderRepository.SaveChangesAsync(cancellationToken);
+        await _orderService.SyncStatusFromFulfillmentAsync(item.OrderId, cancellationToken);
         return await ToDtoWithCustomerAsync(item, cancellationToken);
     }
 
@@ -85,6 +95,7 @@ public class ProducerOrderService : IProducerOrderService
         item.ProducerStatus = OrderItemProducerStatus.Processing;
 
         await _producerOrderRepository.SaveChangesAsync(cancellationToken);
+        await _orderService.SyncStatusFromFulfillmentAsync(item.OrderId, cancellationToken);
         return await ToDtoWithCustomerAsync(item, cancellationToken);
     }
 
@@ -94,12 +105,38 @@ public class ProducerOrderService : IProducerOrderService
         var item = await GetOwnedItemAsync(producerId, orderItemId, cancellationToken);
         EnsureStatus(item, OrderItemProducerStatus.Processing, "shipped");
 
+        var trackingNumber = request.TrackingNumber;
+        var carrier = request.Carrier;
+        if (request.LogisticsPartnerProfileId.HasValue)
+        {
+            // Hand the item to the chosen logistics partner: they get a shipment for this order and
+            // the customer sees the partner and the shipment tracking number.
+            var shipment = await _deliveryTrackingService.CreateForOrderHandoffAsync(
+                request.LogisticsPartnerProfileId.Value, producerId, item.Product?.Producer?.FullName ?? "Producer",
+                new OrderHandoffDetails
+                {
+                    OrderId = item.OrderId,
+                    RecipientName = item.Order.RecipientName,
+                    RecipientPhone = item.Order.RecipientPhone,
+                    DestinationAddressLine = item.Order.ShippingAddressLine,
+                    DestinationCity = item.Order.ShippingDistrict?.Name ?? "Bangladesh",
+                    DestinationDistrictId = item.Order.ShippingDistrictId,
+                    ParcelCount = Math.Max(1, item.Quantity),
+                    DeclaredValue = item.LineTotal,
+                    Description = $"{item.Quantity} x {item.ProductName}",
+                },
+                cancellationToken);
+            trackingNumber = shipment.TrackingNumber;
+            carrier = shipment.LogisticsPartnerName ?? "Logistics partner";
+        }
+
         item.ProducerStatus = OrderItemProducerStatus.Shipped;
-        item.TrackingNumber = request.TrackingNumber;
-        item.Carrier = request.Carrier;
+        item.TrackingNumber = trackingNumber;
+        item.Carrier = carrier;
         item.ShippedAt = DateTime.UtcNow;
 
         await _producerOrderRepository.SaveChangesAsync(cancellationToken);
+        await _orderService.SyncStatusFromFulfillmentAsync(item.OrderId, cancellationToken);
         return await ToDtoWithCustomerAsync(item, cancellationToken);
     }
 
@@ -112,6 +149,7 @@ public class ProducerOrderService : IProducerOrderService
         item.DeliveredAt = DateTime.UtcNow;
 
         await _producerOrderRepository.SaveChangesAsync(cancellationToken);
+        await _orderService.SyncStatusFromFulfillmentAsync(item.OrderId, cancellationToken);
         return await ToDtoWithCustomerAsync(item, cancellationToken);
     }
 

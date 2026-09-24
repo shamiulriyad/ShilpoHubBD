@@ -7,7 +7,7 @@ public class ShipOrderItemRequestValidator : AbstractValidator<ShipOrderItemRequ
 {
     public ShipOrderItemRequestValidator()
     {
-        RuleFor(x => x.TrackingNumber).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.Carrier).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.TrackingNumber).NotEmpty().When(x => !x.LogisticsPartnerProfileId.HasValue).MaximumLength(100);
+        RuleFor(x => x.Carrier).NotEmpty().When(x => !x.LogisticsPartnerProfileId.HasValue).MaximumLength(100);
     }
 }

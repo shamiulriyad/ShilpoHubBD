@@ -28,6 +28,7 @@ export const routePaths = {
   tourism: '/tourism',
   tourismMap: '/tourism/map',
   tourismPlaceDetails: '/tourism/places/:placeId',
+  tourismLocationDetails: '/tourism/locations/:locationId',
   tourismFestivals: '/tourism/festivals',
   tourismEvents: '/tourism/events',
   tourismVillages: '/tourism/villages',
@@ -38,6 +39,7 @@ export const routePaths = {
   tourismServiceDetails: '/tourism/services/:serviceId',
   tourismBookings: '/tourism/bookings',
   tourismAiPlanner: '/tourism/ai-planner',
+  tourismMyPlans: '/tourism/my-plans',
 
   // Academy
   academy: '/academy',
@@ -140,6 +142,8 @@ export const routePaths = {
   producerInventory: '/producer/inventory',
   producerProducts: '/producer/products',
   producerOrders: '/producer/orders',
+  producerCustomOrders: '/producer/custom-orders',
+  producerAuctions: '/producer/auctions',
   producerSustainability: '/producer/sustainability',
   producerAiAssistant: '/producer/ai-assistant',
   producerLiveShopping: '/producer/live-shopping',

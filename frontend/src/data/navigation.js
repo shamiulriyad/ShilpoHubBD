@@ -199,6 +199,8 @@ export const producerSidebarNav = [
     section: 'Sell & Fulfil',
     items: [
       { label: 'Orders & Fulfillment', path: routePaths.producerOrders, icon: '📦' },
+      { label: 'Custom Orders', path: routePaths.producerCustomOrders, icon: '✍️' },
+      { label: 'Auctions', path: routePaths.producerAuctions, icon: '🔨' },
       { label: 'My Products', path: routePaths.producerProducts, icon: '🏺' },
       { label: 'Inventory', path: routePaths.producerInventory, icon: '🗃️' },
     ],
