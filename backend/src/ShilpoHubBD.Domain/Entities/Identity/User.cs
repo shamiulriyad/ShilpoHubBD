@@ -6,6 +6,9 @@ public class User
     public string Email { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;
+
+    /// <summary>Relative URL of the member's uploaded profile photo (shown in the navbar and sidebar).</summary>
+    public string? ProfilePhotoUrl { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
