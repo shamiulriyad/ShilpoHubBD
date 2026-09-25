@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { confirmAction } from '../../lib/confirm';
 import {
   usePolicySimulations, useComplianceRecords, useComplianceRecord, usePolicyComplianceMutations,
 } from '../../hooks/usePolicyCompliance';
@@ -50,7 +51,7 @@ function SimulationsTab() {
                 <p className="text-sm font-semibold text-heading">{s.title}</p>
                 <p className="text-xs text-body/60">{s.simulationType} · {s.scopeLabel} · {s.horizonMonths}mo · confidence {s.confidence}</p>
               </div>
-              <button type="button" onClick={() => removeSimulation.mutate(s.id)} className="text-xs text-danger hover:underline">Delete</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeSimulation.mutate(s.id); }} className="text-xs text-danger hover:underline">Delete</button>
             </div>
           ))}
           {simulations.length === 0 && <p className="text-sm text-body/60">No simulations run yet.</p>}
@@ -83,7 +84,7 @@ function ComplianceDetail({ id }) {
           <span>{r.code} — {r.title}{r.isMandatory ? ' *' : ''}</span>
           <div className="flex items-center gap-2">
             <Badge tone={r.status === 'Met' ? 'success' : 'neutral'}>{r.status}</Badge>
-            <button type="button" onClick={() => removeRequirement.mutate({ id, requirementId: r.id })} className="text-danger hover:underline">Remove</button>
+            <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeRequirement.mutate({ id, requirementId: r.id }); }} className="text-danger hover:underline">Remove</button>
           </div>
         </div>
       ))}
