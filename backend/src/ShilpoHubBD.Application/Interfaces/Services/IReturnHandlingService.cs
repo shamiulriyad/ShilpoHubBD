@@ -8,6 +8,10 @@ public interface IReturnHandlingService
     Task<ReturnRequestDto> CreateAsync(
         Guid currentUserId, bool isAdmin, CreateReturnRequestRequest request, CancellationToken cancellationToken);
 
+    // Created (already Approved) when a producer accepts a customer's return for an order.
+    Task<ReturnRequestDto> CreateForOrderReturnAsync(
+        Guid logisticsPartnerProfileId, Guid producerUserId, ReturnFromOrderDetails details, CancellationToken cancellationToken);
+
     Task<PagedResult<ReturnRequestListItemDto>> GetPagedAsync(
         Guid currentUserId, bool isAdmin, ReturnRequestQueryParameters query, CancellationToken cancellationToken);
 
