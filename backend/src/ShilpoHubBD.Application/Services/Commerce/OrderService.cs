@@ -326,6 +326,44 @@ public class OrderService : IOrderService
         return ToDto(order);
     }
 
+    public async Task<decimal> CompleteReturnAsync(Guid orderId, CancellationToken cancellationToken)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        if (order is null || order.Status != OrderStatus.ReturnRequested)
+        {
+            return 0;
+        }
+
+        RestoreStock(order);
+        var refunded = await RefundPaidPaymentsAsync(order, cancellationToken);
+
+        order.Status = refunded > 0 ? OrderStatus.Refunded : OrderStatus.Returned;
+        order.RefundAmount = refunded > 0 ? refunded : null;
+        order.RefundReason = refunded > 0 ? "Returned goods received by the producer" : null;
+        order.UpdatedAt = DateTime.UtcNow;
+        await RecordStatusEventAsync(order, order.Status,
+            refunded > 0
+                ? $"Return received by the producer. Refunded ৳{refunded} to the customer."
+                : "Return received by the producer. Nothing had been paid in advance, so there is nothing to refund.",
+            cancellationToken);
+
+        await _orderRepository.SaveChangesAsync(cancellationToken);
+        return refunded;
+    }
+
+    public async Task RecordStatusNoteAsync(Guid orderId, string note, CancellationToken cancellationToken)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        if (order is null)
+        {
+            return;
+        }
+
+        await RecordStatusEventAsync(order, order.Status, note, cancellationToken);
+        order.UpdatedAt = DateTime.UtcNow;
+        await _orderRepository.SaveChangesAsync(cancellationToken);
+    }
+
     public async Task<OrderDto> ConfirmAsync(Guid id, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetByIdAsync(id, cancellationToken)
