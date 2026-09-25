@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { usePreservationStrategies, usePreservationStrategy, usePreservationStrategyMutations } from '../../hooks/usePreservationStrategies';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const statusTone = { Proposed: 'neutral', Active: 'primary', OnHold: 'secondary', Completed: 'success', Archived: 'neutral' };
 
@@ -43,7 +44,7 @@ function StrategyDetail({ id }) {
               <span>{o.title}</span>
               <div className="flex items-center gap-2">
                 {o.isAchieved && <Badge tone="success">Achieved</Badge>}
-                <button type="button" onClick={() => removeObjective.mutate({ id, objectiveId: o.id })} className="text-danger hover:underline">Remove</button>
+                <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeObjective.mutate({ id, objectiveId: o.id }); }} className="text-danger hover:underline">Remove</button>
               </div>
             </div>
           ))}
@@ -66,7 +67,7 @@ function StrategyDetail({ id }) {
                 {a.status !== 'Done' && (
                   <button type="button" onClick={() => updateAction.mutate({ id, actionId: a.id, payload: { title: a.title, status: 'Done', orderIndex: a.orderIndex, strategyObjectiveId: a.strategyObjectiveId } })} className="text-primary hover:underline">Complete</button>
                 )}
-                <button type="button" onClick={() => removeAction.mutate({ id, actionId: a.id })} className="text-danger hover:underline">Remove</button>
+                <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeAction.mutate({ id, actionId: a.id }); }} className="text-danger hover:underline">Remove</button>
               </div>
             </div>
           ))}
