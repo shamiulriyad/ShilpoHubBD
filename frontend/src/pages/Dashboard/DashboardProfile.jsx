@@ -3,6 +3,7 @@ import { DashboardCard } from '../../components/cards';
 import { useAuth } from '../../hooks/useAuth';
 import { roleLabel } from '../../utils/roles';
 import ProfileForm from '../../components/profile/ProfileForm';
+import ProfilePhotoField from '../../components/profile/ProfilePhotoField';
 
 export default function DashboardProfile() {
   const { user, roles, activeRole } = useAuth();
@@ -13,6 +14,7 @@ export default function DashboardProfile() {
         title="Account Profile"
         description="Your login details, your member profile and available workspaces."
       />
+      <div className="mb-6"><ProfilePhotoField /></div>
       <div className="mb-6"><ProfileForm /></div>
       <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
         <DashboardCard title="Overview">
