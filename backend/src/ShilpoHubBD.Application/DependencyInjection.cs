@@ -188,6 +188,8 @@ public static class DependencyInjection
         services.AddScoped<IHeritagePlaceService, HeritagePlaceService>();
         services.AddScoped<IHeritageFestivalService, HeritageFestivalService>();
         services.AddScoped<IUnescoRecordService, UnescoRecordService>();
+        services.AddScoped<ICraftHeritageService, CraftHeritageService>();
+        services.AddScoped<ISiteContentService, SiteContentService>();
         services.AddScoped<ICulturalEventService, CulturalEventService>();
         services.AddScoped<ILocalCuisineService, LocalCuisineService>();
         services.AddScoped<IHeritageRouteService, HeritageRouteService>();
