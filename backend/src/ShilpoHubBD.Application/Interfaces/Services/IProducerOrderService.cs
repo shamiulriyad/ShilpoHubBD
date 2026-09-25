@@ -20,7 +20,6 @@ public interface IProducerOrderService
     Task<ProducerOrderItemDto> ShipAsync(
         Guid producerId, Guid orderItemId, ShipOrderItemRequest request, CancellationToken cancellationToken);
 
-    Task<ProducerOrderItemDto> MarkDeliveredAsync(Guid producerId, Guid orderItemId, CancellationToken cancellationToken);
 
     Task<List<ProducerCustomerDto>> GetCustomersAsync(Guid producerId, CancellationToken cancellationToken);
 
