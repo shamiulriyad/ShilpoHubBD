@@ -231,6 +231,8 @@ public partial class ShilpoHubDbContext : DbContext
 	public DbSet<HeritagePlace> HeritagePlaces => Set<HeritagePlace>();
 	public DbSet<HeritageFestival> HeritageFestivals => Set<HeritageFestival>();
 	public DbSet<UnescoRecord> UnescoRecords => Set<UnescoRecord>();
+	public DbSet<CraftHeritageEntry> CraftHeritageEntries => Set<CraftHeritageEntry>();
+	public DbSet<SiteContentItem> SiteContentItems => Set<SiteContentItem>();
 	public DbSet<CulturalEvent> CulturalEvents => Set<CulturalEvent>();
 	public DbSet<LocalCuisine> LocalCuisines => Set<LocalCuisine>();
 	public DbSet<HeritageRoute> HeritageRoutes => Set<HeritageRoute>();
