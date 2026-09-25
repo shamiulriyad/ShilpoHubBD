@@ -56,6 +56,14 @@ public class ProductRepository : IProductRepository
             products = products.Where(p => p.ProducerId == query.ProducerId.Value);
         }
 
+        if (!string.IsNullOrWhiteSpace(query.Expertise))
+        {
+            var expertiseTerm = $"%{query.Expertise.Trim()}%";
+            products = products.Where(p => _context.UserProfiles.Any(u => u.UserId == p.ProducerId
+                && u.Status == ShilpoHubBD.Domain.Entities.Identity.UserProfileStatus.Approved
+                && u.Expertise != null && EF.Functions.ILike(u.Expertise, expertiseTerm)));
+        }
+
         if (query.MinPrice.HasValue)
         {
             products = products.Where(p => p.Price >= query.MinPrice.Value);
