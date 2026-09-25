@@ -1,9 +1,58 @@
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
-import { useKnowledgeNodes, useKnowledgeNeighbors, useKnowledgePath, useKnowledgeGraphMutations } from '../../hooks/useKnowledgeGraph';
+import { useKnowledgeNodes, useKnowledgeNeighbors, useKnowledgePath, useKnowledgeNetwork, useKnowledgeGraphMutations } from '../../hooks/useKnowledgeGraph';
 
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
-const nodeTypes = ['HeritageSkill', 'Producer', 'Village', 'District', 'Product', 'Story', 'Festival', 'Place', 'ResearchProject'];
+const nodeTypes = ['Producer', 'Village', 'Product', 'Craft', 'Material', 'Culture', 'Family', 'HeritagePlace', 'Custom'];
+const relationshipTypes = [
+  'PractisesCraft', 'LocatedInVillage', 'BelongsToFamily', 'DescendedFrom', 'ProducesProduct', 'CraftUsesMaterial',
+  'SuppliesMaterialTo', 'VillageHasCulture', 'MentoredBy', 'CollaboratesWith', 'AssociatedWith', 'RelatedTo',
+];
+const networks = [
+  { key: 'ProducerRelationships', label: 'Producer Relationships' },
+  { key: 'VillageConnections', label: 'Village Connections' },
+  { key: 'MaterialNetwork', label: 'Material Network' },
+  { key: 'CulturalNetwork', label: 'Cultural Network' },
+  { key: 'FamilyTree', label: 'Heritage Family Tree' },
+];
+
+function NetworkExplorer() {
+  const [network, setNetwork] = useState('ProducerRelationships');
+  const networkQuery = useKnowledgeNetwork(network, { depth: 2, maxNodes: 100 });
+  const graph = networkQuery.data;
+
+  return (
+    <div className="mb-6 rounded-xl border border-border bg-surface p-4">
+      <p className="mb-2 text-sm font-semibold text-heading">Heritage networks</p>
+      <div className="mb-3 flex flex-wrap gap-2">
+        {networks.map((n) => (
+          <button
+            key={n.key}
+            type="button"
+            aria-pressed={network === n.key}
+            onClick={() => setNetwork(n.key)}
+            className={`rounded-full border px-3 py-1 text-xs font-medium ${network === n.key ? 'border-primary bg-primary/10 text-primary' : 'border-border text-body/70'}`}
+          >
+            {n.label}
+          </button>
+        ))}
+      </div>
+      <AsyncState isLoading={networkQuery.isLoading} isError={networkQuery.isError} error={networkQuery.error}>
+        {graph && (
+          <div className="space-y-1 text-xs text-body/70">
+            <p>{graph.nodes.length} nodes · {graph.relationships.length} relationships{graph.truncated ? ' (truncated)' : ''}</p>
+            {graph.relationships.slice(0, 40).map((r) => (
+              <div key={r.id} className="rounded-lg border border-border px-3 py-2">
+                {r.sourceLabel} —[{r.relationshipType}]→ {r.targetLabel}
+              </div>
+            ))}
+            {graph.relationships.length === 0 && <p>No relationships in this network yet.</p>}
+          </div>
+        )}
+      </AsyncState>
+    </div>
+  );
+}
 
 function NodeNeighbors({ id }) {
   const neighborsQuery = useKnowledgeNeighbors(id);
@@ -33,7 +82,7 @@ export default function KnowledgeGraph() {
   const { createNode, createRelationship } = useKnowledgeGraphMutations();
   const [showForm, setShowForm] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
-  const [nodeForm, setNodeForm] = useState({ nodeType: 'HeritageSkill', label: '', description: '' });
+  const [nodeForm, setNodeForm] = useState({ nodeType: 'Producer', label: '', description: '' });
   const [relForm, setRelForm] = useState({ sourceNodeId: '', targetNodeId: '', relationshipType: '' });
   const [pathForm, setPathForm] = useState({ sourceNodeId: '', targetNodeId: '' });
   const [pathQuery, setPathQuery] = useState(null);
@@ -44,7 +93,7 @@ export default function KnowledgeGraph() {
   const handleCreateNode = (event) => {
     event.preventDefault();
     if (!nodeForm.label) return;
-    createNode.mutate(nodeForm, { onSuccess: () => { setShowForm(false); setNodeForm({ nodeType: 'HeritageSkill', label: '', description: '' }); } });
+    createNode.mutate(nodeForm, { onSuccess: () => { setShowForm(false); setNodeForm({ nodeType: 'Producer', label: '', description: '' }); } });
   };
 
   const handleCreateRelationship = (event) => {
@@ -77,6 +126,8 @@ export default function KnowledgeGraph() {
         </form>
       )}
 
+      <NetworkExplorer />
+
       <div className="mb-6 rounded-xl border border-border bg-surface p-4">
         <p className="mb-2 text-sm font-semibold text-heading">Link two nodes</p>
         <form onSubmit={handleCreateRelationship} className="flex flex-wrap gap-2">
@@ -84,7 +135,10 @@ export default function KnowledgeGraph() {
             <option value="">Source node</option>
             {nodes.map((n) => <option key={n.id} value={n.id}>{n.label}</option>)}
           </select>
-          <input aria-label="Relationship type" placeholder="Relationship type (e.g. LocatedIn)" value={relForm.relationshipType} onChange={(e) => setRelForm((p) => ({ ...p, relationshipType: e.target.value }))} className={inputClass} />
+          <select aria-label="Relationship type" value={relForm.relationshipType} onChange={(e) => setRelForm((p) => ({ ...p, relationshipType: e.target.value }))} className={inputClass}>
+            <option value="">Relationship type</option>
+            {relationshipTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
           <select aria-label="Target Node Id" value={relForm.targetNodeId} onChange={(e) => setRelForm((p) => ({ ...p, targetNodeId: e.target.value }))} className={inputClass}>
             <option value="">Target node</option>
             {nodes.map((n) => <option key={n.id} value={n.id}>{n.label}</option>)}
