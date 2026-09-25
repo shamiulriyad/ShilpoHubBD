@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { footerLinks } from '../../data/navigation';
 import { routePaths } from '../../routes/routePaths';
 import BrandLogo from '../brand/BrandLogo';
+import { HELPLINE_NUMBER, HELPLINE_TEL } from '../../config/support';
 
 const columns = [
   { title: 'About', key: 'about' },
@@ -21,6 +22,9 @@ export default function Footer() {
             </Link>
             <p className="mt-3 text-sm leading-6 text-surface/65">
               A heritage ecosystem connecting artisans, producers, tourists and partners across Bangladesh.
+            </p>
+            <p className="mt-4 text-sm text-surface/80">
+              24/7 Helpline: <a href={HELPLINE_TEL} className="font-semibold text-[#F3C79D] hover:underline">{HELPLINE_NUMBER}</a>
             </p>
           </div>
           {columns.map((col) => (
