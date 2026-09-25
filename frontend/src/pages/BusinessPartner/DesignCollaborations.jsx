@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { ProducerSelect } from '../../components/forms/EntityPickers';
 import { useMyDesignCollaborations, useDesignCollaborationMutations, useDesignCollaboration } from '../../hooks/useDesignCollaborations';
 
+import { confirmAction } from '../../lib/confirm';
 const statusTone = { Invited: 'secondary', Active: 'primary', Declined: 'neutral', Completed: 'success', Cancelled: 'neutral' };
 
 function ProjectPanel({ id }) {
@@ -38,7 +40,7 @@ function ProjectPanel({ id }) {
 
       <div className="flex gap-2">
         {project.status === 'Active' && <Button variant="primary" onClick={() => complete.mutate(project.id)}>Mark Complete</Button>}
-        {!['Completed', 'Cancelled', 'Declined'].includes(project.status) && <Button variant="secondary" onClick={() => cancel.mutate(project.id)}>Cancel</Button>}
+        {!['Completed', 'Cancelled', 'Declined'].includes(project.status) && <Button variant="secondary" onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancel.mutate(project.id); }}>Cancel</Button>}
       </div>
     </div>
   );
@@ -71,10 +73,10 @@ export default function DesignCollaborations() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input aria-label="Producer ID" required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <ProducerSelect id="design-producer" label="Producer" required value={form.producerId} onChange={(v) => setForm((p) => ({ ...p, producerId: v }))} />
           <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <textarea aria-label="Design requirements" required rows={3} placeholder="Design requirements" value={form.designRequirements} onChange={(e) => setForm((p) => ({ ...p, designRequirements: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <Button type="submit" variant="primary" disabled={create.isPending}>Send Invite</Button>
+          <Button type="submit" variant="primary" disabled={create.isPending || !form.producerId}>Send Invite</Button>
         </form>
       )}
 
