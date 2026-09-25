@@ -5,7 +5,7 @@ export default function SectionHeader({ eyebrow, title, description, action }) {
         {eyebrow && (
           <p className="eyebrow mb-3">{eyebrow}</p>
         )}
-        <h2 className="text-2xl font-bold tracking-[-0.035em] text-heading sm:text-3xl">{title}</h2>
+        <h2 className="section-title text-xl font-semibold tracking-tight text-heading sm:text-2xl">{title}</h2>
         {description && <p className="mt-2 max-w-2xl text-sm leading-6 text-body/70">{description}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}
