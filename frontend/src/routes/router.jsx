@@ -346,7 +346,20 @@ const router = createBrowserRouter([
         children: [
           {
             element: <DashboardLayout navItems={touristSidebarNav} sidebarTitle="Tourist" />,
-            children: [{ path: routePaths.tourist, element: <TouristPage /> }],
+            children: [
+              { path: routePaths.tourist, element: <TouristPage /> },
+              { path: routePaths.workspaceTouristCrafts, element: <Crafts /> },
+              { path: routePaths.workspaceTouristMap, element: <HeritageMap /> },
+              { path: routePaths.workspaceTouristFestivals, element: <FestivalDirectory /> },
+              { path: routePaths.workspaceTouristEvents, element: <CulturalEvents /> },
+              { path: routePaths.workspaceTouristRoutes, element: <TourRoutes /> },
+              { path: routePaths.workspaceTouristVillages, element: <VillageExplorer /> },
+              { path: routePaths.workspaceTouristCuisines, element: <LocalCuisines /> },
+              { path: routePaths.workspaceTouristServices, element: <TouristServices /> },
+              { path: routePaths.workspaceTouristBookings, element: <MyBookings /> },
+              { path: routePaths.workspaceTouristPassport, element: <TravelPassport /> },
+              { path: routePaths.workspaceTouristAiPlanner, element: <AiTourismPlanner /> },
+            ],
           },
         ],
       },
@@ -355,7 +368,13 @@ const router = createBrowserRouter([
         children: [
           {
             element: <DashboardLayout navItems={academyMemberSidebarNav} sidebarTitle="Academy" />,
-            children: [{ path: routePaths.academyMember, element: <LearningDashboard /> }],
+            children: [
+              { path: routePaths.academyMember, element: <LearningDashboard /> },
+              { path: routePaths.workspaceAcademyCatalog, element: <CourseCatalog /> },
+              { path: routePaths.workspaceAcademyMentors, element: <Mentors /> },
+              { path: routePaths.workspaceAcademyLiveClasses, element: <LiveClasses /> },
+              { path: routePaths.workspaceAcademyCertifications, element: <Certifications /> },
+            ],
           },
         ],
       },
@@ -402,6 +421,8 @@ const router = createBrowserRouter([
               { path: routePaths.governmentComplaintsMonitoring, element: <ComplaintsMonitoring /> },
               { path: routePaths.governmentFunding, element: <Funding /> },
               { path: routePaths.ngo, element: <NGOPage /> },
+              { path: routePaths.governmentKnowledgeGraph, element: <KnowledgeGraph /> },
+              { path: routePaths.governmentHeritageDatabase, element: <HeritageDatabase /> },
             ],
           },
         ],
