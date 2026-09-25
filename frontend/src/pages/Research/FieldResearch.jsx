@@ -8,7 +8,16 @@ const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text
 const statusTone = { Draft: 'neutral', Open: 'success', Closed: 'neutral', Archived: 'neutral' };
 const tabs = ['Questions', 'Field Researchers', 'Responses', 'Evidence'];
 const questionTypes = ['ShortText', 'LongText', 'Number', 'SingleChoice', 'MultiChoice', 'Rating', 'Location'];
-const evidenceTypes = ['Photo', 'Audio', 'Video', 'Document', 'Transcript'];
+const evidenceTypes = [
+  { value: 'Photo', label: 'Photo' },
+  { value: 'AudioRecording', label: 'Voice / Audio recording' },
+  { value: 'VideoRecording', label: 'Video recording' },
+  { value: 'InterviewTranscript', label: 'Interview transcript' },
+  { value: 'Document', label: 'Document' },
+  { value: 'GpsWaypoint', label: 'GPS waypoint' },
+  { value: 'Note', label: 'Note' },
+];
+const emptyEvidence = { evidenceType: 'Photo', title: '', fileUrl: '', transcriptText: '', language: '', durationSeconds: '', latitude: '', longitude: '' };
 
 function QuestionsTab({ survey }) {
   const { addQuestion, removeQuestion } = useSurveyMutations();
@@ -106,29 +115,68 @@ function ResponsesTab({ surveyId }) {
 function EvidenceTab({ surveyId }) {
   const evidenceQuery = useSurveyEvidence(surveyId, { pageSize: 50 });
   const { createEvidence, removeEvidence } = useSurveyWorkItemMutations(surveyId);
-  const [form, setForm] = useState({ evidenceType: 'Photo', title: '', fileUrl: '' });
+  const [form, setForm] = useState(emptyEvidence);
+  const [geoError, setGeoError] = useState('');
+  const set = (key) => (e) => setForm((p) => ({ ...p, [key]: e.target.value }));
+  const isAudio = form.evidenceType === 'AudioRecording' || form.evidenceType === 'VideoRecording';
+  const isTranscript = form.evidenceType === 'InterviewTranscript' || isAudio;
+
+  const captureLocation = () => {
+    setGeoError('');
+    if (!navigator.geolocation) { setGeoError('Geolocation is not supported in this browser.'); return; }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => setForm((p) => ({ ...p, latitude: pos.coords.latitude.toFixed(6), longitude: pos.coords.longitude.toFixed(6), locationAccuracyMeters: pos.coords.accuracy })),
+      () => setGeoError('Unable to read your location. Enter coordinates manually.'),
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
+  };
 
   const handleAdd = (e) => {
     e.preventDefault();
     if (!form.title) return;
-    createEvidence.mutate(form, { onSuccess: () => setForm({ evidenceType: 'Photo', title: '', fileUrl: '' }) });
+    const num = (v) => (v === '' || v == null ? undefined : Number(v));
+    const payload = {
+      evidenceType: form.evidenceType,
+      title: form.title,
+      fileUrl: form.fileUrl || undefined,
+      transcriptText: form.transcriptText || undefined,
+      language: form.language || undefined,
+      durationSeconds: num(form.durationSeconds),
+      latitude: num(form.latitude),
+      longitude: num(form.longitude),
+      locationAccuracyMeters: num(form.locationAccuracyMeters),
+    };
+    createEvidence.mutate(payload, { onSuccess: () => setForm(emptyEvidence) });
   };
 
   return (
     <div>
-      <form onSubmit={handleAdd} className="mb-3 flex flex-wrap gap-2">
-        <select aria-label="Evidence Type" value={form.evidenceType} onChange={(e) => setForm((p) => ({ ...p, evidenceType: e.target.value }))} className={inputClass}>
-          {evidenceTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+      <form onSubmit={handleAdd} className="mb-3 grid gap-2 rounded-xl border border-border bg-surface p-3 sm:grid-cols-2">
+        <select aria-label="Evidence Type" value={form.evidenceType} onChange={set('evidenceType')} className={inputClass}>
+          {evidenceTypes.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
         </select>
-        <input aria-label="Title" placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className={`${inputClass} flex-1`} />
-        <input aria-label="File URL" placeholder="File URL" value={form.fileUrl} onChange={(e) => setForm((p) => ({ ...p, fileUrl: e.target.value }))} className={`${inputClass} flex-1`} />
-        <Button type="submit" variant="secondary" size="sm" disabled={createEvidence.isPending}>Add</Button>
+        <input aria-label="Title" placeholder="Title" value={form.title} onChange={set('title')} className={inputClass} />
+        <input aria-label="File URL" placeholder="File URL" value={form.fileUrl} onChange={set('fileUrl')} className={`${inputClass} sm:col-span-2`} />
+        {isAudio && <input aria-label="Duration (seconds)" type="number" min="0" placeholder="Duration (seconds)" value={form.durationSeconds} onChange={set('durationSeconds')} className={inputClass} />}
+        {isTranscript && <input aria-label="Language" placeholder="Language (e.g. bn, en)" value={form.language} onChange={set('language')} className={inputClass} />}
+        {isTranscript && <textarea aria-label="Transcript" rows={3} placeholder="Transcript / voice documentation text" value={form.transcriptText} onChange={set('transcriptText')} className={`${inputClass} sm:col-span-2`} />}
+        <input aria-label="Latitude" type="number" step="any" min="-90" max="90" placeholder="Latitude" value={form.latitude} onChange={set('latitude')} className={inputClass} />
+        <input aria-label="Longitude" type="number" step="any" min="-180" max="180" placeholder="Longitude" value={form.longitude} onChange={set('longitude')} className={inputClass} />
+        <div className="flex items-center gap-2 sm:col-span-2">
+          <Button type="button" variant="secondary" size="sm" onClick={captureLocation}>Use my location (GPS)</Button>
+          <Button type="submit" variant="primary" size="sm" disabled={createEvidence.isPending}>Add evidence</Button>
+          {geoError && <span role="alert" className="text-xs text-danger">{geoError}</span>}
+        </div>
       </form>
       <div className="space-y-2">
         {(evidenceQuery.data?.items || []).map((ev) => (
-          <div key={ev.id} className="flex items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-sm">
-            <span>{ev.title} ({ev.evidenceType}) · {ev.capturedByName}</span>
-            <button type="button" onClick={() => removeEvidence.mutate(ev.id)} className="text-xs text-danger hover:underline">Remove</button>
+          <div key={ev.id} className="rounded-lg border border-border bg-surface px-3 py-2 text-sm">
+            <div className="flex items-center justify-between">
+              <span>{ev.title} ({ev.evidenceType}) · {ev.capturedByName}</span>
+              <button type="button" onClick={() => removeEvidence.mutate(ev.id)} className="text-xs text-danger hover:underline">Remove</button>
+            </div>
+            {(ev.latitude != null && ev.longitude != null) && <p className="text-xs text-body/60">GPS: {ev.latitude}, {ev.longitude}</p>}
+            {ev.transcriptText && <p className="mt-1 line-clamp-3 text-xs text-body/70">{ev.transcriptText}</p>}
           </div>
         ))}
         {(evidenceQuery.data?.items || []).length === 0 && <p className="text-sm text-body/60">No evidence captured yet.</p>}
