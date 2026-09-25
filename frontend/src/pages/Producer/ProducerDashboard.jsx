@@ -35,7 +35,8 @@ export default function ProducerDashboard() {
         </DashboardCard>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <details className="workspace-tools mt-8"><summary>All workspace tools <span aria-hidden="true">+</span></summary>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
           { title: 'Orders & Fulfillment', to: routePaths.producerOrders },
           { title: 'Inventory', to: routePaths.producerInventory },
@@ -55,6 +56,7 @@ export default function ProducerDashboard() {
           </Link>
         ))}
       </div>
+      </details>
       {quotationsQuery.data?.totalCount > 0 && (
         <p className="mt-6 text-sm text-body/60">
           You have {quotationsQuery.data.totalCount} quotation request{quotationsQuery.data.totalCount > 1 ? 's' : ''} waiting for a response.
