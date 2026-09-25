@@ -5,7 +5,7 @@ import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Table, SearchBar, Badge, Button, AsyncState } from '../../components/ui';
 import { useDistricts } from '../../hooks/useDistricts';
 import { useVillages } from '../../hooks/useVillages';
-import { useHeritageDbSummary, useHeritageDatasets, useHeritageRiskRecords, useHeritageDatabaseMutations } from '../../hooks/useHeritageDatabase';
+import { useHeritageDbSummary, useHeritageDatasets, useHeritageRiskRecords, useHeritageTourism, useHeritageDemographics, useHeritageExportAnalytics, useHeritageDatabaseMutations } from '../../hooks/useHeritageDatabase';
 
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const datasetCategories = ['Producers', 'Products', 'Villages', 'Tourism', 'Crafts', 'Demographics', 'Other'];
@@ -51,9 +51,28 @@ function OverviewTab() {
   );
 }
 
+function ExportAnalytics({ id }) {
+  const { data, isLoading, isError, error } = useHeritageExportAnalytics(id);
+  return (
+    <div className="w-full border-t border-border pt-3">
+      <AsyncState isLoading={isLoading} isError={isError} error={error}>
+        {data && (
+          <div className="space-y-1 text-xs text-body/70">
+            <p>{data.totalExports} exports ({data.completedExports} completed) · {data.totalRowsExported} rows exported{data.lastExportedAt ? ` · last ${new Date(data.lastExportedAt).toLocaleDateString()}` : ''}</p>
+            {data.byFormat.length > 0 && <p>By format: {data.byFormat.map((b) => `${b.label} (${b.count})`).join(', ')}</p>}
+            {data.byMonth.length > 0 && <p>By month: {data.byMonth.map((b) => `${b.label} (${b.count})`).join(', ')}</p>}
+            {data.topExporters.length > 0 && <p>Top exporters: {data.topExporters.map((b) => `${b.label} (${b.count})`).join(', ')}</p>}
+          </div>
+        )}
+      </AsyncState>
+    </div>
+  );
+}
+
 function DatasetsTab() {
   const { data, isLoading, isError, error } = useHeritageDatasets({ pageSize: 50 });
-  const { createDataset, refreshDataset, removeDataset } = useHeritageDatabaseMutations();
+  const { createDataset, refreshDataset, removeDataset, exportDataset } = useHeritageDatabaseMutations();
+  const [analyticsId, setAnalyticsId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ name: '', description: '', category: 'Producers', isLive: true });
 
@@ -97,12 +116,77 @@ function DatasetsTab() {
                 {d.isLive && (
                   <button type="button" onClick={() => refreshDataset.mutate(d.id)} className="text-xs text-primary hover:underline">Refresh</button>
                 )}
+                <button type="button" onClick={() => exportDataset.mutate({ id: d.id, format: 'Csv' })} className="text-xs text-primary hover:underline">Export CSV</button>
+                <button type="button" onClick={() => setAnalyticsId(analyticsId === d.id ? null : d.id)} className="text-xs text-primary hover:underline">{analyticsId === d.id ? 'Hide analytics' : 'Export analytics'}</button>
                 <button type="button" onClick={() => removeDataset.mutate(d.id)} className="text-xs text-danger hover:underline">Delete</button>
               </div>
+              {analyticsId === d.id && <ExportAnalytics id={d.id} />}
             </div>
           ))}
           {datasets.length === 0 && <p className="text-sm text-body/60">No datasets yet.</p>}
         </div>
+      </AsyncState>
+    </div>
+  );
+}
+
+function BucketList({ title, buckets }) {
+  return (
+    <div className="rounded-xl border border-border bg-surface p-4">
+      <p className="mb-2 text-sm font-semibold text-heading">{title}</p>
+      <ul className="space-y-1 text-xs text-body/70">
+        {(buckets || []).slice(0, 10).map((b) => (
+          <li key={b.key} className="flex justify-between"><span>{b.label}</span><span className="font-medium text-heading">{b.count}</span></li>
+        ))}
+        {(buckets || []).length === 0 && <li>No data.</li>}
+      </ul>
+    </div>
+  );
+}
+
+function DemographicsTab() {
+  const { data, isLoading, isError, error } = useHeritageDemographics();
+  return (
+    <AsyncState isLoading={isLoading} isError={isError} error={error}>
+      {data && (
+        <div>
+          <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="rounded-lg border border-border bg-surface p-3 text-center"><p className="text-lg font-semibold text-primary">{data.totalProducers}</p><p className="text-xs text-body/60">Producers</p></div>
+            <div className="rounded-lg border border-border bg-surface p-3 text-center"><p className="text-lg font-semibold text-primary">{data.withHeritageIdentity}</p><p className="text-xs text-body/60">With heritage identity</p></div>
+            <div className="rounded-lg border border-border bg-surface p-3 text-center"><p className="text-lg font-semibold text-primary">{data.verifiedHeritageIdentity}</p><p className="text-xs text-body/60">Verified</p></div>
+            <div className="rounded-lg border border-border bg-surface p-3 text-center"><p className="text-lg font-semibold text-primary">{Number(data.averageYearsOfExperience).toFixed(1)}</p><p className="text-xs text-body/60">Avg. years experience</p></div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <BucketList title="By division" buckets={data.byDivision} />
+            <BucketList title="By district" buckets={data.byDistrict} />
+            <BucketList title="By primary craft" buckets={data.byPrimaryCraft} />
+            <BucketList title="By experience band" buckets={data.byExperienceBand} />
+            <BucketList title="By verification status" buckets={data.byVerificationStatus} />
+          </div>
+        </div>
+      )}
+    </AsyncState>
+  );
+}
+
+function TourismTab() {
+  const [search, setSearch] = useState('');
+  const { data, isLoading, isError, error } = useHeritageTourism({ pageSize: 50, search: search || undefined });
+  const rows = (data?.items || []).map((t) => ({
+    title: t.title,
+    type: t.type,
+    district: t.districtName,
+    producer: t.producerName,
+    price: t.price,
+    rating: `${Number(t.averageRating).toFixed(1)} (${t.reviewCount})`,
+  }));
+  return (
+    <div>
+      <div className="mb-4 max-w-xl">
+        <SearchBar placeholder="Search tourism records…" value={search} onChange={(e) => setSearch(e.target.value)} />
+      </div>
+      <AsyncState isLoading={isLoading} isError={isError} error={error}>
+        <Table columns={['title', 'type', 'district', 'producer', 'price', 'rating']} rows={rows} />
       </AsyncState>
     </div>
   );
@@ -164,6 +248,8 @@ const tabs = [
   { key: 'crafts', label: 'Craft heritage' },
   { key: 'overview', label: 'Overview' },
   { key: 'datasets', label: 'Datasets' },
+  { key: 'tourism', label: 'Tourism Data' },
+  { key: 'demographics', label: 'Producer Demographics' },
   { key: 'risk', label: 'Risk Assessment' },
 ];
 
@@ -200,6 +286,8 @@ export default function HeritageDatabase() {
       {tab === 'crafts' && <CraftHeritageCatalog />}
       {tab === 'overview' && <OverviewTab />}
       {tab === 'datasets' && <DatasetsTab />}
+      {tab === 'tourism' && <TourismTab />}
+      {tab === 'demographics' && <DemographicsTab />}
       {tab === 'risk' && <RiskTab />}
     </div>
   );
