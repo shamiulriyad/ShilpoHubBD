@@ -49,13 +49,16 @@ public class DeliveryTrackingService : IDeliveryTrackingService
     private readonly ILogisticsPartnerRepository _partnerRepository;
 
     private readonly IOrderService _orderService;
+    private readonly ICustomOrderDeliveryHandler _customOrderDeliveryHandler;
 
     public DeliveryTrackingService(
-        IDeliveryTrackingRepository repository, ILogisticsPartnerRepository partnerRepository, IOrderService orderService)
+        IDeliveryTrackingRepository repository, ILogisticsPartnerRepository partnerRepository, IOrderService orderService,
+        ICustomOrderDeliveryHandler customOrderDeliveryHandler)
     {
         _repository = repository;
         _partnerRepository = partnerRepository;
         _orderService = orderService;
+        _customOrderDeliveryHandler = customOrderDeliveryHandler;
     }
 
     public async Task<ShipmentDto> CreateForOrderHandoffAsync(
@@ -69,11 +72,75 @@ public class DeliveryTrackingService : IDeliveryTrackingService
             throw new ConflictException("The chosen logistics partner is not currently accepting shipments.");
         }
 
+        if (order.DeliveryRouteId.HasValue
+            && !await _repository.RouteBelongsToProfileAsync(order.DeliveryRouteId.Value, profile.Id, cancellationToken))
+        {
+            throw new ConflictException("The chosen route is not available from this logistics partner.");
+        }
+
+        var consignmentNote = string.IsNullOrWhiteSpace(order.Notes)
+            ? order.Description
+            : $"{order.Description} | Producer note: {order.Notes.Trim()}";
+
         var now = DateTime.UtcNow;
+
+        // The producer's request also lands in the partner's Pickup Requests (waiting to be scheduled),
+        // with the producer's own contact and address when their profile has them.
+        var contact = await _repository.GetProducerPickupContactAsync(producerUserId, cancellationToken);
+        var pickup = new PickupRequest
+        {
+            Id = Guid.NewGuid(),
+            ReferenceCode = await UniquePickupReferenceAsync(now, cancellationToken),
+            LogisticsPartnerProfileId = profile.Id,
+            RequestedByUserId = producerUserId,
+            Status = PickupRequestStatus.Draft,
+            Priority = PickupPriority.Standard,
+            OrderId = order.OrderId,
+            OriginProducerUserId = producerUserId,
+            OriginContactName = producerName,
+            OriginPhone = contact?.Phone ?? "Via ShilpoHub messages",
+            OriginAddressLine = contact?.AddressLine ?? "Producer workshop - pickup address to be confirmed with the producer",
+            OriginCity = contact?.City ?? "To be confirmed",
+            OriginDistrictId = contact?.DistrictId,
+            DestinationContactName = order.RecipientName,
+            DestinationPhone = order.RecipientPhone,
+            DestinationAddressLine = order.DestinationAddressLine,
+            DestinationCity = order.DestinationCity,
+            DestinationDistrictId = order.DestinationDistrictId,
+            PackageCount = order.ParcelCount < 1 ? 1 : order.ParcelCount,
+            TotalWeightKg = order.WeightKg,
+            DeclaredValue = order.DeclaredValue,
+            SpecialInstructions = order.Notes,
+            CreatedAt = now,
+            UpdatedAt = now,
+        };
+        pickup.Items.Add(new PickupItem
+        {
+            Id = Guid.NewGuid(),
+            PickupRequestId = pickup.Id,
+            Description = order.Description ?? "Order items",
+            Quantity = order.ParcelCount < 1 ? 1 : order.ParcelCount,
+            WeightKg = order.WeightKg,
+        });
+        pickup.Events.Add(new PickupEvent
+        {
+            Id = Guid.NewGuid(),
+            PickupRequestId = pickup.Id,
+            Type = PickupEventType.Created,
+            ToStatus = PickupRequestStatus.Draft,
+            Note = "Requested by the producer through an order hand-over.",
+            ActorUserId = producerUserId,
+            CreatedAt = now,
+        });
+        await _repository.AddPickupRequestAsync(pickup, cancellationToken);
+
         var shipment = new Shipment
         {
             Id = Guid.NewGuid(),
             TrackingNumber = await UniqueTrackingNumberAsync(now, cancellationToken),
+            PickupRequestId = pickup.Id,
+            DeliveryRouteId = order.DeliveryRouteId,
+            TotalWeightKg = order.WeightKg,
             LogisticsPartnerProfileId = profile.Id,
             CreatedByUserId = producerUserId,
             Status = ShipmentStatus.Created,
@@ -91,7 +158,7 @@ public class DeliveryTrackingService : IDeliveryTrackingService
             DestinationDistrictId = order.DestinationDistrictId,
             ParcelCount = order.ParcelCount < 1 ? 1 : order.ParcelCount,
             DeclaredValue = order.DeclaredValue,
-            DimensionsNote = order.Description is { Length: > 400 } d ? d[..400] : order.Description,
+            DimensionsNote = consignmentNote is { Length: > 400 } d ? d[..400] : consignmentNote,
             LastStatusAt = now,
             CreatedAt = now,
             UpdatedAt = now,
@@ -557,10 +624,17 @@ public class DeliveryTrackingService : IDeliveryTrackingService
     // Delivered and the customer-facing order status rolls up (so the customer is told).
     private async Task NotifyOrderDeliveredAsync(Shipment shipment, CancellationToken cancellationToken)
     {
-        if (shipment.OrderId.HasValue && shipment.Status == ShipmentStatus.Delivered)
+        if (shipment.Status != ShipmentStatus.Delivered)
+        {
+            return;
+        }
+
+        if (shipment.OrderId.HasValue)
         {
             await _orderService.HandleShipmentDeliveredAsync(shipment.OrderId.Value, shipment.TrackingNumber, cancellationToken);
         }
+
+        await _customOrderDeliveryHandler.HandleShipmentDeliveredAsync(shipment.TrackingNumber, cancellationToken);
     }
 
     public async Task<ShipmentDto> CancelAsync(
@@ -719,6 +793,20 @@ public class DeliveryTrackingService : IDeliveryTrackingService
             RecordedByUserId = actorUserId,
             CreatedAt = DateTime.UtcNow,
         });
+
+    private async Task<string> UniquePickupReferenceAsync(DateTime now, CancellationToken cancellationToken)
+    {
+        for (var attempt = 0; attempt < 5; attempt++)
+        {
+            var candidate = $"PU-{now:yyyyMM}-{Random.Shared.Next(0, 100000):D5}";
+            if (!await _repository.PickupReferenceExistsAsync(candidate, cancellationToken))
+            {
+                return candidate;
+            }
+        }
+
+        return $"PU-{now:yyyyMM}-{Guid.NewGuid():N}"[..20];
+    }
 
     private async Task<string> UniqueTrackingNumberAsync(DateTime now, CancellationToken cancellationToken)
     {
