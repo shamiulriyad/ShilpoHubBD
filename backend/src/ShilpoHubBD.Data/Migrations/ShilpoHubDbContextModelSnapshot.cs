@@ -2273,6 +2273,58 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("NewsItems", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Cms.SiteContentItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Body")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Extra")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<string>("Group")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LinkUrl")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Subtitle")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("Group", "DisplayOrder");
+
+                    b.ToTable("SiteContentItems", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.CartItem", b =>
                 {
                     b.Property<Guid>("Id")
@@ -5736,6 +5788,100 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("HeritageRiskRecords", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.CraftHeritageEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Aliases")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("GiName")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("History")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Materials")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Process")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<string>("Products")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Sources")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<string>("Story")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Unesco")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Visit")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisplayOrder");
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
+                    b.ToTable("CraftHeritageEntries", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.CulturalEvent", b =>
                 {
                     b.Property<Guid>("Id")
@@ -6589,6 +6735,10 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("ProfilePhotoUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");

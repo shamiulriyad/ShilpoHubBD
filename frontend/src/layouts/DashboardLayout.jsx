@@ -41,6 +41,8 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
   const roleConfig = activeRole ? roleSidebars[activeRole] : null;
   const items = navItems ?? roleConfig?.nav ?? sidebarNav;
   const title = sidebarTitle ?? roleConfig?.title ?? 'Workspace';
+  // Quick-access picks follow the workspace being shown (e.g. a SuperAdmin inside /government), not the login role.
+  const presentationRole = Object.entries(roleSidebars).find(([, config]) => config.nav === items)?.[0] ?? activeRole;
 
   return (
     <div className={`dashboard-shell ${compact ? 'sidebar-compact' : ''}`} data-workspace={activeRole}>
@@ -94,8 +96,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
               Close
             </button>
           </div>
-          <button type="button" className="sidebar-collapse-control" aria-label={compact ? 'Expand sidebar' : 'Collapse sidebar'} onClick={toggleCompact} aria-expanded={!compact}><NavigationIcon label="Menu"/><span>{compact ? '' : 'Collapse navigation'}</span></button>
-          <Sidebar items={items} title={title} compact={compact && !sidebarOpen} onExpand={()=>setCompact(false)} onNavigate={() => setSidebarOpen(false)} />
+          <Sidebar items={items} title={title} presentationRole={presentationRole} compact={compact && !sidebarOpen} onExpand={()=>setCompact(false)} onToggle={toggleCompact} onNavigate={() => setSidebarOpen(false)} />
         </div>
 
         <main id="main-content" className="workspace-content">

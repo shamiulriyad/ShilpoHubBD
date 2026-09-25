@@ -4,10 +4,12 @@ import CraftHeritageCatalog from '../../components/heritage/CraftHeritageCatalog
 import { heritageForCategory } from '../../data/craftHeritage';
 import { EntityCard } from '../../components/cards';
 import { useCategories } from '../../hooks/useCategories';
+import { useCraftHeritage } from '../../hooks/useSiteContent';
 
 export default function Crafts() {
   const { data, isLoading, isError, error } = useCategories();
   const crafts = data || [];
+  const { records: heritage } = useCraftHeritage();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
@@ -21,13 +23,13 @@ export default function Crafts() {
         description="Traditional craft disciplines practiced across Bangladesh."
       />
       <CraftHeritageCatalog categories={crafts} />
-      {crafts.some(c => !heritageForCategory(c)) && <h2 className="mb-4 mt-10 text-xl font-semibold text-heading">More craft categories</h2>}
+      {crafts.some(c => !heritageForCategory(c, heritage)) && <h2 className="mb-4 mt-10 text-xl font-semibold text-heading">More craft categories</h2>}
       <AsyncState isLoading={isLoading} isError={isError} error={error}>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {crafts.filter(c => !heritageForCategory(c)).map((craft) => (
+          {crafts.filter(c => !heritageForCategory(c, heritage)).map((craft) => (
             <EntityCard
               key={craft.id}
-              title={heritageForCategory(craft)?.name || craft.name}
+              title={heritageForCategory(craft, heritage)?.name || craft.name}
               subtitle={craft.description}
               meta={`${craft.productCount} product${craft.productCount === 1 ? '' : 's'}`}
               to={routePaths.exploreCraftDetails.replace(':craftId', craft.id)}

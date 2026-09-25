@@ -21,11 +21,3 @@ export const cuisineGuides = [
   {id:'ilish',name:'Ilish curry',districtName:'Across Bangladesh',kind:'Main dish',description:'Hilsa cooked with regional seasonings is a familiar part of Bengali food culture.',whereToTry:'Restaurants serving Bengali meals. Availability varies with the fishing season.',ingredients:'Fish; mustard and other ingredients vary by preparation.',source:'https://beautifulbangladesh.gov.bd/recommend/tasty-food'},
   {id:'khichuri',name:'Bhuna khichuri',districtName:'Across Bangladesh',kind:'Main dish',description:'Rice and lentils cooked with spices into a hearty meal, often served with accompaniments.',whereToTry:'Bengali restaurants and local eateries; ask which side dishes are included.',ingredients:'Rice, lentils and spices; meat or dairy may be added.',source:'https://beautifulbangladesh.gov.bd/recommend/tasty-food'},
 ];
-
-export const travelResources = [
-  {name:'Government hotels & motels',type:'HomestayBooking',label:'Accommodation',description:'Search Bangladesh Parjatan Corporation properties and check current room availability on its official booking portal.',url:'https://hotels.gov.bd/',action:'Visit official booking portal'},
-  {name:'Destination information',type:'GuideBooking',label:'Trip planning',description:'Explore Bangladesh Tourism Board destination information when planning a route or discussing a trip with a local guide.',url:'https://beautifulbangladesh.gov.bd/',action:'Explore official travel information'},
-  {name:'Bangladesh Railway',type:'TransportationBooking',label:'Rail travel',description:'Check routes, travel dates and available tickets directly with Bangladesh Railway.',url:'https://eticket.railway.gov.bd/',action:'Check train tickets'},
-  {name:'Craft workshop visits',type:'WorkshopBooking',label:'Craft experiences',description:'Explore weaving communities and plan a workshop visit directly with a local host. Confirm availability and prices before travelling.',to:'/tourism/villages',action:'Explore craft communities'},
-  {name:'Artisan community visits',type:'ArtisanHomeVisit',label:'Community visits',description:'Learn about local craft communities and arrange visits in advance, with the maker’s consent.',to:'/tourism/villages',action:'Discover communities'},
-];

@@ -1,14 +1,34 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { userMenu } from '../../data/navigation';
 import { useAuth } from '../../hooks/useAuth';
+import { useMyProfile, useProfilePhoto } from '../../hooks/useProfile';
 import { getApiErrorMessage } from '../../utils/apiError';
 import { roleLabel, roleHomePath } from '../../utils/roles';
 import { ConfirmDialog } from '../ui';
+import UserAvatar from '../profile/UserAvatar';
 import { useLogoutFlow } from '../../hooks/useLogoutFlow';
 
 export default function ProfileDropdown() {
   const navigate = useNavigate();
+  const { data: profile } = useMyProfile();
+  const { upload } = useProfilePhoto();
+  const photoInput = useRef(null);
+  const picking = useRef(false);
+  const [photoError, setPhotoError] = useState('');
+  const hasPhoto = Boolean(profile?.photoUrl);
+  // Opening the file dialog moves focus out of the menu; without this flag the blur handler would close (and unmount) it first.
+  const pickPhoto = () => { picking.current = true; photoInput.current?.click(); };
+  const photoChosen = (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    picking.current = false;
+    if (!file) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) return setPhotoError('Choose a JPG, PNG or WebP image.');
+    if (file.size > 5 * 1024 * 1024) return setPhotoError('Choose an image smaller than 5 MB.');
+    setPhotoError('');
+    upload.mutate(file, { onError: (error) => setPhotoError(getApiErrorMessage(error, 'Unable to upload the photo.')) });
+  };
   const [open, setOpen] = useState(false);
   const [switching, setSwitching] = useState(null);
   const [switchError, setSwitchError] = useState('');
@@ -39,6 +59,7 @@ export default function ProfileDropdown() {
     <div
       className="relative"
       onBlur={(event) => {
+        if (picking.current) return;
         if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
       }}
       onKeyDown={(event) => {
@@ -52,21 +73,28 @@ export default function ProfileDropdown() {
         aria-haspopup="menu"
         aria-expanded={open}
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
-          {(user?.name || 'U').slice(0, 1).toUpperCase()}
-        </span>
+        <UserAvatar className="profile-avatar" />
         <span className="hidden min-w-0 text-left sm:block">
-          <span className="block truncate text-sm font-medium leading-tight text-body">{user?.name || 'Account'}</span>
-          {activeRole && <span className="block truncate text-xs leading-tight text-primary">{roleLabel(activeRole)}</span>}
+          <span className="block truncate text-[13px] font-semibold leading-tight text-title">{user?.name || 'Account'}</span>
+          {activeRole && <span className="mt-0.5 block truncate text-[11.5px] font-medium leading-tight text-primary">{roleLabel(activeRole)}</span>}
         </span>
-        <span aria-hidden="true" className="shrink-0 text-xs text-body/50">▾</span>
+        <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
       </button>
 
       {open && (
-        <div role="menu" className="absolute right-0 top-full z-50 mt-2 w-[min(18rem,calc(100vw-2rem))] rounded-xl border border-border bg-surface p-2 shadow-lg">
+        <div role="menu" className="profile-menu">
           <div className="border-b border-border px-3 pb-3 pt-2">
-            <p className="truncate text-sm font-semibold text-heading">{user?.name || 'Account'}</p>
-            {user?.email && <p className="truncate text-xs text-body/60">{user.email}</p>}
+            <div className="flex items-center gap-3">
+              <UserAvatar className="profile-avatar profile-avatar-lg" />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-heading">{user?.name || 'Account'}</p>
+                {user?.email && <p className="truncate text-xs text-body/60">{user.email}</p>}
+                <button type="button" role="menuitem" onClick={pickPhoto} disabled={upload.isPending} className="mt-1 text-xs font-semibold text-primary hover:underline disabled:opacity-60">
+                  {upload.isPending ? 'Uploading…' : hasPhoto ? 'Change photo' : 'Add photo'}
+                </button>
+              </div>
+            </div>
+            {photoError && <p role="alert" className="mt-2 text-xs text-error">{photoError}</p>}
             {activeRole && (
               <p className="mt-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
@@ -122,6 +150,7 @@ export default function ProfileDropdown() {
           </div>
         </div>
       )}
+      <input ref={photoInput} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" tabIndex={-1} aria-label="Choose a profile photo" onChange={photoChosen} onCancel={() => { picking.current = false; }} />
       <ConfirmDialog
         open={logoutFlow.confirming}
         title="Log out of ShilpoHub?"

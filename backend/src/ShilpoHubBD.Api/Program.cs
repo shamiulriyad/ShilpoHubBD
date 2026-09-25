@@ -240,6 +240,7 @@ using (var referenceDataScope = app.Services.CreateScope())
 	await MarketplaceReferenceDataSeeder.SeedCraftCategoriesAsync(dbContext);
 	await TourismLocationSeeder.SeedAsync(dbContext);
 	await TransportOptionSeeder.SeedAsync(dbContext);
+	await SiteContentSeeder.SeedAsync(dbContext);
 }
 
 // Configure the HTTP request pipeline.

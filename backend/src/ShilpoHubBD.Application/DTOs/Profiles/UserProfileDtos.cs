@@ -9,6 +9,9 @@ public class UserProfileDto
     // Login account (read-only here; never part of the profile).
     public string LoginEmail { get; set; } = string.Empty;
 
+    /// <summary>Uploaded profile photo (relative URL); null until the member adds one.</summary>
+    public string? PhotoUrl { get; set; }
+
     public bool Exists { get; set; }
     public string LegalName { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;

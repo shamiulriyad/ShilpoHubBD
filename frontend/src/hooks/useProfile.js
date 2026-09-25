@@ -20,6 +20,15 @@ export function useSaveProfile() {
   });
 }
 
+export function useProfilePhoto() {
+  const queryClient = useQueryClient();
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ['profile'] });
+  return {
+    upload: useMutation({ mutationFn: (file) => profileService.uploadPhoto(file), onSuccess: refresh }),
+    remove: useMutation({ mutationFn: () => profileService.removePhoto(), onSuccess: refresh }),
+  };
+}
+
 export function useProfileApprovals(params = {}) {
   return useQuery({ queryKey: ['profile', 'admin', params], queryFn: () => profileService.listForAdmin(params) });
 }

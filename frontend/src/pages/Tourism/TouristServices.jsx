@@ -2,13 +2,15 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { PageHeader, QueryState } from '../../components/ui';
 import { useTouristServices } from '../../hooks/useTouristServices';
 import SafeImage from '../../components/media/SafeImage';
-import { travelResources } from '../../data/tourismGuides';
+import { useSiteContent } from '../../hooks/useSiteContent';
 import { DirectoryFilters } from '../../components/tourism/TravelUI';
 import { routePaths } from '../../routes/routePaths';
 
 const types={GuideBooking:'Local guide',WorkshopBooking:'Craft workshop',ArtisanHomeVisit:'Artisan visit',HomestayBooking:'Accommodation',TransportationBooking:'Transport'};
 export default function TouristServices() {
   const [params,setParams]=useSearchParams();
+  // Admin › CMS › Site Content › travel-resource; `extra` is "<service type>|<button text>", a link starting with / stays in the app.
+  const travelResources=useSiteContent().group('travel-resource').map(i=>{const [resourceType,action]=(i.extra||'').split('|');return {name:i.title,label:i.subtitle,description:i.body,type:resourceType,action:action||'Open',...(i.linkUrl?.startsWith('/')?{to:i.linkUrl}:{url:i.linkUrl})};});
   const type=params.get('type')||'',search=params.get('q')||'';
   const query=useTouristServices({type:type||undefined,pageSize:100});
   const change=(key,value)=>{const next=new URLSearchParams(params);if(value)next.set(key,value);else next.delete(key);setParams(next,{replace:true});};
