@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import Footer from '../components/layout/Footer';
 import Sidebar from '../components/layout/Sidebar';
@@ -8,11 +8,28 @@ import { sidebarNav, roleSidebars } from '../data/navigation';
 import { routePaths } from '../routes/routePaths';
 import { useAuth } from '../hooks/useAuth';
 import BrandLogo from '../components/brand/BrandLogo';
+import GlobalSearch from '../components/layout/GlobalSearch';
+import LanguageMenu from '../components/layout/LanguageMenu';
+import NavigationIcon from '../components/layout/NavigationIcon';
 import { AIAssistantWidget } from '../components/ui';
 
 export default function DashboardLayout({ navItems, sidebarTitle }) {
+  const sidebarRef = useRef(null);
+  const menuTrigger = useRef(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [compact, setCompact] = useState(()=>{try{return localStorage.getItem('sh:sidebar:compact')==='true';}catch{return false;}});
+  const toggleCompact = ()=>setCompact(current=>{const next=!current;try{localStorage.setItem('sh:sidebar:compact',String(next));}catch{/* Visual preference is optional. */}return next;});
   useEffect(() => { const close = event => { if (event.key === 'Escape') setSidebarOpen(false); }; window.addEventListener('keydown',close); return () => window.removeEventListener('keydown',close); }, []);
+  useEffect(()=>{
+    if(!sidebarOpen)return;
+    const priorOverflow=document.body.style.overflow;
+    document.body.style.overflow='hidden';
+    const focusables=()=>Array.from(sidebarRef.current?.querySelectorAll('a[href],button:not(:disabled)') || []).filter(element=>element.getClientRects().length);
+    focusables()[0]?.focus();
+    const trap=event=>{if(event.key!=='Tab')return;const targets=focusables(),first=targets[0],last=targets[targets.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}};
+    document.addEventListener('keydown',trap);
+    return ()=>{document.body.style.overflow=priorOverflow;document.removeEventListener('keydown',trap);menuTrigger.current?.focus();};
+  },[sidebarOpen]);
   const { activeRole } = useAuth();
 
   const roleConfig = activeRole ? roleSidebars[activeRole] : null;
@@ -20,23 +37,27 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
   const title = sidebarTitle ?? roleConfig?.title ?? 'Workspace';
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 flex h-[4.5rem] items-center gap-3 border-b border-border bg-surface px-4 py-3 lg:px-6">
+    <div className={`dashboard-shell ${compact ? 'sidebar-compact' : ''}`} data-workspace={activeRole}>
+      <a href="#main-content" className="skip-link">Skip to content</a>
+      <header className="workspace-topbar">
         <button
           type="button"
           className="rounded-md border border-border p-2 text-body lg:hidden"
+          ref={menuTrigger}
           onClick={() => setSidebarOpen(true)}
           aria-label="Open workspace navigation"
           aria-expanded={sidebarOpen}
           aria-controls="workspace-sidebar"
         >
-          ☰
+          <NavigationIcon label="Menu"/>
         </button>
         <Link to={activeRole === 'Tourist' ? routePaths.tourist : activeRole === 'HeritageInnovationHub' ? routePaths.researcher : routePaths.home} className="flex shrink-0 items-center gap-2 text-base font-bold text-title">
           <BrandLogo size="sm" className="[&>span:last-child]:hidden sm:[&>span:last-child]:inline" />
         </Link>
-        <div className="ml-auto flex items-center gap-3">
+        <GlobalSearch navItems={items}/>
+        <div className="topbar-actions">
           <NotificationBell />
+          <LanguageMenu/>
           <ProfileDropdown />
         </div>
       </header>
@@ -50,12 +71,11 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         />
       )}
 
-      <div className="mx-auto flex max-w-[1600px] items-start gap-6 px-4 py-6 lg:px-6">
+      <div className="workspace-body">
         <div
           id="workspace-sidebar"
-          className={`fixed inset-y-0 left-0 z-50 w-[min(86vw,19rem)] overflow-y-auto bg-surface p-4 shadow-xl transition-transform lg:sticky lg:top-24 lg:max-h-[calc(100dvh-7rem)] lg:z-auto lg:block lg:w-64 lg:shrink-0 lg:translate-x-0 lg:overflow-y-auto lg:visible overscroll-contain [scrollbar-width:thin] lg:bg-transparent lg:p-0 lg:shadow-none ${
-            sidebarOpen ? 'visible translate-x-0' : 'invisible -translate-x-full'
-          }`}
+          ref={sidebarRef}
+          className={`workspace-sidebar ${sidebarOpen ? 'mobile-open' : ''}`}
         >
           <div className="mb-4 flex justify-end lg:hidden">
             <button
@@ -67,10 +87,11 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
               Close
             </button>
           </div>
-          <Sidebar items={items} title={title} onNavigate={() => setSidebarOpen(false)} />
+          <button type="button" className="sidebar-collapse-control" aria-label={compact ? 'Expand sidebar' : 'Collapse sidebar'} onClick={toggleCompact} aria-expanded={!compact}><NavigationIcon label="Menu"/><span>{compact ? '' : 'Collapse navigation'}</span></button>
+          <Sidebar items={items} title={title} compact={compact && !sidebarOpen} onExpand={()=>setCompact(false)} onNavigate={() => setSidebarOpen(false)} />
         </div>
 
-        <main className="min-w-0 flex-1">
+        <main id="main-content" className="workspace-content">
           <Outlet />
         </main>
       </div>
