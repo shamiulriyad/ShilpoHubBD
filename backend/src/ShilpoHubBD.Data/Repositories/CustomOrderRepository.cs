@@ -23,6 +23,9 @@ public class CustomOrderRepository : ICustomOrderRepository
     public Task<CustomOrderRequest?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => WithDetails().FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
+    public Task<CustomOrderRequest?> GetByTrackingNumberAsync(string trackingNumber, CancellationToken cancellationToken)
+        => WithDetails().FirstOrDefaultAsync(c => c.TrackingNumber == trackingNumber, cancellationToken);
+
     public Task<List<CustomOrderRequest>> GetByProducerAsync(Guid producerId, CancellationToken cancellationToken)
         => WithDetails()
             .Where(c => c.ProducerId == producerId)
