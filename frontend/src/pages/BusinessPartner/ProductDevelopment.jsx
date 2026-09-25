@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useMyDevelopmentProjects, useProductDevelopmentMutations, useDevelopmentProject } from '../../hooks/useProductDevelopment';
 import { useCategories } from '../../hooks/useCategories';
+import { ProducerSelect } from '../../components/forms/EntityPickers';
 import { useDistricts } from '../../hooks/useDistricts';
 
 const statusTone = { Requested: 'secondary', Active: 'primary', Declined: 'neutral', Approved: 'success', Converted: 'success', Cancelled: 'neutral' };
@@ -92,7 +93,7 @@ export default function ProductDevelopment() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input aria-label="Producer ID" required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <ProducerSelect id="pd-producer" label="Producer" required value={form.producerId} onChange={(v) => setForm((p) => ({ ...p, producerId: v }))} />
           <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <textarea aria-label="Business requirements" required rows={2} placeholder="Business requirements" value={form.businessRequirements} onChange={(e) => setForm((p) => ({ ...p, businessRequirements: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <textarea aria-label="Product specifications" required rows={2} placeholder="Product specifications" value={form.productSpecifications} onChange={(e) => setForm((p) => ({ ...p, productSpecifications: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
