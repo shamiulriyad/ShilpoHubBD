@@ -3,6 +3,7 @@ import { PageHeader, Badge, Button } from '../../components/ui';
 import { useResearchProjects } from '../../hooks/useResearchWorkspace';
 import { useResearchAnalyses, useResearchAiMutations } from '../../hooks/useResearchAiAssistant';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const statusTone = { Completed: 'success', Failed: 'neutral', Pending: 'secondary', Running: 'primary' };
 const citationStyles = ['APA', 'MLA', 'Chicago', 'Harvard'];
@@ -82,7 +83,7 @@ export default function ResearchAiAssistant() {
                     <button type="button" onClick={() => setExpandedId(expandedId === a.id ? null : a.id)} className="text-xs text-primary hover:underline">
                       {expandedId === a.id ? 'Hide' : 'Details'}
                     </button>
-                    <button type="button" onClick={() => removeAnalysis.mutate(a.id)} className="text-xs text-danger hover:underline">Delete</button>
+                    <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeAnalysis.mutate(a.id); }} className="text-xs text-danger hover:underline">Delete</button>
                   </div>
                 </div>
                 {expandedId === a.id && (
