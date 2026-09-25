@@ -5,6 +5,7 @@ import { useMyApprenticeshipPrograms, useApprenticeshipProgram, useApprenticeshi
 import { useApprenticeEnrollmentsByProgram } from '../../hooks/useApprenticeEnrollments';
 import { useProgramApplicationsByProgram, useProgramApplicationMutations } from '../../hooks/useProgramApplications';
 
+import { confirmAction } from '../../lib/confirm';
 function ApplicationsReview({ programId }) {
   const applicationsQuery = useProgramApplicationsByProgram(programId);
   const { accept, reject } = useProgramApplicationMutations();
@@ -20,7 +21,7 @@ function ApplicationsReview({ programId }) {
             {a.status === 'Submitted' && (
               <div className="flex gap-2">
                 <button type="button" onClick={() => accept.mutate({ id: a.id, payload: {} })} className="text-primary hover:underline">Accept</button>
-                <button type="button" onClick={() => reject.mutate({ id: a.id, payload: {} })} className="text-danger hover:underline">Reject</button>
+                <button type="button" onClick={async () => { if (await confirmAction('Reject this? The other person will be told.', { confirmLabel: 'Yes, reject' })) reject.mutate({ id: a.id, payload: {} }); }} className="text-danger hover:underline">Reject</button>
               </div>
             )}
           </div>
@@ -85,7 +86,7 @@ function ProgramDetail({ id }) {
         {program.status === 'Published' && (
           <Button size="sm" variant="secondary" disabled={close.isPending} onClick={() => close.mutate(id)}>Close</Button>
         )}
-        <button type="button" onClick={() => remove.mutate(id)} className="text-xs text-danger hover:underline">Delete</button>
+        <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) remove.mutate(id); }} className="text-xs text-danger hover:underline">Delete</button>
       </div>
 
       <div>
@@ -94,7 +95,7 @@ function ProgramDetail({ id }) {
           {program.milestones.map((m) => (
             <div key={m.id} className="flex items-center justify-between rounded-lg border border-border px-3 py-2">
               <span>{m.title}</span>
-              <button type="button" onClick={() => removeMilestone.mutate({ id, milestoneId: m.id })} className="text-danger hover:underline">Remove</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeMilestone.mutate({ id, milestoneId: m.id }); }} className="text-danger hover:underline">Remove</button>
             </div>
           ))}
           {program.milestones.length === 0 && <p>No milestones yet.</p>}
