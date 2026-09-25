@@ -9,6 +9,10 @@ export function useKnowledgeNeighbors(id) {
   return useQuery({ queryKey: ['knowledge-nodes', id, 'neighbors'], queryFn: () => knowledgeGraphService.getNeighbors(id), enabled: Boolean(id) });
 }
 
+export function useKnowledgeNetwork(network, params = {}) {
+  return useQuery({ queryKey: ['knowledge-network', network, params], queryFn: () => knowledgeGraphService.getNetwork(network, params), enabled: Boolean(network) });
+}
+
 export function useKnowledgePath(params) {
   return useQuery({
     queryKey: ['knowledge-path', params],
