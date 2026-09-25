@@ -40,7 +40,8 @@ export default function LogisticsPartnerPage() {
         </DashboardCard>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <details className="workspace-tools mt-8"><summary>All workspace tools <span aria-hidden="true">+</span></summary>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
           { title: 'Company Profile', to: routePaths.logisticsPartnerProfile },
           { title: 'Warehouses', to: routePaths.logisticsPartnerWarehouses },
@@ -56,6 +57,7 @@ export default function LogisticsPartnerPage() {
           </Link>
         ))}
       </div>
+      </details>
     </div>
   );
 }

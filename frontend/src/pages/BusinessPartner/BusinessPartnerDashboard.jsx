@@ -32,7 +32,8 @@ export default function BusinessPartnerDashboard() {
         </DashboardCard>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <details className="workspace-tools mt-8"><summary>All workspace tools <span aria-hidden="true">+</span></summary>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
           { title: 'Company Profile', to: routePaths.businessPartnerProfile },
           { title: 'Contracts', to: routePaths.businessPartnerContracts },
@@ -54,6 +55,7 @@ export default function BusinessPartnerDashboard() {
           </Link>
         ))}
       </div>
+      </details>
     </div>
   );
 }

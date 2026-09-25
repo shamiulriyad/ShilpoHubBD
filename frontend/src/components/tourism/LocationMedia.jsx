@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import SafeImage from '../media/SafeImage';
+import NavigationIcon from '../layout/NavigationIcon';
 
 // Placeholder look per TourismLocation type: a soft gradient and a large icon. Used only when a
 // record has no photo (or its photo fails to load) -- never a stand-in photo of somewhere else.
@@ -18,11 +20,11 @@ function Placeholder({ location }) {
   return (
     <div
       className="flex h-full w-full flex-col items-center justify-center gap-1 text-center"
-      style={{ backgroundImage: `linear-gradient(135deg, ${look.from}, ${look.to})` }}
+      style={{ backgroundColor: 'rgb(var(--color-primary-soft))' }}
       role="img"
       aria-label={`${location.name} — photo not available yet`}
     >
-      <span className="text-4xl drop-shadow-sm" aria-hidden="true">{look.icon}</span>
+      <span className="text-primary" aria-hidden="true"><NavigationIcon label="Heritage Map"/></span>
       <span className="px-3 text-[11px] font-medium uppercase tracking-wide text-black/45">{location.type.replace(/([a-z])([A-Z])/g, '$1 $2')}</span>
     </div>
   );
@@ -38,7 +40,7 @@ export default function LocationMedia({ location, className = 'h-40' }) {
     <div className={`relative w-full overflow-hidden bg-background ${className}`}>
       {showPhoto ? (
         <>
-          <img
+          <SafeImage
             src={location.imageUrl}
             alt={location.name}
             loading="lazy"

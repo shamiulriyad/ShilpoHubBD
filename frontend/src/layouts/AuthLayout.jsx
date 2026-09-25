@@ -13,8 +13,8 @@ export default function AuthLayout() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
+    <div className="auth-shell flex min-h-screen flex-col bg-background">
+      <div className="auth-form-wrap flex flex-1 flex-col items-center justify-center px-4 py-12">
         <Link to={routePaths.home} className="mb-8 flex items-center gap-2 text-xl font-bold text-title">
           <BrandLogo />
         </Link>

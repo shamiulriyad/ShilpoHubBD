@@ -45,16 +45,16 @@ export default function ProfileDropdown() {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="flex max-w-[15rem] items-center gap-2 rounded-full border border-border py-1.5 pl-1.5 pr-3 hover:bg-background"
+        className="profile-trigger"
         aria-haspopup="menu"
         aria-expanded={open}
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-surface">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
           {(user?.name || 'U').slice(0, 1).toUpperCase()}
         </span>
         <span className="hidden min-w-0 text-left sm:block">
           <span className="block truncate text-sm font-medium leading-tight text-body">{user?.name || 'Account'}</span>
-          {activeRole && <span className="block truncate text-[11px] leading-tight text-primary">{roleLabel(activeRole)}</span>}
+          {activeRole && <span className="block truncate text-xs leading-tight text-primary">{roleLabel(activeRole)}</span>}
         </span>
         <span aria-hidden="true" className="shrink-0 text-xs text-body/50">▾</span>
       </button>
@@ -66,7 +66,7 @@ export default function ProfileDropdown() {
             {user?.email && <p className="truncate text-xs text-body/60">{user.email}</p>}
             {activeRole && (
               <p className="mt-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-medium text-primary">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
                   <span aria-hidden="true">●</span>
                   Signed in as {roleLabel(activeRole)}
                 </span>
@@ -76,7 +76,7 @@ export default function ProfileDropdown() {
 
           {otherRoles.length > 0 && (
             <div className="border-b border-border py-2">
-              <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-body/40">Switch workspace</p>
+              <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-body/40">Switch workspace</p>
               {otherRoles.map((role) => (
                 <button
                   key={role}
