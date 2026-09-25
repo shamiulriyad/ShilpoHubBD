@@ -3,9 +3,20 @@ import { PageHeader, Badge, Button, AsyncState, StatusTimeline } from '../../com
 import { useDistricts } from '../../hooks/useDistricts';
 import { useShipments, useShipment, useShipmentMutations } from '../../hooks/useShipments';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const serviceLevels = ['Economy', 'Standard', 'Express', 'SameDay'];
-const advanceStatuses = ['LabelCreated', 'PickedUp', 'InTransit', 'AtHub', 'OutForDelivery', 'DeliveryFailed', 'Returned'];
+// Mirrors DeliveryTrackingService.Transitions so the dropdown only offers moves the API will accept
+// (e.g. a freshly created parcel cannot jump straight to "Returned").
+const nextStatuses = {
+  Created: ['LabelCreated', 'PickedUp'],
+  LabelCreated: ['PickedUp'],
+  PickedUp: ['InTransit', 'AtHub', 'OutForDelivery'],
+  InTransit: ['AtHub', 'OutForDelivery', 'DeliveryFailed'],
+  AtHub: ['InTransit', 'OutForDelivery'],
+  OutForDelivery: ['AtHub', 'InTransit', 'DeliveryFailed'],
+  DeliveryFailed: ['OutForDelivery', 'AtHub', 'InTransit', 'Returned'],
+};
 
 const statusTone = {
   Created: 'neutral',
@@ -86,7 +97,7 @@ function ShipmentDetail({ id }) {
           <form onSubmit={handleAdvance} className="flex flex-wrap items-end gap-2">
             <select aria-label="Status Choice" value={statusChoice} onChange={(e) => setStatusChoice(e.target.value)} className={inputClass}>
               <option value="">Advance status…</option>
-              {advanceStatuses.map((s) => <option key={s} value={s}>{s}</option>)}
+              {(nextStatuses[shipment.status] || []).map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
             {statusChoice === 'DeliveryFailed' && (
               <input aria-label="Failure reason" placeholder="Failure reason" value={failureReason} onChange={(e) => setFailureReason(e.target.value)} className={inputClass} />
@@ -103,7 +114,7 @@ function ShipmentDetail({ id }) {
           </Button>
           <button
             type="button"
-            onClick={() => cancel.mutate({ id, payload: { reason: 'Cancelled by logistics partner' } })}
+            onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancel.mutate({ id, payload: { reason: 'Cancelled by logistics partner' } }); }}
             className="text-xs text-danger hover:underline"
           >
             Cancel Shipment
@@ -158,7 +169,7 @@ export default function Shipments() {
         <span className="text-xs text-body/60">Filter:</span>
         <select aria-label="Status Filter" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={inputClass}>
           <option value="">All statuses</option>
-          {['Created', ...advanceStatuses, 'Delivered', 'Cancelled'].map((s) => <option key={s} value={s}>{s}</option>)}
+          {['Created', 'LabelCreated', 'PickedUp', 'InTransit', 'AtHub', 'OutForDelivery', 'DeliveryFailed', 'Returned', 'Delivered', 'Cancelled'].map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
       </div>
 
