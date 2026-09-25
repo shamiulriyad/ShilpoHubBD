@@ -1,140 +1,34 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { roleLabel } from '../../utils/roles';
 import NavigationIcon from './NavigationIcon';
+import { presentNavigation } from './workspaceNavigation';
 
-const STORAGE_KEY = 'sh:sidebar:collapsed';
-
-function readCollapsed() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {};
-  } catch {
-    return {};
-  }
-}
-
-function writeCollapsed(next) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  } catch {
-    /* storage unavailable — ignore */
-  }
-}
-
-function NavItem({ item, onNavigate }) {
+export default function Sidebar({ items = [], title = 'Menu', className = '', onNavigate, compact = false, onExpand, presentationRole }) {
   const { activeRole } = useAuth();
-  return (
-    <NavLink
-      to={item.path}
-      end
-      onClick={onNavigate}
-      className={({ isActive }) =>
-        `group relative flex items-center gap-2.5 rounded-lg py-2 pl-3 pr-2 text-sm font-medium transition-colors ${
-          isActive
-            ? 'bg-primary/10 text-primary'
-            : 'text-body/80 hover:bg-background hover:text-body'
-        }`
-      }
-    >
-      {({ isActive }) => (
-        <>
-          <span
-            aria-hidden="true"
-            className={`absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-primary transition-opacity ${
-              isActive ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
-          {item.icon && (
-            <span
-              aria-hidden="true"
-              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[13px] ${
-                isActive ? 'bg-primary/15' : 'bg-background group-hover:bg-surface'
-              }`}
-            >
-              {activeRole === 'Tourist' ? <NavigationIcon label={item.label} /> : item.icon}
-            </span>
-          )}
-          <span className="truncate">{item.label}</span>
-        </>
-      )}
-    </NavLink>
-  );
-}
-
-function FlatNav({ items, onNavigate }) {
-  return (
-    <nav className="space-y-1">
-      {items.map((item) => (
-        <NavItem key={item.label} item={item} onNavigate={onNavigate} />
-      ))}
+  const { pathname } = useLocation();
+  const { primary, secondary } = presentNavigation(items, presentationRole || activeRole);
+  const activeGroup = secondary.find(group => group.items.some(item => item.path === pathname))?.section;
+  const [more, setMore] = useState(Boolean(activeGroup));
+  const [groupOpen, setGroupOpen] = useState(activeGroup || null);
+  useEffect(() => { if (activeGroup) { setMore(true); setGroupOpen(activeGroup); } }, [activeGroup, pathname]);
+  const itemLink = item => <NavLink key={item.path + item.label} to={item.path} end onClick={onNavigate} title={compact ? item.label : undefined} aria-label={compact ? item.label : undefined} className={({isActive})=>`workspace-link ${isActive ? 'is-active' : ''}`}>
+    <NavigationIcon label={item.label}/><span className={compact ? 'sr-only' : 'workspace-link-label'}>{item.label}</span>
+  </NavLink>;
+  return <aside className={`workspace-navigation ${compact ? 'is-compact' : ''} ${className}`}>
+    <div className="workspace-caption">{compact ? <span aria-hidden="true">—</span> : <><span className="workspace-dot"/>{title} workspace</>}</div>
+    <nav aria-label={`${title} navigation`}>
+      <div className="space-y-1">{primary.map(itemLink)}</div>
+      {!!secondary.length && <div className="navigation-more">
+        <button type="button" className={`workspace-link w-full ${more ? 'more-active' : ''}`} aria-label="More navigation" aria-expanded={more && !compact} onClick={()=>{ if(compact) { onExpand?.(); setMore(true); } else setMore(value=>!value); }} title={compact ? 'More navigation' : undefined}>
+          <NavigationIcon label="More"/><span className={compact ? 'sr-only' : 'flex-1 text-left'}>More</span>{!compact && <span aria-hidden="true">{more ? '−' : '+'}</span>}
+        </button>
+        {more && !compact && <div className="mt-3 space-y-2">{secondary.map(group=><div key={group.section}>
+          <button type="button" className="workspace-group" aria-expanded={groupOpen===group.section} onClick={()=>setGroupOpen(current=>current===group.section ? null : group.section)}><span>{group.section}</span><span aria-hidden="true">{groupOpen===group.section ? '−' : '+'}</span></button>
+          {groupOpen===group.section && <div className="workspace-subnav">{group.items.map(itemLink)}</div>}
+        </div>)}</div>}
+      </div>}
     </nav>
-  );
-}
-
-function GroupedNav({ groups, onNavigate }) {
-  const [collapsed, setCollapsed] = useState(readCollapsed);
-
-  const toggle = (section) => {
-    setCollapsed((prev) => {
-      const next = { ...prev, [section]: !prev[section] };
-      writeCollapsed(next);
-      return next;
-    });
-  };
-
-  return (
-    <nav className="space-y-5">
-      {groups.map((group) => {
-        const isCollapsed = Boolean(collapsed[group.section]);
-        return (
-          <div key={group.section}>
-            <button
-              type="button"
-              onClick={() => toggle(group.section)}
-              aria-expanded={!isCollapsed}
-              className="group flex w-full items-center justify-between px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-body/50 transition-colors hover:text-primary"
-            >
-              <span>{group.section}</span>
-              <span aria-hidden="true" className={`text-body/40 transition-transform group-hover:text-primary ${isCollapsed ? '' : 'rotate-90'}`}>
-                ›
-              </span>
-            </button>
-            {!isCollapsed && (
-              <div className="ml-3.5 mt-1 space-y-1 border-l border-border pl-2.5">
-                {group.items.map((item) => (
-                  <NavItem key={item.label} item={item} onNavigate={onNavigate} />
-                ))}
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </nav>
-  );
-}
-
-export default function Sidebar({ items = [], title = 'Menu', className = '', onNavigate }) {
-  const grouped = items.length > 0 && Array.isArray(items[0]?.items);
-  const { activeRole } = useAuth();
-
-  return (
-    <aside
-      className={`w-full shrink-0 lg:w-full lg:border-r lg:border-border lg:pr-4 ${className}`}
-    >
-      <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-border bg-surface px-3 py-2.5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs font-bold text-surface">
-          {title.slice(0, 1).toUpperCase()}
-        </span>
-        <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-heading">{title} workspace</p>
-          <p className="truncate text-[11px] font-medium text-primary">
-            {activeRole ? `Role: ${roleLabel(activeRole)}` : 'Signed in'}
-          </p>
-        </div>
-      </div>
-
-      {grouped ? <GroupedNav groups={items} onNavigate={onNavigate} /> : <FlatNav items={items} onNavigate={onNavigate} />}
-    </aside>
-  );
+    {!compact && <div className="workspace-note"><span className="workspace-note-rule"/><p>Rooted in heritage.<br/>Made for what’s next.</p><span>ShilpoHub · Bangladesh</span></div>}
+  </aside>;
 }
