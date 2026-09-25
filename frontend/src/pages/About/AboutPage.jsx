@@ -2,42 +2,19 @@ import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { SectionHeader } from '../../components/ui';
 import { HELPLINE_NUMBER, HELPLINE_TEL } from '../../config/support';
+import { useSiteContent } from '../../hooks/useSiteContent';
 
 const shell = 'mx-auto max-w-6xl px-5 lg:px-8';
 
-const stats = [
-  ['10', 'connected roles'],
-  ['6', 'pillars in one platform'],
-  ['1', 'ecosystem for heritage'],
-];
-
-const flipCards = [
-  { title: 'Mission', front: 'Preserve and elevate Bangladesh’s heritage crafts through a connected digital ecosystem.', back: 'Every artisan gets a digital identity, every craft gets a story, and every sale supports the tradition behind it.' },
-  { title: 'Vision', front: 'A thriving network where artisans, communities and heritage learners take part in the digital economy.', back: 'From a weaver in Sirajganj to a researcher in Dhaka, everyone works from the same living dataset.' },
-];
-
-const timeline = [
-  { title: 'BSCIC', description: 'Supports artisans and cottage industry, but is not a consumer marketplace.' },
-  { title: 'Aarong', description: 'Sells crafts, but as an intermediary — buyers never connect directly with the artisan.' },
-  { title: 'Daraz & Etsy', description: 'General or global handmade marketplaces, neither built around Bangladeshi heritage.' },
-  { title: 'UNESCO ICH', description: 'Documents traditions, but is not a marketplace or a training ecosystem.' },
-  { title: 'ShilpoHub', description: 'The first platform to combine preservation, commerce, tourism, analytics, training and research in one place.', highlight: true },
-];
-
-const stakeholders = [
-  'Artisans & Producers', 'Customers', 'Tourists', 'Business Partners',
-  'Academy Members', 'Researchers', 'Government & NGOs', 'Logistics Partners',
-];
-
-const capabilities = [
-  { title: 'Explore Heritage', description: 'Browse districts, villages, crafts and cultural collections.', to: routePaths.explore },
-  { title: 'Marketplace', description: 'Discover heritage products, auctions and producer stories.', to: routePaths.marketplace },
-  { title: 'Heritage Tourism', description: 'Find festivals, routes, cuisine and tourist services.', to: routePaths.tourism },
-  { title: 'Academy', description: 'Browse courses, mentors, live classes and certifications.', to: routePaths.academy },
-  { title: 'Innovation Hub', description: 'Access live heritage data, AI research tools and policy design.', to: routePaths.research },
-];
-
+// Stats, mission/vision, the landscape timeline, stakeholders and capability cards are managed by the
+// Super Admin (Admin › CMS › Site Content); an empty group simply hides its section.
 export default function AboutPage() {
+  const { group } = useSiteContent();
+  const stats = group('about-stat').map(item => [item.title, item.subtitle]);
+  const flipCards = group('about-purpose').map(item => ({ title: item.title, front: item.body, back: item.extra }));
+  const timeline = group('about-landscape').map(item => ({ title: item.title, description: item.body, highlight: item.extra === 'highlight' }));
+  const stakeholders = group('about-stakeholder').map(item => item.title);
+  const capabilities = group('about-capability').map(item => ({ title: item.title, description: item.body, to: item.linkUrl || '/' }));
   return (
     <div className="overflow-hidden">
       <section className="bg-heading py-20 text-center lg:py-28">
@@ -50,6 +27,7 @@ export default function AboutPage() {
             ShilpoHub connects the people who create, sustain, learn, research and celebrate Bangladesh's craft
             traditions — in one place, for the first time.
           </p>
+          {stats.length > 0 && (
           <div className="mx-auto mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-background/15 pt-8">
             {stats.map(([value, label]) => (
               <div key={label}>
@@ -58,9 +36,11 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
+          )}
         </div>
       </section>
 
+      {flipCards.length > 0 && (
       <section className={`${shell} py-16 lg:py-20`}>
         <SectionHeader eyebrow="What drives us" title="Mission & vision" description="Hover a card to see it from the other side." />
         <div className="grid gap-6 sm:grid-cols-2">
@@ -79,7 +59,9 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
+      )}
 
+      {timeline.length > 0 && (
       <section className="border-y border-border bg-surface py-16 lg:py-20">
         <div className={shell}>
           <SectionHeader eyebrow="Why ShilpoHub" title="Nothing like it exists — yet." description="Pieces of this already exist. No one has connected them." />
@@ -94,7 +76,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      )}
 
+      {stakeholders.length > 0 && (
       <section className={`${shell} py-16 lg:py-20`}>
         <SectionHeader eyebrow="Who it serves" title="A multi-role ecosystem." description="Every part of the heritage economy has a place here." />
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -108,7 +92,9 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
+      )}
 
+      {capabilities.length > 0 && (
       <section className="border-y border-border bg-surface py-16 lg:py-20">
         <div className={shell}>
           <SectionHeader eyebrow="Platform" title="What you can explore." description="Drag sideways for a quick tour of what's open to everyone." />
@@ -123,6 +109,7 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
+      )}
 
       <section className="border-b border-border bg-background py-12 text-center">
         <div className={shell}>
