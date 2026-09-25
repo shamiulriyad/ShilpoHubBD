@@ -5,11 +5,11 @@ export default function ProductCard({ product, to }) {
   return (
     <OptionalCardLink
       to={to}
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface transition duration-200 hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
+      className="product-card group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface transition duration-200 hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
     >
       <CardMedia src={product.image || product.primaryImageUrl} name={product.name} category={product.category} />
       <div className="flex flex-1 flex-col p-5">
-        {product.category && <p className="text-[10px] font-semibold uppercase tracking-[.14em] text-primary">{product.category}</p>}
+        {product.category && <p className="text-xs font-semibold uppercase tracking-[.08em] text-primary">{product.category}</p>}
         <h3 className="mt-2 text-base font-semibold leading-6 text-heading group-hover:text-primary">{product.name}</h3>
         {(product.producer || product.district) && (
           <p className="mt-2 text-xs leading-5 text-body/75">
