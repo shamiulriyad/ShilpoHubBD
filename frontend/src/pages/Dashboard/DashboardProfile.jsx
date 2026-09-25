@@ -2,6 +2,7 @@ import { PageHeader } from '../../components/ui';
 import { DashboardCard } from '../../components/cards';
 import { useAuth } from '../../hooks/useAuth';
 import { roleLabel } from '../../utils/roles';
+import ProfileForm from '../../components/profile/ProfileForm';
 
 export default function DashboardProfile() {
   const { user, roles, activeRole } = useAuth();
@@ -10,8 +11,9 @@ export default function DashboardProfile() {
     <div>
       <PageHeader
         title="Account Profile"
-        description="Your account details and available workspaces."
+        description="Your login details, your member profile and available workspaces."
       />
+      <div className="mb-6"><ProfileForm /></div>
       <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
         <DashboardCard title="Overview">
           <div className="flex flex-col items-center gap-3 text-center">

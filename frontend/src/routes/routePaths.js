@@ -112,6 +112,7 @@ export const routePaths = {
   customerCommunity: '/customer/community',
   customerForum: '/customer/community/forum',
   customerQA: '/customer/community/qa',
+  customerComplaints: '/customer/complaints',
   customerMessages: '/customer/messages',
   customerFollowing: '/customer/following',
   customerFavoriteVillages: '/customer/favorite-villages',
@@ -147,6 +148,11 @@ export const routePaths = {
   producerSustainability: '/producer/sustainability',
   producerAiAssistant: '/producer/ai-assistant',
   producerLiveShopping: '/producer/live-shopping',
+  producerQuestions: '/producer/questions',
+  producerReturns: '/producer/returns',
+  producerProcurements: '/producer/procurements',
+  producerComplaints: '/producer/complaints',
+  producerExpertise: '/producer/expertise',
 
   // Business Partner dashboard (backend role: BusinessPartner)
   businessPartner: '/business-partner',
@@ -195,6 +201,9 @@ export const routePaths = {
   adminUsers: '/admin/users',
   adminHeritage: '/admin/heritage',
   adminMarketplace: '/admin/marketplace',
+  adminProcurementInspections: '/admin/procurement-inspections',
+  adminProfileApprovals: '/admin/profile-approvals',
+  adminExpertiseCertificates: '/admin/expertise-certificates',
 
   unauthorized: '/unauthorized',
   notFound: '*',

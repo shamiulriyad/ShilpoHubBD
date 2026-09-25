@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { SectionHeader } from '../../components/ui';
+import { HELPLINE_NUMBER, HELPLINE_TEL } from '../../config/support';
 
 const shell = 'mx-auto max-w-6xl px-5 lg:px-8';
 
@@ -120,6 +121,14 @@ export default function AboutPage() {
               <p className="mt-2 text-sm leading-6 text-muted">{capability.description}</p>
             </Link>
           ))}
+        </div>
+      </section>
+
+      <section className="border-b border-border bg-background py-12 text-center">
+        <div className={shell}>
+          <p className="text-xs font-bold uppercase tracking-[.2em] text-muted">Need help?</p>
+          <p className="mt-3 text-lg text-heading">Our 24/7 helpline is always open for every member.</p>
+          <a href={HELPLINE_TEL} className="mt-2 inline-block text-2xl font-semibold text-primary hover:underline">{HELPLINE_NUMBER}</a>
         </div>
       </section>
 

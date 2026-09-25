@@ -154,6 +154,7 @@ export const customerSidebarNav = [
       { label: 'Order History', path: routePaths.customerOrders, icon: '📦' },
       { label: 'Returns', path: routePaths.customerReturns, icon: '↩️' },
       { label: 'Refunds', path: routePaths.customerRefunds, icon: '💸' },
+      { label: 'My Complaints', path: routePaths.customerComplaints, icon: '⚠️' },
     ],
   },
   {
@@ -200,6 +201,10 @@ export const producerSidebarNav = [
     items: [
       { label: 'Orders & Fulfillment', path: routePaths.producerOrders, icon: '📦' },
       { label: 'Custom Orders', path: routePaths.producerCustomOrders, icon: '✍️' },
+      { label: 'Customer Questions', path: routePaths.producerQuestions, icon: '❓' },
+      { label: 'Returns', path: routePaths.producerReturns, icon: '↩️' },
+      { label: 'Complaints', path: routePaths.producerComplaints, icon: '⚠️' },
+      { label: 'Expertise Certificates', path: routePaths.producerExpertise, icon: '🏅' },
       { label: 'Auctions', path: routePaths.producerAuctions, icon: '🔨' },
       { label: 'My Products', path: routePaths.producerProducts, icon: '🏺' },
       { label: 'Inventory', path: routePaths.producerInventory, icon: '🗃️' },
@@ -210,7 +215,8 @@ export const producerSidebarNav = [
     items: [
       { label: 'Contracts', path: routePaths.producerContracts, icon: '📄' },
       { label: 'Quotation Requests', path: routePaths.producerQuotations, icon: '🧾' },
-      { label: 'Manufacturing Partnerships', path: routePaths.producerPartnerships, icon: '🏭' },
+      { label: 'Bulk Procurement', path: routePaths.producerProcurements, icon: '📦' },
+      { label: 'Manufacturing', path: routePaths.producerPartnerships, icon: '🏭' },
       { label: 'Design Collaborations', path: routePaths.producerDesignCollaborations, icon: '🎨' },
       { label: 'Product Development', path: routePaths.producerProductDevelopment, icon: '🛠️' },
     ],
@@ -219,13 +225,9 @@ export const producerSidebarNav = [
     section: 'Growth',
     items: [
       { label: 'CSR Sponsorship', path: routePaths.producerCsr, icon: '🤝' },
-      { label: 'Investment Opportunities', path: routePaths.producerInvestments, icon: '💰' },
+      { label: 'Investments', path: routePaths.producerInvestments, icon: '💰' },
       { label: 'Sustainability Profile', path: routePaths.producerSustainability, icon: '🌱' },
     ],
-  },
-  {
-    section: 'AI',
-    items: [{ label: 'AI Business Assistant', path: routePaths.producerAiAssistant, icon: '🤖' }],
   },
   {
     section: 'Marketing',
@@ -246,7 +248,7 @@ export const businessPartnerSidebarNav = [
     section: 'Sourcing',
     items: [
       { label: 'Supplier Discovery', path: routePaths.businessPartnerSupplierDiscovery, icon: '🔍' },
-      { label: 'Supplier Matching (AI)', path: routePaths.businessPartnerSupplierMatching, icon: '🧠' },
+      { label: 'Find Suppliers', path: routePaths.businessPartnerSupplierMatching, icon: '🧠' },
       { label: 'Compare Producers', path: routePaths.businessPartnerProducerComparison, icon: '⚖️' },
       { label: 'Procurement', path: routePaths.businessPartnerProcurements, icon: '🛒' },
     ],
@@ -256,7 +258,7 @@ export const businessPartnerSidebarNav = [
     items: [
       { label: 'Contracts', path: routePaths.businessPartnerContracts, icon: '📄' },
       { label: 'Quotations', path: routePaths.businessPartnerQuotations, icon: '🧾' },
-      { label: 'Manufacturing Partnerships', path: routePaths.businessPartnerPartnerships, icon: '🏭' },
+      { label: 'Manufacturing', path: routePaths.businessPartnerPartnerships, icon: '🏭' },
       { label: 'Design Collaborations', path: routePaths.businessPartnerDesignCollaborations, icon: '🎨' },
       { label: 'Product Development', path: routePaths.businessPartnerProductDevelopment, icon: '🛠️' },
     ],
@@ -264,8 +266,8 @@ export const businessPartnerSidebarNav = [
   {
     section: 'Marketplaces',
     items: [
-      { label: 'Sponsorship Marketplace', path: routePaths.businessPartnerCsr, icon: '🤝' },
-      { label: 'Investment Marketplace', path: routePaths.businessPartnerInvestments, icon: '💰' },
+      { label: 'Sponsorships', path: routePaths.businessPartnerCsr, icon: '🤝' },
+      { label: 'Investment Deals', path: routePaths.businessPartnerInvestments, icon: '💰' },
     ],
   },
   {
@@ -279,7 +281,7 @@ export const businessPartnerSidebarNav = [
 
 // Admin / platform-operations workspace.
 export const adminSidebarNav = [
-  { section: 'Overview', items: [{ label: 'Dashboard', path: routePaths.admin, icon: '⌂' }] },
+  { section: 'Overview', items: [{ label: 'Dashboard', path: routePaths.admin, icon: '⌂' }, { label: 'Bulk Deal Inspections', path: routePaths.adminProcurementInspections, icon: '🔍' }, { label: 'Profile Approvals', path: routePaths.adminProfileApprovals, icon: '🪪' }, { label: 'Expertise Certificates', path: routePaths.adminExpertiseCertificates, icon: '🏅' }] },
   ...adminGroups.map(([key, section, views]) => ({ section, items: views.map(([view, label]) => ({ label, path: `/admin/${key}/${view}` })) })),
 ];
 

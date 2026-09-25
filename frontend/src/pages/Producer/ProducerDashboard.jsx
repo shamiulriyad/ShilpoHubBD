@@ -39,6 +39,8 @@ export default function ProducerDashboard() {
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
           { title: 'Orders & Fulfillment', to: routePaths.producerOrders },
+          { title: 'Custom Orders', to: routePaths.producerCustomOrders },
+          { title: 'Auctions', to: routePaths.producerAuctions },
           { title: 'Inventory', to: routePaths.producerInventory },
           { title: 'My Products', to: routePaths.producerProducts },
           { title: 'Contracts', to: routePaths.producerContracts },
@@ -49,7 +51,7 @@ export default function ProducerDashboard() {
           { title: 'CSR Sponsorship', to: routePaths.producerCsr },
           { title: 'Investment Opportunities', to: routePaths.producerInvestments },
           { title: 'Sustainability Profile', to: routePaths.producerSustainability },
-          { title: 'AI Business Assistant', to: routePaths.producerAiAssistant },
+          { title: 'Live Shopping', to: routePaths.producerLiveShopping },
         ].map((item) => (
           <Link key={item.to} to={item.to} className="rounded-xl border border-border bg-surface p-4 text-sm font-medium text-heading transition hover:shadow-md">
             {item.title} →

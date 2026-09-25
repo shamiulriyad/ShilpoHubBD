@@ -7,6 +7,7 @@ import { useDistricts } from '../../hooks/useDistricts';
 import { useVillages } from '../../hooks/useVillages';
 import { useHeritageDbSummary, useHeritageDatasets, useHeritageRiskRecords, useHeritageTourism, useHeritageDemographics, useHeritageExportAnalytics, useHeritageDatabaseMutations } from '../../hooks/useHeritageDatabase';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const datasetCategories = ['Producers', 'Products', 'Villages', 'Tourism', 'Crafts', 'Demographics', 'Other'];
 const riskLevels = ['Low', 'Medium', 'High', 'Critical'];
@@ -118,7 +119,7 @@ function DatasetsTab() {
                 )}
                 <button type="button" onClick={() => exportDataset.mutate({ id: d.id, format: 'Csv' })} className="text-xs text-primary hover:underline">Export CSV</button>
                 <button type="button" onClick={() => setAnalyticsId(analyticsId === d.id ? null : d.id)} className="text-xs text-primary hover:underline">{analyticsId === d.id ? 'Hide analytics' : 'Export analytics'}</button>
-                <button type="button" onClick={() => removeDataset.mutate(d.id)} className="text-xs text-danger hover:underline">Delete</button>
+                <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeDataset.mutate(d.id); }} className="text-xs text-danger hover:underline">Delete</button>
               </div>
               {analyticsId === d.id && <ExportAnalytics id={d.id} />}
             </div>
@@ -233,7 +234,7 @@ function RiskTab() {
               </div>
               <div className="flex items-center gap-2">
                 <Badge tone={riskLevelTone[r.level] || 'neutral'}>{r.level}</Badge>
-                <button type="button" onClick={() => removeRiskRecord.mutate(r.id)} className="text-xs text-danger hover:underline">Delete</button>
+                <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeRiskRecord.mutate(r.id); }} className="text-xs text-danger hover:underline">Delete</button>
               </div>
             </div>
           ))}

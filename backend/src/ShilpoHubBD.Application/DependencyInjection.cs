@@ -43,6 +43,7 @@ using ShilpoHubBD.Application.Services.Investment;
 using ShilpoHubBD.Application.Services.KnowledgeGraph;
 using ShilpoHubBD.Application.Services.Learning;
 using ShilpoHubBD.Application.Services.Logistics;
+using ShilpoHubBD.Application.Services.Profiles;
 using ShilpoHubBD.Application.Services.LiveShopping;
 using ShilpoHubBD.Application.Services.ManufacturingPartnership;
 using ShilpoHubBD.Application.Services.Marketplace;
@@ -135,8 +136,10 @@ public static class DependencyInjection
 
         services.AddScoped<IInventoryService, InventoryService>();
         services.AddScoped<ICustomOrderService, CustomOrderService>();
+        services.AddScoped<ICustomOrderDeliveryHandler, CustomOrderDeliveryHandler>();
 
         services.AddScoped<IProducerOrderService, ProducerOrderService>();
+        services.AddScoped<IProducerReturnService, ProducerReturnService>();
         services.AddScoped<IAIBusinessService, AIBusinessService>();
 
         services.AddScoped<IMentorService, MentorService>();
@@ -231,6 +234,9 @@ public static class DependencyInjection
         services.AddScoped<IGovForecastService, GovForecastService>();
 
         services.AddScoped<ILogisticsPartnerService, LogisticsPartnerService>();
+        services.AddScoped<IUserProfileService, UserProfileService>();
+        services.AddScoped<IOrderComplaintService, ShilpoHubBD.Application.Services.Complaints.OrderComplaintService>();
+        services.AddScoped<IExpertiseCertificateService, ShilpoHubBD.Application.Services.Certificates.ExpertiseCertificateService>();
         services.AddScoped<IPickupSchedulingService, PickupSchedulingService>();
         services.AddScoped<IRouteOptimizationService, RouteOptimizationService>();
         services.AddScoped<IDeliveryTrackingService, DeliveryTrackingService>();

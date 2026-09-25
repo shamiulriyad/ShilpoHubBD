@@ -16,6 +16,9 @@ public interface IRouteOptimizationRepository
     Task<(List<DeliveryRoute> Items, int TotalCount)> GetPagedAsync(
         Guid? profileId, DeliveryRouteQueryParameters query, CancellationToken cancellationToken);
 
+    /// <summary>Draft / Planned routes of a partner that a producer may choose for a parcel.</summary>
+    Task<List<DeliveryRoute>> GetOpenForProfileAsync(Guid profileId, CancellationToken cancellationToken);
+
     Task<bool> DistrictExistsAsync(Guid districtId, CancellationToken cancellationToken);
 
     Task<bool> OrderExistsAsync(Guid orderId, CancellationToken cancellationToken);

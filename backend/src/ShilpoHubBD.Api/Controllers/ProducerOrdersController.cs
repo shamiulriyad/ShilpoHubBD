@@ -70,13 +70,6 @@ public class ProducerOrdersController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("{orderItemId:guid}/deliver")]
-    public async Task<ActionResult<ProducerOrderItemDto>> MarkDelivered(Guid orderItemId, CancellationToken cancellationToken)
-    {
-        var result = await _producerOrderService.MarkDeliveredAsync(CurrentUserId, orderItemId, cancellationToken);
-        return Ok(result);
-    }
-
     [HttpGet("customers")]
     public async Task<ActionResult<List<ProducerCustomerDto>>> GetCustomers(CancellationToken cancellationToken)
     {

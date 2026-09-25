@@ -23,6 +23,9 @@ public class Review
     public User User { get; set; } = null!;
 
     public int Rating { get; set; }
+
+    /// <summary>Optional separate rating of the producer (1-5) given with a product review.</summary>
+    public int? ProducerRating { get; set; }
     public string Comment { get; set; } = string.Empty;
 
     public DateTime CreatedAt { get; set; }

@@ -63,6 +63,15 @@ public class CustomOrdersController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = $"{RoleNames.Producer},{RoleNames.SuperAdmin}")]
+    [HttpPost("{id:guid}/ship")]
+    public async Task<ActionResult<CustomOrderRequestDto>> Ship(Guid id, ShipCustomOrderRequest request, CancellationToken cancellationToken)
+        => Ok(await _customOrderService.ShipAsync(id, CurrentUserId, IsAdmin, request, cancellationToken));
+
+    [HttpPut("{id:guid}/delivery-address")]
+    public async Task<ActionResult<CustomOrderRequestDto>> UpdateDeliveryAddress(Guid id, UpdateCustomOrderDeliveryRequest request, CancellationToken cancellationToken)
+        => Ok(await _customOrderService.UpdateDeliveryAsync(id, CurrentUserId, request, cancellationToken));
+
     [HttpPost("{id:guid}/cancel")]
     public async Task<ActionResult<CustomOrderRequestDto>> Cancel(Guid id, CancellationToken cancellationToken)
     {

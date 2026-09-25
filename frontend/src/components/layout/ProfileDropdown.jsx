@@ -4,13 +4,16 @@ import { userMenu } from '../../data/navigation';
 import { useAuth } from '../../hooks/useAuth';
 import { getApiErrorMessage } from '../../utils/apiError';
 import { roleLabel, roleHomePath } from '../../utils/roles';
+import { ConfirmDialog } from '../ui';
+import { useLogoutFlow } from '../../hooks/useLogoutFlow';
 
 export default function ProfileDropdown() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [switching, setSwitching] = useState(null);
   const [switchError, setSwitchError] = useState('');
-  const { user, roles, activeRole, homePath, switchRole, logout } = useAuth();
+  const { user, roles, activeRole, homePath, switchRole } = useAuth();
+  const logoutFlow = useLogoutFlow();
 
   const otherRoles = (roles || []).filter((role) => role !== activeRole);
 
@@ -110,8 +113,7 @@ export default function ProfileDropdown() {
               role="menuitem"
               onClick={() => {
                 setOpen(false);
-                void logout();
-                navigate('/login', { replace: true });
+                logoutFlow.request();
               }}
               className="mt-1 block w-full rounded-lg px-3 py-2.5 text-left text-sm text-primary hover:bg-background"
             >
@@ -120,6 +122,16 @@ export default function ProfileDropdown() {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={logoutFlow.confirming}
+        title="Log out of ShilpoHub?"
+        message="You will be signed out and taken to the home page. Any unsaved changes will be lost."
+        confirmLabel="Log out"
+        cancelLabel="Stay signed in"
+        busy={logoutFlow.busy}
+        onConfirm={logoutFlow.confirm}
+        onCancel={logoutFlow.cancel}
+      />
     </div>
   );
 }

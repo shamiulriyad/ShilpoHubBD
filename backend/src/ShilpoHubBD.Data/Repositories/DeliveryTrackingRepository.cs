@@ -17,6 +17,21 @@ public class DeliveryTrackingRepository : IDeliveryTrackingRepository
     public async Task AddAsync(Shipment shipment, CancellationToken cancellationToken)
         => await _context.Shipments.AddAsync(shipment, cancellationToken);
 
+    public async Task AddPickupRequestAsync(PickupRequest pickup, CancellationToken cancellationToken)
+        => await _context.PickupRequests.AddAsync(pickup, cancellationToken);
+
+    public Task<bool> PickupReferenceExistsAsync(string referenceCode, CancellationToken cancellationToken)
+        => _context.PickupRequests.AnyAsync(p => p.ReferenceCode == referenceCode, cancellationToken);
+
+    public async Task<ProducerPickupContact?> GetProducerPickupContactAsync(Guid producerUserId, CancellationToken cancellationToken)
+    {
+        var profile = await _context.UserProfiles
+            .Where(p => p.UserId == producerUserId)
+            .Select(p => new { p.Phone, p.AddressLine, p.DistrictId, DistrictName = p.District != null ? p.District.Name : null })
+            .FirstOrDefaultAsync(cancellationToken);
+        return profile is null ? null : new ProducerPickupContact(profile.Phone, profile.AddressLine, profile.DistrictName ?? "To be confirmed", profile.DistrictId);
+    }
+
     public void Remove(Shipment shipment) => _context.Shipments.Remove(shipment);
 
     public Task<Shipment?> GetByIdAsync(Guid id, CancellationToken cancellationToken)

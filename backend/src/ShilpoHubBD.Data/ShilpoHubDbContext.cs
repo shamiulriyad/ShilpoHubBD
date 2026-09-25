@@ -85,6 +85,9 @@ public partial class ShilpoHubDbContext : DbContext
 
 	public DbSet<Order> Orders => Set<Order>();
 	public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+	public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
+	public DbSet<OrderComplaint> OrderComplaints => Set<OrderComplaint>();
+	public DbSet<ExpertiseCertificate> ExpertiseCertificates => Set<ExpertiseCertificate>();
 	public DbSet<OrderStatusEvent> OrderStatusEvents => Set<OrderStatusEvent>();
 
 	public DbSet<Payment> Payments => Set<Payment>();

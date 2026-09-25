@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useKnowledgeNodes, useKnowledgeNeighbors, useKnowledgePath, useKnowledgeNetwork, useKnowledgeGraphMutations } from '../../hooks/useKnowledgeGraph';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const nodeTypes = ['Producer', 'Village', 'Product', 'Craft', 'Material', 'Culture', 'Family', 'HeritagePlace', 'Custom'];
 const relationshipTypes = [
@@ -68,7 +69,7 @@ function NodeNeighbors({ id }) {
       {graph.relationships.map((r) => (
         <div key={r.id} className="flex items-center justify-between rounded-lg border border-border px-3 py-2">
           <span>{r.sourceLabel} —[{r.relationshipType}]→ {r.targetLabel}{r.weight != null ? ` (w=${r.weight})` : ''}</span>
-          <button type="button" onClick={() => removeRelationship.mutate(r.id)} className="text-danger hover:underline">Remove</button>
+          <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeRelationship.mutate(r.id); }} className="text-danger hover:underline">Remove</button>
         </div>
       ))}
       {graph.relationships.length === 0 && <p>No relationships yet.</p>}

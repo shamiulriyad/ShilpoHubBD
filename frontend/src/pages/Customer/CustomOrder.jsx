@@ -3,7 +3,9 @@ import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Button, AsyncState } from '../../components/ui';
 import { useProducts, useProduct } from '../../hooks/useProducts';
 import { useMyCustomOrders, useCustomOrderMutations } from '../../hooks/useCustomOrders';
+import { useDistricts } from '../../hooks/useDistricts';
 
+import { confirmAction } from '../../lib/confirm';
 // Mirrors the backend CustomOrderStatus enum (the API sends the names; the numbers are a fallback).
 const statusLabel = {
   0: 'Pending',
@@ -12,12 +14,16 @@ const statusLabel = {
   3: 'In progress',
   4: 'Completed',
   5: 'Cancelled',
+  6: 'With logistics partner',
+  7: 'Delivered',
   Pending: 'Pending',
   Accepted: 'Accepted',
   Rejected: 'Rejected',
   InProgress: 'In progress',
   Completed: 'Completed',
   Cancelled: 'Cancelled',
+  Shipped: 'With logistics partner',
+  Delivered: 'Delivered',
 };
 
 export default function CustomOrder() {
@@ -30,7 +36,12 @@ export default function CustomOrder() {
     specifications: '',
     budget: '',
     deadline: '',
+    recipientName: '',
+    recipientPhone: '',
+    shippingAddressLine: '',
+    shippingDistrictId: '',
   });
+  const districts = useDistricts().data || [];
 
   // The selected product carries the producerId the API requires.
   const selectedProduct = useProduct(form.productId);
@@ -43,6 +54,7 @@ export default function CustomOrder() {
     event.preventDefault();
     const producerId = selectedProduct.data?.producerId;
     if (!producerId || !form.title.trim() || !form.specifications.trim()) return;
+    if (!form.recipientName.trim() || !form.recipientPhone.trim() || !form.shippingAddressLine.trim()) return;
 
     create.mutate(
       {
@@ -52,9 +64,13 @@ export default function CustomOrder() {
         specifications: form.specifications.trim(),
         budget: form.budget ? Number(form.budget) : null,
         deadline: form.deadline ? new Date(form.deadline).toISOString() : null,
+        recipientName: form.recipientName.trim(),
+        recipientPhone: form.recipientPhone.trim(),
+        shippingAddressLine: form.shippingAddressLine.trim(),
+        shippingDistrictId: form.shippingDistrictId || null,
       },
       {
-        onSuccess: () => setForm({ productId: '', title: '', specifications: '', budget: '', deadline: '' }),
+        onSuccess: () => setForm({ productId: '', title: '', specifications: '', budget: '', deadline: '', recipientName: '', recipientPhone: '', shippingAddressLine: '', shippingDistrictId: '' }),
       },
     );
   };
@@ -132,6 +148,20 @@ export default function CustomOrder() {
             </div>
           </div>
 
+          <div>
+            <p className="mb-3 text-sm font-semibold text-heading">Delivery Address</p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <input aria-label="Recipient name" required value={form.recipientName} onChange={setField('recipientName')} placeholder="Recipient name" className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+              <input aria-label="Recipient phone" required value={form.recipientPhone} onChange={setField('recipientPhone')} placeholder="Phone number" className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+              <input aria-label="Address" required value={form.shippingAddressLine} onChange={setField('shippingAddressLine')} placeholder="Full delivery address" className="rounded-md border border-border bg-background px-3 py-2 text-sm sm:col-span-2" />
+              <select aria-label="District" value={form.shippingDistrictId} onChange={setField('shippingDistrictId')} className="rounded-md border border-border bg-background px-3 py-2 text-sm sm:col-span-2">
+                <option value="">District (optional)</option>
+                {districts.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+              </select>
+            </div>
+            <p className="mt-2 text-xs text-body/60">Once the piece is finished, the producer hands it to a logistics partner who delivers it here.</p>
+          </div>
+
           {create.isError && (
             <p className="text-sm text-red-600">
               {create.error?.response?.data?.title || 'Could not submit your request. Please try again.'}
@@ -167,6 +197,7 @@ export default function CustomOrder() {
                     {req.quotedPrice ? ` · Quoted ৳ ${req.quotedPrice.toLocaleString()}` : ''}
                   </p>
                   {req.producerResponse && <p className="mt-1 text-xs text-body/70">Producer: “{req.producerResponse}”</p>}
+                  {req.trackingNumber && <p className="mt-1 text-xs text-body/70">Tracking {req.trackingNumber} · {req.carrier}</p>}
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-xs font-medium text-body/70">
@@ -175,7 +206,7 @@ export default function CustomOrder() {
                   {statusLabel[req.status] === 'Pending' && (
                     <button
                       type="button"
-                      onClick={() => cancel.mutate(req.id)}
+                      onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancel.mutate(req.id); }}
                       className="text-xs font-medium text-red-600 hover:underline"
                     >
                       Cancel

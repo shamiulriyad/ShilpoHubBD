@@ -1,5 +1,7 @@
+import UserSelect from '../../components/forms/UserSelect';
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { confirmAction } from '../../lib/confirm';
 import {
   useSurveys, useSurvey, useSurveyMutations, useSurveyResponses, useSurveyEvidence, useSurveyWorkItemMutations,
 } from '../../hooks/useFieldResearch';
@@ -38,7 +40,7 @@ function QuestionsTab({ survey }) {
         {survey.questions.map((q) => (
           <div key={q.id} className="flex items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-sm">
             <span>{q.text} ({q.questionType}){q.isRequired ? ' *' : ''}</span>
-            <button type="button" onClick={() => removeQuestion.mutate({ id: survey.id, questionId: q.id })} className="text-xs text-danger hover:underline">Remove</button>
+            <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeQuestion.mutate({ id: survey.id, questionId: q.id }); }} className="text-xs text-danger hover:underline">Remove</button>
           </div>
         ))}
         {survey.questions.length === 0 && <p className="text-sm text-body/60">No questions yet.</p>}
@@ -67,13 +69,13 @@ function FieldResearchersTab({ survey }) {
         {survey.fieldAssignments.map((a) => (
           <div key={a.id} className="flex items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-sm">
             <span>{a.fieldResearcherName} ({a.role})</span>
-            <button type="button" onClick={() => removeFieldResearcher.mutate({ id: survey.id, assignmentId: a.id })} className="text-xs text-danger hover:underline">Remove</button>
+            <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeFieldResearcher.mutate({ id: survey.id, assignmentId: a.id }); }} className="text-xs text-danger hover:underline">Remove</button>
           </div>
         ))}
         {survey.fieldAssignments.length === 0 && <p className="text-sm text-body/60">No field researchers assigned yet.</p>}
       </div>
       <div className="flex gap-2">
-        <input aria-label="User ID" placeholder="User ID" value={userId} onChange={(e) => setUserId(e.target.value)} className={`${inputClass} flex-1`} />
+        <UserSelect value={userId} onChange={setUserId} />
         <Button
           variant="secondary"
           size="sm"
@@ -173,7 +175,7 @@ function EvidenceTab({ surveyId }) {
           <div key={ev.id} className="rounded-lg border border-border bg-surface px-3 py-2 text-sm">
             <div className="flex items-center justify-between">
               <span>{ev.title} ({ev.evidenceType}) · {ev.capturedByName}</span>
-              <button type="button" onClick={() => removeEvidence.mutate(ev.id)} className="text-xs text-danger hover:underline">Remove</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeEvidence.mutate(ev.id); }} className="text-xs text-danger hover:underline">Remove</button>
             </div>
             {(ev.latitude != null && ev.longitude != null) && <p className="text-xs text-body/60">GPS: {ev.latitude}, {ev.longitude}</p>}
             {ev.transcriptText && <p className="mt-1 line-clamp-3 text-xs text-body/70">{ev.transcriptText}</p>}

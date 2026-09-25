@@ -57,19 +57,9 @@ public class ProcurementsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("{id:guid}/approve")]
-    public async Task<ActionResult<ProcurementRequestDto>> Approve(Guid id, ProcurementDecisionRequest request, CancellationToken cancellationToken)
-    {
-        var result = await _procurementService.ApproveAsync(id, CurrentUserId, IsAdmin, request, cancellationToken);
-        return Ok(result);
-    }
-
-    [HttpPost("{id:guid}/reject")]
-    public async Task<ActionResult<ProcurementRequestDto>> Reject(Guid id, ProcurementDecisionRequest request, CancellationToken cancellationToken)
-    {
-        var result = await _procurementService.RejectAsync(id, CurrentUserId, IsAdmin, request, cancellationToken);
-        return Ok(result);
-    }
+    [HttpPost("{id:guid}/advance")]
+    public async Task<ActionResult<ProcurementRequestDto>> PayAdvance(Guid id, PayProcurementAdvanceRequest request, CancellationToken cancellationToken)
+        => Ok(await _procurementService.PayAdvanceAsync(id, CurrentUserId, IsAdmin, request, cancellationToken));
 
     [HttpPost("{id:guid}/convert-to-order")]
     public async Task<ActionResult<ProcurementRequestDto>> ConvertToOrder(Guid id, CancellationToken cancellationToken)

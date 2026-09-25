@@ -2,13 +2,17 @@ import { useState } from 'react';
 import { PageHeader, Badge, AsyncState } from '../../components/ui';
 import { useSupplierSearch, useSupplierProfile } from '../../hooks/useSupplierDiscovery';
 import { useCategories } from '../../hooks/useCategories';
+import SupplierProfilePanel from '../../components/business/SupplierProfilePanel';
+import { useExpertiseOptions } from '../../hooks/useProfile';
 
 export default function SupplierDiscovery() {
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
+  const [expertise, setExpertise] = useState('');
+  const expertiseOptions = useExpertiseOptions().data || [];
   const [selectedProducerId, setSelectedProducerId] = useState(null);
   const categoriesQuery = useCategories();
-  const searchQuery = useSupplierSearch({ search: search || undefined, categoryId: categoryId || undefined, pageSize: 20 });
+  const searchQuery = useSupplierSearch({ search: search || undefined, categoryId: categoryId || undefined, expertise: expertise || undefined, pageSize: 20 });
   const profileQuery = useSupplierProfile(selectedProducerId);
 
   const results = searchQuery.data?.items || [];
@@ -28,6 +32,10 @@ export default function SupplierDiscovery() {
         <select aria-label="Category Id" value={categoryId} onChange={(event) => setCategoryId(event.target.value)} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
           <option value="">All categories</option>
           {(categoriesQuery.data || []).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+        <select aria-label="Producer expertise" value={expertise} onChange={(event) => setExpertise(event.target.value)} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+          <option value="">Any expertise</option>
+          {expertiseOptions.map((e) => <option key={e} value={e}>{e}</option>)}
         </select>
       </div>
 
@@ -54,21 +62,7 @@ export default function SupplierDiscovery() {
         </AsyncState>
 
         <div className="h-fit rounded-xl border border-border bg-surface p-5">
-          {profile ? (
-            <div className="space-y-2">
-              <p className="text-sm font-semibold text-heading">{profile.producerName}</p>
-              <p className="text-xs text-body/60">{profile.workshopName} · {profile.primaryCraft}</p>
-              <p className="text-sm text-body/70">{profile.workshopDescription}</p>
-              <p className="text-xs text-body/60">★ {profile.averageRating.toFixed(1)} · {profile.productCount} products · {profile.estimatedProductionCapacity} units/mo capacity</p>
-              {profile.certifications?.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  {profile.certifications.map((c, i) => <Badge key={i} tone="secondary">{c.name}</Badge>)}
-                </div>
-              )}
-            </div>
-          ) : (
-            <p className="text-sm text-body/60">Select a producer to view their full profile.</p>
-          )}
+          <SupplierProfilePanel profile={selectedProducerId ? profile : null} isLoading={Boolean(selectedProducerId) && profileQuery.isLoading} />
         </div>
       </div>
     </div>

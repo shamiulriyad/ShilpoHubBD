@@ -85,6 +85,15 @@ public class RouteOptimizationRepository : IRouteOptimizationRepository
         return (items, totalCount);
     }
 
+    public Task<List<DeliveryRoute>> GetOpenForProfileAsync(Guid profileId, CancellationToken cancellationToken)
+        => _context.DeliveryRoutes
+            .AsNoTracking()
+            .Include(r => r.OriginDistrict)
+            .Where(r => r.LogisticsPartnerProfileId == profileId
+                && (r.Status == DeliveryRouteStatus.Draft || r.Status == DeliveryRouteStatus.Planned))
+            .OrderBy(r => r.ScheduledDate == null).ThenBy(r => r.ScheduledDate).ThenBy(r => r.Name)
+            .ToListAsync(cancellationToken);
+
     public Task<bool> DistrictExistsAsync(Guid districtId, CancellationToken cancellationToken)
         => _context.Districts.AnyAsync(d => d.Id == districtId, cancellationToken);
 

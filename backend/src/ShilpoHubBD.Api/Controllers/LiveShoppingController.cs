@@ -35,6 +35,12 @@ public class LiveShoppingController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = $"{RoleNames.Producer},{RoleNames.SuperAdmin}")]
+    [HttpGet("mine")]
+    public async Task<ActionResult<PagedResult<LiveEventListItemDto>>> GetMine(
+        [FromQuery] LiveEventQueryParameters query, CancellationToken cancellationToken)
+        => Ok(await _liveShoppingService.GetMineAsync(CurrentUserId, query, cancellationToken));
+
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<LiveEventDto>> GetById(Guid id, CancellationToken cancellationToken)
     {

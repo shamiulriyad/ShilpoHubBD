@@ -17,6 +17,7 @@ public class ReviewService : IReviewService
     private readonly IHeritageCheckInRepository _checkInRepository;
     private readonly IBookingRepository _bookingRepository;
     private readonly ITouristServiceRepository _touristServiceRepository;
+    private readonly IOrderComplaintRepository _complaintRepository;
 
     public ReviewService(
         IReviewRepository reviewRepository,
@@ -25,8 +26,10 @@ public class ReviewService : IReviewService
         IHeritagePlaceRepository heritagePlaceRepository,
         IHeritageCheckInRepository checkInRepository,
         IBookingRepository bookingRepository,
-        ITouristServiceRepository touristServiceRepository)
+        ITouristServiceRepository touristServiceRepository,
+        IOrderComplaintRepository complaintRepository)
     {
+        _complaintRepository = complaintRepository;
         _reviewRepository = reviewRepository;
         _productRepository = productRepository;
         _orderRepository = orderRepository;
@@ -86,6 +89,11 @@ public class ReviewService : IReviewService
         if (!await _orderRepository.HasPurchasedProductAsync(userId, productId, cancellationToken))
         {
             throw new ConflictException("You can only review products you have purchased and received.");
+        }
+
+        if (await _complaintRepository.HasUnsettledAsync(userId, productId, cancellationToken))
+        {
+            throw new ConflictException("You have a complaint about this product that is not settled yet. Once it is resolved and you confirm you are satisfied, you can rate it.");
         }
 
         if (await _reviewRepository.GetByProductAndUserAsync(productId, userId, cancellationToken) is not null)
@@ -181,6 +189,7 @@ public class ReviewService : IReviewService
             Id = Guid.NewGuid(),
             UserId = userId,
             Rating = request.Rating,
+            ProducerRating = request.ProducerRating,
             Comment = request.Comment.Trim(),
             CreatedAt = now,
             UpdatedAt = now,
@@ -346,6 +355,7 @@ public class ReviewService : IReviewService
         UserId = review.UserId,
         ReviewerName = review.User.FullName,
         Rating = review.Rating,
+        ProducerRating = review.ProducerRating,
         Comment = review.Comment,
         ImageUrls = review.Images.OrderBy(i => i.DisplayOrder).Select(i => i.ImageUrl).ToList(),
         CreatedAt = review.CreatedAt,

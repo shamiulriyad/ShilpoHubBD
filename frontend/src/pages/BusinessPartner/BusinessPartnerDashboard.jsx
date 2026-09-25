@@ -45,7 +45,7 @@ export default function BusinessPartnerDashboard() {
           { title: 'Sponsorship Marketplace', to: routePaths.businessPartnerCsr },
           { title: 'Investment Marketplace', to: routePaths.businessPartnerInvestments },
           { title: 'Supplier Discovery', to: routePaths.businessPartnerSupplierDiscovery },
-          { title: 'Supplier Matching (AI)', to: routePaths.businessPartnerSupplierMatching },
+          { title: 'Find Suppliers', to: routePaths.businessPartnerSupplierMatching },
           { title: 'Compare Producers', to: routePaths.businessPartnerProducerComparison },
           { title: 'Analytics', to: routePaths.businessPartnerAnalytics },
           { title: 'AI Intelligence', to: routePaths.businessPartnerAiIntelligence },

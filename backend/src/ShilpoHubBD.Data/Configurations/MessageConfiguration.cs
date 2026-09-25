@@ -12,6 +12,7 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
         builder.HasKey(m => m.Id);
 
         builder.Property(m => m.Body).IsRequired().HasMaxLength(4000);
+        builder.Property(m => m.ImageUrl).HasMaxLength(500);
         builder.Property(m => m.CreatedAt).IsRequired();
 
         builder.HasIndex(m => m.ConversationId);

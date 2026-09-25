@@ -37,7 +37,6 @@ export function useProducerOrderMutations() {
   const reject = useMutation({ mutationFn: ({ id, reason }) => producerOrdersService.reject(id, reason), onSuccess: invalidate });
   const startProcessing = useMutation({ mutationFn: (id) => producerOrdersService.startProcessing(id), onSuccess: invalidate });
   const ship = useMutation({ mutationFn: ({ id, payload }) => producerOrdersService.ship(id, payload), onSuccess: invalidate });
-  const deliver = useMutation({ mutationFn: (id) => producerOrdersService.deliver(id), onSuccess: invalidate });
 
-  return { accept, reject, startProcessing, ship, deliver };
+  return { accept, reject, startProcessing, ship };
 }

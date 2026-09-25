@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { ProducerMultiSelect } from '../../components/forms/EntityPickers';
 import { useMyQuotations, useQuotationMutations, useQuotation } from '../../hooks/useQuotations';
 
 const statusTone = { Sent: 'secondary', PartiallyResponded: 'primary', Responded: 'success', Closed: 'neutral', Cancelled: 'neutral' };
@@ -9,17 +10,18 @@ export default function Quotations() {
   const { create, decideResponse, cancel } = useQuotationMutations();
   const [expandedId, setExpandedId] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ title: '', requiredDeliveryDate: '', producerIds: '', productName: '', quantity: '' });
+  const [form, setForm] = useState({ title: '', requiredDeliveryDate: '', producerIds: [], productName: '', quantity: '' });
 
   const requests = data?.items || [];
 
   const handleCreate = (event) => {
     event.preventDefault();
+    if (form.producerIds.length === 0) return;
     create.mutate(
       {
         title: form.title,
         requiredDeliveryDate: form.requiredDeliveryDate,
-        producerIds: form.producerIds.split(',').map((s) => s.trim()).filter(Boolean),
+        producerIds: form.producerIds,
         items: [{ productName: form.productName, quantity: Number(form.quantity) }],
       },
       { onSuccess: () => setShowForm(false) },
@@ -37,13 +39,13 @@ export default function Quotations() {
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
           <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input aria-label="Required Delivery Date" required type="date" value={form.requiredDeliveryDate} onChange={(e) => setForm((p) => ({ ...p, requiredDeliveryDate: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-          <input aria-label="Producer IDs" required placeholder="Producer IDs (comma separated)" value={form.producerIds} onChange={(e) => setForm((p) => ({ ...p, producerIds: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <input aria-label="Required Delivery Date" required type="date" min={new Date().toISOString().slice(0, 10)} value={form.requiredDeliveryDate} onChange={(e) => setForm((p) => ({ ...p, requiredDeliveryDate: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <ProducerMultiSelect value={form.producerIds} onChange={(ids) => setForm((p) => ({ ...p, producerIds: ids }))} max={10} />
           <div className="grid gap-3 sm:grid-cols-2">
             <input aria-label="Product name" required placeholder="Product name" value={form.productName} onChange={(e) => setForm((p) => ({ ...p, productName: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
             <input aria-label="Quantity" required type="number" placeholder="Quantity" value={form.quantity} onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
           </div>
-          <Button type="submit" variant="primary" disabled={create.isPending}>Send RFQ</Button>
+          <Button type="submit" variant="primary" disabled={create.isPending || form.producerIds.length === 0}>Send RFQ</Button>
         </form>
       )}
 

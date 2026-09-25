@@ -4,6 +4,7 @@ import { useContract, useReceivedContracts, useContractMutations } from '../../h
 
 import MutationFeedback from '../../components/ui/MutationFeedback';
 
+import { confirmAction } from '../../lib/confirm';
 const statusTone = { PendingApproval: 'secondary', Active: 'success', Rejected: 'neutral', Terminated: 'neutral', Expired: 'neutral' };
 
 export default function Contracts() {
@@ -58,13 +59,13 @@ export default function Contracts() {
                       <Button variant="primary" onClick={() => accept.mutate(contract.id)} disabled={accept.isPending}>
                         Accept
                       </Button>
-                      <Button variant="secondary" onClick={() => reject.mutate({ id: contract.id, notes: undefined })} disabled={reject.isPending}>
+                      <Button variant="secondary" onClick={async () => { if (await confirmAction('Reject this? The other person will be told.', { confirmLabel: 'Yes, reject' })) reject.mutate({ id: contract.id, notes: undefined }); }} disabled={reject.isPending}>
                         Reject
                       </Button>
                     </div>
                   )}
                   {contract.status === 'Active' && (
-                    <Button variant="secondary" onClick={() => terminate.mutate(contract.id)} disabled={terminate.isPending}>
+                    <Button variant="secondary" onClick={async () => { if (await confirmAction('Terminate this? This ends it for both sides.', { confirmLabel: 'Yes, terminate' })) terminate.mutate(contract.id); }} disabled={terminate.isPending}>
                       Terminate
                     </Button>
                   )}

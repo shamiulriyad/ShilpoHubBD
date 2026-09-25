@@ -25,7 +25,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Achievement.Achievement", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -61,7 +60,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Achievement.UserAchievement", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AchievementId")
@@ -86,7 +84,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Achievement.XpTransaction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("Amount")
@@ -113,7 +110,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Admin.IdentityVerificationRequest", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("ApplicantNote")
@@ -186,7 +182,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Admin.Permission", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Code")
@@ -476,7 +471,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Admin.RolePermission", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("GrantedAt")
@@ -506,7 +500,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Apprenticeship.ApprenticeEnrollment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("ApplicationId")
@@ -544,7 +537,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Apprenticeship.ApprenticeMilestoneProgress", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -576,7 +568,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Apprenticeship.ApprenticeshipProgram", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int?>("Capacity")
@@ -656,7 +647,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Apprenticeship.ProgramApplication", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ApplicantUserId")
@@ -701,7 +691,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Apprenticeship.TrainingMilestone", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -733,7 +722,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ArVr.CulturalStory", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("CoverImageUrl")
@@ -777,7 +765,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ArVr.CulturalStoryChapter", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -814,7 +801,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ArVr.MuseumItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Category")
@@ -879,7 +865,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ArVr.MuseumItemMedia", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Caption")
@@ -912,7 +897,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ArVr.VillageTourStop", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -965,7 +949,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.Assignment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CourseId")
@@ -1003,7 +986,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.AssignmentSubmission", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AssignmentId")
@@ -1055,7 +1037,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.Exam", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CourseId")
@@ -1096,7 +1077,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.ExamAttempt", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("AttemptNumber")
@@ -1149,7 +1129,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.ExamAttemptAnswer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("EssayAnswerText")
@@ -1190,7 +1169,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.ExamQuestion", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -1222,7 +1200,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.ExamQuestionOption", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("DisplayOrder")
@@ -1249,7 +1226,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.Quiz", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CourseId")
@@ -1290,7 +1266,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.QuizAttempt", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("AttemptNumber")
@@ -1337,7 +1312,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.QuizAttemptAnswer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<bool?>("IsCorrect")
@@ -1370,7 +1344,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.QuizQuestion", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -1397,7 +1370,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Assessment.QuizQuestionOption", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("DisplayOrder")
@@ -1424,7 +1396,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Auction.Auction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1490,7 +1461,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Auction.AuctionBid", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
@@ -1519,7 +1489,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.BusinessPartner.BusinessDocument", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BusinessPartnerProfileId")
@@ -1563,7 +1532,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.BusinessPartner.BusinessPartnerPreferredCategory", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BusinessPartnerProfileId")
@@ -1585,7 +1553,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.BusinessPartner.BusinessPartnerProfile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AddressLine")
@@ -1726,7 +1693,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.CSRSponsorship.SponsorshipImpactRecord", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -1758,7 +1724,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.CSRSponsorship.SponsorshipMilestone", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -1797,7 +1762,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.CSRSponsorship.SponsorshipOpportunity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1837,7 +1801,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.CSRSponsorship.SponsorshipProgressUpdate", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AuthorUserId")
@@ -1866,7 +1829,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.CSRSponsorship.SponsorshipProposal", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BusinessPartnerId")
@@ -1918,7 +1880,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.CSRSponsorship.SponsorshipStatusEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1946,7 +1907,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Certificate.Certificate", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Category")
@@ -2001,10 +1961,62 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("Certificates", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Certificate.ExpertiseCertificate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("AverageRating")
+                        .HasColumnType("decimal(4,2)");
+
+                    b.Property<string>("CertificateNumber")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("Expertise")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("IssuedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<Guid>("ProducerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("RatingCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CertificateNumber")
+                        .IsUnique();
+
+                    b.HasIndex("IssuedByUserId");
+
+                    b.HasIndex("ProducerId");
+
+                    b.ToTable("ExpertiseCertificates", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Cms.Announcement", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -2047,7 +2059,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Cms.BlogPost", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AuthorUserId")
@@ -2108,7 +2119,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Cms.CmsEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -2162,7 +2172,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Cms.HomepageSection", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -2212,7 +2221,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Cms.NewsItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Content")
@@ -2268,7 +2276,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.CartItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -2303,7 +2310,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.Order", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("CancelReason")
@@ -2389,10 +2395,75 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("Orders", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.OrderComplaint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CustomerNote")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProducerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ProducerResponse")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("RespondedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProducerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("CustomerId", "ProductId");
+
+                    b.ToTable("OrderComplaints", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Carrier")
@@ -2468,7 +2539,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.OrderStatusEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -2496,7 +2566,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.Payment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
@@ -2549,7 +2618,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.WishlistItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -2574,7 +2642,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.CommunityAnswer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -2603,7 +2670,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.CommunityQuestion", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -2613,6 +2679,10 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
@@ -2632,7 +2702,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.DiscussionReply", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -2661,7 +2730,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.DiscussionThread", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -2700,7 +2768,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.ProducerFollow", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -2725,7 +2792,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.Village", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Craft")
@@ -2768,7 +2834,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Community.VillageFavorite", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -2793,7 +2858,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Contracts.Contract", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<bool>("AutoRenew")
@@ -2860,7 +2924,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Contracts.ContractDeliverySchedule", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ActualDeliveryDate")
@@ -2894,7 +2957,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Contracts.ContractDocument", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ContractId")
@@ -2928,7 +2990,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Contracts.ContractItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ContractId")
@@ -2964,7 +3025,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Contracts.ContractStatusEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ContractId")
@@ -2992,11 +3052,14 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.CustomOrders.CustomOrderRequest", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal?>("Budget")
                         .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Carrier")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -3005,6 +3068,9 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("Deadline")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeliveredAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ProducerId")
@@ -3020,8 +3086,26 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<decimal?>("QuotedPrice")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<string>("RecipientName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("RecipientPhone")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
                     b.Property<DateTime?>("RespondedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ShippedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ShippingAddressLine")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<Guid?>("ShippingDistrictId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Specifications")
                         .IsRequired()
@@ -3038,6 +3122,10 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<string>("TrackingNumber")
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -3049,13 +3137,14 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.HasIndex("ProductId");
 
+                    b.HasIndex("TrackingNumber");
+
                     b.ToTable("CustomOrderRequests", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.DesignCollaboration.CollaborationStatusEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -3083,7 +3172,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.DesignCollaboration.DesignCollaborationProject", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BusinessPartnerId")
@@ -3139,7 +3227,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.DesignCollaboration.DesignComment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AuthorUserId")
@@ -3168,7 +3255,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.DesignCollaboration.DesignFile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("FileName")
@@ -3212,7 +3298,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.DesignCollaboration.DesignRevision", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DecidedAt")
@@ -3257,7 +3342,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Employment.JobApplication", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ApplicantUserId")
@@ -3302,7 +3386,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Employment.JobListing", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BusinessPartnerProfileId")
@@ -3366,7 +3449,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Employment.JobSkillRequirement", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("HeritageSkillId")
@@ -3396,7 +3478,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.FieldResearch.DataCollectionEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ActorUserId")
@@ -3433,7 +3514,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.FieldResearch.FieldEvidence", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CapturedAt")
@@ -3519,7 +3599,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.FieldResearch.Survey", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<bool>("AllowAnonymousResponses")
@@ -3596,7 +3675,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.FieldResearch.SurveyFieldAssignment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AreaNote")
@@ -3638,7 +3716,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.FieldResearch.SurveyQuestion", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -3690,7 +3767,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.FieldResearch.SurveyResponse", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CollectedAt")
@@ -3772,7 +3848,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.FieldResearch.SurveyResponseAnswer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<double?>("Latitude")
@@ -3813,7 +3888,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.AnalyticsExport", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -3878,7 +3952,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.Complaint", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("AgainstId")
@@ -4027,7 +4100,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ComplianceRecord", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -4102,7 +4174,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ComplianceRequirement", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Code")
@@ -4150,7 +4221,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.DashboardDistrictStat", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("DistrictId")
@@ -4199,7 +4269,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.FundingApplication", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("ApplicantLabel")
@@ -4356,7 +4425,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.FundingApplicationReview", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Comments")
@@ -4395,7 +4463,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.FundingDisbursement", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
@@ -4451,7 +4518,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.FundingProgram", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("AllocatedAmount")
@@ -4544,7 +4610,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.GovForecast", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AssumptionsJson")
@@ -4592,7 +4657,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.GovForecastPoint", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("BaselineValue")
@@ -4644,7 +4708,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.GovReport", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -4712,7 +4775,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.GovReportSection", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("ContentJson")
@@ -4749,7 +4811,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.HeritageIndexComponent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("ContributionScore")
@@ -4791,7 +4852,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.HeritageIndexRecord", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("ComputedAt")
@@ -4871,7 +4931,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.MonitoringFlag", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("AssignedToUserId")
@@ -5019,7 +5078,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.NationalDashboardSnapshot", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("ActiveProducers")
@@ -5128,7 +5186,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.PolicySimulation", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AssumptionsJson")
@@ -5238,7 +5295,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.PolicySimulationProjection", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("BaselineValue")
@@ -5291,7 +5347,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.PolicySimulationRecommendation", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Detail")
@@ -5325,7 +5380,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDatabase.HeritageDataset", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AccessLevel")
@@ -5427,7 +5481,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDatabase.HeritageDatasetAccessGrant", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AccessRole")
@@ -5465,7 +5518,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDatabase.HeritageDatasetExport", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -5524,7 +5576,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDatabase.HeritageDatasetVersion", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Changelog")
@@ -5601,7 +5652,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDatabase.HeritageRiskRecord", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int?>("AffectedArtisanCount")
@@ -5689,7 +5739,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.CulturalEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Category")
@@ -5750,7 +5799,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritageFestival", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -5807,7 +5855,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritagePlace", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
@@ -5876,7 +5923,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.HeritageRoute", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -5921,7 +5967,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.LocalCuisine", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -5971,7 +6016,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.RouteStop", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<double?>("DistanceFromPreviousKm")
@@ -6014,7 +6058,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDiscovery.UnescoRecord", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -6074,7 +6117,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.FamilyHeritageMember", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("ActiveYearsRange")
@@ -6113,7 +6155,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.HeritageAward", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -6149,7 +6190,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.HeritageCertification", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("CertificateNumber")
@@ -6188,7 +6228,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.ProducerHeritageIdentity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -6269,7 +6308,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.ScoreHistoryEntry", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("ApprenticesTrainedPoints")
@@ -6318,7 +6356,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.SkillTimelineEntry", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -6348,7 +6385,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageIdentity.StoryArchiveEntry", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Content")
@@ -6378,7 +6414,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.PasswordResetToken", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -6411,7 +6446,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -6456,7 +6490,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.Role", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -6535,7 +6568,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -6611,6 +6643,83 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("UserNotifications");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.UserProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("About")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("AddressLine")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DistrictId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Expertise")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("LegalName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("NidNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("ReviewNotes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ReviewedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DistrictId");
+
+                    b.HasIndex("NidNumber")
+                        .IsUnique();
+
+                    b.HasIndex("ReviewedByUserId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserProfiles", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.UserRole", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -6635,7 +6744,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.HeritageInnovationSubmission", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -6718,7 +6826,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.InnovationExperiment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("ConfigJson")
@@ -6795,7 +6902,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.InnovationExperimentVersion", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("ArtifactUrl")
@@ -6848,7 +6954,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.InnovationPrototype", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Category")
@@ -6914,7 +7019,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.PreservationStrategy", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -6982,7 +7086,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.PrototypeIssue", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -7048,7 +7151,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.PrototypeIteration", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("ArtifactUrl")
@@ -7092,7 +7194,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.PrototypeTestCase", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -7143,7 +7244,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.PrototypeTestResult", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("ActualResult")
@@ -7182,7 +7282,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.PrototypeTestRun", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("BlockedCases")
@@ -7253,7 +7352,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.StrategyAction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("AssignedToUserId")
@@ -7313,7 +7411,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.StrategyObjective", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("AchievedAt")
@@ -7353,7 +7450,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.SubmissionEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ActorUserId")
@@ -7387,7 +7483,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.SubmissionReview", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Comments")
@@ -7424,7 +7519,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.SubmissionTeamMember", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("AddedAt")
@@ -7458,7 +7552,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Innovation.TrainingRun", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -7527,7 +7620,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Inventory.InventoryTransaction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("ChangeAmount")
@@ -7570,7 +7662,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Investment.InvestmentDocument", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("DocumentName")
@@ -7604,7 +7695,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Investment.InvestmentMilestone", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -7643,7 +7733,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Investment.InvestmentOpportunity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -7683,7 +7772,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Investment.InvestmentProposal", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BusinessPartnerId")
@@ -7735,7 +7823,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Investment.InvestmentStatusEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -7763,7 +7850,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.KnowledgeGraph.KnowledgeNode", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -7823,7 +7909,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.KnowledgeGraph.KnowledgeRelationship", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -7883,7 +7968,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.AcademyMemberProfile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Bio")
@@ -7921,7 +8005,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.AcademyMemberSkill", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AcademyMemberProfileId")
@@ -7951,7 +8034,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.Course", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Category")
@@ -8011,7 +8093,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseCategory", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -8041,7 +8122,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseEnrollment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ApprenticeId")
@@ -8074,7 +8154,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseLesson", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Content")
@@ -8118,7 +8197,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseMaterial", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CourseId")
@@ -8155,7 +8233,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.CourseModule", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CourseId")
@@ -8184,7 +8261,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.HeritageSkill", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -8214,7 +8290,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.LessonProgress", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -8242,7 +8317,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.MentorProfile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AvailabilityNote")
@@ -8293,7 +8367,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.MentorSkill", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("AddedAt")
@@ -8323,7 +8396,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Learning.TrainingCertificate", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("ApprenticeEnrollmentId")
@@ -8402,7 +8474,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveClass.LiveClass", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("CourseId")
@@ -8464,7 +8535,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveClass.LiveClassAttendance", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("JoinedAt")
@@ -8491,7 +8561,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveClass.LiveClassParticipant", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("LiveClassId")
@@ -8516,7 +8585,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveClass.LiveClassQuestion", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AnswerBody")
@@ -8555,7 +8623,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveShopping.LiveEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("AuctionId")
@@ -8613,7 +8680,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveShopping.LiveEventComment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -8642,7 +8708,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveShopping.LiveEventPurchase", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -8677,7 +8742,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.LiveShopping.LiveEventReaction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -8706,7 +8770,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DeliveryAttempt", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("AttemptNumber")
@@ -8748,7 +8811,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DeliveryPrediction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Confidence")
@@ -8812,7 +8874,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DeliveryRoute", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ActualEndAt")
@@ -8988,7 +9049,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DeliveryRouteStop", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ActualArrivalAt")
@@ -9104,7 +9164,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DemandForecast", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AssumptionsJson")
@@ -9186,7 +9245,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.DemandForecastPoint", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("DemandForecastId")
@@ -9214,7 +9272,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerProfile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("BaseAddressLine")
@@ -9339,7 +9396,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.LogisticsServiceArea", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("DistrictId")
@@ -9423,7 +9479,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.PickupItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -9466,7 +9521,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.PickupRequest", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ActualPickupAt")
@@ -9670,7 +9724,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.ReturnInspection", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -9715,7 +9768,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.ReturnItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Condition")
@@ -9771,7 +9823,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.ReturnRequest", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ActualPickupAt")
@@ -9925,7 +9976,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.RouteOptimizationRun", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("AppliedAt")
@@ -9999,7 +10049,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.RouteOptimizationRunStop", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal?>("DistanceFromPreviousKm")
@@ -10032,7 +10081,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.Shipment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("CancellationReason")
@@ -10283,7 +10331,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.Warehouse", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AddressLine")
@@ -10385,7 +10432,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseAllocationOption", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<double>("ProjectedUtilizationPercent")
@@ -10431,7 +10477,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseAllocationRecommendation", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Confidence")
@@ -10504,7 +10549,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseBin", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("CapacityUnits")
@@ -10558,7 +10602,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseStockItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("BatchNumber")
@@ -10642,7 +10685,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseStockMovement", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -10713,7 +10755,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Logistics.WarehouseZone", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("CapacityUnits")
@@ -10764,7 +10805,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ManufacturingPartnership.ManufacturingMilestone", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -10803,7 +10843,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ManufacturingPartnership.ManufacturingPartnership", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BusinessPartnerId")
@@ -10880,7 +10919,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ManufacturingPartnership.PartnershipStatusEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -10908,7 +10946,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.Category", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -10952,7 +10989,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.CraftStory", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CategoryId")
@@ -10988,7 +11024,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.CraftStoryChapter", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -11017,7 +11052,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.District", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("DisplayOrder")
@@ -11561,7 +11595,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.ProducerStory", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -11603,7 +11636,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.ProducerStoryChapter", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -11632,7 +11664,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.Product", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("ApprovalStatus")
@@ -11793,7 +11824,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.ProductVariant", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("DisplayOrder")
@@ -11830,7 +11860,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.ProductVideo", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -11861,7 +11890,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Marketplace.WorkshopGalleryItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Caption")
@@ -11897,7 +11925,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Mentorship.MentorshipRequest", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -11946,7 +11973,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Messaging.Conversation", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -11963,7 +11989,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Messaging.ConversationParticipant", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ConversationId")
@@ -11988,7 +12013,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Messaging.Message", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Body")
@@ -12001,6 +12025,10 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uuid");
@@ -12017,7 +12045,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.Badge", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -12069,7 +12096,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.HeritageCheckIn", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateOnly>("CheckInDate")
@@ -12103,7 +12129,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.TravelJournalEntry", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("CheckInId")
@@ -12149,7 +12174,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Passport.UserBadge", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BadgeId")
@@ -12174,7 +12198,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Portfolio.MentorFeedback", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -12211,7 +12234,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Portfolio.Portfolio", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AcademyMemberProfileId")
@@ -12249,7 +12271,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Portfolio.PortfolioProject", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -12297,7 +12318,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Procurement.ProcurementItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ProcurementRequestId")
@@ -12333,8 +12353,24 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Procurement.ProcurementRequest", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<decimal?>("AdvanceAmount")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<string>("AdvanceMethod")
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<DateTime?>("AdvancePaidAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("AdvanceReference")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<DateTime?>("AdvanceRefundedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ApprovalNotes")
                         .HasMaxLength(1000)
@@ -12357,6 +12393,23 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.Property<DateTime>("DeliveryDeadline")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("InspectedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("InspectedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("InspectionNotes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("InspectionStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasDefaultValue("NotRequired");
 
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uuid");
@@ -12394,6 +12447,8 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.HasIndex("BusinessPartnerId");
 
+                    b.HasIndex("InspectedByUserId");
+
                     b.HasIndex("OrderId")
                         .IsUnique();
 
@@ -12412,7 +12467,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Procurement.ProcurementStatusEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -12440,7 +12494,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProductDevelopment.ProductDevelopmentComment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AuthorUserId")
@@ -12469,7 +12522,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProductDevelopment.ProductDevelopmentMilestone", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -12508,7 +12560,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProductDevelopment.ProductDevelopmentProject", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ApprovedAt")
@@ -12575,7 +12626,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProductDevelopment.ProductDevelopmentStatusEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -12603,7 +12653,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProductDevelopment.PrototypeFile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("FileName")
@@ -12637,7 +12686,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProductDevelopment.PrototypeVersion", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DecidedAt")
@@ -12682,7 +12730,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.QRVerification.QRCode", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Code")
@@ -12712,7 +12759,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.QRVerification.QRVerificationRecord", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsValid")
@@ -12744,7 +12790,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Quotations.QuotationRequest", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BusinessPartnerId")
@@ -12791,7 +12836,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Quotations.QuotationRequestItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("CategoryId")
@@ -12832,7 +12876,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Quotations.QuotationRequestProducer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("InvitedAt")
@@ -12868,7 +12911,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Quotations.QuotationResponse", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -12913,7 +12955,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Quotations.QuotationResponseItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Notes")
@@ -12944,7 +12985,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Quotations.QuotationStatusEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -12972,7 +13012,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchAIAnalysis", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AnalysisType")
@@ -13061,7 +13100,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchAICitation", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Authors")
@@ -13119,7 +13157,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchAIFinding", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Category")
@@ -13160,7 +13197,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchActivity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ActorUserId")
@@ -13194,7 +13230,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchMilestone", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("AchievedAt")
@@ -13241,7 +13276,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchNote", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AuthorUserId")
@@ -13283,7 +13317,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchPaper", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Abstract")
@@ -13342,7 +13375,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchProject", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -13414,7 +13446,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchProjectMember", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("InvitedByUserId")
@@ -13449,7 +13480,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchPublication", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Abstract")
@@ -13528,7 +13558,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Research.ResearchTask", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("AssignedToUserId")
@@ -13592,7 +13621,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.Review", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("BookingId")
@@ -13608,6 +13636,9 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.Property<Guid?>("HeritagePlaceId")
                         .HasColumnType("uuid");
+
+                    b.Property<int?>("ProducerRating")
+                        .HasColumnType("integer");
 
                     b.Property<Guid?>("ProductId")
                         .HasColumnType("uuid");
@@ -13643,7 +13674,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ReviewImage", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("DisplayOrder")
@@ -13667,7 +13697,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Roadmap.LearningRoadmap", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AcademyMemberProfileId")
@@ -13707,7 +13736,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Roadmap.RoadmapMilestone", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -13742,7 +13770,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Roadmap.RoadmapRecommendedCourse", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CourseId")
@@ -13771,7 +13798,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Roadmap.RoadmapRecommendedLesson", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CourseLessonId")
@@ -13800,7 +13826,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Security.ApiKey", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -13851,7 +13876,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Security.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Action")
@@ -13903,7 +13927,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Security.BackupRecord", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -13945,7 +13968,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Security.BlockedIpAddress", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BlockedByUserId")
@@ -13980,7 +14002,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Security.LoginAttempt", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -14013,7 +14034,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.SkillAssessment.SkillAssessment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AcademyMemberProfileId")
@@ -14050,7 +14070,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.SkillAssessment.SkillAssessmentInsight", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("DisplayOrder")
@@ -14079,7 +14098,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.SkillAssessment.SkillAssessmentRecommendedSkill", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("DisplayOrder")
@@ -14108,7 +14126,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainabilityProfile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("BadgeLevel")
@@ -14145,7 +14162,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainableMaterialCertification", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("CertificateReference")
@@ -14188,7 +14204,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Sustainability.SustainableMaterialRecord", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("CarbonSavingsPerUnitKg")
@@ -14240,7 +14255,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Tourism.SavedTourPlan", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -14304,7 +14318,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Tourism.TourismLocation", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
@@ -14423,7 +14436,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Tourism.TransportOption", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("BookingUrl")
@@ -14511,7 +14523,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.TouristBooking.Booking", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AvailabilitySlotId")
@@ -14578,7 +14589,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.TouristBooking.ServiceAvailabilitySlot", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("Capacity")
@@ -14616,7 +14626,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.TouristBooking.TouristService", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("AverageRating")
@@ -14698,7 +14707,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Traceability.MaterialSource", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -14732,7 +14740,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Traceability.ProductTraceability", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -14760,7 +14767,6 @@ namespace ShilpoHubBD.Data.Migrations
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Traceability.TimelineEvent", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -15414,6 +15420,25 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Certificate.ExpertiseCertificate", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "IssuedBy")
+                        .WithMany()
+                        .HasForeignKey("IssuedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
+                        .WithMany()
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("IssuedBy");
+
+                    b.Navigation("Producer");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Cms.BlogPost", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Author")
@@ -15464,6 +15489,41 @@ namespace ShilpoHubBD.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ShippingDistrict");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.OrderComplaint", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Commerce.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
+                        .WithMany()
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Producer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.OrderItem", b =>
@@ -16745,6 +16805,31 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Identity.UserProfile", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "ReviewedBy")
+                        .WithMany()
+                        .HasForeignKey("ReviewedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("District");
+
+                    b.Navigation("ReviewedBy");
 
                     b.Navigation("User");
                 });
@@ -18720,6 +18805,11 @@ namespace ShilpoHubBD.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "InspectedBy")
+                        .WithMany()
+                        .HasForeignKey("InspectedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("ShilpoHubBD.Domain.Entities.Commerce.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
@@ -18744,6 +18834,8 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("ApprovedBy");
 
                     b.Navigation("BusinessPartner");
+
+                    b.Navigation("InspectedBy");
 
                     b.Navigation("Order");
 

@@ -9,6 +9,7 @@ public class SupplierSearchParameters
     public Guid? DistrictId { get; set; }
     public string? ProductName { get; set; }
     public string? Material { get; set; }
+    public string? Expertise { get; set; }
     public decimal? MinRating { get; set; }
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }

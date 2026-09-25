@@ -39,16 +39,22 @@ export function useAuth() {
     },
     logout: async () => {
       const tokenToRevoke = refreshToken;
+
+      // /auth/logout is [Authorize]: it must go out while the access token is still in the store,
+      // otherwise it 401s and the refresh token is never revoked. Bounded so a slow API cannot trap the user.
+      if (tokenToRevoke) {
+        try {
+          await Promise.race([
+            authService.logout(tokenToRevoke),
+            new Promise((resolve) => setTimeout(resolve, 4000)),
+          ]);
+        } catch {
+          // Local logout is authoritative for the client; server-side revocation is best effort.
+        }
+      }
+
       clearSession();
       queryClient.clear();
-
-      if (!tokenToRevoke) return;
-
-      try {
-        await authService.logout(tokenToRevoke);
-      } catch {
-        // Local logout is authoritative for the client; server-side revocation is best effort.
-      }
     },
   };
 }

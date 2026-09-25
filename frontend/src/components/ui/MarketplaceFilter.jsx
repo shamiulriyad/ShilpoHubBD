@@ -1,6 +1,7 @@
 import FilterPanel from './FilterPanel';
 import { useCategories } from '../../hooks/useCategories';
 import { useDistricts } from '../../hooks/useDistricts';
+import { useExpertiseOptions } from '../../hooks/useProfile';
 
 const priceRanges = [
   { label: 'Under ৳1,000', value: 'under-1000' },
@@ -27,6 +28,7 @@ export function priceRangeToQuery(value) {
 export default function MarketplaceFilter({ values = {}, onChange, onClear, className = '' }) {
   const { data: categories } = useCategories();
   const { data: districts } = useDistricts();
+  const { data: expertise } = useExpertiseOptions();
 
   const groups = [
     {
@@ -35,6 +37,7 @@ export default function MarketplaceFilter({ values = {}, onChange, onClear, clas
       options: (categories || []).map((category) => ({ label: category.name, value: category.id })),
     },
     { key: 'priceRange', label: 'Price Range', options: priceRanges },
+    ...((expertise || []).length ? [{ key: 'expertise', label: 'Producer expertise', options: expertise.map((e) => ({ label: e, value: e })) }] : []),
     {
       key: 'districtId',
       label: 'District',

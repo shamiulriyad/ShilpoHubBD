@@ -12,7 +12,7 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
   const [more, setMore] = useState(Boolean(activeGroup));
   const [groupOpen, setGroupOpen] = useState(activeGroup || null);
   useEffect(() => { if (activeGroup) { setMore(true); setGroupOpen(activeGroup); } }, [activeGroup, pathname]);
-  const itemLink = item => <NavLink key={item.path + item.label} to={item.path} end onClick={onNavigate} title={compact ? item.label : undefined} aria-label={compact ? item.label : undefined} className={({isActive})=>`workspace-link ${isActive ? 'is-active' : ''}`}>
+  const itemLink = item => <NavLink key={item.path + item.label} to={item.path} end onClick={onNavigate} title={item.label} aria-label={compact ? item.label : undefined} className={({isActive})=>`workspace-link ${isActive ? 'is-active' : ''}`}>
     <NavigationIcon label={item.label}/><span className={compact ? 'sr-only' : 'workspace-link-label'}>{item.label}</span>
   </NavLink>;
   return <aside className={`workspace-navigation ${compact ? 'is-compact' : ''} ${className}`}>

@@ -30,7 +30,6 @@ import ProducerInventory from '../pages/Producer/Inventory';
 import ProducerOrders from '../pages/Producer/Orders';
 import ProducerProducts from '../pages/Producer/Products';
 import ProducerSustainability from '../pages/Producer/Sustainability';
-import ProducerAiBusinessAssistant from '../pages/Producer/AiBusinessAssistant';
 import ProducerLiveShoppingManager from '../pages/Producer/LiveShoppingManager';
 
 import BusinessPartnerDashboard from '../pages/BusinessPartner/BusinessPartnerDashboard';
@@ -115,6 +114,15 @@ import PreservationStrategies from '../pages/Research/PreservationStrategies';
 import InnovationExperiments from '../pages/Research/InnovationExperiments';
 import HeritageInnovationSubmissions from '../pages/Research/HeritageInnovationSubmissions';
 import InnovationPrototypes from '../pages/Research/InnovationPrototypes';
+import ProducerQuestions from '../pages/Producer/Questions';
+import ProducerReturns from '../pages/Producer/Returns';
+import ProducerProcurements from '../pages/Producer/Procurements';
+import ProducerComplaints from '../pages/Producer/Complaints';
+import ProducerExpertise from '../pages/Producer/Expertise';
+import CustomerComplaints from '../pages/Customer/Complaints';
+import ProcurementInspections from '../pages/Admin/ProcurementInspections';
+import ProfileApprovals from '../pages/Admin/ProfileApprovals';
+import AdminExpertiseCertificates from '../pages/Admin/ExpertiseCertificates';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -408,6 +416,9 @@ const router = createBrowserRouter([
               { path: routePaths.adminUsers, element: <AdminWorkspace section="users" /> },
               { path: routePaths.adminHeritage, element: <AdminWorkspace section="heritage" /> },
               { path: routePaths.adminMarketplace, element: <AdminWorkspace section="marketplace" /> },
+              { path: routePaths.adminProcurementInspections, element: <ProcurementInspections /> },
+              { path: routePaths.adminProfileApprovals, element: <ProfileApprovals /> },
+              { path: routePaths.adminExpertiseCertificates, element: <AdminExpertiseCertificates /> },
               { path: "/admin/:section/:view", element: <AdminWorkspace /> },
               { path: "/admin/:section", element: <AdminWorkspace /> },
             ],
@@ -438,6 +449,7 @@ const router = createBrowserRouter([
           { path: routePaths.customerCommunity, element: <CommunityFeed /> },
           { path: routePaths.customerForum, element: <DiscussionForum /> },
           { path: routePaths.customerQA, element: <QuestionsAnswers /> },
+          { path: routePaths.customerComplaints, element: <CustomerComplaints /> },
           { path: routePaths.customerMessages, element: <CustomerMessages /> },
           { path: routePaths.customerFollowing, element: <FollowingProducers /> },
           { path: routePaths.customerFavoriteVillages, element: <FavoriteVillages /> },
@@ -477,9 +489,13 @@ const router = createBrowserRouter([
           { path: routePaths.producerProducts, element: <ProducerProducts /> },
           { path: routePaths.producerOrders, element: <ProducerOrders /> },
           { path: routePaths.producerCustomOrders, element: <ProducerCustomOrders /> },
+          { path: routePaths.producerQuestions, element: <ProducerQuestions /> },
+          { path: routePaths.producerReturns, element: <ProducerReturns /> },
+          { path: routePaths.producerProcurements, element: <ProducerProcurements /> },
+          { path: routePaths.producerComplaints, element: <ProducerComplaints /> },
+          { path: routePaths.producerExpertise, element: <ProducerExpertise /> },
           { path: routePaths.producerAuctions, element: <ProducerAuctions /> },
           { path: routePaths.producerSustainability, element: <ProducerSustainability /> },
-          { path: routePaths.producerAiAssistant, element: <ProducerAiBusinessAssistant /> },
           { path: routePaths.producerLiveShopping, element: <ProducerLiveShoppingManager /> },
         ],
       },

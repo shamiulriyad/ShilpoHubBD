@@ -7,7 +7,6 @@ export const producerOrdersService = {
   reject: (orderItemId, reason) => apiClient.post(`/producer/orders/${orderItemId}/reject`, { reason }).then((res) => res.data),
   startProcessing: (orderItemId) => apiClient.post(`/producer/orders/${orderItemId}/processing`).then((res) => res.data),
   ship: (orderItemId, payload) => apiClient.post(`/producer/orders/${orderItemId}/ship`, payload).then((res) => res.data),
-  deliver: (orderItemId) => apiClient.post(`/producer/orders/${orderItemId}/deliver`).then((res) => res.data),
   customers: () => apiClient.get('/producer/orders/customers').then((res) => res.data),
   revenue: (params) => apiClient.get('/producer/orders/analytics/revenue', { params }).then((res) => res.data),
   sales: (params) => apiClient.get('/producer/orders/analytics/sales', { params }).then((res) => res.data),

@@ -18,6 +18,11 @@ public interface IDeliveryTrackingRepository
     Task<(List<Shipment> Items, int TotalCount)> GetPagedAsync(
         Guid? profileId, ShipmentQueryParameters query, CancellationToken cancellationToken);
 
+    // A producer's hand-over also shows up in the partner's Pickup Requests.
+    Task AddPickupRequestAsync(PickupRequest pickup, CancellationToken cancellationToken);
+    Task<bool> PickupReferenceExistsAsync(string referenceCode, CancellationToken cancellationToken);
+    Task<ProducerPickupContact?> GetProducerPickupContactAsync(Guid producerUserId, CancellationToken cancellationToken);
+
     Task<bool> OrderExistsAsync(Guid orderId, CancellationToken cancellationToken);
 
     Task<bool> DistrictExistsAsync(Guid districtId, CancellationToken cancellationToken);
@@ -29,3 +34,5 @@ public interface IDeliveryTrackingRepository
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }
+
+public record ProducerPickupContact(string Phone, string AddressLine, string City, Guid? DistrictId);

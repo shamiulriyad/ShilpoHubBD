@@ -8,6 +8,9 @@ public class ProductQueryParameters
     public Guid? CategoryId { get; set; }
     public Guid? DistrictId { get; set; }
     public Guid? ProducerId { get; set; }
+
+    /// <summary>Only products from producers whose approved profile lists this expertise.</summary>
+    public string? Expertise { get; set; }
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }
     public ProductSortOption SortBy { get; set; } = ProductSortOption.Newest;

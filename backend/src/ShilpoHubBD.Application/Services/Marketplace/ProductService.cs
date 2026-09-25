@@ -18,6 +18,8 @@ public class ProductService : IProductService
     private readonly IUserRepository _userRepository;
     private readonly IAuditLogService _auditLogService;
 
+    private readonly IUserProfileRepository _userProfileRepository;
+
     public ProductService(
         IProductRepository productRepository,
         ICategoryRepository categoryRepository,
@@ -25,8 +27,10 @@ public class ProductService : IProductService
         ICraftStoryRepository craftStoryRepository,
         IProducerStoryRepository producerStoryRepository,
         IUserRepository userRepository,
-        IAuditLogService auditLogService)
+        IAuditLogService auditLogService,
+        IUserProfileRepository userProfileRepository)
     {
+        _userProfileRepository = userProfileRepository;
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
         _districtRepository = districtRepository;
@@ -98,6 +102,14 @@ public class ProductService : IProductService
     public async Task<ProductDto> CreateAsync(Guid producerId, CreateProductRequest request, CancellationToken cancellationToken)
     {
         await EnsureCategoryAndDistrictExistAsync(request.CategoryId, request.DistrictId, cancellationToken);
+
+        // Producers must complete their profile (with NID) and have an admin approve it before selling.
+        var seller = await _userRepository.GetByIdWithRolesAsync(producerId, cancellationToken);
+        var isAdmin = seller?.UserRoles.Any(ur => ur.Role.Name == ShilpoHubBD.Domain.Constants.RoleNames.SuperAdmin) == true;
+        if (!isAdmin && !await _userProfileRepository.IsApprovedAsync(producerId, cancellationToken))
+        {
+            throw new ConflictException("Complete your profile (name, expertise, location, phone and NID) and wait for admin approval before adding products.");
+        }
 
         var slug = await GenerateUniqueSlugAsync(request.Name, cancellationToken);
         var now = DateTime.UtcNow;

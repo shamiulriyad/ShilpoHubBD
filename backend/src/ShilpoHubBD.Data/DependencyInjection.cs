@@ -140,6 +140,9 @@ public static class DependencyInjection
 		services.AddScoped<IGovAnalyticsRepository, GovAnalyticsRepository>();
 
 		services.AddScoped<ILogisticsPartnerRepository, LogisticsPartnerRepository>();
+		services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+		services.AddScoped<IOrderComplaintRepository, OrderComplaintRepository>();
+		services.AddScoped<IExpertiseCertificateRepository, ExpertiseCertificateRepository>();
 		services.AddScoped<IPickupRequestRepository, PickupRequestRepository>();
 		services.AddScoped<IRouteOptimizationRepository, RouteOptimizationRepository>();
 		services.AddScoped<IDeliveryTrackingRepository, DeliveryTrackingRepository>();
