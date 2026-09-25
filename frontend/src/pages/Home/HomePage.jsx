@@ -17,7 +17,7 @@ import { toProductCardItem } from '../../utils/productAdapters';
 const list = data => Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
 const photos = { loom: '/images/loom-photo.jpg', river: '/images/bangladesh-river.jpg', pottery: '/images/pottery-photo.jpg', ceramics: '/images/hero-ceramics.jpg' };
 const shell = 'mx-auto max-w-7xl px-5 lg:px-8';
-const cta = 'inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark';
+const cta = 'inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark';
 const workspaces = [
   ['P', 'Producer', 'Turn your craft into income. List products, run your shop and tell your story to buyers everywhere.', 'register', 'Become a producer'],
   ['B', 'Business Partner', 'Source authentic materials in bulk, place long-term contracts and collaborate directly with artisan communities.', 'register', 'Explore business tools'],
@@ -55,15 +55,15 @@ export default function HomePage() {
   const district = districts.find(item => item.id === districtId);
   const productsQuery = list(featuredQuery.data).length ? featuredQuery : catalogQuery;
   const products = list(productsQuery.data).slice(0, 4);
-  return <div className="overflow-hidden">
-    <section className="border-b border-border bg-background">
-      <div className={`${shell} grid items-center gap-10 py-12 lg:grid-cols-2 lg:gap-16 lg:py-20`}>
-        <div><p className="text-xs font-bold uppercase tracking-[.24em] text-primary">Craft · Culture · Community</p><h1 className="mt-6 text-5xl leading-[1.08] tracking-[-.04em] sm:text-6xl lg:text-7xl" style={{fontFamily:'Georgia, serif'}}>Made by hand.<br/><span className="text-primary">Carried by stories.</span></h1><p className="mt-6 max-w-lg text-base leading-8 text-muted">Discover the craft, places and people of Bangladesh. Find something meaningful, learn a timeless skill, and become part of a living tradition.</p>
+  return <div className="landing-page overflow-hidden">
+    <section className="landing-hero border-b border-border bg-background">
+      <div className={`${shell} grid items-center gap-10 py-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14 lg:py-16`}>
+        <div><p className="text-xs font-bold uppercase tracking-[.24em] text-primary">Craft · Culture · Community</p><h1 className="mt-6 text-5xl leading-[1.08] tracking-[-.035em] sm:text-6xl lg:text-[4.25rem]" style={{fontFamily:'Georgia, serif'}}>Made by hand.<br/><span className="text-primary">Carried by stories.</span></h1><p className="mt-6 max-w-lg text-base leading-8 text-muted">Discover the craft, places and people of Bangladesh. Find something meaningful, learn a timeless skill, and become part of a living tradition.</p>
           <div className="mt-8"><SearchBar placeholder="Find a craft, a product, a story…" value={search} onChange={event=>setSearch(event.target.value)} onSubmit={value=>navigate(`${routes.marketplaceProducts}${value?.trim() ? `?search=${encodeURIComponent(value.trim())}` : ''}`)} /></div>
           <div className="mt-6 flex flex-wrap items-center gap-5"><Link className={cta} to={routes.marketplaceProducts}>Shop the collection ↗</Link><Link className="text-sm font-semibold text-heading" to={routes.explore}>Explore Bangladesh →</Link></div>
           <p className="mt-8 border-t border-border pt-5 text-xs leading-6 text-muted">Thoughtfully made. Deeply rooted. Ready to be discovered.</p>
         </div>
-        <figure className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
+        <figure className="landing-hero-image overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
           <div className="aspect-[4/3] overflow-hidden"><Photo src="/images/hero-weaver.png" alt="A woman weaving blue and white fabric on a traditional wooden loom in a sunlit workshop" className="object-center" eager /></div>
           <figcaption className="px-6 py-5 sm:px-8 sm:py-6">
             <p className="text-[10px] font-bold uppercase tracking-[.2em] text-primary">Woven with love. Carried through generations.</p>
