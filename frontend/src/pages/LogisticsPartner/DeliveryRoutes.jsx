@@ -3,6 +3,7 @@ import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useDistricts } from '../../hooks/useDistricts';
 import { useDeliveryRoutes, useDeliveryRoute, useDeliveryRouteMutations } from '../../hooks/useDeliveryRoutes';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const stopTypes = ['Pickup', 'Delivery', 'Transfer', 'Waypoint'];
 
@@ -65,7 +66,7 @@ function RouteDetail({ id }) {
           {route.status === 'InProgress' && (
             <Button size="sm" variant="primary" disabled={complete.isPending} onClick={() => complete.mutate(id)}>Complete Route</Button>
           )}
-          <button type="button" onClick={() => cancel.mutate({ id, payload: { reason: 'Cancelled by logistics partner' } })} className="text-xs text-danger hover:underline">
+          <button type="button" onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancel.mutate({ id, payload: { reason: 'Cancelled by logistics partner' } }); }} className="text-xs text-danger hover:underline">
             Cancel Route
           </button>
         </div>
@@ -89,7 +90,7 @@ function RouteDetail({ id }) {
                   <button type="button" onClick={() => failStop.mutate({ id, stopId: stop.id, payload: { failureReason: 'Recipient unavailable' } })} className="text-danger hover:underline">Fail</button>
                 )}
                 {!isFinal && route.status !== 'InProgress' && (
-                  <button type="button" onClick={() => removeStop.mutate({ id, stopId: stop.id })} className="text-danger hover:underline">Remove</button>
+                  <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeStop.mutate({ id, stopId: stop.id }); }} className="text-danger hover:underline">Remove</button>
                 )}
               </div>
             </div>
@@ -119,15 +120,24 @@ export default function DeliveryRoutes() {
   const { create } = useDeliveryRouteMutations();
   const [showForm, setShowForm] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
-  const [form, setForm] = useState({ name: '', scheduledDate: '', originDistrictId: '' });
+  const [form, setForm] = useState({ name: '', scheduledDate: '', originDistrictId: '', startLocationLabel: '', endLocationLabel: '', notes: '', vehicleCapacityKg: '' });
 
   const routes = data?.items || [];
 
   const handleCreate = (event) => {
     event.preventDefault();
     create.mutate(
-      { ...form, scheduledDate: form.scheduledDate || null, originDistrictId: form.originDistrictId || null, stops: [] },
-      { onSuccess: () => { setShowForm(false); setForm({ name: '', scheduledDate: '', originDistrictId: '' }); } },
+      {
+        name: form.name.trim(),
+        scheduledDate: form.scheduledDate || null,
+        originDistrictId: form.originDistrictId || null,
+        startLocationLabel: form.startLocationLabel.trim() || null,
+        endLocationLabel: form.endLocationLabel.trim() || null,
+        notes: form.notes.trim() || null,
+        vehicleCapacityKg: form.vehicleCapacityKg ? Number(form.vehicleCapacityKg) : null,
+        stops: [],
+      },
+      { onSuccess: () => { setShowForm(false); setForm({ name: '', scheduledDate: '', originDistrictId: '', startLocationLabel: '', endLocationLabel: '', notes: '', vehicleCapacityKg: '' }); } },
     );
   };
 
@@ -147,6 +157,11 @@ export default function DeliveryRoutes() {
             <option value="">Origin district</option>
             {(districtsQuery.data || []).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
+          <input aria-label="From" required placeholder="From (start point, e.g. Dhaka - Tejgaon)" value={form.startLocationLabel} onChange={(e) => setForm((p) => ({ ...p, startLocationLabel: e.target.value }))} className={inputClass} />
+          <input aria-label="To" required placeholder="To (end point, e.g. Chattogram - Agrabad)" value={form.endLocationLabel} onChange={(e) => setForm((p) => ({ ...p, endLocationLabel: e.target.value }))} className={inputClass} />
+          <input aria-label="Roads and districts on the way" placeholder="Roads / districts on the way (e.g. Dhaka-Chattogram highway via Comilla)" value={form.notes} onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))} className={`${inputClass} sm:col-span-2`} />
+          <input aria-label="Vehicle capacity (kg)" type="number" min="0" step="any" placeholder="Vehicle capacity (kg)" value={form.vehicleCapacityKg} onChange={(e) => setForm((p) => ({ ...p, vehicleCapacityKg: e.target.value }))} className={inputClass} />
+          <p className="self-center text-xs text-body/60">Producers see this route (from, to, roads, date) and pick the one they need when handing over a parcel.</p>
           <Button type="submit" variant="primary" className="sm:col-span-2" disabled={create.isPending}>
             {create.isPending ? 'Creating…' : 'Create Route'}
           </Button>
@@ -161,7 +176,7 @@ export default function DeliveryRoutes() {
                 <div>
                   <p className="text-sm font-semibold text-heading">{r.name} <span className="font-normal text-body/50">({r.routeCode})</span></p>
                   <p className="text-xs text-body/60">
-                    {r.completedStops}/{r.totalStops} stops
+                    {[r.startLocationLabel, r.endLocationLabel].filter(Boolean).join(' → ') || 'No start/end set'}{r.originDistrictName ? ` · ${r.originDistrictName}` : ''} · {r.completedStops}/{r.totalStops} stops
                     {r.assignedDriverName && ` · ${r.assignedDriverName}`}
                     {r.scheduledDate && ` · ${new Date(r.scheduledDate).toLocaleDateString()}`}
                   </p>
