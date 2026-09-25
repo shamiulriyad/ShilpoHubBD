@@ -5,6 +5,7 @@ import { useHeritageSkills } from '../../hooks/useHeritageSkills';
 import { useMyMentorshipRequestsAsLearner, useMyMentorshipRequestsAsMentor, useMentorshipRequestMutations } from '../../hooks/useMentorshipRequests';
 import { useSubmitMentorFeedback } from '../../hooks/useMentorFeedback';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const statusTone = { Pending: 'secondary', Accepted: 'primary', Rejected: 'neutral', Completed: 'success' };
 
@@ -99,7 +100,7 @@ export default function MentorshipRequests() {
                   {tab === 'mentor' && r.status === 'Pending' && (
                     <>
                       <Button size="sm" variant="primary" disabled={accept.isPending} onClick={() => accept.mutate({ id: r.id, payload: {} })}>Accept</Button>
-                      <Button size="sm" variant="secondary" disabled={reject.isPending} onClick={() => reject.mutate({ id: r.id, payload: {} })}>Reject</Button>
+                      <Button size="sm" variant="secondary" disabled={reject.isPending} onClick={async () => { if (await confirmAction('Reject this? The other person will be told.', { confirmLabel: 'Yes, reject' })) reject.mutate({ id: r.id, payload: {} }); }}>Reject</Button>
                     </>
                   )}
                   {r.status === 'Accepted' && (
