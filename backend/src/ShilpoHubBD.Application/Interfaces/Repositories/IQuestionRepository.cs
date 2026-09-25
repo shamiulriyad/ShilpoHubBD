@@ -5,6 +5,7 @@ namespace ShilpoHubBD.Application.Interfaces.Repositories;
 public interface IQuestionRepository
 {
     Task<(List<CommunityQuestion> Items, int TotalCount)> GetPagedByProductAsync(Guid productId, int page, int pageSize, CancellationToken cancellationToken);
+    Task<(List<CommunityQuestion> Items, int TotalCount)> GetPagedByProducerAsync(Guid producerId, bool unansweredOnly, int page, int pageSize, CancellationToken cancellationToken);
     Task<CommunityQuestion?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task AddAsync(CommunityQuestion question, CancellationToken cancellationToken);
     Task AddAnswerAsync(CommunityAnswer answer, CancellationToken cancellationToken);
