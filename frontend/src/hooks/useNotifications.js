@@ -12,5 +12,5 @@ export function useNotificationActions() {
   return useMutation({ mutationFn: action => action.all
     ? apiClient.post('/notifications/read-all', { through: action.through })
     : apiClient.patch(`/notifications/${action.id}/read`, { isRead: action.isRead }),
-    onSuccess: () => client.invalidateQueries({ queryKey: ['notifications'] }) });
+    onSuccess: () => client.invalidateQueries({ queryKey: ['notifications'] }), meta: { silent: true } });
 }
