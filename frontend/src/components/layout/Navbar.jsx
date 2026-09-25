@@ -1,156 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { mainNav, megaMenus } from '../../data/navigation';
 import { routePaths } from '../../routes/routePaths';
 import { useAuth } from '../../hooks/useAuth';
-import Button from '../ui/Button';
-import MegaMenu from './MegaMenu';
 import ProfileDropdown from './ProfileDropdown';
 import NotificationBell from '../notifications/NotificationBell';
 import BrandLogo from '../brand/BrandLogo';
+import GlobalSearch from './GlobalSearch';
+import LanguageMenu from './LanguageMenu';
+import NavigationIcon from './NavigationIcon';
 
 export default function Navbar() {
-  const [activeMenu, setActiveMenu] = useState(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const closeTimer = useRef(null);
-  const { isAuthenticated, homePath } = useAuth();
-
-  const cancelClose = () => { if (closeTimer.current) window.clearTimeout(closeTimer.current); };
-  const scheduleClose = () => { cancelClose(); closeTimer.current = window.setTimeout(() => setActiveMenu(null), 180); };
-  useEffect(() => () => cancelClose(), []);
-
-  return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-surface/90 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 lg:px-8">
-        <Link to={routePaths.home} className="flex shrink-0 items-center gap-3 text-xl font-bold tracking-[-0.04em] text-title">
-          <BrandLogo />
-        </Link>
-
-        <nav className="hidden items-center gap-1 lg:flex" onMouseEnter={cancelClose} onMouseLeave={scheduleClose} onKeyDown={(event) => { if (event.key === 'Escape') setActiveMenu(null); }}>
-          {mainNav.map((item) => (
-            <div key={item.label} className="relative" onMouseEnter={() => { cancelClose(); setActiveMenu(item.menu || null); }}>
-              <NavLink
-                to={item.path}
-                onFocus={() => item.menu && setActiveMenu(item.menu)}
-                aria-haspopup={item.menu ? 'true' : undefined}
-                aria-expanded={item.menu ? activeMenu === item.menu : undefined}
-                className={({ isActive }) =>
-                  `flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-semibold text-body/75 transition hover:bg-primary-soft hover:text-heading ${
-                    isActive ? 'bg-primary-soft text-primary' : ''
-                  }`
-                }
-              >
-                {item.label}
-                {item.menu && (
-                  <span aria-hidden="true" className="text-xs">
-                    ▾
-                  </span>
-                )}
-              </NavLink>
-            </div>
-          ))}
-        </nav>
-
-        <div className="hidden items-center gap-2 lg:flex">
-          {isAuthenticated ? (
-            <div className="flex items-center gap-3"><NotificationBell /><ProfileDropdown /></div>
-          ) : (
-            <>
-              <Link to={routePaths.login}>
-                <Button variant="secondary" size="lg">Login</Button>
-              </Link>
-              <Link to={routePaths.register}>
-                <Button variant="primary" size="lg">Register</Button>
-              </Link>
-            </>
-          )}
-        </div>
-
-        <button
-          type="button"
-          className="rounded-xl border border-border bg-surface p-2.5 text-lg text-body shadow-sm lg:hidden"
-          onClick={() => setMobileOpen((open) => !open)}
-          aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
-        >
-          {mobileOpen ? '✕' : '☰'}
-        </button>
-      </div>
-
-      {activeMenu && (
-        <div className="border-t border-border/70 bg-surface/95 shadow-xl" onMouseEnter={cancelClose} onMouseLeave={scheduleClose}>
-          <MegaMenu menu={megaMenus[activeMenu]} />
-        </div>
-      )}
-
-      {mobileOpen && (
-        <MobileMenu isAuthenticated={isAuthenticated} homePath={homePath} onNavigate={() => setMobileOpen(false)} />
-      )}
-    </header>
-  );
-}
-
-function MobileMenu({ isAuthenticated, homePath, onNavigate }) {
-  return (
-    <div className="border-t border-border bg-surface px-4 py-4 lg:hidden">
-      <nav className="space-y-1">
-        {mainNav.map((item) =>
-          item.menu ? (
-            <details key={item.label} className="group rounded-lg">
-              <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2.5 text-base font-medium text-body hover:bg-background">
-                {item.label}
-                <span aria-hidden="true" className="text-xs group-open:rotate-180">
-                  ▾
-                </span>
-              </summary>
-              <div className="ml-3 mt-1 space-y-1 border-l border-border pl-3">
-                {megaMenus[item.menu].links.map((link) => (
-                  <Link
-                    key={link.label}
-                    to={link.path}
-                    onClick={onNavigate}
-                    className="block rounded-lg px-3 py-2 text-base text-body/80 hover:bg-background"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </details>
-          ) : (
-            <Link
-              key={item.label}
-              to={item.path}
-              onClick={onNavigate}
-              className="block rounded-lg px-3 py-2.5 text-base font-medium text-body hover:bg-background"
-            >
-              {item.label}
-            </Link>
-          ),
-        )}
-      </nav>
-
-      <div className="mt-4 flex gap-2 border-t border-border pt-4">
-        {isAuthenticated ? (
-          <Link to={homePath || routePaths.dashboard} onClick={onNavigate} className="w-full">
-            <Button variant="primary" size="lg" className="w-full">
-              Go to Dashboard
-            </Button>
-          </Link>
-        ) : (
-          <>
-            <Link to={routePaths.login} onClick={onNavigate} className="w-full">
-              <Button variant="secondary" size="lg" className="w-full">
-                Login
-              </Button>
-            </Link>
-            <Link to={routePaths.register} onClick={onNavigate} className="w-full">
-              <Button variant="primary" size="lg" className="w-full">
-                Register
-              </Button>
-            </Link>
-          </>
-        )}
-      </div>
-    </div>
-  );
+  const { isAuthenticated } = useAuth();
+  const { pathname } = useLocation();
+  const [menu,setMenu]=useState(false);
+  const [section,setSection]=useState(null);
+  const close=()=>{setMenu(false);setSection(null);};
+  useEffect(()=>{setMenu(false);setSection(null);},[pathname]);
+  return <header className="public-header" onKeyDown={event=>{if(event.key==='Escape')close();}}>
+    <div className="public-topbar"><Link to={routePaths.home} aria-label="ShilpoHub home"><BrandLogo/></Link><GlobalSearch/><div className="topbar-actions">{isAuthenticated&&<NotificationBell/>}<LanguageMenu/>{isAuthenticated ? <ProfileDropdown/> : <><Link className="header-login" to={routePaths.login}>Login</Link><Link className="header-register" to={routePaths.register}>Register</Link></>}</div></div>
+    <nav className="public-nav" aria-label="Main navigation"><button type="button" className="public-menu-toggle" onClick={()=>{setMenu(value=>!value);setSection(null);}} aria-expanded={menu}><NavigationIcon label="Menu"/>Explore ShilpoHub</button><div className={`public-nav-links ${menu ? 'mobile-open' : ''}`}>{mainNav.map(item=><div key={item.label} className="public-nav-item"><NavLink to={item.path} end={item.path==='/'} onClick={close} className={({isActive})=>isActive?'is-active':''}>{item.label}</NavLink>{item.menu&&<button type="button" aria-label={`Open ${item.label} menu`} aria-expanded={section===item.menu} onClick={()=>setSection(current=>current===item.menu?null:item.menu)}>⌄</button>}</div>)}</div><span className="public-nav-note">Preserving heritage. Empowering people.</span></nav>
+    {section && <div className="public-mega-menu"><div><p className="menu-eyebrow">{megaMenus[section].heading}</p><p className="mt-3 max-w-xs text-sm leading-6 text-muted">{megaMenus[section].description}</p></div><div className="public-mega-links">{megaMenus[section].links.map(item=><Link key={item.path} to={item.path} onClick={close} aria-current={pathname===item.path?'page':undefined}><span className="font-medium">{item.label} <span aria-hidden="true">↗</span></span><span className="mt-1 block text-xs leading-5 text-muted">{item.description}</span></Link>)}</div><button type="button" className="mega-close" onClick={close} aria-label="Close navigation menu">×</button></div>}
+  </header>;
 }
