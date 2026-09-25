@@ -2,12 +2,17 @@ import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useMyProcurements, useProcurementMutations } from '../../hooks/useProcurements';
 import { ProducerSelect, ProducerProductSelect } from '../../components/forms/EntityPickers';
+import ProcurementAdvanceInfo from '../../components/business/ProcurementAdvanceInfo';
+import MutationFeedback from '../../components/ui/MutationFeedback';
 
+import { confirmAction } from '../../lib/confirm';
 const statusTone = { PendingApproval: 'secondary', Approved: 'primary', Rejected: 'neutral', Converted: 'success', Cancelled: 'neutral' };
+const statusLabel = { PendingApproval: 'Waiting for the producer', Approved: 'Producer accepted', Rejected: 'Rejected', Converted: 'Converted to order', Cancelled: 'Cancelled' };
 
 export default function Procurements() {
   const { data, isLoading, isError, error } = useMyProcurements({ pageSize: 50 });
-  const { create, approve, reject, convertToOrder, cancel } = useProcurementMutations();
+  const { create, payAdvance, convertToOrder, cancel } = useProcurementMutations();
+  const [advanceForm, setAdvanceForm] = useState({});
   const [expandedId, setExpandedId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', producerId: '', deliveryDeadline: '', productId: '', quantity: '', unitPrice: '' });
@@ -72,6 +77,8 @@ export default function Procurements() {
         </form>
       )}
 
+      <MutationFeedback mutation={payAdvance} successMessage="Advance paid. An admin will now inspect the deal." />
+      <MutationFeedback mutation={convertToOrder} successMessage="Converted to an order." />
       <AsyncState isLoading={isLoading} isError={isError} error={error}>
         <div className="space-y-3">
           {requests.map((req) => (
@@ -82,7 +89,7 @@ export default function Procurements() {
                   <p className="text-xs text-body/60">{req.referenceNumber} · {req.producerName} · ৳ {req.itemsTotal.toLocaleString()}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge tone={statusTone[req.status] || 'neutral'}>{req.status}</Badge>
+                  <Badge tone={statusTone[req.status] || 'neutral'}>{statusLabel[req.status] || req.status}</Badge>
                   <Button variant="secondary" onClick={() => setExpandedId(expandedId === req.id ? null : req.id)}>
                     {expandedId === req.id ? 'Hide' : 'Details'}
                   </Button>
@@ -90,18 +97,36 @@ export default function Procurements() {
               </div>
               {expandedId === req.id && (
                 <div className="mt-4 space-y-3 border-t border-border pt-4">
+                  <ProcurementAdvanceInfo req={req} />
+                  {req.status === 'PendingApproval' && (
+                    <p className="text-sm text-body/70">The request went to {req.producerName}. Once they accept it you pay an advance of at least {`৳ ${Number(req.requiredAdvance).toLocaleString('en-BD')}`}.</p>
+                  )}
+                  {req.status === 'Approved' && (!req.advancePaidAt || req.advanceRefundedAt) && (
+                    <form
+                      className="flex flex-wrap items-end gap-2"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        const f = advanceForm[req.id] || {};
+                        payAdvance.mutate({ id: req.id, payload: { amount: Number(f.amount ?? req.requiredAdvance), method: f.method || undefined, reference: f.reference || undefined } });
+                      }}
+                    >
+                      <label className="text-xs text-body/70">Advance (৳, min {Number(req.requiredAdvance).toLocaleString('en-BD')})
+                        <input type="number" min={req.requiredAdvance} max={req.itemsTotal} step="any" required value={advanceForm[req.id]?.amount ?? req.requiredAdvance} onChange={(e) => setAdvanceForm((p) => ({ ...p, [req.id]: { ...p[req.id], amount: e.target.value } }))} className="mt-1 block w-40 rounded-md border border-border bg-background px-3 py-2 text-sm" />
+                      </label>
+                      <input aria-label="Payment method" placeholder="Method (bKash, bank…)" value={advanceForm[req.id]?.method || ''} onChange={(e) => setAdvanceForm((p) => ({ ...p, [req.id]: { ...p[req.id], method: e.target.value } }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+                      <input aria-label="Payment reference" placeholder="Transaction reference" value={advanceForm[req.id]?.reference || ''} onChange={(e) => setAdvanceForm((p) => ({ ...p, [req.id]: { ...p[req.id], reference: e.target.value } }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
+                      <Button type="submit" variant="primary" disabled={payAdvance.isPending}>{payAdvance.isPending ? 'Paying…' : 'Pay advance'}</Button>
+                    </form>
+                  )}
                   <div className="flex flex-wrap gap-2">
-                    {req.status === 'PendingApproval' && (
-                      <>
-                        <Button variant="primary" onClick={() => approve.mutate({ id: req.id })}>Approve</Button>
-                        <Button variant="secondary" onClick={() => reject.mutate({ id: req.id })}>Reject</Button>
-                      </>
-                    )}
                     {req.status === 'Approved' && (
-                      <Button variant="primary" onClick={() => convertToOrder.mutate(req.id)}>Convert to Order</Button>
+                      <Button variant="primary" disabled={convertToOrder.isPending || req.inspectionStatus !== 'Approved'} onClick={() => convertToOrder.mutate(req.id)}>Convert to Order</Button>
+                    )}
+                    {req.status === 'Approved' && req.inspectionStatus !== 'Approved' && (
+                      <span className="self-center text-xs text-body/60">{req.advancePaidAt && !req.advanceRefundedAt ? 'Waiting for the admin to inspect the deal.' : 'Pay the advance first.'}</span>
                     )}
                     {!['Converted', 'Cancelled', 'Rejected'].includes(req.status) && (
-                      <Button variant="secondary" onClick={() => cancel.mutate(req.id)}>Cancel</Button>
+                      <Button variant="secondary" onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancel.mutate(req.id); }}>Cancel{req.advancePaidAt && !req.advanceRefundedAt ? ' (advance refunded)' : ''}</Button>
                     )}
                   </div>
                 </div>
