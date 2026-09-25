@@ -1,5 +1,7 @@
+import UserSelect from '../../components/forms/UserSelect';
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { confirmAction } from '../../lib/confirm';
 import {
   useHeritageInnovationSubmissions, useHeritageInnovationSubmission, useHeritageInnovationSubmissionMutations,
 } from '../../hooks/useHeritageInnovationSubmissions';
@@ -33,7 +35,7 @@ function SubmissionDetail({ id }) {
           <Button size="sm" variant="primary" disabled={submit.isPending} onClick={() => submit.mutate(id)}>Submit for Review</Button>
         )}
         {['Submitted', 'UnderReview'].includes(submission.status) && (
-          <Button size="sm" variant="secondary" disabled={withdraw.isPending} onClick={() => withdraw.mutate(id)}>Withdraw</Button>
+          <Button size="sm" variant="secondary" disabled={withdraw.isPending} onClick={async () => { if (await confirmAction('Withdraw this? You cannot undo it.', { confirmLabel: 'Yes, withdraw' })) withdraw.mutate(id); }}>Withdraw</Button>
         )}
       </div>
 
@@ -43,13 +45,13 @@ function SubmissionDetail({ id }) {
           {submission.teamMembers.map((m) => (
             <div key={m.id} className="flex items-center justify-between rounded-lg border border-border px-3 py-2 text-xs">
               <span>{m.userName} {m.roleOnTeam ? `(${m.roleOnTeam})` : ''}</span>
-              <button type="button" onClick={() => removeTeamMember.mutate({ id, memberId: m.id })} className="text-danger hover:underline">Remove</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeTeamMember.mutate({ id, memberId: m.id }); }} className="text-danger hover:underline">Remove</button>
             </div>
           ))}
           {submission.teamMembers.length === 0 && <p className="text-xs text-body/50">No team members yet.</p>}
         </div>
         <div className="flex gap-2">
-          <input aria-label="User ID" placeholder="User ID" value={memberId} onChange={(e) => setMemberId(e.target.value)} className={`${inputClass} flex-1`} />
+          <UserSelect value={memberId} onChange={setMemberId} />
           <Button
             size="sm"
             variant="secondary"
