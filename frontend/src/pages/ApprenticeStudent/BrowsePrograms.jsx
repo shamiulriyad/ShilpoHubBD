@@ -4,6 +4,7 @@ import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { apprenticeshipProgramsService } from '../../services/apprenticeshipProgramsService';
 import { useMyProgramApplications, useProgramApplicationMutations } from '../../hooks/useProgramApplications';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const statusTone = { Submitted: 'neutral', UnderReview: 'secondary', Accepted: 'success', Rejected: 'neutral', Withdrawn: 'neutral' };
 
@@ -61,7 +62,7 @@ function MyApplicationsTab() {
             <div className="flex items-center gap-2">
               <Badge tone={statusTone[a.status] || 'neutral'}>{a.status}</Badge>
               {a.status === 'Submitted' && (
-                <button type="button" onClick={() => withdraw.mutate(a.id)} className="text-xs text-danger hover:underline">Withdraw</button>
+                <button type="button" onClick={async () => { if (await confirmAction('Withdraw this? You cannot undo it.', { confirmLabel: 'Yes, withdraw' })) withdraw.mutate(a.id); }} className="text-xs text-danger hover:underline">Withdraw</button>
               )}
             </div>
           </div>
