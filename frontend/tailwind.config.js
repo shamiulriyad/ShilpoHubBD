@@ -16,6 +16,7 @@ export default {
         'primary-dark': cssColor('primary-dark'),
         'primary-soft': cssColor('primary-soft'),
         link: cssColor('link'),
+        secondary: cssColor('secondary'),
         success: cssColor('success'),
         error: cssColor('error'),
       },
