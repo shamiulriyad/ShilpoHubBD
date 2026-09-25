@@ -124,11 +124,31 @@ export const sidebarNav = [
   },
 ];
 
+// Items every signed-in member shares. Kept in one place so each role sidebar can
+// spread it in without the role-specific groups ever overlapping.
+const generalGroup = {
+  section: 'General',
+  items: [
+    { label: 'Explore Heritage', path: routePaths.dashboardExplore, icon: '🧭' },
+    { label: 'Messages', path: routePaths.dashboardMessages, icon: '✉️' },
+    { label: 'Settings', path: routePaths.dashboardSettings, icon: '⚙️' },
+  ],
+};
+
+// Every workspace gets the shared General group; a label the role already has (e.g. the customer's own
+// Messages) is not repeated.
+const withGeneral = (nav) => {
+  const taken = new Set(nav.flatMap((group) => group.items.map((item) => item.label)));
+  if (nav.some((group) => group.section === generalGroup.section)) return nav;
+  const items = generalGroup.items.filter((item) => !taken.has(item.label));
+  return items.length ? [...nav, { ...generalGroup, items }] : nav;
+};
+
 // Grouped ("premium") sidebar for the Customer workspace. Every param-free Customer
 // feature route from backendsetup.md is represented here; product-scoped views
 // (craft/producer story, 360°, QR, traceability, AI interior/fashion/similar) are
 // reached from a product page and intentionally omitted.
-export const customerSidebarNav = [
+const base_customerSidebarNav = [
   {
     section: 'Overview',
     items: [{ label: 'Dashboard', path: routePaths.customer, icon: '🏠' }],
@@ -189,9 +209,10 @@ export const customerSidebarNav = [
     items: [{ label: 'Gift Recommendation', path: routePaths.customerAIGiftRecommendation, icon: '🎁' }],
   },
 ];
+export const customerSidebarNav = withGeneral(base_customerSidebarNav);
 
 // Producer workspace — production, fulfilment, B2B partnerships & growth.
-export const producerSidebarNav = [
+const base_producerSidebarNav = [
   {
     section: 'Overview',
     items: [{ label: 'Dashboard', path: routePaths.producer, icon: '🏠' }],
@@ -234,9 +255,10 @@ export const producerSidebarNav = [
     items: [{ label: 'Live Shopping', path: routePaths.producerLiveShopping, icon: '📡' }],
   },
 ];
+export const producerSidebarNav = withGeneral(base_producerSidebarNav);
 
 // Business Partner workspace — sourcing, deals, marketplaces & intelligence.
-export const businessPartnerSidebarNav = [
+const base_businessPartnerSidebarNav = [
   {
     section: 'Overview',
     items: [
@@ -278,23 +300,14 @@ export const businessPartnerSidebarNav = [
     ],
   },
 ];
+export const businessPartnerSidebarNav = withGeneral(base_businessPartnerSidebarNav);
 
 // Admin / platform-operations workspace.
-export const adminSidebarNav = [
+const base_adminSidebarNav = [
   { section: 'Overview', items: [{ label: 'Dashboard', path: routePaths.admin, icon: '⌂' }, { label: 'Bulk Deal Inspections', path: routePaths.adminProcurementInspections, icon: '🔍' }, { label: 'Profile Approvals', path: routePaths.adminProfileApprovals, icon: '🪪' }, { label: 'Expertise Certificates', path: routePaths.adminExpertiseCertificates, icon: '🏅' }] },
   ...adminGroups.map(([key, section, views]) => ({ section, items: views.map(([view, label]) => ({ label, path: `/admin/${key}/${view}` })) })),
 ];
-
-// Items every signed-in member shares. Kept in one place so each role sidebar can
-// spread it in without the role-specific groups ever overlapping.
-const generalGroup = {
-  section: 'General',
-  items: [
-    { label: 'Explore Heritage', path: routePaths.explore, icon: '🧭' },
-    { label: 'Messages', path: routePaths.dashboardMessages, icon: '✉️' },
-    { label: 'Settings', path: routePaths.dashboardSettings, icon: '⚙️' },
-  ],
-};
+export const adminSidebarNav = withGeneral(base_adminSidebarNav);
 
 // Tourist workspace — heritage travel: discovery, planning, bookings.
 export const touristSidebarNav = [
@@ -302,26 +315,26 @@ export const touristSidebarNav = [
     section: 'Overview',
     items: [
       { label: 'Dashboard', path: routePaths.tourist, icon: '🏠' },
-      { label: 'My Bookings', path: routePaths.tourismBookings, icon: '🎫' },
-      { label: 'Travel Passport', path: routePaths.tourismPassport, icon: '🛂' },
+      { label: 'My Bookings', path: routePaths.workspaceTouristBookings, icon: '🎫' },
+      { label: 'Travel Passport', path: routePaths.workspaceTouristPassport, icon: '🛂' },
     ],
   },
   {
     section: 'Discover',
     items: [
-      { label: 'Crafts & GI Heritage', path: routePaths.exploreCrafts, icon: '🧵' },
-      { label: 'Heritage Map', path: routePaths.tourismMap, icon: '🗺️' },
-      { label: 'Festivals', path: routePaths.tourismFestivals, icon: '🎉' },
-      { label: 'Cultural Events', path: routePaths.tourismEvents, icon: '📅' },
-      { label: 'Tour Routes', path: routePaths.tourismRoutes, icon: '🧳' },
-      { label: 'Village Explorer', path: routePaths.tourismVillages, icon: '🏘️' },
-      { label: 'Local Cuisine', path: routePaths.tourismCuisines, icon: '🍲' },
-      { label: 'Tourist Services', path: routePaths.tourismServices, icon: '🛎️' },
+      { label: 'Crafts & GI Heritage', path: routePaths.workspaceTouristCrafts, icon: '🧵' },
+      { label: 'Heritage Map', path: routePaths.workspaceTouristMap, icon: '🗺️' },
+      { label: 'Festivals', path: routePaths.workspaceTouristFestivals, icon: '🎉' },
+      { label: 'Cultural Events', path: routePaths.workspaceTouristEvents, icon: '📅' },
+      { label: 'Tour Routes', path: routePaths.workspaceTouristRoutes, icon: '🧳' },
+      { label: 'Village Explorer', path: routePaths.workspaceTouristVillages, icon: '🏘️' },
+      { label: 'Local Cuisine', path: routePaths.workspaceTouristCuisines, icon: '🍲' },
+      { label: 'Tourist Services', path: routePaths.workspaceTouristServices, icon: '🛎️' },
     ],
   },
   {
     section: 'Plan',
-    items: [{ label: 'AI Trip Planner', path: routePaths.tourismAiPlanner, icon: '🤖' }],
+    items: [{ label: 'AI Trip Planner', path: routePaths.workspaceTouristAiPlanner, icon: '🤖' }],
   },
   generalGroup,
 ];
@@ -338,16 +351,16 @@ export const academyMemberSidebarNav = [
   {
     section: 'Learn',
     items: [
-      { label: 'Course Catalog', path: routePaths.academy, icon: '📚' },
-      { label: 'Mentors', path: routePaths.academyMentors, icon: '🧑‍🏫' },
-      { label: 'Live Classes', path: routePaths.academyLiveClasses, icon: '🎥' },
+      { label: 'Course Catalog', path: routePaths.workspaceAcademyCatalog, icon: '📚' },
+      { label: 'Mentors', path: routePaths.workspaceAcademyMentors, icon: '🧑‍🏫' },
+      { label: 'Live Classes', path: routePaths.workspaceAcademyLiveClasses, icon: '🎥' },
       { label: 'Skill Assessments', path: routePaths.academySkillAssessments, icon: '📝' },
     ],
   },
   {
     section: 'My Progress',
     items: [
-      { label: 'Certifications', path: routePaths.academyCertifications, icon: '📜' },
+      { label: 'Certifications', path: routePaths.workspaceAcademyCertifications, icon: '📜' },
       { label: 'Certificates', path: routePaths.academyCertificates, icon: '🎖️' },
       { label: 'Portfolio', path: routePaths.academyPortfolio, icon: '🖼️' },
       { label: 'Learning Roadmap', path: routePaths.academyRoadmap, icon: '🧭' },
@@ -405,6 +418,13 @@ export const governmentNgoSidebarNav = [
       { label: 'Complaints & Monitoring', path: routePaths.governmentComplaintsMonitoring, icon: '🚨' },
       { label: 'Funding & Grants', path: routePaths.governmentFunding, icon: '💰' },
       { label: 'NGO Programs', path: routePaths.ngo, icon: '🤲' },
+    ],
+  },
+  {
+    section: 'Heritage Intelligence',
+    items: [
+      { label: 'Knowledge Graph', path: routePaths.governmentKnowledgeGraph, icon: '🕸️' },
+      { label: 'Heritage Database', path: routePaths.governmentHeritageDatabase, icon: '🗄️' },
     ],
   },
   generalGroup,
