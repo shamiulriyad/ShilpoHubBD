@@ -23,9 +23,14 @@ public class LiveShoppingRepository : ILiveShoppingRepository
             .Include(e => e.Purchases)
             .AsSplitQuery();
 
-    public async Task<(List<LiveEvent> Items, int TotalCount)> GetPagedAsync(LiveEventStatus? status, int page, int pageSize, CancellationToken cancellationToken)
+    public async Task<(List<LiveEvent> Items, int TotalCount)> GetPagedAsync(LiveEventStatus? status, int page, int pageSize, CancellationToken cancellationToken, Guid? producerId = null)
     {
         var events = WithDetails().AsQueryable();
+
+        if (producerId is not null)
+        {
+            events = events.Where(e => e.ProducerId == producerId);
+        }
 
         if (status is not null)
         {
