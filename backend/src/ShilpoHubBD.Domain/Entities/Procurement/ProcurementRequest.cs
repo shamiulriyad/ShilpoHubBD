@@ -36,6 +36,20 @@ public class ProcurementRequest
     public DateTime? ApprovedAt { get; set; }
     public string? ApprovalNotes { get; set; }
 
+    // ---- Advance payment: the partner pays at least 50% of the total before the deal goes ahead
+    public decimal? AdvanceAmount { get; set; }
+    public DateTime? AdvancePaidAt { get; set; }
+    public string? AdvanceMethod { get; set; }
+    public string? AdvanceReference { get; set; }
+    public DateTime? AdvanceRefundedAt { get; set; }
+
+    // ---- Admin inspection after the advance is paid
+    public ProcurementInspectionStatus InspectionStatus { get; set; } = ProcurementInspectionStatus.NotRequired;
+    public Guid? InspectedByUserId { get; set; }
+    public User? InspectedBy { get; set; }
+    public DateTime? InspectedAt { get; set; }
+    public string? InspectionNotes { get; set; }
+
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
