@@ -4,6 +4,7 @@ import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, Button, SectionHeader, AsyncState } from '../../components/ui';
 import { useOrder, useOrderTracking, useOrderMutations } from '../../hooks/useOrders';
 import SafeImage from '../../components/media/SafeImage';
+import ReportProblemForm from '../../components/orders/ReportProblemForm';
 
 const statusTone = {
   Delivered: 'success',
@@ -93,7 +94,10 @@ export default function OrderDetails() {
                             </p>
                           </div>
                         </div>
-                        <p className="text-sm font-semibold text-heading">৳ {item.lineTotal.toLocaleString()}</p>
+                        <div className="text-right">
+                          <p className="text-sm font-semibold text-heading">৳ {item.lineTotal.toLocaleString()}</p>
+                          {order.status === 'Delivered' && <ReportProblemForm orderId={order.id} productId={item.productId} productName={item.productName} />}
+                        </div>
                       </div>
                     ))}
                   </div>
