@@ -3,6 +3,7 @@ import { PageHeader, Badge, Button, AsyncState, StatusTimeline } from '../../com
 import { useDistricts } from '../../hooks/useDistricts';
 import { usePickupRequests, usePickupRequest, usePickupRequestMutations } from '../../hooks/usePickupRequests';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const priorities = ['Standard', 'Express', 'SameDay'];
 const advanceStatuses = ['EnRoute', 'Collected', 'Completed', 'Failed'];
@@ -76,7 +77,7 @@ function PickupDetail({ id }) {
               <Button size="sm" variant="secondary" disabled={!statusChoice || updateStatus.isPending} onClick={() => updateStatus.mutate({ id, payload: { status: statusChoice } })}>Update</Button>
             </div>
           </label>
-          <button type="button" onClick={() => cancel.mutate({ id, payload: { reason: 'Cancelled by logistics partner' } })} className="text-xs text-danger hover:underline">
+          <button type="button" onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancel.mutate({ id, payload: { reason: 'Cancelled by logistics partner' } }); }} className="text-xs text-danger hover:underline">
             Cancel Pickup
           </button>
         </div>
