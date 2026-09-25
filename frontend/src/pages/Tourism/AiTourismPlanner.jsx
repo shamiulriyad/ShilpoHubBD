@@ -271,8 +271,8 @@ export default function AiTourismPlanner() {
     event.preventDefault();
     tourPlan.mutate({
       districtId: form.districtId || undefined,
-      durationDays: Number(form.durationDays),
-      partySize: Number(form.partySize),
+      durationDays: Math.min(30, Math.max(1, Math.round(Number(form.durationDays)) || 1)),
+      partySize: Math.min(100, Math.max(1, Math.round(Number(form.partySize)) || 1)),
       startDate: form.startDate || undefined,
       originText: form.originText || undefined,
       transportMode: form.transportMode,
@@ -409,6 +409,7 @@ export default function AiTourismPlanner() {
           <span className="mb-1.5 block font-medium text-heading">Duration (days)</span>
           <input
             type="number"
+            required
             min={1}
             max={30}
             value={form.durationDays}
@@ -420,6 +421,7 @@ export default function AiTourismPlanner() {
           <span className="mb-1.5 block font-medium text-heading">Number of travelers</span>
           <input
             type="number"
+            required
             min={1}
             max={100}
             value={form.partySize}
