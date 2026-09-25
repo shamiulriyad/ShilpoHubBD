@@ -3,6 +3,7 @@ import { PageHeader, Button, Badge } from '../../components/ui';
 import { useMyPortfolio, usePortfolioMutations } from '../../hooks/usePortfolio';
 import SafeImage from '../../components/media/SafeImage';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const visibilities = ['Public', 'Private'];
 
@@ -83,7 +84,7 @@ export default function Portfolio() {
             {p.imageUrl && <SafeImage src={p.imageUrl} alt={p.title} className="mb-2 aspect-square w-full rounded-lg object-cover" />}
             <p className="font-medium text-heading">{p.title}</p>
             <p className="line-clamp-2 text-body/60">{p.description}</p>
-            <button type="button" onClick={() => removeProject.mutate(p.id)} className="mt-2 self-start text-danger hover:underline">Remove</button>
+            <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeProject.mutate(p.id); }} className="mt-2 self-start text-danger hover:underline">Remove</button>
           </div>
         ))}
         {portfolio.projects.length === 0 && (
