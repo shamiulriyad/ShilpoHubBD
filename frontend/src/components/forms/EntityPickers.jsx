@@ -23,7 +23,7 @@ function statusOption(query, emptyText) {
 }
 
 export function useProducerOptions() {
-  const query = useSupplierSearch({ pageSize: 100 });
+  const query = useSupplierSearch({ pageSize: 50 });
   const options = (query.data?.items || []).map((p) => ({
     id: p.producerId,
     label: [p.producerName, p.workshopName, p.districtName].filter(Boolean).join(' · '),
@@ -75,7 +75,7 @@ export function ProducerMultiSelect({ value, onChange, max = 6 }) {
 
 // A producer's public products (for a business partner choosing what to procure).
 export function ProducerProductSelect({ id = 'product-select', label = 'Product', producerId, value, onChange, required = false }) {
-  const query = useProducts({ producerId: producerId || undefined, pageSize: 100 });
+  const query = useProducts({ producerId: producerId || undefined, pageSize: 50 });
   const products = producerId ? query.data?.items || [] : [];
   return (
     <Field id={id} label={label} hint={!producerId ? 'Choose a producer first.' : undefined}>
