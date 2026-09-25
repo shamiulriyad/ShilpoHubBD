@@ -27,6 +27,19 @@ public class UserProfileService : IUserProfileService
         return ToDto(user, profile);
     }
 
+    public async Task<UserProfileDto> SetPhotoAsync(Guid userId, string? photoUrl, CancellationToken cancellationToken)
+    {
+        var user = await _userRepository.GetByIdWithRolesAsync(userId, cancellationToken)
+            ?? throw new NotFoundException("User not found.");
+
+        // A photo is presentation only: it never touches the NID profile or its admin approval.
+        user.ProfilePhotoUrl = photoUrl;
+        user.UpdatedAt = DateTime.UtcNow;
+        await _userRepository.SaveChangesAsync(cancellationToken);
+
+        return ToDto(user, await _repository.GetByUserIdAsync(userId, cancellationToken));
+    }
+
     public async Task<UserProfileDto> UpsertMineAsync(Guid userId, UpsertUserProfileRequest request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdWithRolesAsync(userId, cancellationToken)
@@ -136,6 +149,7 @@ public class UserProfileService : IUserProfileService
     {
         Id = profile?.Id,
         LoginEmail = user.Email,
+        PhotoUrl = user.ProfilePhotoUrl,
         Exists = profile is not null,
         LegalName = profile?.LegalName ?? string.Empty,
         Phone = profile?.Phone ?? string.Empty,
