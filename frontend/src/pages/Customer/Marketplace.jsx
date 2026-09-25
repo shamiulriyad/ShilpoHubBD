@@ -18,7 +18,7 @@ export default function Marketplace() {
   const page = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   const categories = useCategories();
   const districts = useDistricts();
-  const products = useProducts({ search: search || undefined, categoryId: params.get('categoryId') || undefined, districtId: params.get('districtId') || undefined, ...priceRangeToQuery(params.get('priceRange')), sortBy: params.get('sortBy') || 'Newest', page, pageSize: 12 });
+  const products = useProducts({ search: search || undefined, categoryId: params.get('categoryId') || undefined, districtId: params.get('districtId') || undefined, expertise: params.get('expertise') || undefined, ...priceRangeToQuery(params.get('priceRange')), sortBy: params.get('sortBy') || 'Newest', page, pageSize: 12 });
   const change = (key, value) => {
     const next = new URLSearchParams(params);
     if (value) next.set(key, value); else next.delete(key);
