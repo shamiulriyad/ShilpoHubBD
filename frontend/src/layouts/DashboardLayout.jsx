@@ -10,8 +10,12 @@ import { useAuth } from '../hooks/useAuth';
 import BrandLogo from '../components/brand/BrandLogo';
 import GlobalSearch from '../components/layout/GlobalSearch';
 import LanguageMenu from '../components/layout/LanguageMenu';
+import HelplineChip from '../components/layout/HelplineChip';
+import ProfileStatusBanner from '../components/profile/ProfileStatusBanner';
 import NavigationIcon from '../components/layout/NavigationIcon';
-import { AIAssistantWidget } from '../components/ui';
+import { AIAssistantWidget, ConfirmDialog } from '../components/ui';
+import { useBackLogoutGuard } from '../hooks/useBackLogoutGuard';
+import { useLogoutFlow } from '../hooks/useLogoutFlow';
 
 export default function DashboardLayout({ navItems, sidebarTitle }) {
   const sidebarRef = useRef(null);
@@ -31,6 +35,8 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
     return ()=>{document.body.style.overflow=priorOverflow;document.removeEventListener('keydown',trap);menuTrigger.current?.focus();};
   },[sidebarOpen]);
   const { activeRole } = useAuth();
+  const backGuard = useBackLogoutGuard();
+  const backLogout = useLogoutFlow();
 
   const roleConfig = activeRole ? roleSidebars[activeRole] : null;
   const items = navItems ?? roleConfig?.nav ?? sidebarNav;
@@ -56,6 +62,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         </Link>
         <GlobalSearch navItems={items}/>
         <div className="topbar-actions">
+          <HelplineChip />
           <NotificationBell />
           <LanguageMenu/>
           <ProfileDropdown />
@@ -92,11 +99,22 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         </div>
 
         <main id="main-content" className="workspace-content">
+          <ProfileStatusBanner />
           <Outlet />
         </main>
       </div>
       <Footer />
       <AIAssistantWidget />
+      <ConfirmDialog
+        open={backGuard.state === 'blocked'}
+        title="Leave and log out?"
+        message="Going back will end your session and take you to the home page. Stay here to keep working."
+        confirmLabel="Log out and leave"
+        cancelLabel="Stay here"
+        busy={backLogout.busy}
+        onConfirm={() => { backGuard.reset?.(); backLogout.confirm(); }}
+        onCancel={() => backGuard.reset?.()}
+      />
     </div>
   );
 }
