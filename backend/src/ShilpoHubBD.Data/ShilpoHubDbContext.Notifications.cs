@@ -9,6 +9,9 @@ using ShilpoHubBD.Domain.Entities.TouristBooking;
 using ShilpoHubBD.Domain.Entities.Contracts;
 using ShilpoHubBD.Domain.Entities.Learning;
 using ShilpoHubBD.Domain.Entities.CustomOrders;
+using ShilpoHubBD.Domain.Entities.Community;
+using ShilpoHubBD.Domain.Entities.Procurement;
+using ShilpoHubBD.Domain.Entities.Certificate;
 
 namespace ShilpoHubBD.Data;
 
@@ -54,6 +57,53 @@ public partial class ShilpoHubDbContext
                 foreach (var recipient in recipients.Distinct()) Add(recipient, "New message", "You have a new message. Open your inbox to reply.", "Messages", "/dashboard/messages");
                 continue;
             }
+            if (entry.Entity is CommunityQuestion question && added)
+            {
+                var producerId = await Products.Where(p => p.Id == question.ProductId).Select(p => p.ProducerId).FirstOrDefaultAsync(ct);
+                if (producerId != question.UserId) Add(producerId, "New customer question", "A customer asked a question about one of your products. Open Q&A to answer it.", "Community", "/producer/questions");
+                continue;
+            }
+            if (entry.Entity is CommunityAnswer answer && added)
+            {
+                var asker = await CommunityQuestions.Where(q => q.Id == answer.QuestionId).Select(q => q.UserId).FirstOrDefaultAsync(ct);
+                if (asker != answer.UserId) Add(asker, "Your question was answered", "A producer replied to your product question.", "Community", "/customer/community/qa");
+                continue;
+            }
+            if (entry.Entity is ProcurementRequest deal && !added && entry.Property(nameof(ProcurementRequest.InspectionStatus)).IsModified)
+            {
+                if (deal.InspectionStatus == ProcurementInspectionStatus.Pending)
+                {
+                    var admins = await UserRoles.Where(r => r.Role.Name == "SuperAdmin").Select(r => r.UserId).ToListAsync(ct);
+                    foreach (var admin in admins) Add(admin, "Bulk deal awaiting inspection", $"{deal.ReferenceNumber}: the advance is paid. Inspect the deal.", "Approvals", "/admin/procurements");
+                }
+                else if (deal.InspectionStatus is ProcurementInspectionStatus.Approved or ProcurementInspectionStatus.Rejected)
+                {
+                    var outcome = deal.InspectionStatus == ProcurementInspectionStatus.Approved ? "approved" : "rejected (advance refunded)";
+                    Add(deal.BusinessPartnerId, "Deal inspection result", $"{deal.ReferenceNumber} was {outcome} at inspection.", "Partnerships", "/business-partner/procurement");
+                    Add(deal.ProducerId, "Deal inspection result", $"{deal.ReferenceNumber} was {outcome} at inspection.", "Partnerships", "/producer/procurements");
+                }
+                continue;
+            }
+            if (entry.Entity is ExpertiseCertificate cert && added)
+            {
+                Add(cert.ProducerId, "You earned an expertise certificate", $"An admin issued you a {cert.Level} expertise certificate ({cert.CertificateNumber}).", "Approvals", "/producer/expertise");
+                continue;
+            }
+            if (entry.Entity is OrderComplaint complaint)
+            {
+                if (added) Add(complaint.ProducerId, "Customer complaint", "A customer reported a problem with one of your products. Respond so they can settle it.", "Orders", "/producer/complaints");
+                else if (complaint.Status == OrderComplaintStatus.Resolved) Add(complaint.CustomerId, "Complaint answered", "The producer responded to your complaint. Confirm you are satisfied or reopen it.", "Orders", "/customer/complaints");
+                else if (complaint.Status == OrderComplaintStatus.Satisfied) Add(complaint.ProducerId, "Complaint settled", "The customer confirmed they are satisfied.", "Orders", "/producer/complaints");
+                else if (complaint.Status == OrderComplaintStatus.Open) Add(complaint.ProducerId, "Complaint reopened", "The customer reopened a complaint. Please look at it again.", "Orders", "/producer/complaints");
+                continue;
+            }
+            if (entry.Entity is UserProfile submitted && submitted.Status == UserProfileStatus.Pending
+                && (added || entry.Property(nameof(UserProfile.UpdatedAt)).IsModified))
+            {
+                var admins = await UserRoles.Where(r => r.Role.Name == "SuperAdmin").Select(r => r.UserId).ToListAsync(ct);
+                foreach (var admin in admins) Add(admin, "Profile awaiting approval", $"{submitted.LegalName} submitted a profile with NID for review.", "Approvals", "/admin/profile-approvals");
+                continue;
+            }
             if (entry.Entity is UserRole role && added)
             {
                 Add(role.UserId, "Workspace access updated", "A role has been added to your account. Review your available workspaces in the account menu.", "Account", "/dashboard/profile");
@@ -93,7 +143,20 @@ public partial class ShilpoHubDbContext
                     foreach (var admin in admins) Add(admin, "Product awaiting review", "A producer submitted a product for marketplace approval.", "Approvals", "/admin/marketplace/approval");
                 }
             }
-            else if (entry.Entity is Order order) { category = "Orders"; path = $"/customer/orders/{order.Id}"; }
+            else if (entry.Entity is Order order)
+            {
+                category = "Orders";
+                path = $"/customer/orders/{order.Id}";
+                if (order.Status is OrderStatus.ReturnRequested or OrderStatus.Returned or OrderStatus.Refunded)
+                {
+                    var sellers = await OrderItems.Where(i => i.OrderId == order.Id).Select(i => i.Product.ProducerId).Distinct().ToListAsync(ct);
+                    var title = order.Status == OrderStatus.ReturnRequested ? "Customer return request" : "Return completed";
+                    var body = order.Status == OrderStatus.ReturnRequested
+                        ? $"A customer asked to return order {order.OrderNumber}. Review it and accept or reject."
+                        : $"Order {order.OrderNumber} was returned to you and the customer refund is settled.";
+                    foreach (var seller in sellers) Add(seller, title, body, "Orders", "/producer/returns");
+                }
+            }
             else if (entry.Entity is Booking booking)
             {
                 Add(booking.TouristId, "Booking updated", $"Your booking is {state}.", "Bookings", "/tourism/bookings");
@@ -122,6 +185,18 @@ public partial class ShilpoHubDbContext
                 {
                     var customer = await Orders.Where(o => o.Id == orderId).Select(o => o.UserId).FirstOrDefaultAsync(ct);
                     Add(customer, "Delivery updated", $"Your shipment is {state}.", category, $"/customer/orders/{orderId}");
+                    var sellers = await OrderItems.Where(i => i.OrderId == orderId).Select(i => i.Product.ProducerId).Distinct().ToListAsync(ct);
+                    foreach (var seller in sellers) Add(seller, "Parcel update", $"Shipment {shipment.TrackingNumber} for your order is {state}.", category, "/producer/orders");
+                }
+                else
+                {
+                    var custom = await CustomOrderRequests.Where(c => c.TrackingNumber == shipment.TrackingNumber)
+                        .Select(c => new { c.CustomerId, c.ProducerId }).FirstOrDefaultAsync(ct);
+                    if (custom is not null)
+                    {
+                        Add(custom.CustomerId, "Custom order delivery update", $"Your custom order shipment {shipment.TrackingNumber} is {state}.", category, "/customer/custom-order");
+                        Add(custom.ProducerId, "Custom order parcel update", $"Shipment {shipment.TrackingNumber} for your custom order is {state}.", category, "/producer/custom-orders");
+                    }
                 }
                 continue;
             }
