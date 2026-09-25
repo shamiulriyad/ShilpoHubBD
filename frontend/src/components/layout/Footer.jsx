@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { footerLinks } from '../../data/navigation';
+import { useSiteContent } from '../../hooks/useSiteContent';
 import { routePaths } from '../../routes/routePaths';
 import BrandLogo from '../brand/BrandLogo';
 import { HELPLINE_NUMBER, HELPLINE_TEL } from '../../config/support';
@@ -11,7 +11,9 @@ const columns = [
   { title: 'Resources', key: 'resources' },
 ];
 
+// Link columns come from Admin › CMS › Site Content (groups footer-about / -explore / -marketplace / -resources).
 export default function Footer() {
+  const { group } = useSiteContent();
   return (
     <footer className="border-t border-title/10 bg-title text-surface">
       <div className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
@@ -31,10 +33,10 @@ export default function Footer() {
             <div key={col.key}>
               <p className="text-sm font-semibold text-surface">{col.title}</p>
               <ul className="mt-3 space-y-2">
-                {footerLinks[col.key].map((link) => (
-                  <li key={link.label}>
-                    <Link to={link.path} className="text-sm text-surface/60 transition hover:text-[#F3C79D]">
-                      {link.label}
+                {group(`footer-${col.key}`).map((link) => (
+                  <li key={link.id}>
+                    <Link to={link.linkUrl || '/'} className="text-sm text-surface/60 transition hover:text-[#F3C79D]">
+                      {link.title}
                     </Link>
                   </li>
                 ))}
