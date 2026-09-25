@@ -8,6 +8,7 @@ public class CreateReviewRequest
     public Guid? BookingId { get; set; }
 
     public int Rating { get; set; }
+    public int? ProducerRating { get; set; }
     public string Comment { get; set; } = string.Empty;
     public List<string> ImageUrls { get; set; } = new();
 }
