@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { confirmAction } from '../../lib/confirm';
 import {
   useJobListings, useMyJobListings, useMyJobApplications, useApplicationsForListing, useJobBoardMutations,
 } from '../../hooks/useJobBoard';
@@ -72,7 +73,7 @@ function MyApplicationsTab() {
             <div className="flex items-center gap-2">
               <Badge tone={applicationStatusTone[a.status] || 'neutral'}>{a.status}</Badge>
               {a.status === 'Applied' && (
-                <button type="button" onClick={() => withdrawApplication.mutate(a.id)} className="text-xs text-danger hover:underline">Withdraw</button>
+                <button type="button" onClick={async () => { if (await confirmAction('Withdraw this? You cannot undo it.', { confirmLabel: 'Yes, withdraw' })) withdrawApplication.mutate(a.id); }} className="text-xs text-danger hover:underline">Withdraw</button>
               )}
             </div>
           </div>
@@ -96,7 +97,7 @@ function ListingApplicants({ listingId }) {
           {a.status === 'Applied' && (
             <div className="flex gap-2">
               <button type="button" onClick={() => shortlistApplication.mutate({ id: a.id, payload: {} })} className="text-primary hover:underline">Shortlist</button>
-              <button type="button" onClick={() => rejectApplication.mutate({ id: a.id, payload: {} })} className="text-danger hover:underline">Reject</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Reject this? The other person will be told.', { confirmLabel: 'Yes, reject' })) rejectApplication.mutate({ id: a.id, payload: {} }); }} className="text-danger hover:underline">Reject</button>
             </div>
           )}
           {a.status === 'Shortlisted' && (
