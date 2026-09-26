@@ -41,5 +41,10 @@ public class DistrictService : IDistrictService
         Division = d.Division,
         DisplayOrder = d.DisplayOrder,
         IsActive = d.IsActive,
+        Description = d.Description,
+        KnownFor = d.KnownFor,
+        SourceUrl = d.SourceUrl,
+        ImageUrl = d.ImageUrl,
+        ImageCredit = d.ImageCredit,
     };
 }
