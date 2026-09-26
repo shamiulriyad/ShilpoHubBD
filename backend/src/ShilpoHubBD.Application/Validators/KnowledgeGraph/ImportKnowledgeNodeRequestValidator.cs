@@ -8,12 +8,16 @@ public class ImportKnowledgeNodeRequestValidator : AbstractValidator<ImportKnowl
 {
     public ImportKnowledgeNodeRequestValidator()
     {
-        RuleFor(x => x.ExternalEntityId).NotEmpty();
-        RuleFor(x => x.LabelOverride).MaximumLength(200);
-        RuleFor(x => x.Description).MaximumLength(2000);
+        RuleFor(x => x.EntityId).NotEmpty();
+        RuleFor(x => x.EntityType)
+            .NotEmpty()
+            .Must(t => Enum.TryParse<KnowledgeNodeType>(t, true, out _))
+            .WithMessage("EntityType is not a valid knowledge node type.");
         RuleFor(x => x.NodeType)
             .NotEmpty()
             .Must(t => Enum.TryParse<KnowledgeNodeType>(t, true, out _))
             .WithMessage("NodeType is not a valid knowledge node type.");
+        RuleFor(x => x).Must(x => string.Equals(x.NodeType, x.EntityType, StringComparison.OrdinalIgnoreCase))
+            .WithMessage("EntityType must match NodeType.");
     }
 }
