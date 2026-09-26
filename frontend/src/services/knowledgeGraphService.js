@@ -18,5 +18,14 @@ export const knowledgeGraphService = {
   findPath: (params) => apiClient.get('/knowledge-graph/paths', { params }).then((res) => res.data),
   getStats: () => apiClient.get('/knowledge-graph/stats').then((res) => res.data),
   getRules: () => apiClient.get('/knowledge-graph/rules').then((res) => res.data),
-  searchEntities: (params) => apiClient.get('/knowledge-graph/entities', { params }).then((res) => res.data),
+  searchEntities: (params) => apiClient.get('/knowledge-graph/entities', { params }).then((res) => {
+    const payload = res.data;
+    const records = Array.isArray(payload) ? payload : (payload?.items || payload?.data || []);
+    return records.map((record) => ({
+      id: record.id ?? record.Id,
+      name: record.name ?? record.Name,
+      entityType: record.entityType ?? record.EntityType,
+      description: record.description ?? record.Description ?? null,
+    })).filter((record) => record.id && record.name && record.entityType);
+  }),
 };
