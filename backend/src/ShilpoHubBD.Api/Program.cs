@@ -241,6 +241,7 @@ using (var referenceDataScope = app.Services.CreateScope())
 	await TourismLocationSeeder.SeedAsync(dbContext);
 	await TransportOptionSeeder.SeedAsync(dbContext);
 	await SiteContentSeeder.SeedAsync(dbContext);
+	await ProductSearchSeeder.SeedAsync(dbContext);
 }
 
 // Configure the HTTP request pipeline.
