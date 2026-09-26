@@ -26,6 +26,10 @@ public class TourismLocationDto
     public string? CoordinatesSource { get; set; }
     public string? CoordinatesPrecision { get; set; }
     public DateTime? DataRetrievedOn { get; set; }
+    public string Source { get; set; } = "Admin";
+    public string? ExternalId { get; set; }
+    public string? Upazila { get; set; }
+    public DateTime? LastSyncedAt { get; set; }
     public Guid DistrictId { get; set; }
     public string DistrictName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
