@@ -9,4 +9,11 @@ public enum TourismLocationType
     HeritageSite,
     Restaurant,
     Attraction,
+    GuestHouse,
+    Motel,
+    Park,
+    Museum,
+    HistoricalPlace,
+    Cafe,
+    Beach,
 }
