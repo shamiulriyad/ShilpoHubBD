@@ -14898,6 +14898,10 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<decimal?>("EntryFee")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("Facilities")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
@@ -14920,6 +14924,9 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime?>("LastSyncedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("double precision");
 
@@ -14938,6 +14945,13 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasDefaultValue("Admin");
+
                     b.Property<string>("SourceUrl")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
@@ -14950,6 +14964,10 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<string>("UnverifiedFields")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Upazila")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -14970,6 +14988,10 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("Type");
 
                     b.HasIndex("Latitude", "Longitude");
+
+                    b.HasIndex("Source", "ExternalId")
+                        .IsUnique()
+                        .HasFilter("\"ExternalId\" IS NOT NULL");
 
                     b.ToTable("TourismLocations", (string)null);
                 });
