@@ -72,7 +72,7 @@ public static class TourismLocationSeeder
         var districtByName = districts.ToDictionary(d => d.Name, d => d.Id, StringComparer.OrdinalIgnoreCase);
 
         var existing = await context.TourismLocations.ToListAsync(cancellationToken);
-        var existingByKey = existing.ToDictionary(l => (l.DistrictId, l.Name), l => l);
+        var existingByKey = IndexLocations(existing);
         var now = DateTime.UtcNow;
 
         foreach (var item in Locations)
@@ -143,8 +143,7 @@ public static class TourismLocationSeeder
 
         var districtByName = (await context.Districts.ToListAsync(cancellationToken))
             .ToDictionary(d => d.Name, d => d.Id, StringComparer.OrdinalIgnoreCase);
-        var existing = (await context.TourismLocations.ToListAsync(cancellationToken))
-            .ToDictionary(l => (l.DistrictId, l.Name), l => l);
+        var existing = IndexLocations(await context.TourismLocations.ToListAsync(cancellationToken));
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         var now = DateTime.UtcNow;
 
@@ -231,6 +230,18 @@ public static class TourismLocationSeeder
 
         await context.SaveChangesAsync(cancellationToken);
     }
+
+    // Imported/admin data can legitimately contain more than one listing with the same name in
+    // a district. Seeding only needs one representative to avoid inserting another copy, so keep
+    // the most recently edited row instead of terminating application startup on ToDictionary().
+    private static Dictionary<(Guid DistrictId, string Name), TourismLocation> IndexLocations(
+        IEnumerable<TourismLocation> locations) => locations
+            .GroupBy(location => (location.DistrictId, location.Name))
+            .ToDictionary(
+                group => group.Key,
+                group => group.OrderByDescending(location => location.UpdatedAt)
+                    .ThenBy(location => location.Id)
+                    .First());
 
     private sealed class TourismDataFile
     {
