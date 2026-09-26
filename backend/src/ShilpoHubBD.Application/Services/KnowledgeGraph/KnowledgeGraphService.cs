@@ -147,28 +147,32 @@ public class KnowledgeGraphService : IKnowledgeGraphService
         Guid userId, ImportKnowledgeNodeRequest request, CancellationToken cancellationToken)
     {
         var type = ParseNodeType(request.NodeType);
+        var entityType = ParseNodeType(request.EntityType);
+        if (type != entityType)
+        {
+            throw new ConflictException("EntityType must match NodeType.");
+        }
         if (!ExternalBackedTypes.Contains(type))
         {
             throw new ConflictException(
                 "This node type does not have a linked ShilpoHub database record.");
         }
 
-        var existing = await _repository.GetNodeByExternalAsync(type, request.ExternalEntityId, cancellationToken);
+        var existing = await _repository.GetNodeByExternalAsync(type, request.EntityId, cancellationToken);
         if (existing is not null)
         {
             throw new ConflictException("This record already exists in the Knowledge Graph.");
         }
 
-        var resolvedLabel = await _repository.ResolveExternalLabelAsync(type, request.ExternalEntityId, cancellationToken)
+        var entity = await _repository.ResolveExternalEntityAsync(type, request.EntityId, cancellationToken)
             ?? throw new NotFoundException($"No {type} entity was found for the supplied id.");
-
-        var label = string.IsNullOrWhiteSpace(request.LabelOverride) ? resolvedLabel : request.LabelOverride!.Trim();
+        var label = entity.Name.Trim();
         var normalized = Normalize(label);
 
         // Keep the label unique within the type; disambiguate with a short id suffix if needed.
         if (await _repository.GetNodeByLabelAsync(type, normalized, cancellationToken) is not null)
         {
-            label = $"{label} ({request.ExternalEntityId.ToString()[..8]})";
+            label = $"{label} ({request.EntityId.ToString()[..8]})";
             normalized = Normalize(label);
         }
 
@@ -179,8 +183,8 @@ public class KnowledgeGraphService : IKnowledgeGraphService
             NodeType = type,
             Label = label,
             LabelNormalized = normalized,
-            ExternalEntityId = request.ExternalEntityId,
-            Description = request.Description?.Trim(),
+            ExternalEntityId = request.EntityId,
+            Description = entity.Description?.Trim(),
             IsCurated = true,
             CreatedByUserId = userId,
             CreatedAt = now,
