@@ -29,6 +29,8 @@ import ProducerInvestmentOpportunities from '../pages/Producer/InvestmentOpportu
 import ProducerInventory from '../pages/Producer/Inventory';
 import ProducerOrders from '../pages/Producer/Orders';
 import ProducerProducts from '../pages/Producer/Products';
+import ProducerProductAttributes from '../pages/Producer/ProductAttributes';
+import ProducerProductOverview from '../pages/Producer/ProductOverview';
 import ProducerSustainability from '../pages/Producer/Sustainability';
 import ProducerLiveShoppingManager from '../pages/Producer/LiveShoppingManager';
 
@@ -508,6 +510,8 @@ const router = createBrowserRouter([
           { path: routePaths.producerInvestments, element: <ProducerInvestmentOpportunities /> },
           { path: routePaths.producerInventory, element: <ProducerInventory /> },
           { path: routePaths.producerProducts, element: <ProducerProducts /> },
+          { path: routePaths.producerProductAttributes, element: <ProducerProductAttributes /> },
+          { path: routePaths.producerProductDetails, element: <ProducerProductOverview /> },
           { path: routePaths.producerOrders, element: <ProducerOrders /> },
           { path: routePaths.producerCustomOrders, element: <ProducerCustomOrders /> },
           { path: routePaths.producerQuestions, element: <ProducerQuestions /> },
