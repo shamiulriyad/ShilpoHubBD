@@ -10,8 +10,13 @@ namespace ShilpoHubBD.Application.Services.AITourism;
 
 public class AITourismService : IAITourismService
 {
+    // Only the standalone budget calculator (PlanBudgetAsync) uses these, and a caller can override
+    // them. A generated trip plan never assumes them: meals/incidentals with no verified cost are
+    // excluded from the total and reported as unverified instead.
     private const decimal DefaultDailyFoodBudgetPerPerson = 600m;
     private const decimal DefaultDailyMiscBudgetPerPerson = 300m;
+    private const string NoAccommodationMessage = "No verified accommodation is currently available for this district.";
+    private const int MaxDatasetPlaces = 12;
 
     private readonly IAITourismProvider _aiTourismProvider;
     private readonly IGeocodingProvider _geocodingProvider;
@@ -25,6 +30,7 @@ public class AITourismService : IAITourismService
     private readonly ITourismLocationRepository _tourismLocationRepository;
     private readonly IDistrictRepository _districtRepository;
     private readonly ITransportOptionRepository _transportOptionRepository;
+    private readonly ShilpoHubBD.Application.Options.BudgetEstimateOptions _budgetEstimate;
 
     public AITourismService(
         IAITourismProvider aiTourismProvider,
@@ -38,8 +44,10 @@ public class AITourismService : IAITourismService
         ITouristServiceRepository touristServiceRepository,
         ITourismLocationRepository tourismLocationRepository,
         IDistrictRepository districtRepository,
-        ITransportOptionRepository transportOptionRepository)
+        ITransportOptionRepository transportOptionRepository,
+        Microsoft.Extensions.Options.IOptions<ShilpoHubBD.Application.Options.BudgetEstimateOptions> budgetEstimateOptions)
     {
+        _budgetEstimate = budgetEstimateOptions.Value;
         _transportOptionRepository = transportOptionRepository;
         _aiTourismProvider = aiTourismProvider;
         _geocodingProvider = geocodingProvider;
@@ -76,9 +84,14 @@ public class AITourismService : IAITourismService
         var transportEstimate = await BuildTransportInfoAsync(request, districtName, cancellationToken);
         await AttachTransportOptionsAsync(transportEstimate, request, districtName, cancellationToken);
 
+        var interestText = request.Preferences is { Count: > 0 } ? $" for {string.Join(", ", request.Preferences)}" : string.Empty;
         var ragNotes = await _travelPlannerRagProvider.RetrieveAsync(
-            $"Tourist places and activities in {districtName}", request.DistrictId.HasValue ? districtName : null,
+            $"Tourist places and activities in {districtName}{interestText}", request.DistrictId.HasValue ? districtName : null,
             request.Preferences, cancellationToken);
+        var dataset = request.DistrictId.HasValue
+            ? await _travelPlannerRagProvider.GetDistrictEntitiesAsync(
+                districtName, request.Preferences, Math.Clamp(request.DurationDays * 4, 6, MaxDatasetPlaces), cancellationToken)
+            : new DistrictDatasetResult();
 
         var context = new TourPlanContext
         {
@@ -96,6 +109,7 @@ public class AITourismService : IAITourismService
             Services = services.Select(ToServiceSummary).ToList(),
             TourismLocations = tourismLocations.Select(ToTourismLocationSummary).ToList(),
             RagNotes = ragNotes,
+            Dataset = dataset,
             TransportEstimate = transportEstimate,
         };
 
@@ -103,6 +117,7 @@ public class AITourismService : IAITourismService
         result.TransportEstimate = transportEstimate;
         await EnrichStopCoordinatesAsync(result, context, cancellationToken);
         result.EstimatedBudget = await BuildEstimatedBudgetAsync(result, services, context, cancellationToken);
+        AddDataGapNotes(result, context);
         return result;
     }
 
@@ -171,7 +186,11 @@ public class AITourismService : IAITourismService
         var placesById = context.Places.ToDictionary(p => p.Id);
         var servicesById = context.Services.ToDictionary(s => s.Id);
         var locationsById = context.TourismLocations.ToDictionary(l => l.Id);
+        var datasetIds = context.Dataset.Places.Select(d => d.Id).ToHashSet();
         var geocodedByName = new Dictionary<string, GeoPointDto?>(StringComparer.OrdinalIgnoreCase);
+        using var geocodeBudgetSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        geocodeBudgetSource.CancelAfter(TimeSpan.FromSeconds(12));
+        var geocodeBudget = geocodeBudgetSource.Token;
 
         foreach (var stop in result.Days.SelectMany(d => d.Stops))
         {
@@ -179,7 +198,8 @@ public class AITourismService : IAITourismService
             // (e.g. a curated tourism location typed "HeritagePlace"), which would drop its coordinates.
             if (stop.ReferenceId is { } refId)
             {
-                if (locationsById.ContainsKey(refId)) stop.Type = "TourismLocation";
+                if (datasetIds.Contains(refId)) stop.Type = "DatasetPlace";
+                else if (locationsById.ContainsKey(refId)) stop.Type = "TourismLocation";
                 else if (placesById.ContainsKey(refId)) stop.Type = "HeritagePlace";
                 else if (servicesById.ContainsKey(refId)) stop.Type = "TouristService";
             }
@@ -206,14 +226,29 @@ public class AITourismService : IAITourismService
                 continue;
             }
 
-            if (stop.Type == "FreeTime" || string.IsNullOrWhiteSpace(stop.Name))
+            if (stop.Type is "FreeTime" or "Meal" or "Rest" || string.IsNullOrWhiteSpace(stop.Name))
+            {
+                continue;
+            }
+
+            // Nominatim allows ~1 request/second, so geocoding is capped at a shared time budget; a stop
+            // left over simply has no map marker (and is listed as "coordinates unavailable").
+            if (geocodeBudget.IsCancellationRequested)
             {
                 continue;
             }
 
             if (!geocodedByName.TryGetValue(stop.Name, out var geocoded))
             {
-                geocoded = await _geocodingProvider.GeocodeAsync($"{stop.Name}, {context.DistrictName}, Bangladesh", cancellationToken);
+                try
+                {
+                    geocoded = await _geocodingProvider.GeocodeAsync($"{stop.Name}, {context.DistrictName}, Bangladesh", geocodeBudget);
+                }
+                catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+                {
+                    continue;   // time budget spent: no marker for this and the remaining stops
+                }
+
                 geocodedByName[stop.Name] = geocoded;
             }
 
@@ -254,13 +289,17 @@ public class AITourismService : IAITourismService
             ServiceLines = serviceLines,
             DurationDays = context.DurationDays,
             PartySize = context.PartySize,
-            DailyFoodBudgetPerPerson = DefaultDailyFoodBudgetPerPerson,
-            DailyMiscBudgetPerPerson = DefaultDailyMiscBudgetPerPerson,
+            DailyFoodBudgetPerPerson = 0m,
+            DailyMiscBudgetPerPerson = 0m,
         };
 
         var budget = await _aiTourismProvider.PlanBudgetAsync(budgetContext, cancellationToken);
+        budget.Notes = string.Empty;
+        budget.UnverifiedCosts.Add("Meals: no verified meal cost is available, so food is not in the total.");
+        budget.UnverifiedCosts.Add("Local transport, guides and incidentals: no verified cost is available, so they are not in the total.");
         AddTransportCost(budget, tourPlan.TransportEstimate, context);
         AddTourismLocationCosts(budget, tourPlan, context);
+        AddAssumedCosts(budget, tourPlan, context);
         return budget;
     }
 
@@ -323,13 +362,14 @@ public class AITourismService : IAITourismService
     {
         if (transport is null || transport.Options.Count == 0)
         {
+            budget.UnverifiedCosts.Add($"{transport?.Mode ?? "Transport"} fare: no verified service and fare data for this route, so it is not in the total.");
             return;
         }
 
         var cheapest = transport.Options.Where(o => o.FareBdt.HasValue).OrderBy(o => o.FareBdt).FirstOrDefault();
         if (cheapest is null)
         {
-            budget.Notes = $"{budget.Notes} {transport.Mode} fares are not included: none is reported by the sources -- confirm with the operator.".Trim();
+            budget.UnverifiedCosts.Add($"{transport.Mode} fare: none is reported by the sources, so it is not in the total.");
             return;
         }
 
@@ -347,6 +387,44 @@ public class AITourismService : IAITourismService
         }
     }
 
+    // The verified total stays exactly as computed. This adds a SEPARATE, clearly-labelled estimate for
+    // the parts that have no verified figure (meals, local transport, bus fare, a room), using the
+    // configurable planning rates. Entry fees are never guessed: they stay excluded.
+    private void AddAssumedCosts(BudgetPlanResult budget, TourPlanResult tourPlan, TourPlanContext context)
+    {
+        var o = _budgetEstimate;
+        var people = Math.Max(1, context.PartySize);
+        var days = Math.Max(1, context.DurationDays);
+        var nights = Math.Max(0, context.DurationDays - 1);
+
+        void Add(string label, string category, decimal amount)
+        {
+            if (amount > 0) budget.EstimatedItems.Add(new BudgetLineItemDto { Label = label, Category = category, Amount = Math.Round(amount, 0) });
+        }
+
+        Add($"Meals (assumed ৳{o.FoodPerPersonPerDay:N0} per person per day)", "Food", o.FoodPerPersonPerDay * people * days);
+        Add($"Local transport (assumed ৳{o.LocalTransportPerPersonPerDay:N0} per person per day)", "Local transport", o.LocalTransportPerPersonPerDay * people * days);
+
+        var hasTransportLine = budget.LineItems.Any(i => i.Category == "Transport");
+        var km = tourPlan.TransportEstimate?.EstimatedDistanceKm;
+        if (!hasTransportLine && km.HasValue
+            && string.Equals(tourPlan.TransportEstimate?.Mode, "Bus", StringComparison.OrdinalIgnoreCase))
+        {
+            Add($"Bus fare (assumed ৳{o.BusFarePerKm:0.##}/km x {km:0} km, round trip)", "Transport", o.BusFarePerKm * (decimal)km.Value * 2 * people);
+        }
+
+        if (nights > 0 && !budget.LineItems.Any(i => i.Category == "Accommodation"))
+        {
+            var rooms = (int)Math.Ceiling(people / (double)Math.Max(1, o.PersonsPerRoom));
+            Add($"Accommodation (assumed ৳{o.AccommodationPerRoomPerNight:N0} per room per night, {rooms} room(s) x {nights} night(s))", "Accommodation", o.AccommodationPerRoomPerNight * rooms * nights);
+        }
+
+        budget.EstimatedTotal = budget.TotalEstimatedCost + budget.EstimatedItems.Sum(i => i.Amount);
+        budget.EstimatedPerPerson = Math.Round(budget.EstimatedTotal / people, 0);
+        budget.EstimateNote = "Rough planning estimate: the verified total plus assumed rates for items with no verified price. " +
+            "Entry fees are not included. Actual costs will differ.";
+    }
+
     // Adds the sourced (TourismLocation) accommodation and entry-fee costs to the budget. Only prices
     // that exist in the data are used -- an item with no verified price is left out of the total and
     // named in the notes instead of being guessed.
@@ -361,7 +439,7 @@ public class AITourismService : IAITourismService
             .ToList();
         var notes = new List<string>();
 
-        static bool IsLodging(string type) => type is "Hotel" or "Resort" or "Hostel";
+        static bool IsLodging(string type) => type is "Hotel" or "Resort" or "Hostel" or "GuestHouse" or "Motel" or "Homestay";
 
         var lodging = referenced.FirstOrDefault(l => IsLodging(l.Type))
             ?? (string.IsNullOrWhiteSpace(tourPlan.AccommodationRecommendation) ? null
@@ -382,7 +460,7 @@ public class AITourismService : IAITourismService
             }
             else
             {
-                notes.Add($"Accommodation ({lodging.Name}) is not in the total: no verified room rate is available.");
+                budget.UnverifiedCosts.Add($"Accommodation ({lodging.Name}): no verified room rate, so it is not in the total.");
             }
         }
 
@@ -409,7 +487,16 @@ public class AITourismService : IAITourismService
 
         if (unpriced.Count > 0)
         {
-            notes.Add($"Entry fees not verified and not included: {string.Join(", ", unpriced)}.");
+            foreach (var name in unpriced)
+            {
+                budget.UnverifiedCosts.Add($"Entry fee for {name} was not included because no verified fee is available.");
+            }
+        }
+
+        // The 64-district dataset has no fee data at all, so every dataset stop is unpriced.
+        foreach (var name in stops.Where(st => st.Type == "DatasetPlace").Select(st => st.Name).Distinct())
+        {
+            budget.UnverifiedCosts.Add($"Entry fee for {name} was not included because no verified fee is available.");
         }
 
         budget.TotalEstimatedCost = budget.LineItems.Sum(i => i.Amount);
@@ -418,6 +505,53 @@ public class AITourismService : IAITourismService
         {
             budget.Notes = string.Join(" ", new[] { budget.Notes }.Concat(notes).Where(n => !string.IsNullOrWhiteSpace(n)));
         }
+    }
+
+    // Deterministic post-checks so the response never hides a data gap, whatever the model wrote:
+    // the accommodation line is replaced when there is no lodging record to recommend, and dataset
+    // limits (interests the district cannot serve, coordinates missing) are reported.
+    private static void AddDataGapNotes(TourPlanResult result, TourPlanContext context)
+    {
+        // The model sometimes echoes internal prompt fields ("openingHours=not verified, coordinates=unknown")
+        // or the dataset boilerplate as notes; the app writes those gaps itself below, so drop the echoes.
+        result.UnverifiedNotes = result.UnverifiedNotes
+            .Where(n => !System.Text.RegularExpressions.Regex.IsMatch(n, @"[A-Za-z]+=\S") && !n.Contains("not in this dataset", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        static bool IsLodging(string type) => type is "Hotel" or "Resort" or "Hostel" or "GuestHouse" or "Motel" or "Homestay";
+        if (!context.TourismLocations.Any(l => IsLodging(l.Type)))
+        {
+            result.AccommodationRecommendation = NoAccommodationMessage;
+            result.UnverifiedNotes.Add(NoAccommodationMessage);
+        }
+
+        if (context.Dataset.UnmatchedInterests.Count > 0)
+        {
+            var fallback = context.Dataset.FallbackDistricts.Count > 0
+                ? $" The dataset suggests {string.Join(", ", context.Dataset.FallbackDistricts)} instead." : string.Empty;
+            result.UnverifiedNotes.Add(
+                $"{context.DistrictName} has no {string.Join(" / ", context.Dataset.UnmatchedInterests)} destination in the tourism dataset.{fallback}");
+        }
+
+        var unplotted = result.Days.SelectMany(d => d.Stops)
+            .Where(s => s.Type is "DatasetPlace" or "HeritagePlace" or "TouristService" or "TourismLocation"
+                && (!s.Latitude.HasValue || !s.Longitude.HasValue))
+            .Select(s => s.Name).Distinct().ToList();
+        if (unplotted.Count > 0)
+        {
+            result.UnverifiedNotes.Add($"Coordinates unavailable, so not shown on the map: {string.Join(", ", unplotted)}.");
+        }
+
+        var noHours = context.TourismLocations
+            .Where(l => string.IsNullOrWhiteSpace(l.OpeningHours) && !IsLodging(l.Type) && l.Type != "Restaurant"
+                && result.Days.SelectMany(d => d.Stops).Any(s => s.ReferenceId == l.Id))
+            .Select(l => l.Name).ToList();
+        if (noHours.Count > 0)
+        {
+            result.UnverifiedNotes.Add($"Opening hours not verified: {string.Join(", ", noHours)}.");
+        }
+
+        result.UnverifiedNotes = result.UnverifiedNotes.Distinct().ToList();
     }
 
     public async Task<BudgetPlanResult> PlanBudgetAsync(BudgetPlanRequest request, CancellationToken cancellationToken)
