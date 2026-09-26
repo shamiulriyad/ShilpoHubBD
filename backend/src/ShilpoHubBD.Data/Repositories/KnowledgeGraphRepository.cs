@@ -278,9 +278,57 @@ public class KnowledgeGraphRepository : IKnowledgeGraphRepository
             _ => null,
         };
 
-        return query is null
-            ? new List<KnowledgeEntityCandidateDto>()
-            : await query.OrderBy(x => x.Name).Take(take).ToListAsync(cancellationToken);
+        if (query is null)
+        {
+            return new List<KnowledgeEntityCandidateDto>();
+        }
+
+        var existingEntityIds = _context.KnowledgeNodes
+            .Where(n => n.NodeType == type && n.ExternalEntityId.HasValue)
+            .Select(n => n.ExternalEntityId!.Value);
+
+        return await query
+            .Where(option => !existingEntityIds.Contains(option.Id))
+            .OrderBy(option => option.Name)
+            .Take(take)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<KnowledgeEntityCandidateDto?> ResolveExternalEntityAsync(
+        KnowledgeNodeType type, Guid externalEntityId, CancellationToken cancellationToken)
+    {
+        var name = await ResolveExternalLabelAsync(type, externalEntityId, cancellationToken);
+        if (name is null)
+        {
+            return null;
+        }
+
+        string? description = type switch
+        {
+            KnowledgeNodeType.Product => await _context.Products.Where(x => x.Id == externalEntityId)
+                .Select(x => x.Description).FirstOrDefaultAsync(cancellationToken),
+            KnowledgeNodeType.Village => await _context.Villages.Where(x => x.Id == externalEntityId)
+                .Select(x => x.Description).FirstOrDefaultAsync(cancellationToken),
+            KnowledgeNodeType.Craft => await _context.CraftHeritageEntries.Where(x => x.Id == externalEntityId)
+                .Select(x => x.Summary).FirstOrDefaultAsync(cancellationToken),
+            KnowledgeNodeType.Heritage or KnowledgeNodeType.CulturalSite => await _context.HeritagePlaces
+                .Where(x => x.Id == externalEntityId).Select(x => x.Description).FirstOrDefaultAsync(cancellationToken),
+            KnowledgeNodeType.TouristPlace => await _context.TourismLocations.Where(x => x.Id == externalEntityId)
+                .Select(x => x.Description).FirstOrDefaultAsync(cancellationToken),
+            KnowledgeNodeType.Food => await _context.LocalCuisines.Where(x => x.Id == externalEntityId)
+                .Select(x => x.Description).FirstOrDefaultAsync(cancellationToken),
+            KnowledgeNodeType.Festival => await _context.HeritageFestivals.Where(x => x.Id == externalEntityId)
+                .Select(x => x.Description).FirstOrDefaultAsync(cancellationToken),
+            _ => null,
+        };
+
+        return new KnowledgeEntityCandidateDto
+        {
+            Id = externalEntityId,
+            Name = name,
+            EntityType = type.ToString(),
+            Description = description,
+        };
     }
 
     public async Task<KnowledgeGraphStatsDto> GetStatsAsync(CancellationToken cancellationToken)
