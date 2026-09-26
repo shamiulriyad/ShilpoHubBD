@@ -53,6 +53,10 @@ public class VillageService : IVillageService
             Craft = request.Craft.Trim(),
             Description = request.Description?.Trim(),
             ImageUrl = request.ImageUrl?.Trim(),
+            VisitTips = request.VisitTips?.Trim(),
+            SourceUrl = request.SourceUrl?.Trim(),
+            SourceLabel = request.SourceLabel?.Trim(),
+            ImageCredit = request.ImageCredit?.Trim(),
             DistrictId = request.DistrictId,
             IsActive = true,
             CreatedAt = now,
@@ -80,6 +84,10 @@ public class VillageService : IVillageService
         village.Craft = request.Craft.Trim();
         village.Description = request.Description?.Trim();
         village.ImageUrl = request.ImageUrl?.Trim();
+        village.VisitTips = request.VisitTips?.Trim();
+        village.SourceUrl = request.SourceUrl?.Trim();
+        village.SourceLabel = request.SourceLabel?.Trim();
+        village.ImageCredit = request.ImageCredit?.Trim();
         village.DistrictId = request.DistrictId;
         village.IsActive = request.IsActive;
         village.UpdatedAt = DateTime.UtcNow;
@@ -144,6 +152,10 @@ public class VillageService : IVillageService
         Craft = village.Craft,
         Description = village.Description,
         ImageUrl = village.ImageUrl,
+        VisitTips = village.VisitTips,
+        SourceUrl = village.SourceUrl,
+        SourceLabel = village.SourceLabel,
+        ImageCredit = village.ImageCredit,
         IsActive = village.IsActive,
         DistrictId = village.DistrictId,
         DistrictName = village.District.Name,
