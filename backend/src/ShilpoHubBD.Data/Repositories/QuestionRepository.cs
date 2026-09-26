@@ -32,6 +32,25 @@ public class QuestionRepository : IQuestionRepository
         return (items, totalCount);
     }
 
+    public async Task<(List<CommunityQuestion> Items, int TotalCount)> GetPagedByProducerAsync(Guid producerId, bool unansweredOnly, int page, int pageSize, CancellationToken cancellationToken)
+    {
+        var questions = WithDetails().Include(q => q.Product).Where(q => q.Product.ProducerId == producerId);
+        if (unansweredOnly)
+        {
+            questions = questions.Where(q => !q.Answers.Any());
+        }
+
+        questions = questions.OrderByDescending(q => q.CreatedAt);
+
+        var totalCount = await questions.CountAsync(cancellationToken);
+        var items = await questions
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
+
     public Task<CommunityQuestion?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => WithDetails().FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
 

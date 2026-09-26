@@ -8,6 +8,8 @@ import { ProductGallery, Product360Viewer, VideoPlayer, TimelineViewer, QRCodeVi
 import { useProduct } from '../../hooks/useProducts';
 import { useSimilarProducts } from '../../hooks/useRecommendations';
 import { useProductReviews, useReviewMutations } from '../../hooks/useReviews';
+import QuickMessageDialog from '../../components/messaging/QuickMessageDialog';
+import MutationFeedback from '../../components/ui/MutationFeedback';
 import { useCartMutations } from '../../hooks/useCart';
 import { useWishlistMutations } from '../../hooks/useWishlist';
 import { useAuth } from '../../hooks/useAuth';
@@ -24,7 +26,8 @@ export default function ProductDetails() {
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [view360, setView360] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
+  const [newReview, setNewReview] = useState({ rating: 5, producerRating: 5, comment: '' });
+  const [messaging, setMessaging] = useState(false);
   const [qrCode, setQrCode] = useState('');
   const verifyQr = useVerifyQRCode();
 
@@ -46,8 +49,8 @@ export default function ProductDetails() {
   const handleSubmitReview = (event) => {
     event.preventDefault();
     createReview.mutate(
-      { productId, rating: Number(newReview.rating), comment: newReview.comment, imageUrls: [] },
-      { onSuccess: () => setNewReview({ rating: 5, comment: '' }) },
+      { productId, rating: Number(newReview.rating), producerRating: Number(newReview.producerRating), comment: newReview.comment, imageUrls: [] },
+      { onSuccess: () => setNewReview({ rating: 5, producerRating: 5, comment: '' }) },
     );
   };
 
@@ -178,6 +181,24 @@ export default function ProductDetails() {
                   </div>
                   <span className="text-sm text-link">View profile â†’</span>
                 </Link>
+
+                {isAuthenticated && (
+                  <button
+                    type="button"
+                    onClick={() => setMessaging(true)}
+                    className="mt-3 w-full rounded-xl border border-border bg-surface p-3 text-sm font-medium text-primary transition hover:shadow-md"
+                  >
+                    ✉️ Message {product.producerName}
+                  </button>
+                )}
+                <QuickMessageDialog
+                  open={messaging}
+                  recipientId={product.producerId}
+                  recipientName={product.producerName}
+                  title={`Message ${product.producerName}`}
+                  hint={`Ask about "${product.name}". They get a notification and can reply from their inbox.`}
+                  onClose={() => setMessaging(false)}
+                />
 
                 {craftStory && (
                   <Link
@@ -333,17 +354,19 @@ export default function ProductDetails() {
                 <div className="max-w-3xl space-y-4">
                   {isAuthenticated && (
                     <form onSubmit={handleSubmitReview} className="space-y-3 rounded-xl border border-border bg-surface p-4">
-                      <select aria-label="Rating"
-                        value={newReview.rating}
-                        onChange={(event) => setNewReview((prev) => ({ ...prev, rating: event.target.value }))}
-                        className="rounded-md border border-border bg-background px-3 py-2 text-sm"
-                      >
-                        {[5, 4, 3, 2, 1].map((r) => (
-                          <option key={r} value={r}>
-                            {r} star{r > 1 ? 's' : ''}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="flex flex-wrap gap-3">
+                        <label className="text-xs text-body/70">Rate the product
+                          <select aria-label="Product rating" value={newReview.rating} onChange={(event) => setNewReview((prev) => ({ ...prev, rating: event.target.value }))} className="mt-1 block rounded-md border border-border bg-background px-3 py-2 text-sm">
+                            {[5, 4, 3, 2, 1].map((r) => <option key={r} value={r}>{r} star{r > 1 ? 's' : ''}</option>)}
+                          </select>
+                        </label>
+                        <label className="text-xs text-body/70">Rate the producer
+                          <select aria-label="Producer rating" value={newReview.producerRating} onChange={(event) => setNewReview((prev) => ({ ...prev, producerRating: event.target.value }))} className="mt-1 block rounded-md border border-border bg-background px-3 py-2 text-sm">
+                            {[5, 4, 3, 2, 1].map((r) => <option key={r} value={r}>{r} star{r > 1 ? 's' : ''}</option>)}
+                          </select>
+                        </label>
+                      </div>
+                      <p className="text-xs text-body/60">Had a problem with this product? Report it under Order History, then rate once the producer has settled it.</p>
                       <textarea aria-label="Share your experience with this product"
                         required
                         rows={3}
@@ -355,6 +378,7 @@ export default function ProductDetails() {
                       <Button type="submit" variant="primary" disabled={createReview.isPending}>
                         {createReview.isPending ? 'Posting…' : 'Post Review'}
                       </Button>
+                      <MutationFeedback mutation={createReview} successMessage="Thanks for rating!" />
                     </form>
                   )}
                   <AsyncState isLoading={reviewsQuery.isLoading} isError={reviewsQuery.isError} error={reviewsQuery.error}>

@@ -44,6 +44,14 @@ public class SupplierDiscoveryRepository : ISupplierDiscoveryRepository
             query = query.Where(p => p.DistrictId == parameters.DistrictId.Value);
         }
 
+        if (!string.IsNullOrWhiteSpace(parameters.Expertise))
+        {
+            var expertiseTerm = $"%{parameters.Expertise.Trim()}%";
+            query = query.Where(p => _context.UserProfiles.Any(u => u.UserId == p.ProducerId
+                && u.Status == ShilpoHubBD.Domain.Entities.Identity.UserProfileStatus.Approved
+                && u.Expertise != null && EF.Functions.ILike(u.Expertise, expertiseTerm)));
+        }
+
         if (!string.IsNullOrWhiteSpace(parameters.ProductName))
         {
             var term = $"%{parameters.ProductName.Trim()}%";

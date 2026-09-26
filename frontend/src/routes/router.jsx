@@ -29,8 +29,9 @@ import ProducerInvestmentOpportunities from '../pages/Producer/InvestmentOpportu
 import ProducerInventory from '../pages/Producer/Inventory';
 import ProducerOrders from '../pages/Producer/Orders';
 import ProducerProducts from '../pages/Producer/Products';
+import ProducerProductAttributes from '../pages/Producer/ProductAttributes';
+import ProducerProductOverview from '../pages/Producer/ProductOverview';
 import ProducerSustainability from '../pages/Producer/Sustainability';
-import ProducerAiBusinessAssistant from '../pages/Producer/AiBusinessAssistant';
 import ProducerLiveShoppingManager from '../pages/Producer/LiveShoppingManager';
 
 import BusinessPartnerDashboard from '../pages/BusinessPartner/BusinessPartnerDashboard';
@@ -115,6 +116,15 @@ import PreservationStrategies from '../pages/Research/PreservationStrategies';
 import InnovationExperiments from '../pages/Research/InnovationExperiments';
 import HeritageInnovationSubmissions from '../pages/Research/HeritageInnovationSubmissions';
 import InnovationPrototypes from '../pages/Research/InnovationPrototypes';
+import ProducerQuestions from '../pages/Producer/Questions';
+import ProducerReturns from '../pages/Producer/Returns';
+import ProducerProcurements from '../pages/Producer/Procurements';
+import ProducerComplaints from '../pages/Producer/Complaints';
+import ProducerExpertise from '../pages/Producer/Expertise';
+import CustomerComplaints from '../pages/Customer/Complaints';
+import ProcurementInspections from '../pages/Admin/ProcurementInspections';
+import ProfileApprovals from '../pages/Admin/ProfileApprovals';
+import AdminExpertiseCertificates from '../pages/Admin/ExpertiseCertificates';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -258,10 +268,6 @@ const router = createBrowserRouter([
           { path: routePaths.marketplaceWishlist, element: <Wishlist /> },
           { path: routePaths.marketplaceCart, element: <Cart /> },
           { path: routePaths.marketplaceCheckout, element: <Checkout /> },
-          { path: routePaths.tourismPassport, element: <TravelPassport /> },
-          { path: routePaths.tourismBookings, element: <MyBookings /> },
-          { path: routePaths.tourismAiPlanner, element: <AiTourismPlanner /> },
-          { path: routePaths.tourismMyPlans, element: <MyTripPlans /> },
           { path: routePaths.researchWorkspace, element: <ResearchWorkspace /> },
           { path: routePaths.researchAiAssistant, element: <ResearchAiAssistant /> },
           { path: routePaths.researchFieldResearch, element: <FieldResearch /> },
@@ -334,11 +340,34 @@ const router = createBrowserRouter([
         ],
       },
       {
+        // Personal trip tools: only travellers (and admins) plan trips, book services and keep a passport.
+        element: <RoleBasedRoute allowedRoles={['Tourist', 'SuperAdmin']} />,
+        children: [
+          { path: routePaths.tourismPassport, element: <TravelPassport /> },
+          { path: routePaths.tourismBookings, element: <MyBookings /> },
+          { path: routePaths.tourismAiPlanner, element: <AiTourismPlanner /> },
+          { path: routePaths.tourismMyPlans, element: <MyTripPlans /> },
+        ],
+      },
+      {
         element: <RoleBasedRoute allowedRoles={['Tourist', 'SuperAdmin']} />,
         children: [
           {
             element: <DashboardLayout navItems={touristSidebarNav} sidebarTitle="Tourist" />,
-            children: [{ path: routePaths.tourist, element: <TouristPage /> }],
+            children: [
+              { path: routePaths.tourist, element: <TouristPage /> },
+              { path: routePaths.workspaceTouristCrafts, element: <Crafts /> },
+              { path: routePaths.workspaceTouristMap, element: <HeritageMap /> },
+              { path: routePaths.workspaceTouristFestivals, element: <FestivalDirectory /> },
+              { path: routePaths.workspaceTouristEvents, element: <CulturalEvents /> },
+              { path: routePaths.workspaceTouristRoutes, element: <TourRoutes /> },
+              { path: routePaths.workspaceTouristVillages, element: <VillageExplorer /> },
+              { path: routePaths.workspaceTouristCuisines, element: <LocalCuisines /> },
+              { path: routePaths.workspaceTouristServices, element: <TouristServices /> },
+              { path: routePaths.workspaceTouristBookings, element: <MyBookings /> },
+              { path: routePaths.workspaceTouristPassport, element: <TravelPassport /> },
+              { path: routePaths.workspaceTouristAiPlanner, element: <AiTourismPlanner /> },
+            ],
           },
         ],
       },
@@ -347,7 +376,13 @@ const router = createBrowserRouter([
         children: [
           {
             element: <DashboardLayout navItems={academyMemberSidebarNav} sidebarTitle="Academy" />,
-            children: [{ path: routePaths.academyMember, element: <LearningDashboard /> }],
+            children: [
+              { path: routePaths.academyMember, element: <LearningDashboard /> },
+              { path: routePaths.workspaceAcademyCatalog, element: <CourseCatalog /> },
+              { path: routePaths.workspaceAcademyMentors, element: <Mentors /> },
+              { path: routePaths.workspaceAcademyLiveClasses, element: <LiveClasses /> },
+              { path: routePaths.workspaceAcademyCertifications, element: <Certifications /> },
+            ],
           },
         ],
       },
@@ -394,6 +429,8 @@ const router = createBrowserRouter([
               { path: routePaths.governmentComplaintsMonitoring, element: <ComplaintsMonitoring /> },
               { path: routePaths.governmentFunding, element: <Funding /> },
               { path: routePaths.ngo, element: <NGOPage /> },
+              { path: routePaths.governmentKnowledgeGraph, element: <KnowledgeGraph /> },
+              { path: routePaths.governmentHeritageDatabase, element: <HeritageDatabase /> },
             ],
           },
         ],
@@ -408,6 +445,9 @@ const router = createBrowserRouter([
               { path: routePaths.adminUsers, element: <AdminWorkspace section="users" /> },
               { path: routePaths.adminHeritage, element: <AdminWorkspace section="heritage" /> },
               { path: routePaths.adminMarketplace, element: <AdminWorkspace section="marketplace" /> },
+              { path: routePaths.adminProcurementInspections, element: <ProcurementInspections /> },
+              { path: routePaths.adminProfileApprovals, element: <ProfileApprovals /> },
+              { path: routePaths.adminExpertiseCertificates, element: <AdminExpertiseCertificates /> },
               { path: "/admin/:section/:view", element: <AdminWorkspace /> },
               { path: "/admin/:section", element: <AdminWorkspace /> },
             ],
@@ -438,6 +478,7 @@ const router = createBrowserRouter([
           { path: routePaths.customerCommunity, element: <CommunityFeed /> },
           { path: routePaths.customerForum, element: <DiscussionForum /> },
           { path: routePaths.customerQA, element: <QuestionsAnswers /> },
+          { path: routePaths.customerComplaints, element: <CustomerComplaints /> },
           { path: routePaths.customerMessages, element: <CustomerMessages /> },
           { path: routePaths.customerFollowing, element: <FollowingProducers /> },
           { path: routePaths.customerFavoriteVillages, element: <FavoriteVillages /> },
@@ -475,11 +516,17 @@ const router = createBrowserRouter([
           { path: routePaths.producerInvestments, element: <ProducerInvestmentOpportunities /> },
           { path: routePaths.producerInventory, element: <ProducerInventory /> },
           { path: routePaths.producerProducts, element: <ProducerProducts /> },
+          { path: routePaths.producerProductAttributes, element: <ProducerProductAttributes /> },
+          { path: routePaths.producerProductDetails, element: <ProducerProductOverview /> },
           { path: routePaths.producerOrders, element: <ProducerOrders /> },
           { path: routePaths.producerCustomOrders, element: <ProducerCustomOrders /> },
+          { path: routePaths.producerQuestions, element: <ProducerQuestions /> },
+          { path: routePaths.producerReturns, element: <ProducerReturns /> },
+          { path: routePaths.producerProcurements, element: <ProducerProcurements /> },
+          { path: routePaths.producerComplaints, element: <ProducerComplaints /> },
+          { path: routePaths.producerExpertise, element: <ProducerExpertise /> },
           { path: routePaths.producerAuctions, element: <ProducerAuctions /> },
           { path: routePaths.producerSustainability, element: <ProducerSustainability /> },
-          { path: routePaths.producerAiAssistant, element: <ProducerAiBusinessAssistant /> },
           { path: routePaths.producerLiveShopping, element: <ProducerLiveShoppingManager /> },
         ],
       },

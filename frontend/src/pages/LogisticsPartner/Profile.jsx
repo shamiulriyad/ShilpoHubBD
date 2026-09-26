@@ -4,6 +4,7 @@ import { PageHeader, Button, Badge } from '../../components/ui';
 import MutationFeedback from '../../components/ui/MutationFeedback';
 import { useAuth } from '../../hooks/useAuth';
 import { useDistricts } from '../../hooks/useDistricts';
+import { confirmAction } from '../../lib/confirm';
 import {
   useMyLogisticsPartnerProfile,
   useUpsertLogisticsPartnerProfile,
@@ -213,7 +214,7 @@ export default function LogisticsPartnerProfile() {
                 </span>
                 <button
                   type="button"
-                  onClick={() => removeServiceArea.mutate(area.id)}
+                  onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeServiceArea.mutate(area.id); }}
                   disabled={removeServiceArea.isPending}
                   className="text-xs text-danger hover:underline"
                 >

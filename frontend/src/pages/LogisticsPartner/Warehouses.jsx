@@ -3,6 +3,7 @@ import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useDistricts } from '../../hooks/useDistricts';
 import { useWarehouses, useWarehouse, useWarehouseMutations } from '../../hooks/useWarehouses';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const warehouseTypes = ['Distribution', 'Fulfillment', 'ColdStorage', 'CrossDock', 'Returns', 'Hub'];
 const warehouseStatuses = ['Active', 'Inactive', 'Maintenance', 'Closed'];
@@ -75,7 +76,7 @@ function WarehouseDetail({ id }) {
               <span>{zone.code} — {zone.name} ({zone.type}) · {zone.capacityUnits} units</span>
               <button
                 type="button"
-                onClick={() => removeZone.mutate({ id, zoneId: zone.id })}
+                onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeZone.mutate({ id, zoneId: zone.id }); }}
                 className="text-danger hover:underline"
               >
                 Remove
@@ -103,7 +104,7 @@ function WarehouseDetail({ id }) {
               <span>{bin.code} {bin.zoneCode ? `(${bin.zoneCode})` : ''} — {bin.type} · {bin.occupiedUnits}/{bin.capacityUnits}</span>
               <button
                 type="button"
-                onClick={() => removeBin.mutate({ id, binId: bin.id })}
+                onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeBin.mutate({ id, binId: bin.id }); }}
                 className="text-danger hover:underline"
               >
                 Remove
@@ -210,7 +211,7 @@ export default function Warehouses() {
                   </Button>
                   <button
                     type="button"
-                    onClick={() => remove.mutate(wh.id)}
+                    onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) remove.mutate(wh.id); }}
                     className="text-xs text-danger hover:underline"
                   >
                     Delete

@@ -32,6 +32,26 @@ public class QuestionService : IQuestionService
         };
     }
 
+    public async Task<PagedResult<QuestionDto>> GetForProducerAsync(Guid producerId, bool unansweredOnly, int page, int pageSize, CancellationToken cancellationToken)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize is < 1 or > 50 ? 20 : pageSize;
+        var (items, totalCount) = await _questionRepository.GetPagedByProducerAsync(producerId, unansweredOnly, page, pageSize, cancellationToken);
+
+        return new PagedResult<QuestionDto>
+        {
+            Items = items.Select(q =>
+            {
+                var dto = ToDto(q, producerId);
+                dto.ProductName = q.Product?.Name;
+                return dto;
+            }).ToList(),
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize,
+        };
+    }
+
     public async Task<QuestionDto> AskAsync(Guid productId, Guid userId, CreateQuestionRequest request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(productId, cancellationToken)
@@ -113,6 +133,7 @@ public class QuestionService : IQuestionService
         UserId = question.UserId,
         AskerName = question.User.FullName,
         Body = question.Body,
+        ImageUrl = question.ImageUrl,
         CreatedAt = question.CreatedAt,
         Answers = question.Answers
             .OrderBy(a => a.CreatedAt)

@@ -10,3 +10,13 @@ export function useLogisticsDirectory(enabled = true) {
     staleTime: 60_000,
   });
 }
+
+// Routes a chosen partner has planned (from -> to, date) so a producer can pick the one they need.
+export function useLogisticsPartnerRoutes(profileId) {
+  return useQuery({
+    queryKey: ['logistics', 'directory', profileId, 'routes'],
+    queryFn: () => apiClient.get(`/logistics/directory/${profileId}/routes`).then((res) => res.data),
+    enabled: Boolean(profileId),
+    staleTime: 30_000,
+  });
+}

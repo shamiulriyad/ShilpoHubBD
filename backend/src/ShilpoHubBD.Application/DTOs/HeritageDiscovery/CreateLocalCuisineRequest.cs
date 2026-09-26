@@ -8,4 +8,8 @@ public class CreateLocalCuisineRequest
     public Guid? HeritagePlaceId { get; set; }
     public string? WhereToTry { get; set; }
     public string? ImageUrl { get; set; }
+    public string? Kind { get; set; }
+    public string? Ingredients { get; set; }
+    public string? SourceUrl { get; set; }
+    public bool IsNationwide { get; set; }
 }

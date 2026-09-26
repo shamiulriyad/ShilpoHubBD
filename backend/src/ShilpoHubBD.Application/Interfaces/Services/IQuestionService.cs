@@ -6,6 +6,7 @@ namespace ShilpoHubBD.Application.Interfaces.Services;
 public interface IQuestionService
 {
     Task<PagedResult<QuestionDto>> GetByProductAsync(Guid productId, int page, int pageSize, CancellationToken cancellationToken);
+    Task<PagedResult<QuestionDto>> GetForProducerAsync(Guid producerId, bool unansweredOnly, int page, int pageSize, CancellationToken cancellationToken);
     Task<QuestionDto> AskAsync(Guid productId, Guid userId, CreateQuestionRequest request, CancellationToken cancellationToken);
     Task<QuestionDto> AnswerAsync(Guid questionId, Guid userId, CreateAnswerRequest request, CancellationToken cancellationToken);
     Task DeleteQuestionAsync(Guid questionId, Guid userId, bool isAdmin, CancellationToken cancellationToken);

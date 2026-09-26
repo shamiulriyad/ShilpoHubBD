@@ -6,6 +6,8 @@ namespace ShilpoHubBD.Application.Interfaces.Repositories;
 public interface IOrderRepository
 {
     Task<(List<Order> Items, int TotalCount)> GetPagedByUserAsync(Guid userId, OrderQueryParameters query, CancellationToken cancellationToken);
+    // Orders a customer asked to return (or that finished a return) which contain this producer's items.
+    Task<List<Order>> GetReturnOrdersForProducerAsync(Guid producerId, CancellationToken cancellationToken);
     Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<bool> ExistsByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken);
     Task<bool> HasPurchasedProductAsync(Guid userId, Guid productId, CancellationToken cancellationToken);

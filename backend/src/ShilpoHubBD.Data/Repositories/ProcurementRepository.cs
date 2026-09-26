@@ -19,6 +19,7 @@ public class ProcurementRepository : IProcurementRepository
             .Include(p => p.BusinessPartner)
             .Include(p => p.Producer)
             .Include(p => p.ApprovedBy)
+            .Include(p => p.InspectedBy)
             .Include(p => p.Order)
             .Include(p => p.Items).ThenInclude(i => i.Product)
             .Include(p => p.StatusHistory)
@@ -27,6 +28,7 @@ public class ProcurementRepository : IProcurementRepository
     private IQueryable<ProcurementRequest> ForListing()
         => _context.ProcurementRequests
             .Include(p => p.Producer)
+            .Include(p => p.BusinessPartner)
             .Include(p => p.Items)
             .AsSplitQuery();
 
@@ -55,6 +57,18 @@ public class ProcurementRepository : IProcurementRepository
     public Task<(List<ProcurementRequest> Items, int TotalCount)> GetPagedForBusinessPartnerAsync(
         Guid businessPartnerId, ProcurementQueryParameters parameters, CancellationToken cancellationToken)
         => PageAsync(ForListing().Where(p => p.BusinessPartnerId == businessPartnerId), parameters, cancellationToken);
+
+    public Task<(List<ProcurementRequest> Items, int TotalCount)> GetPagedForProducerAsync(
+        Guid producerId, ProcurementQueryParameters parameters, CancellationToken cancellationToken)
+        => PageAsync(ForListing().Where(p => p.ProducerId == producerId), parameters, cancellationToken);
+
+    public Task<(List<ProcurementRequest> Items, int TotalCount)> GetPagedForInspectionAsync(
+        bool pendingOnly, ProcurementQueryParameters parameters, CancellationToken cancellationToken)
+        => PageAsync(
+            ForListing().Where(p => pendingOnly
+                ? p.InspectionStatus == ProcurementInspectionStatus.Pending
+                : p.InspectionStatus != ProcurementInspectionStatus.NotRequired),
+            parameters, cancellationToken);
 
     public Task<(List<ProcurementRequest> Items, int TotalCount)> GetPagedAllAsync(
         ProcurementQueryParameters parameters, CancellationToken cancellationToken)

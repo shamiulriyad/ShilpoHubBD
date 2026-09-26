@@ -42,6 +42,18 @@ public class LiveShoppingService : ILiveShoppingService
         };
     }
 
+    public async Task<PagedResult<LiveEventListItemDto>> GetMineAsync(Guid producerId, LiveEventQueryParameters query, CancellationToken cancellationToken)
+    {
+        var (items, totalCount) = await _liveShoppingRepository.GetPagedAsync(query.Status, query.Page, query.PageSize, cancellationToken, producerId);
+        return new PagedResult<LiveEventListItemDto>
+        {
+            Items = items.Select(ToListItemDto).ToList(),
+            TotalCount = totalCount,
+            Page = query.Page,
+            PageSize = query.PageSize,
+        };
+    }
+
     public async Task<LiveEventDto> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var liveEvent = await _liveShoppingRepository.GetByIdAsync(id, cancellationToken)

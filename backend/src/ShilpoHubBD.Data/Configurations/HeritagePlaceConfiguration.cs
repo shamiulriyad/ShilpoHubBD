@@ -16,6 +16,9 @@ public class HeritagePlaceConfiguration : IEntityTypeConfiguration<HeritagePlace
         builder.Property(p => p.PlaceType).IsRequired().HasConversion<string>().HasMaxLength(30);
         builder.Property(p => p.Address).HasMaxLength(500);
         builder.Property(p => p.ImageUrl).HasMaxLength(1000);
+        builder.Property(p => p.KnownFor).HasMaxLength(300);
+        builder.Property(p => p.SourceUrl).HasMaxLength(1000);
+        builder.Property(p => p.ImageCredit).HasMaxLength(500);
         builder.Property(p => p.Latitude).IsRequired();
         builder.Property(p => p.Longitude).IsRequired();
         builder.Property(p => p.CreatedAt).IsRequired();

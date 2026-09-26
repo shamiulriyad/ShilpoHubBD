@@ -1,4 +1,5 @@
 import Badge from './Badge';
+import { resolveUploadUrl } from '../messaging/ImageAttachButton';
 
 export default function QnASection({ qa }) {
   return (
@@ -10,6 +11,11 @@ export default function QnASection({ qa }) {
         </span>
       </div>
       <p className="text-sm font-semibold text-heading">{qa.question}</p>
+      {qa.image && (
+        <a href={resolveUploadUrl(qa.image)} target="_blank" rel="noreferrer">
+          <img src={resolveUploadUrl(qa.image)} alt="Attached to the question" className="mt-2 max-h-48 rounded-lg object-cover" loading="lazy" />
+        </a>
+      )}
 
       <div className="mt-4 space-y-3 border-t border-border pt-4">
         {qa.answers.map((answer) => (

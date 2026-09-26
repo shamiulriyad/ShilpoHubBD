@@ -10,12 +10,10 @@ namespace ShilpoHubBD.Application.Services.ProducerBusiness;
 
 public class ProducerOrderService : IProducerOrderService
 {
-    // Statuses where the producer has committed to the sale; used as the basis for revenue/analytics.
+    // Revenue and completed orders only count once the logistics partner has delivered the parcel
+    // (Delivered is set from the shipment, never by the producer).
     private static readonly OrderItemProducerStatus[] RevenueStatuses =
     {
-        OrderItemProducerStatus.Accepted,
-        OrderItemProducerStatus.Processing,
-        OrderItemProducerStatus.Shipped,
         OrderItemProducerStatus.Delivered,
     };
 
@@ -105,48 +103,38 @@ public class ProducerOrderService : IProducerOrderService
         var item = await GetOwnedItemAsync(producerId, orderItemId, cancellationToken);
         EnsureStatus(item, OrderItemProducerStatus.Processing, "shipped");
 
-        var trackingNumber = request.TrackingNumber;
-        var carrier = request.Carrier;
-        if (request.LogisticsPartnerProfileId.HasValue)
+        if (!request.LogisticsPartnerProfileId.HasValue)
         {
-            // Hand the item to the chosen logistics partner: they get a shipment for this order and
-            // the customer sees the partner and the shipment tracking number.
-            var shipment = await _deliveryTrackingService.CreateForOrderHandoffAsync(
-                request.LogisticsPartnerProfileId.Value, producerId, item.Product?.Producer?.FullName ?? "Producer",
-                new OrderHandoffDetails
-                {
-                    OrderId = item.OrderId,
-                    RecipientName = item.Order.RecipientName,
-                    RecipientPhone = item.Order.RecipientPhone,
-                    DestinationAddressLine = item.Order.ShippingAddressLine,
-                    DestinationCity = item.Order.ShippingDistrict?.Name ?? "Bangladesh",
-                    DestinationDistrictId = item.Order.ShippingDistrictId,
-                    ParcelCount = Math.Max(1, item.Quantity),
-                    DeclaredValue = item.LineTotal,
-                    Description = $"{item.Quantity} x {item.ProductName}",
-                },
-                cancellationToken);
-            trackingNumber = shipment.TrackingNumber;
-            carrier = shipment.LogisticsPartnerName ?? "Logistics partner";
+            throw new ConflictException("Choose a logistics partner to hand this order to. Producers cannot deliver orders themselves.");
         }
+
+        // Hand the item to the chosen logistics partner: they get a shipment for this order and
+        // the customer sees the partner and the shipment tracking number.
+        var shipment = await _deliveryTrackingService.CreateForOrderHandoffAsync(
+            request.LogisticsPartnerProfileId.Value, producerId, item.Product?.Producer?.FullName ?? "Producer",
+            new OrderHandoffDetails
+            {
+                OrderId = item.OrderId,
+                RecipientName = item.Order.RecipientName,
+                RecipientPhone = item.Order.RecipientPhone,
+                DestinationAddressLine = item.Order.ShippingAddressLine,
+                DestinationCity = item.Order.ShippingDistrict?.Name ?? "Bangladesh",
+                DestinationDistrictId = item.Order.ShippingDistrictId,
+                ParcelCount = Math.Max(1, item.Quantity),
+                DeclaredValue = item.LineTotal,
+                Description = $"{item.Quantity} x {item.ProductName}",
+                DeliveryRouteId = request.DeliveryRouteId,
+                WeightKg = request.WeightKg,
+                Notes = request.Notes,
+            },
+            cancellationToken);
+        var trackingNumber = shipment.TrackingNumber;
+        var carrier = shipment.LogisticsPartnerName ?? "Logistics partner";
 
         item.ProducerStatus = OrderItemProducerStatus.Shipped;
         item.TrackingNumber = trackingNumber;
         item.Carrier = carrier;
         item.ShippedAt = DateTime.UtcNow;
-
-        await _producerOrderRepository.SaveChangesAsync(cancellationToken);
-        await _orderService.SyncStatusFromFulfillmentAsync(item.OrderId, cancellationToken);
-        return await ToDtoWithCustomerAsync(item, cancellationToken);
-    }
-
-    public async Task<ProducerOrderItemDto> MarkDeliveredAsync(Guid producerId, Guid orderItemId, CancellationToken cancellationToken)
-    {
-        var item = await GetOwnedItemAsync(producerId, orderItemId, cancellationToken);
-        EnsureStatus(item, OrderItemProducerStatus.Shipped, "marked delivered");
-
-        item.ProducerStatus = OrderItemProducerStatus.Delivered;
-        item.DeliveredAt = DateTime.UtcNow;
 
         await _producerOrderRepository.SaveChangesAsync(cancellationToken);
         await _orderService.SyncStatusFromFulfillmentAsync(item.OrderId, cancellationToken);

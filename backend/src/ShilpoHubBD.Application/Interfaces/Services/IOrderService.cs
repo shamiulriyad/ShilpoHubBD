@@ -19,6 +19,11 @@ public interface IOrderService
     Task<OrderDto> CancelAsync(Guid id, Guid currentUserId, bool isAdmin, CancelOrderRequest request, CancellationToken cancellationToken);
     Task<OrderDto> RequestReturnAsync(Guid id, Guid currentUserId, bool isAdmin, ReturnOrderRequest request, CancellationToken cancellationToken);
 
+    // The returned goods reached the producer: stock is restored and any payment the customer already
+    // made is refunded. Returns the refunded amount (0 when nothing had been paid, e.g. cash on delivery).
+    Task<decimal> CompleteReturnAsync(Guid orderId, CancellationToken cancellationToken);
+    Task RecordStatusNoteAsync(Guid orderId, string note, CancellationToken cancellationToken);
+
     Task<OrderDto> ConfirmAsync(Guid id, CancellationToken cancellationToken);
     Task<OrderDto> ShipAsync(Guid id, ShipOrderRequest request, CancellationToken cancellationToken);
     Task<OrderDto> DeliverAsync(Guid id, CancellationToken cancellationToken);

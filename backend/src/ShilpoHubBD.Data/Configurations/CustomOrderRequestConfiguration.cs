@@ -17,6 +17,12 @@ public class CustomOrderRequestConfiguration : IEntityTypeConfiguration<CustomOr
         builder.Property(c => c.QuotedPrice).HasColumnType("decimal(10,2)");
         builder.Property(c => c.ProducerResponse).HasMaxLength(2000);
         builder.Property(c => c.Status).HasConversion<string>().HasMaxLength(20).IsRequired();
+        builder.Property(c => c.RecipientName).HasMaxLength(200);
+        builder.Property(c => c.RecipientPhone).HasMaxLength(40);
+        builder.Property(c => c.ShippingAddressLine).HasMaxLength(500);
+        builder.Property(c => c.TrackingNumber).HasMaxLength(60);
+        builder.Property(c => c.Carrier).HasMaxLength(200);
+        builder.HasIndex(c => c.TrackingNumber);
         builder.Property(c => c.CreatedAt).IsRequired();
         builder.Property(c => c.UpdatedAt).IsRequired();
 

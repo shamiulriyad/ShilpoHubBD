@@ -14,7 +14,7 @@ export function useQuestionMutations(productId) {
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ['questions', 'product', productId] });
 
   const ask = useMutation({
-    mutationFn: (body) => questionsService.ask(productId, body),
+    mutationFn: ({ body, imageUrl }) => questionsService.ask(productId, body, imageUrl),
     onSuccess: invalidate,
   });
 
@@ -24,4 +24,19 @@ export function useQuestionMutations(productId) {
   });
 
   return { ask, answer };
+}
+
+export function useProducerQuestions(params = {}) {
+  return useQuery({
+    queryKey: ['questions', 'mine', params],
+    queryFn: () => questionsService.listMine(params),
+  });
+}
+
+export function useAnswerQuestion() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, body }) => questionsService.answer(id, body),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['questions'] }),
+  });
 }

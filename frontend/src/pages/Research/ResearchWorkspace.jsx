@@ -1,6 +1,8 @@
+import UserSelect from '../../components/forms/UserSelect';
 import { useState } from 'react';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { confirmAction } from '../../lib/confirm';
 import {
   useResearchProjects, useResearchProject, useResearchProjectMutations, useResearchActivity,
   useResearchPapers, useResearchNotes, useResearchTasks, useResearchMilestones, useResearchWorkItemMutations,
@@ -67,7 +69,7 @@ function PapersTab({ projectId }) {
               <p className="font-medium text-heading">{p.title}</p>
               <p className="text-xs text-body/60">{p.status}{p.targetVenue ? ` · ${p.targetVenue}` : ''}</p>
             </div>
-            <button type="button" onClick={() => removePaper.mutate(p.id)} className="text-xs text-danger hover:underline">Remove</button>
+            <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removePaper.mutate(p.id); }} className="text-xs text-danger hover:underline">Remove</button>
           </div>
         ))}
         {(papersQuery.data || []).length === 0 && <p className="text-sm text-body/60">No papers yet.</p>}
@@ -99,7 +101,7 @@ function NotesTab({ projectId }) {
           <div key={n.id} className="rounded-lg border border-border bg-surface p-3 text-sm">
             <div className="flex items-center justify-between">
               <p className="font-medium text-heading">{n.title}</p>
-              <button type="button" onClick={() => removeNote.mutate(n.id)} className="text-xs text-danger hover:underline">Remove</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeNote.mutate(n.id); }} className="text-xs text-danger hover:underline">Remove</button>
             </div>
             <p className="text-xs text-body/60">{n.content}</p>
           </div>
@@ -148,7 +150,7 @@ function TasksTab({ projectId }) {
                 <button type="button" onClick={() => updateTaskStatus.mutate({ taskId: t.id, payload: { status: 'Done' } })} className="text-xs text-primary hover:underline">Complete</button>
               )}
               <Badge tone={t.status === 'Done' ? 'success' : 'neutral'}>{t.status}</Badge>
-              <button type="button" onClick={() => removeTask.mutate(t.id)} className="text-xs text-danger hover:underline">Remove</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeTask.mutate(t.id); }} className="text-xs text-danger hover:underline">Remove</button>
             </div>
           </div>
         ))}
@@ -185,7 +187,7 @@ function MilestonesTab({ projectId }) {
             <span>{m.title}{m.targetDate ? ` · ${new Date(m.targetDate).toLocaleDateString()}` : ''} · {m.taskCount} task(s)</span>
             <div className="flex items-center gap-2">
               <Badge tone={m.status === 'Achieved' ? 'success' : 'neutral'}>{m.status}</Badge>
-              <button type="button" onClick={() => removeMilestone.mutate(m.id)} className="text-xs text-danger hover:underline">Remove</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeMilestone.mutate(m.id); }} className="text-xs text-danger hover:underline">Remove</button>
             </div>
           </div>
         ))}
@@ -227,7 +229,7 @@ function PublicationsTab({ projectId }) {
               <p className="font-medium text-heading">{p.title}</p>
               <p className="text-xs text-body/60">{p.authors} · {p.type}{p.venue ? ` · ${p.venue}` : ''}{p.isPublic ? ' · Public' : ''}</p>
             </div>
-            <button type="button" onClick={() => removePublication.mutate(p.id)} className="text-xs text-danger hover:underline">Remove</button>
+            <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removePublication.mutate(p.id); }} className="text-xs text-danger hover:underline">Remove</button>
           </div>
         ))}
         {(publicationsQuery.data || []).length === 0 && <p className="text-sm text-body/60">No publications yet.</p>}
@@ -253,13 +255,13 @@ function MembersTab({ project }) {
           <div key={m.id} className="flex items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-sm">
             <span>{m.userName} ({m.userEmail}) — {m.role}</span>
             {m.userId !== project.ownerUserId && (
-              <button type="button" onClick={() => removeMember.mutate({ id: project.id, memberId: m.id })} className="text-xs text-danger hover:underline">Remove</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeMember.mutate({ id: project.id, memberId: m.id }); }} className="text-xs text-danger hover:underline">Remove</button>
             )}
           </div>
         ))}
       </div>
       <form onSubmit={handleAdd} className="flex flex-wrap gap-2">
-        <input aria-label="User ID" placeholder="User ID" value={form.userId} onChange={(e) => setForm((p) => ({ ...p, userId: e.target.value }))} className={`${inputClass} flex-1`} />
+        <UserSelect value={form.userId} onChange={(v) => setForm((p) => ({ ...p, userId: v }))} />
         <select aria-label="Role" value={form.role} onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))} className={inputClass}>
           {['Contributor', 'CoInvestigator', 'Reviewer'].map((r) => <option key={r} value={r}>{r}</option>)}
         </select>

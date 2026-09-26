@@ -3,6 +3,7 @@ import { PageHeader, Badge, Button, AsyncState, StatusTimeline } from '../../com
 import { useWarehouses } from '../../hooks/useWarehouses';
 import { useWarehouseStockItems, useWarehouseStockItem, useWarehouseStockMutations } from '../../hooks/useWarehouseStock';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 
 const emptyReceiveForm = {
@@ -171,7 +172,7 @@ export default function WarehouseStock() {
                   <Button variant="secondary" onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
                     {expandedId === item.id ? 'Hide' : 'Manage'}
                   </Button>
-                  <button type="button" onClick={() => remove.mutate(item.id)} className="text-xs text-danger hover:underline">Delete</button>
+                  <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) remove.mutate(item.id); }} className="text-xs text-danger hover:underline">Delete</button>
                 </div>
               </div>
               {expandedId === item.id && <StockDetail id={item.id} />}

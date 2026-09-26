@@ -8,4 +8,10 @@ public enum CustomOrderStatus
     InProgress = 3,
     Completed = 4,
     Cancelled = 5,
+
+    /// <summary>Handed to a logistics partner; the partner, not the producer, delivers it.</summary>
+    Shipped = 6,
+
+    /// <summary>The logistics partner confirmed delivery.</summary>
+    Delivered = 7,
 }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState, StatusTimeline } from '../../components/ui';
 import { useLogisticsReturns, useLogisticsReturn, useLogisticsReturnMutations } from '../../hooks/useLogisticsReturns';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const reasons = ['DamagedInTransit', 'DefectiveProduct', 'WrongItem', 'NotAsDescribed', 'CustomerChangedMind', 'DeliveryFailed', 'Undeliverable', 'LateDelivery', 'Other'];
 const conditions = ['New', 'LikeNew', 'Used', 'Damaged', 'Defective', 'Unsalvageable'];
@@ -50,7 +51,7 @@ function ReturnDetail({ id }) {
         {ret.status === 'Requested' && (
           <>
             <Button size="sm" variant="primary" disabled={approve.isPending} onClick={() => approve.mutate({ id, payload: {} })}>Approve</Button>
-            <Button size="sm" variant="secondary" disabled={reject.isPending} onClick={() => reject.mutate({ id, payload: { reason: 'Does not meet return policy' } })}>Reject</Button>
+            <Button size="sm" variant="secondary" disabled={reject.isPending} onClick={async () => { if (await confirmAction('Reject this? The other person will be told.', { confirmLabel: 'Yes, reject' })) reject.mutate({ id, payload: { reason: 'Does not meet return policy' } }); }}>Reject</Button>
           </>
         )}
         {!['Requested', 'Rejected', 'Closed', 'Cancelled'].includes(ret.status) && (

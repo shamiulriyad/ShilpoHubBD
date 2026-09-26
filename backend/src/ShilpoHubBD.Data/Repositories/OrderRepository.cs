@@ -42,6 +42,13 @@ public class OrderRepository : IOrderRepository
         return (items, totalCount);
     }
 
+    public Task<List<Order>> GetReturnOrdersForProducerAsync(Guid producerId, CancellationToken cancellationToken)
+        => WithDetails()
+            .Where(o => (o.Status == OrderStatus.ReturnRequested || o.Status == OrderStatus.Returned || o.Status == OrderStatus.Refunded)
+                && o.Items.Any(i => i.Product.ProducerId == producerId))
+            .OrderByDescending(o => o.UpdatedAt)
+            .ToListAsync(cancellationToken);
+
     public Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => WithDetails().FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
 

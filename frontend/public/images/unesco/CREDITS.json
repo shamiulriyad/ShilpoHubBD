@@ -1,0 +1,56 @@
+{
+  "sundarbans": {
+    "url": "/images/unesco/sundarbans.jpg",
+    "title": "File:Otter Fishermen Harbaria Sundarban National Park Bangladesh - panoramio.jpg",
+    "author": "Hiroki Ogawa",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=57136814",
+    "bytes": 246271
+  },
+  "baul-songs": {
+    "url": "/images/unesco/baul-songs.jpg",
+    "title": "File:Vandari Abdul Jabbar, folk singer singing with musical instrument 'Ektara', Bangladesh.jpg",
+    "author": "Salim Khandoker",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=114873748",
+    "note": "Folk singer with an ektara, Bangladesh"
+  },
+  "jamdani": {
+    "url": "/images/unesco/jamdani.jpg",
+    "title": "File:The delicate process of making a Jamdani saree has been passed down from generation to generation.jpg",
+    "author": "Syed Sajidul Islam",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=129002228",
+    "bytes": 223822
+  },
+  "mangal-shobhajatra": {
+    "url": "/images/unesco/mangal-shobhajatra.jpg",
+    "title": "File:Mongol Shobhajatra, Pohela Boishakh (25).jpg",
+    "author": "NahidSultan",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=39577539",
+    "bytes": 386006
+  },
+  "shital-pati": {
+    "url": "/images/unesco/shital-pati.jpg",
+    "title": "File:Shital Pati weaving.jpg",
+    "author": "Faizul Latif Chowdhury",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=52367780",
+    "bytes": 351246
+  },
+  "speech-7-march": {
+    "url": "/images/unesco/speech-7-march.jpg",
+    "title": "File:Bangabandhu Sheikh Mujibur Rahman delivering March 7th speech at Ramna Racecourse Maidan Dhaka East Pakistan 1971-03-07 (PID-h0046).jpg",
+    "author": "Press Information Department",
+    "license": "Public domain",
+    "licenseUrl": null,
+    "source": "https://commons.wikimedia.org/w/index.php?curid=177025558",
+    "bytes": 223637
+  }
+}

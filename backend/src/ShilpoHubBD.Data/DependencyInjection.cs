@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShilpoHubBD.Application.Interfaces.Repositories;
 using ShilpoHubBD.Application.Interfaces.Services;
+using ShilpoHubBD.Data.Interceptors;
 using ShilpoHubBD.Data.Repositories;
 using ShilpoHubBD.Data.Search;
 
@@ -20,7 +21,7 @@ public static class DependencyInjection
 				"to your PostgreSQL connection string, or copy backend/.env.example to backend/.env and fill it in. See backend/README.md (Setup).");
 		}
 
-		services.AddDbContext<ShilpoHubDbContext>(options => options.UseNpgsql(connectionString));
+		services.AddDbContext<ShilpoHubDbContext>(options => options.UseNpgsql(connectionString).AddInterceptors(new ProductIndexDirtyInterceptor()));
 
 		services.AddScoped<IUserRepository, UserRepository>();
 		services.AddScoped<IRoleRepository, RoleRepository>();
@@ -107,6 +108,12 @@ public static class DependencyInjection
 		services.AddScoped<ILocalCuisineRepository, LocalCuisineRepository>();
 		services.AddScoped<IHeritageRouteRepository, HeritageRouteRepository>();
 		services.AddScoped<IUnescoRecordRepository, UnescoRecordRepository>();
+		services.AddScoped<ICraftHeritageRepository, CraftHeritageRepository>();
+		services.AddScoped<ISiteContentRepository, SiteContentRepository>();
+		services.AddScoped<IProductLookupRepository, ProductLookupRepository>();
+		services.AddScoped<IProductAttributesRepository, ProductAttributesRepository>();
+		services.AddScoped<IProductIndexRepository, ProductIndexRepository>();
+		services.AddScoped<IProductSearchQueryRepository, ProductSearchQueryRepository>();
 		services.AddScoped<ITourismLocationRepository, TourismLocationRepository>();
 		services.AddScoped<ISavedTourPlanRepository, SavedTourPlanRepository>();
 		services.AddScoped<ITransportOptionRepository, TransportOptionRepository>();
@@ -140,6 +147,9 @@ public static class DependencyInjection
 		services.AddScoped<IGovAnalyticsRepository, GovAnalyticsRepository>();
 
 		services.AddScoped<ILogisticsPartnerRepository, LogisticsPartnerRepository>();
+		services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+		services.AddScoped<IOrderComplaintRepository, OrderComplaintRepository>();
+		services.AddScoped<IExpertiseCertificateRepository, ExpertiseCertificateRepository>();
 		services.AddScoped<IPickupRequestRepository, PickupRequestRepository>();
 		services.AddScoped<IRouteOptimizationRepository, RouteOptimizationRepository>();
 		services.AddScoped<IDeliveryTrackingRepository, DeliveryTrackingRepository>();

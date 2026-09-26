@@ -15,10 +15,12 @@ namespace ShilpoHubBD.Api.Controllers;
 public class LogisticsDirectoryController : ControllerBase
 {
     private readonly ILogisticsPartnerRepository _partnerRepository;
+    private readonly IRouteOptimizationRepository _routeRepository;
 
-    public LogisticsDirectoryController(ILogisticsPartnerRepository partnerRepository)
+    public LogisticsDirectoryController(ILogisticsPartnerRepository partnerRepository, IRouteOptimizationRepository routeRepository)
     {
         _partnerRepository = partnerRepository;
+        _routeRepository = routeRepository;
     }
 
     [HttpGet]
@@ -33,6 +35,27 @@ public class LogisticsDirectoryController : ControllerBase
             BaseDistrictName = p.BaseDistrict?.Name,
             OffersCashOnDelivery = p.OffersCashOnDelivery,
             OffersFragileHandling = p.OffersFragileHandling,
+        }).ToList());
+    }
+
+    [HttpGet("{profileId:guid}/routes")]
+    public async Task<ActionResult<List<LogisticsRouteOptionDto>>> GetRoutes(Guid profileId, CancellationToken cancellationToken)
+    {
+        var routes = await _routeRepository.GetOpenForProfileAsync(profileId, cancellationToken);
+        return Ok(routes.Select(r => new LogisticsRouteOptionDto
+        {
+            RouteId = r.Id,
+            RouteCode = r.RouteCode,
+            Name = r.Name,
+            Status = r.Status.ToString(),
+            From = r.StartLocationLabel,
+            To = r.EndLocationLabel,
+            OriginDistrictName = r.OriginDistrict?.Name,
+            ScheduledDate = r.ScheduledDate,
+            VehicleCapacityKg = r.VehicleCapacityKg,
+            TotalDistanceKm = r.TotalDistanceKm,
+            TotalStops = r.TotalStops,
+            Notes = r.Notes,
         }).ToList());
     }
 }

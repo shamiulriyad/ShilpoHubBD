@@ -25,6 +25,15 @@ public class CustomOrderRequestDto
     public string? ProducerResponse { get; set; }
     public DateTime? RespondedAt { get; set; }
 
+    public string? RecipientName { get; set; }
+    public string? RecipientPhone { get; set; }
+    public string? ShippingAddressLine { get; set; }
+    public Guid? ShippingDistrictId { get; set; }
+    public string? TrackingNumber { get; set; }
+    public string? Carrier { get; set; }
+    public DateTime? ShippedAt { get; set; }
+    public DateTime? DeliveredAt { get; set; }
+
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

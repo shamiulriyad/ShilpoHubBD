@@ -19,6 +19,22 @@ public class ReturnHandlingRepository : IReturnHandlingRepository
 
     public void Remove(ReturnRequest returnRequest) => _context.ReturnRequests.Remove(returnRequest);
 
+    public Task<ReturnRequest?> GetByOrderIdAsync(Guid orderId, CancellationToken cancellationToken)
+        => _context.ReturnRequests
+            .Include(r => r.Items)
+            .Include(r => r.Events)
+            .Where(r => r.OrderId == orderId && r.Status != ReturnStatus.Cancelled && r.Status != ReturnStatus.Rejected)
+            .OrderByDescending(r => r.CreatedAt)
+            .FirstOrDefaultAsync(cancellationToken);
+
+    // The logistics partner that delivered this order: the one a return goes back through.
+    public async Task<Guid?> GetDeliveredShipmentPartnerAsync(Guid orderId, CancellationToken cancellationToken)
+        => await _context.Shipments
+            .Where(s => s.OrderId == orderId && s.Status == ShipmentStatus.Delivered)
+            .OrderByDescending(s => s.DeliveredAt)
+            .Select(s => (Guid?)s.LogisticsPartnerProfileId)
+            .FirstOrDefaultAsync(cancellationToken);
+
     public Task<ReturnRequest?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => _context.ReturnRequests
             .Include(r => r.Profile)

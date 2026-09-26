@@ -18,6 +18,10 @@ public class ProcurementService : IProcurementService
     private readonly IQuotationRepository _quotationRepository;
     private readonly IBusinessPartnerRepository _businessPartnerRepository;
     private readonly IOrderRepository _orderRepository;
+    private readonly IPaymentRepository _paymentRepository;
+
+    // A bulk deal only goes ahead once the partner has paid at least half of it up front.
+    private const decimal MinimumAdvanceShare = 0.5m;
 
     public ProcurementService(
         IProcurementRepository procurementRepository,
@@ -25,8 +29,10 @@ public class ProcurementService : IProcurementService
         IProductRepository productRepository,
         IQuotationRepository quotationRepository,
         IBusinessPartnerRepository businessPartnerRepository,
-        IOrderRepository orderRepository)
+        IOrderRepository orderRepository,
+        IPaymentRepository paymentRepository)
     {
+        _paymentRepository = paymentRepository;
         _procurementRepository = procurementRepository;
         _userRepository = userRepository;
         _productRepository = productRepository;
@@ -196,7 +202,7 @@ public class ProcurementService : IProcurementService
     public async Task<ProcurementRequestDto> ApproveAsync(
         Guid id, Guid userId, bool isAdmin, ProcurementDecisionRequest request, CancellationToken cancellationToken)
     {
-        var procurement = await GetOwnedAsync(id, userId, isAdmin, cancellationToken);
+        var procurement = await GetForProducerDecisionAsync(id, userId, isAdmin, cancellationToken);
 
         if (procurement.Status != ProcurementStatus.PendingApproval)
         {
@@ -215,7 +221,7 @@ public class ProcurementService : IProcurementService
         {
             Id = Guid.NewGuid(),
             Status = ProcurementStatus.Approved,
-            Note = notes,
+            Note = notes ?? "Accepted by the producer. The business partner now pays an advance of at least 50%.",
             CreatedAt = now,
         });
 
@@ -226,7 +232,7 @@ public class ProcurementService : IProcurementService
     public async Task<ProcurementRequestDto> RejectAsync(
         Guid id, Guid userId, bool isAdmin, ProcurementDecisionRequest request, CancellationToken cancellationToken)
     {
-        var procurement = await GetOwnedAsync(id, userId, isAdmin, cancellationToken);
+        var procurement = await GetForProducerDecisionAsync(id, userId, isAdmin, cancellationToken);
 
         if (procurement.Status != ProcurementStatus.PendingApproval)
         {
@@ -253,6 +259,112 @@ public class ProcurementService : IProcurementService
         return ToDto(procurement);
     }
 
+    public async Task<PagedResult<ProcurementRequestListItemDto>> GetForProducerAsync(
+        Guid producerId, ProcurementQueryParameters parameters, CancellationToken cancellationToken)
+    {
+        NormalisePaging(parameters);
+        var (items, total) = await _procurementRepository.GetPagedForProducerAsync(producerId, parameters, cancellationToken);
+        return ToPage(items, total, parameters);
+    }
+
+    public async Task<ProcurementRequestDto> PayAdvanceAsync(
+        Guid id, Guid businessPartnerId, bool isAdmin, PayProcurementAdvanceRequest request, CancellationToken cancellationToken)
+    {
+        var procurement = await GetOwnedAsync(id, businessPartnerId, isAdmin, cancellationToken);
+
+        if (procurement.Status != ProcurementStatus.Approved)
+        {
+            throw new ConflictException("The producer must accept the request before an advance can be paid.");
+        }
+
+        if (procurement.AdvancePaidAt.HasValue && procurement.AdvanceRefundedAt is null)
+        {
+            throw new ConflictException("The advance has already been paid for this request.");
+        }
+
+        var total = procurement.Items.Sum(i => i.UnitPrice * i.Quantity);
+        var required = RequiredAdvance(total);
+        if (request.Amount < required)
+        {
+            throw new ConflictException($"The advance must be at least 50% of the total: ৳{required:N0} or more.");
+        }
+
+        if (request.Amount > total)
+        {
+            throw new ConflictException($"The advance cannot be more than the total of ৳{total:N0}.");
+        }
+
+        var now = DateTime.UtcNow;
+        procurement.AdvanceAmount = request.Amount;
+        procurement.AdvancePaidAt = now;
+        procurement.AdvanceRefundedAt = null;
+        procurement.AdvanceMethod = string.IsNullOrWhiteSpace(request.Method) ? null : request.Method.Trim();
+        procurement.AdvanceReference = string.IsNullOrWhiteSpace(request.Reference) ? null : request.Reference.Trim();
+        procurement.InspectionStatus = ProcurementInspectionStatus.Pending;
+        procurement.InspectedByUserId = null;
+        procurement.InspectedAt = null;
+        procurement.InspectionNotes = null;
+        procurement.UpdatedAt = now;
+        procurement.StatusHistory.Add(new ProcurementStatusEvent
+        {
+            Id = Guid.NewGuid(),
+            Status = procurement.Status,
+            Note = $"Advance of ৳{request.Amount:N0} paid ({request.Amount / total:P0} of the total). Waiting for the admin inspection.",
+            CreatedAt = now,
+        });
+
+        await _procurementRepository.SaveChangesAsync(cancellationToken);
+        return ToDto(procurement);
+    }
+
+    public async Task<PagedResult<ProcurementRequestListItemDto>> GetForInspectionAsync(
+        bool pendingOnly, ProcurementQueryParameters parameters, CancellationToken cancellationToken)
+    {
+        NormalisePaging(parameters);
+        var (items, total) = await _procurementRepository.GetPagedForInspectionAsync(pendingOnly, parameters, cancellationToken);
+        return ToPage(items, total, parameters);
+    }
+
+    public async Task<ProcurementRequestDto> InspectAsync(
+        Guid id, Guid adminUserId, ProcurementInspectionRequest request, CancellationToken cancellationToken)
+    {
+        var procurement = await _procurementRepository.GetByIdWithDetailsAsync(id, cancellationToken)
+            ?? throw new NotFoundException("Procurement request not found.");
+
+        if (procurement.InspectionStatus != ProcurementInspectionStatus.Pending)
+        {
+            throw new ConflictException("This deal is not waiting for an inspection.");
+        }
+
+        var now = DateTime.UtcNow;
+        var notes = string.IsNullOrWhiteSpace(request.Notes) ? null : request.Notes.Trim();
+        procurement.InspectedByUserId = adminUserId;
+        procurement.InspectedAt = now;
+        procurement.InspectionNotes = notes;
+        procurement.UpdatedAt = now;
+
+        if (request.Approve)
+        {
+            procurement.InspectionStatus = ProcurementInspectionStatus.Approved;
+            procurement.StatusHistory.Add(new ProcurementStatusEvent
+            {
+                Id = Guid.NewGuid(),
+                Status = procurement.Status,
+                Note = notes ?? "Inspected and approved by the admin. The deal can now be converted to an order.",
+                CreatedAt = now,
+            });
+        }
+        else
+        {
+            procurement.InspectionStatus = ProcurementInspectionStatus.Rejected;
+            procurement.Status = ProcurementStatus.Rejected;
+            RefundAdvance(procurement, now, notes ?? "Rejected at inspection.");
+        }
+
+        await _procurementRepository.SaveChangesAsync(cancellationToken);
+        return ToDto(procurement);
+    }
+
     public async Task<ProcurementRequestDto> ConvertToOrderAsync(Guid id, Guid userId, bool isAdmin, CancellationToken cancellationToken)
     {
         var procurement = await GetOwnedAsync(id, userId, isAdmin, cancellationToken);
@@ -260,6 +372,18 @@ public class ProcurementService : IProcurementService
         if (procurement.Status != ProcurementStatus.Approved)
         {
             throw new ConflictException("Only an approved procurement request can be converted into an order.");
+        }
+
+        var totalDue = procurement.Items.Sum(i => i.UnitPrice * i.Quantity);
+        if (procurement.AdvancePaidAt is null || procurement.AdvanceRefundedAt.HasValue
+            || (procurement.AdvanceAmount ?? 0) < RequiredAdvance(totalDue))
+        {
+            throw new ConflictException("Pay the advance (at least 50% of the total) before converting this request into an order.");
+        }
+
+        if (procurement.InspectionStatus != ProcurementInspectionStatus.Approved)
+        {
+            throw new ConflictException("An admin must inspect and approve the deal before it can be converted into an order.");
         }
 
         var profile = await _businessPartnerRepository.GetByUserIdAsync(procurement.BusinessPartnerId, cancellationToken)
@@ -315,6 +439,20 @@ public class ProcurementService : IProcurementService
 
         await _orderRepository.AddAsync(order, cancellationToken);
 
+        // The advance becomes a paid payment on the order, so a later return refunds it automatically.
+        await _paymentRepository.AddAsync(new Payment
+        {
+            Id = Guid.NewGuid(),
+            OrderId = order.Id,
+            Provider = PaymentMethod.CashOnDelivery.ToString(),
+            Amount = procurement.AdvanceAmount!.Value,
+            Status = PaymentStatus.Paid,
+            TransactionReference = procurement.AdvanceReference ?? procurement.ReferenceNumber,
+            PaidAt = procurement.AdvancePaidAt,
+            CreatedAt = now,
+            UpdatedAt = now,
+        }, cancellationToken);
+
         procurement.Status = ProcurementStatus.Converted;
         procurement.OrderId = order.Id;
         procurement.UpdatedAt = now;
@@ -353,9 +491,81 @@ public class ProcurementService : IProcurementService
             Status = ProcurementStatus.Cancelled,
             CreatedAt = now,
         });
+        RefundAdvance(procurement, now, "Cancelled before conversion.");
 
         await _procurementRepository.SaveChangesAsync(cancellationToken);
         return ToDto(procurement);
+    }
+
+    private static decimal RequiredAdvance(decimal total) => Math.Ceiling(total * MinimumAdvanceShare);
+
+    // An advance that was paid but never used (deal cancelled or failed inspection) goes back to the partner.
+    private static void RefundAdvance(ProcurementRequest procurement, DateTime now, string reason)
+    {
+        if (procurement.AdvancePaidAt is null || procurement.AdvanceRefundedAt.HasValue)
+        {
+            return;
+        }
+
+        procurement.AdvanceRefundedAt = now;
+        procurement.StatusHistory.Add(new ProcurementStatusEvent
+        {
+            Id = Guid.NewGuid(),
+            Status = procurement.Status,
+            Note = $"Advance of ৳{procurement.AdvanceAmount:N0} refunded to the business partner. {reason}",
+            CreatedAt = now,
+        });
+    }
+
+    private static void NormalisePaging(ProcurementQueryParameters parameters)
+    {
+        parameters.Page = parameters.Page < 1 ? 1 : parameters.Page;
+        parameters.PageSize = parameters.PageSize is < 1 or > 50 ? 20 : parameters.PageSize;
+    }
+
+    private static PagedResult<ProcurementRequestListItemDto> ToPage(
+        List<ProcurementRequest> items, int total, ProcurementQueryParameters parameters) => new()
+    {
+        Items = items.Select(ToListItem).ToList(),
+        TotalCount = total,
+        Page = parameters.Page,
+        PageSize = parameters.PageSize,
+    };
+
+    private static ProcurementRequestListItemDto ToListItem(ProcurementRequest p)
+    {
+        var total = p.Items.Sum(i => i.UnitPrice * i.Quantity);
+        return new ProcurementRequestListItemDto
+        {
+            Id = p.Id,
+            ReferenceNumber = p.ReferenceNumber,
+            Title = p.Title,
+            ProducerName = p.Producer.FullName,
+            BusinessPartnerName = p.BusinessPartner?.FullName ?? string.Empty,
+            ItemsTotal = total,
+            RequiredAdvance = RequiredAdvance(total),
+            AdvanceAmount = p.AdvanceAmount,
+            AdvancePaidAt = p.AdvancePaidAt,
+            AdvanceRefundedAt = p.AdvanceRefundedAt,
+            InspectionStatus = p.InspectionStatus,
+            InspectionNotes = p.InspectionNotes,
+            DeliveryDeadline = p.DeliveryDeadline,
+            Status = p.Status,
+            CreatedAt = p.CreatedAt,
+        };
+    }
+
+    private async Task<ProcurementRequest> GetForProducerDecisionAsync(Guid id, Guid userId, bool isAdmin, CancellationToken cancellationToken)
+    {
+        var procurement = await _procurementRepository.GetByIdWithDetailsAsync(id, cancellationToken)
+            ?? throw new NotFoundException("Procurement request not found.");
+
+        if (!isAdmin && procurement.ProducerId != userId)
+        {
+            throw new UnauthorizedAccessException("Only the selected producer can accept or decline this request.");
+        }
+
+        return procurement;
     }
 
     private async Task<ProcurementRequest> GetOwnedAsync(Guid id, Guid businessPartnerId, bool isAdmin, CancellationToken cancellationToken)
@@ -418,6 +628,16 @@ public class ProcurementService : IProcurementService
         ApprovedByName = procurement.ApprovedBy?.FullName,
         ApprovedAt = procurement.ApprovedAt,
         ApprovalNotes = procurement.ApprovalNotes,
+        RequiredAdvance = RequiredAdvance(procurement.Items.Sum(i => i.UnitPrice * i.Quantity)),
+        AdvanceAmount = procurement.AdvanceAmount,
+        AdvancePaidAt = procurement.AdvancePaidAt,
+        AdvanceMethod = procurement.AdvanceMethod,
+        AdvanceReference = procurement.AdvanceReference,
+        AdvanceRefundedAt = procurement.AdvanceRefundedAt,
+        InspectionStatus = procurement.InspectionStatus,
+        InspectedByName = procurement.InspectedBy?.FullName,
+        InspectedAt = procurement.InspectedAt,
+        InspectionNotes = procurement.InspectionNotes,
         Items = procurement.Items.Select(i => new ProcurementItemDto
         {
             Id = i.Id,

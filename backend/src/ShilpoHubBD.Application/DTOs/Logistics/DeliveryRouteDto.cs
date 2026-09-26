@@ -60,6 +60,9 @@ public class DeliveryRouteListItemDto
     public string Name { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public DateTime? ScheduledDate { get; set; }
+    public string? StartLocationLabel { get; set; }
+    public string? EndLocationLabel { get; set; }
+    public string? OriginDistrictName { get; set; }
     public string? AssignedDriverName { get; set; }
     public string? AssignedVehicleLabel { get; set; }
     public int TotalStops { get; set; }

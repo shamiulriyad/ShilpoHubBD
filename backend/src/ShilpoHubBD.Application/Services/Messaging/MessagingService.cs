@@ -86,7 +86,8 @@ public class MessagingService : IMessagingService
             Id = Guid.NewGuid(),
             ConversationId = conversation.Id,
             SenderId = userId,
-            Body = request.Body.Trim(),
+            Body = (request.Body ?? string.Empty).Trim(),
+            ImageUrl = string.IsNullOrWhiteSpace(request.ImageUrl) ? null : request.ImageUrl.Trim(),
             CreatedAt = now,
         };
 
@@ -113,7 +114,8 @@ public class MessagingService : IMessagingService
             Id = Guid.NewGuid(),
             ConversationId = conversationId,
             SenderId = userId,
-            Body = request.Body.Trim(),
+            Body = (request.Body ?? string.Empty).Trim(),
+            ImageUrl = string.IsNullOrWhiteSpace(request.ImageUrl) ? null : request.ImageUrl.Trim(),
             CreatedAt = DateTime.UtcNow,
         };
 
@@ -163,7 +165,7 @@ public class MessagingService : IMessagingService
             Id = conversation.Id,
             OtherUserId = other.UserId,
             OtherUserName = other.User.FullName,
-            LastMessageBody = lastMessage?.Body,
+            LastMessageBody = lastMessage is null ? null : (string.IsNullOrWhiteSpace(lastMessage.Body) && lastMessage.ImageUrl != null ? "Photo" : lastMessage.Body),
             LastMessageAt = lastMessage?.CreatedAt,
             UnreadCount = conversation.Messages.Count(m => m.SenderId != userId && (me.LastReadAt == null || m.CreatedAt > me.LastReadAt)),
             UpdatedAt = conversation.UpdatedAt,
@@ -196,6 +198,7 @@ public class MessagingService : IMessagingService
         SenderId = message.SenderId,
         SenderName = senderName,
         Body = message.Body,
+        ImageUrl = message.ImageUrl,
         CreatedAt = message.CreatedAt,
         IsRead = isRead,
     };

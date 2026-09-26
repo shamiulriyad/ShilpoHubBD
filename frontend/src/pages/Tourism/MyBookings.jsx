@@ -5,6 +5,7 @@ import MutationFeedback from '../../components/ui/MutationFeedback';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useMyBookings, useBookingMutations } from '../../hooks/useBookings';
 
+import { confirmAction } from '../../lib/confirm';
 const statusTone = {
   Pending: 'secondary',
   Confirmed: 'primary',
@@ -56,7 +57,7 @@ export default function MyBookings() {
           {bookings.length === 0 && <TravelEmptyState title="No bookings yet" description="Explore heritage places and local experiences to plan your first trip. Your reservations will appear here." />}
         </div>
       </AsyncState>
-      {cancelId && <section aria-label="Confirm booking cancellation" className="mt-4 rounded-xl border border-border bg-surface p-5"><h2 className="font-semibold">Cancel {bookings.find(booking => booking.id === cancelId)?.serviceTitle || 'this booking'}?</h2><p className="mt-2 text-sm text-body/70">Cancellation cannot be undone. You may need to make a new booking.</p><div className="mt-4 flex gap-3"><Button variant="secondary" disabled={cancel.isPending} onClick={() => setCancelId(null)}>Keep booking</Button><Button disabled={cancel.isPending} onClick={() => cancel.mutate({ id: cancelId }, { onSuccess: () => setCancelId(null) })}>{cancel.isPending ? 'Cancelling…' : 'Confirm cancellation'}</Button></div></section>}
+      {cancelId && <section aria-label="Confirm booking cancellation" className="mt-4 rounded-xl border border-border bg-surface p-5"><h2 className="font-semibold">Cancel {bookings.find(booking => booking.id === cancelId)?.serviceTitle || 'this booking'}?</h2><p className="mt-2 text-sm text-body/70">Cancellation cannot be undone. You may need to make a new booking.</p><div className="mt-4 flex gap-3"><Button variant="secondary" disabled={cancel.isPending} onClick={() => setCancelId(null)}>Keep booking</Button><Button disabled={cancel.isPending} onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancel.mutate({ id: cancelId }, { onSuccess: () => setCancelId(null) }); }}>{cancel.isPending ? 'Cancelling…' : 'Confirm cancellation'}</Button></div></section>}
       <div className="mt-4"><MutationFeedback mutation={cancel} /></div>
     </div>
   );

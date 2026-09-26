@@ -34,6 +34,12 @@ public class QuestionsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = $"{RoleNames.Producer},{RoleNames.SuperAdmin}")]
+    [HttpGet("mine")]
+    public async Task<ActionResult<PagedResult<QuestionDto>>> GetMine(
+        [FromQuery] bool unansweredOnly = false, [FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken cancellationToken = default)
+        => Ok(await _questionService.GetForProducerAsync(CurrentUserId, unansweredOnly, page, pageSize, cancellationToken));
+
     [Authorize]
     [HttpPost("product/{productId:guid}")]
     public async Task<ActionResult<QuestionDto>> Ask(Guid productId, CreateQuestionRequest request, CancellationToken cancellationToken)

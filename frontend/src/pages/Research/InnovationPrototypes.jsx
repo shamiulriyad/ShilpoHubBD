@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useInnovationPrototypes, useInnovationPrototype, usePrototypeIssues, useInnovationPrototypeMutations } from '../../hooks/useInnovationPrototypes';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const statusTone = { Concept: 'neutral', InDevelopment: 'primary', Testing: 'secondary', Ready: 'success', Retired: 'neutral' };
 const issueSeverityTone = { Low: 'neutral', Medium: 'secondary', High: 'primary', Critical: 'neutral' };
@@ -42,7 +43,7 @@ function PrototypeDetail({ id }) {
           {prototype.testCases.map((t) => (
             <div key={t.id} className="flex items-center justify-between rounded-lg border border-border px-3 py-2">
               <span>{t.title} ({t.priority})</span>
-              <button type="button" onClick={() => removeTestCase.mutate({ id, testCaseId: t.id })} className="text-danger hover:underline">Remove</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeTestCase.mutate({ id, testCaseId: t.id }); }} className="text-danger hover:underline">Remove</button>
             </div>
           ))}
           {prototype.testCases.length === 0 && <p>No test cases yet.</p>}

@@ -9,6 +9,10 @@ public class LocalCuisine
     public string Description { get; set; } = string.Empty;
     public string? WhereToTry { get; set; }
     public string? ImageUrl { get; set; }
+    public string? Kind { get; set; }
+    public string? Ingredients { get; set; }
+    public string? SourceUrl { get; set; }
+    public bool IsNationwide { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

@@ -4,6 +4,7 @@ import { useMyCsrOpportunities, useCsrOpportunityProposals, useCsrSponsorshipMut
 
 import MutationFeedback from '../../components/ui/MutationFeedback';
 
+import { confirmAction } from '../../lib/confirm';
 const oppTone = { Open: 'secondary', FullyFunded: 'success', Closed: 'neutral', Cancelled: 'neutral' };
 const proposalTone = { Submitted: 'secondary', Approved: 'success', Rejected: 'neutral', Active: 'primary', Completed: 'success', Cancelled: 'neutral' };
 
@@ -99,7 +100,7 @@ export default function CsrSponsorship() {
                   {opp.status === 'Open' && (
                     <div className="flex gap-2">
                       <Button variant="secondary" disabled={closeOpportunity.isPending || cancelOpportunity.isPending} onClick={() => closeOpportunity.mutate(opp.id)}>Close</Button>
-                      <Button variant="secondary" disabled={closeOpportunity.isPending || cancelOpportunity.isPending} onClick={() => cancelOpportunity.mutate(opp.id)}>Cancel</Button>
+                      <Button variant="secondary" disabled={closeOpportunity.isPending || cancelOpportunity.isPending} onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancelOpportunity.mutate(opp.id); }}>Cancel</Button>
                     </div>
                   )}
                 </div>

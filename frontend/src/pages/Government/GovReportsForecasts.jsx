@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useGovReports, useGovForecasts, useGovReportMutations } from '../../hooks/useGovReports';
 
+import { confirmAction } from '../../lib/confirm';
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const statusTone = { Draft: 'neutral', Published: 'success', Archived: 'neutral' };
 
@@ -46,7 +47,7 @@ function ReportsTab() {
                 {r.status === 'Draft' && (
                   <button type="button" onClick={() => updateReport.mutate({ id: r.id, payload: { status: 'Published' } })} className="text-xs text-primary hover:underline">Publish</button>
                 )}
-                <button type="button" onClick={() => removeReport.mutate(r.id)} className="text-xs text-danger hover:underline">Delete</button>
+                <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeReport.mutate(r.id); }} className="text-xs text-danger hover:underline">Delete</button>
               </div>
             </div>
           ))}
@@ -85,7 +86,7 @@ function ForecastsTab() {
                 <p className="text-sm font-semibold text-heading">{f.title}</p>
                 <p className="text-xs text-body/60">{f.horizonMonths}-month horizon · baseline {new Date(f.baselineAsOf).toLocaleDateString()}</p>
               </div>
-              <button type="button" onClick={() => removeForecast.mutate(f.id)} className="text-xs text-danger hover:underline">Delete</button>
+              <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeForecast.mutate(f.id); }} className="text-xs text-danger hover:underline">Delete</button>
             </div>
           ))}
           {forecasts.length === 0 && <p className="text-sm text-body/60">No forecasts generated yet.</p>}

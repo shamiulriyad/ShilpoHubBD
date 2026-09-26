@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState, MilestoneList } from '../../components/ui';
+import { ProducerSelect } from '../../components/forms/EntityPickers';
 import { useMyPartnerships, usePartnershipMutations } from '../../hooks/useManufacturingPartnerships';
 
+import { confirmAction } from '../../lib/confirm';
 const statusTone = { Requested: 'secondary', Accepted: 'primary', Rejected: 'neutral', InProgress: 'primary', Completed: 'success', Cancelled: 'neutral' };
 
 export default function ManufacturingPartnerships() {
@@ -31,7 +33,7 @@ export default function ManufacturingPartnerships() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-6 space-y-3 rounded-xl border border-border bg-surface p-4">
-          <input aria-label="Producer ID" required placeholder="Producer ID" value={form.producerId} onChange={(e) => setForm((p) => ({ ...p, producerId: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+          <ProducerSelect id="mfg-producer" label="Producer" required value={form.producerId} onChange={(v) => setForm((p) => ({ ...p, producerId: v }))} />
           <input aria-label="Title" required placeholder="Title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <textarea aria-label="Product requirements" required rows={2} placeholder="Product requirements" value={form.productRequirements} onChange={(e) => setForm((p) => ({ ...p, productRequirements: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <textarea aria-label="Manufacturing specifications" required rows={2} placeholder="Manufacturing specifications" value={form.manufacturingSpecifications} onChange={(e) => setForm((p) => ({ ...p, manufacturingSpecifications: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
@@ -40,7 +42,7 @@ export default function ManufacturingPartnerships() {
             <input aria-label="Timeline Start Date" required type="date" value={form.timelineStartDate} onChange={(e) => setForm((p) => ({ ...p, timelineStartDate: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
             <input aria-label="Timeline End Date" required type="date" value={form.timelineEndDate} onChange={(e) => setForm((p) => ({ ...p, timelineEndDate: e.target.value }))} className="rounded-md border border-border bg-background px-3 py-2 text-sm" />
           </div>
-          <Button type="submit" variant="primary" disabled={create.isPending}>Send Request</Button>
+          <Button type="submit" variant="primary" disabled={create.isPending || !form.producerId}>Send Request</Button>
         </form>
       )}
 
@@ -68,7 +70,7 @@ export default function ManufacturingPartnerships() {
                       <Button variant="primary" onClick={() => complete.mutate(p.id)}>Mark Complete</Button>
                     )}
                     {!['Completed', 'Cancelled'].includes(p.status) && (
-                      <Button variant="secondary" onClick={() => cancel.mutate(p.id)}>Cancel</Button>
+                      <Button variant="secondary" onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancel.mutate(p.id); }}>Cancel</Button>
                     )}
                   </div>
                 </div>

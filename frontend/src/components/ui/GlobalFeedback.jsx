@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 
 export const MUTATION_ERROR_EVENT = 'shilpohub:mutation-error';
+export const MUTATION_SUCCESS_EVENT = 'shilpohub:mutation-success';
 
 export default function GlobalFeedback() {
   const [message, setMessage] = useState('');
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     let timer;
@@ -15,14 +17,32 @@ export default function GlobalFeedback() {
       timer = window.setTimeout(() => setMessage(''), 6000);
     };
 
+    let successTimer;
+    const handleSuccess = () => {
+      setSuccess('Done - saved successfully.');
+      window.clearTimeout(successTimer);
+      successTimer = window.setTimeout(() => setSuccess(''), 2500);
+    };
+
     window.addEventListener(MUTATION_ERROR_EVENT, handleError);
+    window.addEventListener(MUTATION_SUCCESS_EVENT, handleSuccess);
     return () => {
       window.removeEventListener(MUTATION_ERROR_EVENT, handleError);
+      window.removeEventListener(MUTATION_SUCCESS_EVENT, handleSuccess);
+      window.clearTimeout(successTimer);
       window.clearTimeout(timer);
     };
   }, []);
 
-  if (!message) return null;
+  if (!message && !success) return null;
+
+  if (!message) {
+    return (
+      <div className="pointer-events-none fixed inset-x-3 bottom-4 z-[100] flex justify-center sm:inset-x-auto sm:right-4">
+        <div role="status" className="pointer-events-auto rounded-xl border border-success/30 bg-success/10 px-4 py-2 text-sm font-medium text-success shadow-lg">{success}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="pointer-events-none fixed inset-x-3 top-3 z-[100] flex justify-center sm:inset-x-auto sm:right-4 sm:top-4">

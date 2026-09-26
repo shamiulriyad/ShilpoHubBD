@@ -12,6 +12,7 @@ public class CommunityQuestionConfiguration : IEntityTypeConfiguration<Community
         builder.HasKey(q => q.Id);
 
         builder.Property(q => q.Body).IsRequired().HasMaxLength(1000);
+        builder.Property(q => q.ImageUrl).HasMaxLength(500);
         builder.Property(q => q.CreatedAt).IsRequired();
 
         builder.HasIndex(q => q.ProductId);

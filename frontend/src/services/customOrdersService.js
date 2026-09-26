@@ -8,5 +8,7 @@ export const customOrdersService = {
   mineAsProducer: () => apiClient.get('/custom-orders/mine/producer').then((res) => res.data),
   respond: (id, payload) => apiClient.post(`/custom-orders/${id}/respond`, payload).then((res) => res.data),
   getById: (id) => apiClient.get(`/custom-orders/${id}`).then((res) => res.data),
+  ship: (id, payload) => apiClient.post(`/custom-orders/${id}/ship`, payload).then((res) => res.data),
+  updateDeliveryAddress: (id, payload) => apiClient.put(`/custom-orders/${id}/delivery-address`, payload).then((res) => res.data),
   cancel: (id) => apiClient.post(`/custom-orders/${id}/cancel`).then((res) => res.data),
 };

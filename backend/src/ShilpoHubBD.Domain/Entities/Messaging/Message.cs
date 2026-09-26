@@ -13,5 +13,8 @@ public class Message
     public User Sender { get; set; } = null!;
 
     public string Body { get; set; } = string.Empty;
+
+    /// <summary>Optional picture sent in the chat (uploaded through api/media/chat-images).</summary>
+    public string? ImageUrl { get; set; }
     public DateTime CreatedAt { get; set; }
 }

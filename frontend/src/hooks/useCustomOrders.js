@@ -43,5 +43,14 @@ export function useCustomOrderMutations() {
     onSuccess: invalidate,
   });
 
-  return { create, cancel, respond };
+  const ship = useMutation({
+    mutationFn: ({ id, payload }) => customOrdersService.ship(id, payload),
+    onSuccess: invalidate,
+  });
+  const updateDeliveryAddress = useMutation({
+    mutationFn: ({ id, payload }) => customOrdersService.updateDeliveryAddress(id, payload),
+    onSuccess: invalidate,
+  });
+
+  return { create, cancel, respond, ship, updateDeliveryAddress };
 }

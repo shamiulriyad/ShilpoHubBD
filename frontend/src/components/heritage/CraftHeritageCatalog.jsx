@@ -1,17 +1,19 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { craftHeritage, filterCraftHeritage, heritageForCategory } from '../../data/craftHeritage';
+import { filterCraftHeritage, heritageForCategory } from '../../data/craftHeritage';
+import { useCraftHeritage } from '../../hooks/useSiteContent';
 import { routePaths } from '../../routes/routePaths';
 import CraftHeritageDetails from './CraftHeritageDetails';
 
 export default function CraftHeritageCatalog({ categories = [] }) {
   const [params, setParams] = useSearchParams();
+  const { records: craftHeritage } = useCraftHeritage();
   const query = params.get('q') || '';
   const recognition = params.get('recognition') || 'all';
   const selected = craftHeritage.find(c => c.slug === params.get('craft'));
   const results = filterCraftHeritage(craftHeritage, query, recognition);
   const urlFor = (slug) => { const next = new URLSearchParams(params); if (slug) next.set('craft', slug); else next.delete('craft'); return `?${next}`; };
   const update = (key, value) => { const next = new URLSearchParams(params); if (value) next.set(key, value); else next.delete(key); setParams(next, { replace: true }); };
-  const category = selected && categories.find(c => heritageForCategory(c)?.slug === selected.slug);
+  const category = selected && categories.find(c => heritageForCategory(c, craftHeritage)?.slug === selected.slug);
   if (selected) return <div><Link to={urlFor(null)} className="mb-5 inline-flex rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-link">← All crafts</Link><CraftHeritageDetails craft={selected} />{category && <Link className="inline-flex rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-white" to={routePaths.exploreCraftDetails.replace(':craftId', category.id)}>Browse {selected.name} products →</Link>}</div>;
   return (
     <section aria-label="Craft heritage directory">

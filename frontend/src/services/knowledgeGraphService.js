@@ -13,5 +13,6 @@ export const knowledgeGraphService = {
   createRelationship: (payload) => apiClient.post('/knowledge-graph/relationships', payload).then((res) => res.data),
   removeRelationship: (id) => apiClient.delete(`/knowledge-graph/relationships/${id}`).then((res) => res.data),
 
+  getNetwork: (network, params) => apiClient.get(`/knowledge-graph/networks/${network}`, { params }).then((res) => res.data),
   findPath: (params) => apiClient.get('/knowledge-graph/paths', { params }).then((res) => res.data),
 };

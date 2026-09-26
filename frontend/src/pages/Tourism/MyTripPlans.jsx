@@ -6,6 +6,7 @@ import MutationFeedback from '../../components/ui/MutationFeedback';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import { useSavedTourPlans, useDeleteSavedTourPlan } from '../../hooks/useAITourism';
 
+import { confirmAction } from '../../lib/confirm';
 export default function MyTripPlans() {
   const [deleteId, setDeleteId] = useState(null);
   const { data, isLoading, isError, error } = useSavedTourPlans({ pageSize: 50 });
@@ -81,7 +82,7 @@ export default function MyTripPlans() {
             <Button variant="secondary" disabled={remove.isPending} onClick={() => setDeleteId(null)}>
               Keep plan
             </Button>
-            <Button disabled={remove.isPending} onClick={() => remove.mutate(deleteId, { onSuccess: () => setDeleteId(null) })}>
+            <Button disabled={remove.isPending} onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) remove.mutate(deleteId, { onSuccess: () => setDeleteId(null) }); }}>
               {remove.isPending ? 'Deleting…' : 'Delete plan'}
             </Button>
           </div>

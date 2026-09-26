@@ -7,6 +7,7 @@ namespace ShilpoHubBD.Application.Interfaces.Services;
 public interface ILiveShoppingService
 {
     Task<PagedResult<LiveEventListItemDto>> GetAllAsync(LiveEventQueryParameters query, CancellationToken cancellationToken);
+    Task<PagedResult<LiveEventListItemDto>> GetMineAsync(Guid producerId, LiveEventQueryParameters query, CancellationToken cancellationToken);
     Task<LiveEventDto> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<LiveEventDto> CreateAsync(Guid producerId, CreateLiveEventRequest request, CancellationToken cancellationToken);
     Task<LiveEventDto> StartAsync(Guid id, Guid producerId, bool isAdmin, CancellationToken cancellationToken);

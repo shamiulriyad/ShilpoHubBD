@@ -7,6 +7,7 @@ public interface ICustomOrderRepository
     Task<CustomOrderRequest?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<List<CustomOrderRequest>> GetByProducerAsync(Guid producerId, CancellationToken cancellationToken);
     Task<List<CustomOrderRequest>> GetByCustomerAsync(Guid customerId, CancellationToken cancellationToken);
+    Task<CustomOrderRequest?> GetByTrackingNumberAsync(string trackingNumber, CancellationToken cancellationToken);
     Task AddAsync(CustomOrderRequest request, CancellationToken cancellationToken);
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }

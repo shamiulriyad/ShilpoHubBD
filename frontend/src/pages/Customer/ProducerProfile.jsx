@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import QuickMessageDialog from '../../components/messaging/QuickMessageDialog';
+import { useAuth } from '../../hooks/useAuth';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Button, SectionHeader, Badge, AsyncState } from '../../components/ui';
 import { ProductCard, StatCard } from '../../components/cards';
@@ -15,6 +18,8 @@ const byOrder = (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
 
 export default function ProducerProfile() {
   const { producerId } = useParams();
+  const { isAuthenticated } = useAuth();
+  const [messaging, setMessaging] = useState(false);
   const storyQuery = useProducerStory(producerId);
   const productsQuery = useProducts({ producerId, pageSize: 50 });
   const galleryQuery = useWorkshopGallery(producerId);
@@ -46,6 +51,7 @@ export default function ProducerProfile() {
               >
                 {isFollowing ? 'Unfollow' : 'Follow'}
               </Button>
+              {isAuthenticated && <Button variant="secondary" onClick={() => setMessaging(true)}>Message</Button>}
               <Link to={routePaths.customerCustomOrder}>
                 <Button variant="secondary">Request Custom Order</Button>
               </Link>
@@ -190,6 +196,14 @@ export default function ProducerProfile() {
           </>
         )}
       </AsyncState>
+      <QuickMessageDialog
+        open={messaging}
+        recipientId={producerId}
+        recipientName={producerName}
+        title={`Message ${producerName}`}
+        hint="They get a notification and can reply from their inbox."
+        onClose={() => setMessaging(false)}
+      />
     </div>
   );
 }

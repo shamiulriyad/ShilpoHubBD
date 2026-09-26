@@ -12,5 +12,8 @@ public class CreateHeritagePlaceRequest
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public string? ImageUrl { get; set; }
+    public string? KnownFor { get; set; }
+    public string? SourceUrl { get; set; }
+    public string? ImageCredit { get; set; }
     public bool IsFeatured { get; set; }
 }

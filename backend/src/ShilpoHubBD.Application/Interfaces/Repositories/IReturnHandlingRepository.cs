@@ -11,6 +11,10 @@ public interface IReturnHandlingRepository
 
     Task<ReturnRequest?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
+    Task<ReturnRequest?> GetByOrderIdAsync(Guid orderId, CancellationToken cancellationToken);
+
+    Task<Guid?> GetDeliveredShipmentPartnerAsync(Guid orderId, CancellationToken cancellationToken);
+
     Task<bool> ReferenceExistsAsync(string referenceCode, CancellationToken cancellationToken);
 
     Task<(List<ReturnRequest> Items, int TotalCount)> GetPagedAsync(

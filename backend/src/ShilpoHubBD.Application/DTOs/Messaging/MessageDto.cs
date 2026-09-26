@@ -7,6 +7,7 @@ public class MessageDto
     public Guid SenderId { get; set; }
     public string SenderName { get; set; } = string.Empty;
     public string Body { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool IsRead { get; set; }
 }

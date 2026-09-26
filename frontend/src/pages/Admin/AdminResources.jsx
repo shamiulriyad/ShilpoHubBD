@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { superAdminService as api } from '../../services/superAdminService';
 import { resources, editorFields } from './adminConfig';
-import { Action, DataTable, Editor, ErrorNotice, Modal, Panel, useAdminQuery, inputClass } from './AdminUI';
+import { Action, DataTable, Editor, ErrorNotice, Modal, Panel, useAdminQuery, inputClass, labelOf } from './AdminUI';
 export default function AdminResources({
   view
 }) {
@@ -36,7 +36,7 @@ export default function AdminResources({
       cache.invalidateQueries();
     }
   });
-  return <Panel><div className="mb-5 flex flex-wrap items-center justify-between gap-3"><p className="text-sm text-body/60">Manage {view} and keep public information up to date.</p><div className="flex gap-2">{config.drafts && <select aria-label="Publication status" className={inputClass} value={drafts ? 'drafts' : 'published'} onChange={e => {
+  return <Panel><div className="mb-5 flex flex-wrap items-center justify-between gap-3"><p className="text-sm text-body/60">Manage {labelOf(view).toLowerCase()} and keep public information up to date.</p><div className="flex gap-2">{config.drafts && <select aria-label="Publication status" className={inputClass} value={drafts ? 'drafts' : 'published'} onChange={e => {
           setDrafts(e.target.value === 'drafts');
           setPage(1);
         }}><option value="published">Published</option><option value="drafts">Drafts</option></select>}{!config.noCreate && <Action onClick={() => {

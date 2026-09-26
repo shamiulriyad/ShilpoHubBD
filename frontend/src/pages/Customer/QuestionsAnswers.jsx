@@ -4,12 +4,14 @@ import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Button, QnASection, AsyncState } from '../../components/ui';
 import { useProducts } from '../../hooks/useProducts';
 import { useProductQuestions, useQuestionMutations } from '../../hooks/useQuestions';
+import ImageAttachButton, { resolveUploadUrl } from '../../components/messaging/ImageAttachButton';
 
 export default function QuestionsAnswers() {
   const [searchParams, setSearchParams] = useSearchParams();
   const productId = searchParams.get('productId') || '';
   const [showAsk, setShowAsk] = useState(false);
   const [question, setQuestion] = useState('');
+  const [questionImage, setQuestionImage] = useState('');
 
   const productsQuery = useProducts({ pageSize: 50 });
   const questionsQuery = useProductQuestions(productId);
@@ -17,9 +19,10 @@ export default function QuestionsAnswers() {
 
   const handleAsk = (event) => {
     event.preventDefault();
-    ask.mutate(question, {
+    ask.mutate({ body: question, imageUrl: questionImage || undefined }, {
       onSuccess: () => {
         setQuestion('');
+        setQuestionImage('');
         setShowAsk(false);
       },
     });
@@ -75,9 +78,18 @@ export default function QuestionsAnswers() {
             onChange={(event) => setQuestion(event.target.value)}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
-          <Button type="submit" variant="primary" disabled={ask.isPending}>
-            {ask.isPending ? 'Posting…' : 'Post Question'}
-          </Button>
+          {questionImage && (
+            <div className="flex items-center gap-2">
+              <img src={resolveUploadUrl(questionImage)} alt="Attached" className="h-16 w-16 rounded-md object-cover" />
+              <button type="button" onClick={() => setQuestionImage('')} className="text-xs text-danger hover:underline">Remove picture</button>
+            </div>
+          )}
+          <div className="flex flex-wrap items-center gap-2">
+            <ImageAttachButton onUploaded={setQuestionImage} disabled={ask.isPending} label="Attach a picture to your question" />
+            <Button type="submit" variant="primary" disabled={ask.isPending}>
+              {ask.isPending ? 'Posting…' : 'Post Question'}
+            </Button>
+          </div>
         </form>
       )}
 
@@ -96,6 +108,7 @@ export default function QuestionsAnswers() {
                   askedBy: qa.askerName,
                   time: new Date(qa.createdAt).toLocaleDateString(),
                   question: qa.body,
+                  image: qa.imageUrl,
                   answers: qa.answers.map((answer) => ({
                     id: answer.id,
                     author: answer.authorName,

@@ -34,6 +34,16 @@ export default function ProducerAuctions() {
     && Number(form.startingPrice) > 0 && Number(form.minBidIncrement) > 0 && timesOk,
   );
 
+  const missing = [
+    !form.productId && 'a product',
+    !form.title.trim() && 'a title',
+    !form.description.trim() && 'a description',
+    !(Number(form.startingPrice) > 0) && 'a starting price',
+    !(Number(form.minBidIncrement) > 0) && 'a minimum bid increase',
+    !form.startAt && 'a start date and time (pick both the date and the time)',
+    !form.endAt && 'an end date and time (pick both the date and the time)',
+  ].filter(Boolean);
+
   const submit = (event) => {
     event.preventDefault();
     if (!valid) return;
@@ -90,6 +100,9 @@ export default function ProducerAuctions() {
           </label>
           {form.startAt && form.endAt && !timesOk && (
             <p role="alert" className="text-sm text-error sm:col-span-2">The end time must be after the start time and in the future.</p>
+          )}
+          {!valid && missing.length > 0 && (
+            <p className="text-sm text-body/70 sm:col-span-2">Still needed: {missing.join(', ')}.</p>
           )}
           <div className="sm:col-span-2">
             <Button type="submit" variant="primary" disabled={!valid || create.isPending}>{create.isPending ? 'Creating…' : 'Create auction'}</Button>

@@ -15,6 +15,12 @@ public class ProcurementRequestConfiguration : IEntityTypeConfiguration<Procurem
         builder.Property(p => p.Title).IsRequired().HasMaxLength(200);
         builder.Property(p => p.Budget).HasColumnType("numeric(18,2)");
         builder.Property(p => p.Status).HasConversion<string>().HasMaxLength(20);
+        builder.Property(p => p.AdvanceAmount).HasColumnType("decimal(12,2)");
+        builder.Property(p => p.AdvanceMethod).HasMaxLength(60);
+        builder.Property(p => p.AdvanceReference).HasMaxLength(120);
+        builder.Property(p => p.InspectionStatus).HasConversion<string>().HasMaxLength(20).HasDefaultValue(ProcurementInspectionStatus.NotRequired);
+        builder.Property(p => p.InspectionNotes).HasMaxLength(2000);
+        builder.HasOne(p => p.InspectedBy).WithMany().HasForeignKey(p => p.InspectedByUserId).OnDelete(DeleteBehavior.SetNull);
         builder.Property(p => p.ApprovalNotes).HasMaxLength(1000);
         builder.Property(p => p.CreatedAt).IsRequired();
         builder.Property(p => p.UpdatedAt).IsRequired();

@@ -91,6 +91,9 @@ public class HeritagePlaceService : IHeritagePlaceService
             Latitude = request.Latitude,
             Longitude = request.Longitude,
             ImageUrl = request.ImageUrl?.Trim(),
+            KnownFor = request.KnownFor?.Trim(),
+            SourceUrl = request.SourceUrl?.Trim(),
+            ImageCredit = request.ImageCredit?.Trim(),
             IsFeatured = request.IsFeatured,
             IsActive = true,
             CreatedAt = now,
@@ -122,6 +125,9 @@ public class HeritagePlaceService : IHeritagePlaceService
         place.Latitude = request.Latitude;
         place.Longitude = request.Longitude;
         place.ImageUrl = request.ImageUrl?.Trim();
+        place.KnownFor = request.KnownFor?.Trim();
+        place.SourceUrl = request.SourceUrl?.Trim();
+        place.ImageCredit = request.ImageCredit?.Trim();
         place.IsFeatured = request.IsFeatured;
         place.IsActive = request.IsActive;
         place.UpdatedAt = DateTime.UtcNow;
@@ -163,6 +169,9 @@ public class HeritagePlaceService : IHeritagePlaceService
         Latitude = place.Latitude,
         Longitude = place.Longitude,
         ImageUrl = place.ImageUrl,
+        KnownFor = place.KnownFor,
+        SourceUrl = place.SourceUrl,
+        ImageCredit = place.ImageCredit,
         IsFeatured = place.IsFeatured,
         IsActive = place.IsActive,
         AverageRating = place.AverageRating,

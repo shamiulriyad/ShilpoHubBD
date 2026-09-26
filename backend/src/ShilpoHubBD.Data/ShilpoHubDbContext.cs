@@ -11,6 +11,7 @@ using ShilpoHubBD.Domain.Entities.Commerce;
 using ShilpoHubBD.Domain.Entities.Community;
 using ShilpoHubBD.Domain.Entities.Contracts;
 using ShilpoHubBD.Domain.Entities.Cms;
+using ShilpoHubBD.Domain.Entities.ProductSearch;
 using ShilpoHubBD.Domain.Entities.CSRSponsorship;
 using ShilpoHubBD.Domain.Entities.CustomOrders;
 using ShilpoHubBD.Domain.Entities.DesignCollaboration;
@@ -85,6 +86,9 @@ public partial class ShilpoHubDbContext : DbContext
 
 	public DbSet<Order> Orders => Set<Order>();
 	public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+	public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
+	public DbSet<OrderComplaint> OrderComplaints => Set<OrderComplaint>();
+	public DbSet<ExpertiseCertificate> ExpertiseCertificates => Set<ExpertiseCertificate>();
 	public DbSet<OrderStatusEvent> OrderStatusEvents => Set<OrderStatusEvent>();
 
 	public DbSet<Payment> Payments => Set<Payment>();
@@ -228,6 +232,14 @@ public partial class ShilpoHubDbContext : DbContext
 	public DbSet<HeritagePlace> HeritagePlaces => Set<HeritagePlace>();
 	public DbSet<HeritageFestival> HeritageFestivals => Set<HeritageFestival>();
 	public DbSet<UnescoRecord> UnescoRecords => Set<UnescoRecord>();
+	public DbSet<CraftHeritageEntry> CraftHeritageEntries => Set<CraftHeritageEntry>();
+	public DbSet<ProductType> ProductTypes => Set<ProductType>();
+	public DbSet<Material> Materials => Set<Material>();
+	public DbSet<ProductMaterial> ProductMaterials => Set<ProductMaterial>();
+	public DbSet<ProductAttributes> ProductAttributeRecords => Set<ProductAttributes>();
+	public DbSet<ProductAttributeSuggestion> ProductAttributeSuggestions => Set<ProductAttributeSuggestion>();
+	public DbSet<ProductIndexState> ProductIndexStates => Set<ProductIndexState>();
+	public DbSet<SiteContentItem> SiteContentItems => Set<SiteContentItem>();
 	public DbSet<CulturalEvent> CulturalEvents => Set<CulturalEvent>();
 	public DbSet<LocalCuisine> LocalCuisines => Set<LocalCuisine>();
 	public DbSet<HeritageRoute> HeritageRoutes => Set<HeritageRoute>();

@@ -30,6 +30,7 @@ public static class DependencyInjection
     {
         services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
         services.Configure<RagServiceOptions>(configuration.GetSection("RagService"));
+        services.Configure<ShilpoHubBD.Infrastructure.ProductSearch.ProductSearchServiceOptions>(configuration.GetSection("ProductSearch"));
         services.Configure<GeminiOptions>(configuration.GetSection("Gemini"));
         services.Configure<NominatimOptions>(configuration.GetSection("Nominatim"));
         services.Configure<OsrmOptions>(configuration.GetSection("Osrm"));
@@ -88,6 +89,8 @@ public static class DependencyInjection
             client.BaseAddress = new Uri(ragOptions.BaseUrl);
             client.Timeout = TimeSpan.FromSeconds(ragOptions.TimeoutSeconds);
         });
+        services.AddHttpClient<IProductSearchCandidateProvider, ShilpoHubBD.Infrastructure.ProductSearch.PythonProductSearchProvider>();
+        services.AddHttpClient<IProductAttributeSuggester, ShilpoHubBD.Infrastructure.ProductSearch.PythonAttributeSuggester>();
         services.AddScoped<ICounterfeitDetectionProvider, RuleBasedCounterfeitDetectionProvider>();
         services.AddScoped<IStoryGeneratorProvider, RuleBasedStoryGeneratorProvider>();
         services.AddScoped<ISentimentAnalysisProvider, RuleBasedSentimentAnalysisProvider>();

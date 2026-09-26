@@ -1,0 +1,371 @@
+[
+  {
+    "group": "about-stat",
+    "displayOrder": 0,
+    "title": "10",
+    "subtitle": "connected roles",
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-stat",
+    "displayOrder": 1,
+    "title": "6",
+    "subtitle": "pillars in one platform",
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-stat",
+    "displayOrder": 2,
+    "title": "1",
+    "subtitle": "ecosystem for heritage",
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-purpose",
+    "displayOrder": 0,
+    "title": "Mission",
+    "subtitle": null,
+    "body": "Preserve and elevate Bangladesh’s heritage crafts through a connected digital ecosystem.",
+    "linkUrl": null,
+    "extra": "Every artisan gets a digital identity, every craft gets a story, and every sale supports the tradition behind it."
+  },
+  {
+    "group": "about-purpose",
+    "displayOrder": 1,
+    "title": "Vision",
+    "subtitle": null,
+    "body": "A thriving network where artisans, communities and heritage learners take part in the digital economy.",
+    "linkUrl": null,
+    "extra": "From a weaver in Sirajganj to a researcher in Dhaka, everyone works from the same living dataset."
+  },
+  {
+    "group": "about-landscape",
+    "displayOrder": 0,
+    "title": "BSCIC",
+    "subtitle": null,
+    "body": "Supports artisans and cottage industry, but is not a consumer marketplace.",
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-landscape",
+    "displayOrder": 1,
+    "title": "Aarong",
+    "subtitle": null,
+    "body": "Sells crafts, but as an intermediary — buyers never connect directly with the artisan.",
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-landscape",
+    "displayOrder": 2,
+    "title": "Daraz & Etsy",
+    "subtitle": null,
+    "body": "General or global handmade marketplaces, neither built around Bangladeshi heritage.",
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-landscape",
+    "displayOrder": 3,
+    "title": "UNESCO ICH",
+    "subtitle": null,
+    "body": "Documents traditions, but is not a marketplace or a training ecosystem.",
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-landscape",
+    "displayOrder": 4,
+    "title": "ShilpoHub",
+    "subtitle": null,
+    "body": "The first platform to combine preservation, commerce, tourism, analytics, training and research in one place.",
+    "linkUrl": null,
+    "extra": "highlight"
+  },
+  {
+    "group": "about-stakeholder",
+    "displayOrder": 0,
+    "title": "Artisans & Producers",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-stakeholder",
+    "displayOrder": 1,
+    "title": "Customers",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-stakeholder",
+    "displayOrder": 2,
+    "title": "Tourists",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-stakeholder",
+    "displayOrder": 3,
+    "title": "Business Partners",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-stakeholder",
+    "displayOrder": 4,
+    "title": "Academy Members",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-stakeholder",
+    "displayOrder": 5,
+    "title": "Researchers",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-stakeholder",
+    "displayOrder": 6,
+    "title": "Government & NGOs",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-stakeholder",
+    "displayOrder": 7,
+    "title": "Logistics Partners",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": null,
+    "extra": null
+  },
+  {
+    "group": "about-capability",
+    "displayOrder": 0,
+    "title": "Explore Heritage",
+    "subtitle": null,
+    "body": "Browse districts, villages, crafts and cultural collections.",
+    "linkUrl": "/explore",
+    "extra": null
+  },
+  {
+    "group": "about-capability",
+    "displayOrder": 1,
+    "title": "Marketplace",
+    "subtitle": null,
+    "body": "Discover heritage products, auctions and producer stories.",
+    "linkUrl": "/marketplace",
+    "extra": null
+  },
+  {
+    "group": "about-capability",
+    "displayOrder": 2,
+    "title": "Heritage Tourism",
+    "subtitle": null,
+    "body": "Find festivals, routes, cuisine and tourist services.",
+    "linkUrl": "/tourism",
+    "extra": null
+  },
+  {
+    "group": "about-capability",
+    "displayOrder": 3,
+    "title": "Academy",
+    "subtitle": null,
+    "body": "Browse courses, mentors, live classes and certifications.",
+    "linkUrl": "/academy",
+    "extra": null
+  },
+  {
+    "group": "about-capability",
+    "displayOrder": 4,
+    "title": "Innovation Hub",
+    "subtitle": null,
+    "body": "Access live heritage data, AI research tools and policy design.",
+    "linkUrl": "/research",
+    "extra": null
+  },
+  {
+    "group": "footer-about",
+    "displayOrder": 0,
+    "title": "About ShilpoHub",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/about",
+    "extra": null
+  },
+  {
+    "group": "footer-about",
+    "displayOrder": 1,
+    "title": "Mission",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/about",
+    "extra": null
+  },
+  {
+    "group": "footer-about",
+    "displayOrder": 2,
+    "title": "Vision",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/about",
+    "extra": null
+  },
+  {
+    "group": "footer-explore",
+    "displayOrder": 0,
+    "title": "Districts",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/explore/districts",
+    "extra": null
+  },
+  {
+    "group": "footer-explore",
+    "displayOrder": 1,
+    "title": "Heritage Villages",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/explore/villages",
+    "extra": null
+  },
+  {
+    "group": "footer-explore",
+    "displayOrder": 2,
+    "title": "Crafts",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/explore/crafts",
+    "extra": null
+  },
+  {
+    "group": "footer-explore",
+    "displayOrder": 3,
+    "title": "UNESCO Heritage",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/explore/unesco",
+    "extra": null
+  },
+  {
+    "group": "footer-marketplace",
+    "displayOrder": 0,
+    "title": "Products",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/marketplace/products",
+    "extra": null
+  },
+  {
+    "group": "footer-marketplace",
+    "displayOrder": 1,
+    "title": "Producers",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/explore/producers",
+    "extra": null
+  },
+  {
+    "group": "footer-marketplace",
+    "displayOrder": 2,
+    "title": "Categories",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/marketplace/categories",
+    "extra": null
+  },
+  {
+    "group": "footer-resources",
+    "displayOrder": 0,
+    "title": "Academy",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/academy",
+    "extra": null
+  },
+  {
+    "group": "footer-resources",
+    "displayOrder": 1,
+    "title": "Innovation Hub",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/research",
+    "extra": null
+  },
+  {
+    "group": "footer-resources",
+    "displayOrder": 2,
+    "title": "Tourism Events",
+    "subtitle": null,
+    "body": null,
+    "linkUrl": "/tourism/events",
+    "extra": null
+  },
+  {
+    "group": "travel-resource",
+    "displayOrder": 0,
+    "title": "Government hotels & motels",
+    "subtitle": "Accommodation",
+    "body": "Search Bangladesh Parjatan Corporation properties and check current room availability on its official booking portal.",
+    "linkUrl": "https://hotels.gov.bd/",
+    "extra": "HomestayBooking|Visit official booking portal"
+  },
+  {
+    "group": "travel-resource",
+    "displayOrder": 1,
+    "title": "Destination information",
+    "subtitle": "Trip planning",
+    "body": "Explore Bangladesh Tourism Board destination information when planning a route or discussing a trip with a local guide.",
+    "linkUrl": "https://beautifulbangladesh.gov.bd/",
+    "extra": "GuideBooking|Explore official travel information"
+  },
+  {
+    "group": "travel-resource",
+    "displayOrder": 2,
+    "title": "Bangladesh Railway",
+    "subtitle": "Rail travel",
+    "body": "Check routes, travel dates and available tickets directly with Bangladesh Railway.",
+    "linkUrl": "https://eticket.railway.gov.bd/",
+    "extra": "TransportationBooking|Check train tickets"
+  },
+  {
+    "group": "travel-resource",
+    "displayOrder": 3,
+    "title": "Craft workshop visits",
+    "subtitle": "Craft experiences",
+    "body": "Explore weaving communities and plan a workshop visit directly with a local host. Confirm availability and prices before travelling.",
+    "linkUrl": "/tourism/villages",
+    "extra": "WorkshopBooking|Explore craft communities"
+  },
+  {
+    "group": "travel-resource",
+    "displayOrder": 4,
+    "title": "Artisan community visits",
+    "subtitle": "Community visits",
+    "body": "Learn about local craft communities and arrange visits in advance, with the maker’s consent.",
+    "linkUrl": "/tourism/villages",
+    "extra": "ArtisanHomeVisit|Discover communities"
+  }
+]

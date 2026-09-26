@@ -12,6 +12,7 @@ public class CreateReviewRequestValidator : AbstractValidator<CreateReviewReques
             .WithMessage("Exactly one of ProductId, HeritagePlaceId or BookingId must be set.");
 
         RuleFor(x => x.Rating).InclusiveBetween(1, 5);
+        RuleFor(x => x.ProducerRating).InclusiveBetween(1, 5).When(x => x.ProducerRating.HasValue);
         RuleFor(x => x.Comment).NotEmpty().MaximumLength(2000);
         RuleForEach(x => x.ImageUrls).NotEmpty().MaximumLength(2000);
     }

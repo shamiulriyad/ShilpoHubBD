@@ -14,6 +14,7 @@ public class CommunityQuestion
     public User User { get; set; } = null!;
 
     public string Body { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; }
     public DateTime CreatedAt { get; set; }
 
     public ICollection<CommunityAnswer> Answers { get; set; } = new List<CommunityAnswer>();

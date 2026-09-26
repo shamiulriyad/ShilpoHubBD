@@ -11,5 +11,12 @@ public class ProcurementRequestListItemDto
     public decimal ItemsTotal { get; set; }
     public DateTime DeliveryDeadline { get; set; }
     public ProcurementStatus Status { get; set; }
+    public string BusinessPartnerName { get; set; } = string.Empty;
+    public decimal RequiredAdvance { get; set; }
+    public decimal? AdvanceAmount { get; set; }
+    public DateTime? AdvancePaidAt { get; set; }
+    public DateTime? AdvanceRefundedAt { get; set; }
+    public ProcurementInspectionStatus InspectionStatus { get; set; }
+    public string? InspectionNotes { get; set; }
     public DateTime CreatedAt { get; set; }
 }

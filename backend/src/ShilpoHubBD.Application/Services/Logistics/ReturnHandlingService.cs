@@ -44,11 +44,61 @@ public class ReturnHandlingService : IReturnHandlingService
     private readonly IReturnHandlingRepository _repository;
     private readonly ILogisticsPartnerRepository _partnerRepository;
 
+    private readonly IOrderService _orderService;
+
     public ReturnHandlingService(
-        IReturnHandlingRepository repository, ILogisticsPartnerRepository partnerRepository)
+        IReturnHandlingRepository repository, ILogisticsPartnerRepository partnerRepository, IOrderService orderService)
     {
         _repository = repository;
         _partnerRepository = partnerRepository;
+        _orderService = orderService;
+    }
+
+    public async Task<ReturnRequestDto> CreateForOrderReturnAsync(
+        Guid logisticsPartnerProfileId, Guid producerUserId, ReturnFromOrderDetails details, CancellationToken cancellationToken)
+    {
+        var profile = await _partnerRepository.GetByIdAsync(logisticsPartnerProfileId, cancellationToken)
+            ?? throw new ConflictException("The logistics partner that delivered this order was not found.");
+
+        var now = DateTime.UtcNow;
+        var returnRequest = new ReturnRequest
+        {
+            Id = Guid.NewGuid(),
+            ReferenceCode = await UniqueReferenceAsync(now, cancellationToken),
+            LogisticsPartnerProfileId = profile.Id,
+            CreatedByUserId = producerUserId,
+            OrderId = details.OrderId,
+            Status = ReturnStatus.Approved,
+            Reason = ReturnReason.Other,
+            ReasonDetail = details.ReasonDetail,
+            CustomerName = details.CustomerName,
+            CustomerPhone = details.CustomerPhone,
+            PickupContactName = details.CustomerName,
+            PickupPhone = details.CustomerPhone,
+            PickupAddressLine = details.PickupAddressLine,
+            PickupCity = details.PickupCity,
+            PickupDistrictId = details.PickupDistrictId,
+            RefundAmount = details.RefundAmount,
+            ApprovedByUserId = producerUserId,
+            ApprovedAt = now,
+            CreatedAt = now,
+            UpdatedAt = now,
+        };
+
+        foreach (var itemInput in details.Items)
+        {
+            returnRequest.Items.Add(await BuildItemAsync(returnRequest.Id, itemInput, cancellationToken));
+        }
+
+        AddEvent(returnRequest, ReturnEventType.Created, producerUserId, now, null, ReturnStatus.Requested,
+            "Customer return accepted by the producer.");
+        AddEvent(returnRequest, ReturnEventType.Approved, producerUserId, now, ReturnStatus.Requested, ReturnStatus.Approved,
+            "Collect the goods from the customer and bring them back to the producer.");
+
+        await _repository.AddAsync(returnRequest, cancellationToken);
+        await _repository.SaveChangesAsync(cancellationToken);
+
+        return (await _repository.GetByIdAsync(returnRequest.Id, cancellationToken))!.ToDto();
     }
 
     public async Task<ReturnRequestDto> CreateAsync(
@@ -348,6 +398,22 @@ public class ReturnHandlingService : IReturnHandlingService
             currentUserId, now, from, target, request.Note?.Trim());
 
         await _repository.SaveChangesAsync(cancellationToken);
+
+        // The goods are back with the producer: restore stock and refund whatever the customer paid.
+        if (target == ReturnStatus.Received && ret.OrderId.HasValue)
+        {
+            var refunded = await _orderService.CompleteReturnAsync(ret.OrderId.Value, cancellationToken);
+            if (refunded > 0)
+            {
+                ret.RefundAmount = refunded;
+                ret.RefundedAt = DateTime.UtcNow;
+                ret.RefundMethod = "Original payment";
+                AddEvent(ret, ReturnEventType.RefundCompleted, currentUserId, DateTime.UtcNow, ret.Status, ret.Status,
+                    $"Refunded ৳{refunded} to the customer.");
+                await _repository.SaveChangesAsync(cancellationToken);
+            }
+        }
+
         return (await _repository.GetByIdAsync(ret.Id, cancellationToken))!.ToDto();
     }
 

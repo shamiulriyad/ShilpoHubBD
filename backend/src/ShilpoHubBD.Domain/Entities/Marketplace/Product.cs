@@ -1,4 +1,5 @@
 using ShilpoHubBD.Domain.Entities.Identity;
+using ShilpoHubBD.Domain.Entities.ProductSearch;
 
 namespace ShilpoHubBD.Domain.Entities.Marketplace;
 
@@ -10,6 +11,9 @@ public class Product
     public string Description { get; set; } = string.Empty;
     public decimal Price { get; set; }
     public decimal? DiscountPrice { get; set; }
+
+    /// <summary>Database-generated: <c>COALESCE(DiscountPrice, Price)</c>. Read-only; indexed for price filters and sorting.</summary>
+    public decimal EffectivePrice { get; private set; }
     public int Stock { get; set; }
 
     public bool IsFeatured { get; set; }
@@ -23,6 +27,9 @@ public class Product
     public int SalesCount { get; set; }
     public decimal AverageRating { get; set; }
     public int ReviewCount { get; set; }
+
+    /// <summary>Database-generated Bayesian average of <see cref="AverageRating"/> (prior 4.0 worth 5 reviews), so "highest rated" is not won by a single 5-star review.</summary>
+    public decimal BayesianRating { get; private set; }
 
     public HandmadeVerificationStatus HandmadeVerificationStatus { get; set; } = HandmadeVerificationStatus.Pending;
     public Guid? HandmadeVerifiedByUserId { get; set; }
@@ -48,6 +55,13 @@ public class Product
 
     public Guid ProducerId { get; set; }
     public User Producer { get; set; } = null!;
+
+    /// <summary>The kind of object (saree, mat, lamp set...). Null until backfilled or set by the producer.</summary>
+    public Guid? ProductTypeId { get; set; }
+    public ProductType? ProductType { get; set; }
+
+    public ProductAttributes? Attributes { get; set; }
+    public ICollection<ProductMaterial> Materials { get; set; } = new List<ProductMaterial>();
 
     public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
     public ICollection<ProductVariant> Variants { get; set; } = new List<ProductVariant>();

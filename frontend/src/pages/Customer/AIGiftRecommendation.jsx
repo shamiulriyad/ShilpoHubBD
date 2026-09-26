@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, Button, SectionHeader } from '../../components/ui';
 import { useCategories } from '../../hooks/useCategories';
@@ -88,18 +89,23 @@ export default function AIGiftRecommendation() {
 
       {giftRecommendations.data && (
         <div className="mt-10">
-          <SectionHeader eyebrow="AI Curated" title="Recommended Gifts" />
+          <SectionHeader eyebrow="Picked for you" title="Recommended Gifts" />
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {giftRecommendations.data.map((gift, i) => (
               <div key={i} className="rounded-xl border border-border bg-surface p-4">
                 <Badge tone="secondary">{gift.category}</Badge>
-                <p className="mt-2 text-sm font-semibold text-heading">{gift.productName}</p>
+                {gift.imageUrl && <img src={gift.imageUrl} alt={gift.productName} className="mt-2 h-28 w-full rounded-lg object-cover" loading="lazy" />}
+                <p className="mt-2 text-sm font-semibold text-heading">
+                  {gift.productId ? (
+                    <Link to={routePaths.marketplaceProductDetails.replace(':productId', gift.productId)} className="hover:underline">{gift.productName}</Link>
+                  ) : gift.productName}
+                </p>
                 <p className="mt-1 text-xs text-body/60">{gift.reason}</p>
                 <p className="mt-2 text-sm font-semibold text-primary">৳ {gift.estimatedPrice.toLocaleString()}</p>
               </div>
             ))}
             {giftRecommendations.data.length === 0 && (
-              <p className="col-span-full text-sm text-body/60">No suggestions came back — try different interests.</p>
+              <p className="col-span-full text-sm text-body/60">No products match that interest and budget yet — try another interest or a higher budget.</p>
             )}
           </div>
         </div>

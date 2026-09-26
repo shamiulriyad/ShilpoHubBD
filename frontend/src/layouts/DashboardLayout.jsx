@@ -10,8 +10,12 @@ import { useAuth } from '../hooks/useAuth';
 import BrandLogo from '../components/brand/BrandLogo';
 import GlobalSearch from '../components/layout/GlobalSearch';
 import LanguageMenu from '../components/layout/LanguageMenu';
+import HelplineChip from '../components/layout/HelplineChip';
+import ProfileStatusBanner from '../components/profile/ProfileStatusBanner';
 import NavigationIcon from '../components/layout/NavigationIcon';
-import { AIAssistantWidget } from '../components/ui';
+import { AIAssistantWidget, ConfirmDialog } from '../components/ui';
+import { useBackLogoutGuard } from '../hooks/useBackLogoutGuard';
+import { useLogoutFlow } from '../hooks/useLogoutFlow';
 
 export default function DashboardLayout({ navItems, sidebarTitle }) {
   const sidebarRef = useRef(null);
@@ -31,10 +35,14 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
     return ()=>{document.body.style.overflow=priorOverflow;document.removeEventListener('keydown',trap);menuTrigger.current?.focus();};
   },[sidebarOpen]);
   const { activeRole } = useAuth();
+  const backGuard = useBackLogoutGuard();
+  const backLogout = useLogoutFlow();
 
   const roleConfig = activeRole ? roleSidebars[activeRole] : null;
   const items = navItems ?? roleConfig?.nav ?? sidebarNav;
   const title = sidebarTitle ?? roleConfig?.title ?? 'Workspace';
+  // Quick-access picks follow the workspace being shown (e.g. a SuperAdmin inside /government), not the login role.
+  const presentationRole = Object.entries(roleSidebars).find(([, config]) => config.nav === items)?.[0] ?? activeRole;
 
   return (
     <div className={`dashboard-shell ${compact ? 'sidebar-compact' : ''}`} data-workspace={activeRole}>
@@ -56,6 +64,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         </Link>
         <GlobalSearch navItems={items}/>
         <div className="topbar-actions">
+          <HelplineChip />
           <NotificationBell />
           <LanguageMenu/>
           <ProfileDropdown />
@@ -87,16 +96,26 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
               Close
             </button>
           </div>
-          <button type="button" className="sidebar-collapse-control" aria-label={compact ? 'Expand sidebar' : 'Collapse sidebar'} onClick={toggleCompact} aria-expanded={!compact}><NavigationIcon label="Menu"/><span>{compact ? '' : 'Collapse navigation'}</span></button>
-          <Sidebar items={items} title={title} compact={compact && !sidebarOpen} onExpand={()=>setCompact(false)} onNavigate={() => setSidebarOpen(false)} />
+          <Sidebar items={items} title={title} presentationRole={presentationRole} compact={compact && !sidebarOpen} onExpand={()=>setCompact(false)} onToggle={toggleCompact} onNavigate={() => setSidebarOpen(false)} />
         </div>
 
         <main id="main-content" className="workspace-content">
+          <ProfileStatusBanner />
           <Outlet />
         </main>
       </div>
       <Footer />
       <AIAssistantWidget />
+      <ConfirmDialog
+        open={backGuard.state === 'blocked'}
+        title="Leave and log out?"
+        message="Going back will end your session and take you to the home page. Stay here to keep working."
+        confirmLabel="Log out and leave"
+        cancelLabel="Stay here"
+        busy={backLogout.busy}
+        onConfirm={() => { backGuard.reset?.(); backLogout.confirm(); }}
+        onCancel={() => backGuard.reset?.()}
+      />
     </div>
   );
 }

@@ -44,8 +44,12 @@ if (builder.Environment.IsDevelopment())
 // Add services to the container.
 builder.Services.AddScoped<ValidationFilter>();
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
-	.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(
-		new System.Text.Json.Serialization.JsonStringEnumConverter()));
+	.AddJsonOptions(options =>
+	{
+		options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+		options.JsonSerializerOptions.Converters.Add(new ShilpoHubBD.Api.Helpers.UtcDateTimeJsonConverter());
+		options.JsonSerializerOptions.Converters.Add(new ShilpoHubBD.Api.Helpers.UtcNullableDateTimeJsonConverter());
+	});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -236,6 +240,9 @@ using (var referenceDataScope = app.Services.CreateScope())
 	await MarketplaceReferenceDataSeeder.SeedCraftCategoriesAsync(dbContext);
 	await TourismLocationSeeder.SeedAsync(dbContext);
 	await TransportOptionSeeder.SeedAsync(dbContext);
+	await SiteContentSeeder.SeedAsync(dbContext);
+	await ProductSearchSeeder.SeedAsync(dbContext);
+	await HeritageDiscoverySeeder.SeedAsync(dbContext);
 }
 
 // Configure the HTTP request pipeline.

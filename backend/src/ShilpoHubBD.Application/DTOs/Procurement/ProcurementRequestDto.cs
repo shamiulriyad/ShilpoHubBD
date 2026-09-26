@@ -28,6 +28,18 @@ public class ProcurementRequestDto
     public DateTime? ApprovedAt { get; set; }
     public string? ApprovalNotes { get; set; }
 
+    // Advance payment (at least 50% of ItemsTotal) and the admin inspection that follows.
+    public decimal RequiredAdvance { get; set; }
+    public decimal? AdvanceAmount { get; set; }
+    public DateTime? AdvancePaidAt { get; set; }
+    public string? AdvanceMethod { get; set; }
+    public string? AdvanceReference { get; set; }
+    public DateTime? AdvanceRefundedAt { get; set; }
+    public ProcurementInspectionStatus InspectionStatus { get; set; }
+    public string? InspectedByName { get; set; }
+    public DateTime? InspectedAt { get; set; }
+    public string? InspectionNotes { get; set; }
+
     public List<ProcurementItemDto> Items { get; set; } = new();
     public List<ProcurementStatusEventDto> StatusHistory { get; set; } = new();
 

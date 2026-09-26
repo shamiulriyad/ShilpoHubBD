@@ -1,4 +1,5 @@
 using ShilpoHubBD.Application.DTOs.CustomOrders;
+using ShilpoHubBD.Application.DTOs.Logistics;
 using ShilpoHubBD.Application.Exceptions;
 using ShilpoHubBD.Application.Interfaces.Repositories;
 using ShilpoHubBD.Application.Interfaces.Services;
@@ -12,13 +13,16 @@ public class CustomOrderService : ICustomOrderService
     private readonly ICustomOrderRepository _customOrderRepository;
     private readonly IUserRepository _userRepository;
     private readonly IProductRepository _productRepository;
+    private readonly IDeliveryTrackingService _deliveryTrackingService;
 
     public CustomOrderService(
-        ICustomOrderRepository customOrderRepository, IUserRepository userRepository, IProductRepository productRepository)
+        ICustomOrderRepository customOrderRepository, IUserRepository userRepository, IProductRepository productRepository,
+        IDeliveryTrackingService deliveryTrackingService)
     {
         _customOrderRepository = customOrderRepository;
         _userRepository = userRepository;
         _productRepository = productRepository;
+        _deliveryTrackingService = deliveryTrackingService;
     }
 
     public async Task<CustomOrderRequestDto> GetByIdAsync(Guid id, Guid currentUserId, bool isAdmin, CancellationToken cancellationToken)
@@ -78,6 +82,10 @@ public class CustomOrderService : ICustomOrderService
             Specifications = request.Specifications.Trim(),
             Budget = request.Budget,
             Deadline = request.Deadline,
+            RecipientName = request.RecipientName.Trim(),
+            RecipientPhone = request.RecipientPhone.Trim(),
+            ShippingAddressLine = request.ShippingAddressLine.Trim(),
+            ShippingDistrictId = request.ShippingDistrictId,
             Status = CustomOrderStatus.Pending,
             CreatedAt = now,
             UpdatedAt = now,
@@ -100,15 +108,17 @@ public class CustomOrderService : ICustomOrderService
             throw new UnauthorizedAccessException("You do not have permission to respond to this custom order request.");
         }
 
-        if (customOrder.Status is CustomOrderStatus.Completed or CustomOrderStatus.Cancelled or CustomOrderStatus.Rejected)
+        if (customOrder.Status is CustomOrderStatus.Completed or CustomOrderStatus.Cancelled or CustomOrderStatus.Rejected
+            or CustomOrderStatus.Shipped or CustomOrderStatus.Delivered)
         {
             throw new ConflictException("This custom order request is already closed and cannot be updated.");
         }
 
         // A producer answers a request; Pending and Cancelled are not answers (Cancelled is the customer's action).
-        if (request.Status is CustomOrderStatus.Pending or CustomOrderStatus.Cancelled)
+        if (request.Status is CustomOrderStatus.Pending or CustomOrderStatus.Cancelled
+            or CustomOrderStatus.Shipped or CustomOrderStatus.Delivered)
         {
-            throw new ConflictException("A custom order can only be accepted, rejected, started or completed by the producer.");
+            throw new ConflictException("A custom order can only be accepted, rejected, started or completed by the producer. Shipping and delivery go through the logistics partner.");
         }
 
         customOrder.Status = request.Status;
@@ -119,6 +129,87 @@ public class CustomOrderService : ICustomOrderService
 
         await _customOrderRepository.SaveChangesAsync(cancellationToken);
 
+        return ToDto(customOrder);
+    }
+
+    public async Task<CustomOrderRequestDto> UpdateDeliveryAsync(
+        Guid id, Guid customerId, UpdateCustomOrderDeliveryRequest request, CancellationToken cancellationToken)
+    {
+        var customOrder = await _customOrderRepository.GetByIdAsync(id, cancellationToken)
+            ?? throw new NotFoundException("Custom order request not found.");
+
+        if (customOrder.CustomerId != customerId)
+        {
+            throw new UnauthorizedAccessException("You do not have permission to update this custom order request.");
+        }
+
+        if (customOrder.Status is CustomOrderStatus.Shipped or CustomOrderStatus.Delivered
+            or CustomOrderStatus.Cancelled or CustomOrderStatus.Rejected)
+        {
+            throw new ConflictException("The delivery address can no longer be changed for this custom order.");
+        }
+
+        customOrder.RecipientName = request.RecipientName.Trim();
+        customOrder.RecipientPhone = request.RecipientPhone.Trim();
+        customOrder.ShippingAddressLine = request.ShippingAddressLine.Trim();
+        customOrder.ShippingDistrictId = request.ShippingDistrictId;
+        customOrder.UpdatedAt = DateTime.UtcNow;
+
+        await _customOrderRepository.SaveChangesAsync(cancellationToken);
+        return ToDto(customOrder);
+    }
+
+    // After a producer marks the piece Completed it goes to a logistics partner exactly like a normal
+    // order item: the partner gets a shipment, the customer and producer follow the tracking, and only
+    // the partner marking it delivered closes the order.
+    public async Task<CustomOrderRequestDto> ShipAsync(
+        Guid id, Guid producerId, bool isAdmin, ShipCustomOrderRequest request, CancellationToken cancellationToken)
+    {
+        var customOrder = await _customOrderRepository.GetByIdAsync(id, cancellationToken)
+            ?? throw new NotFoundException("Custom order request not found.");
+
+        if (!isAdmin && customOrder.ProducerId != producerId)
+        {
+            throw new UnauthorizedAccessException("You do not have permission to ship this custom order request.");
+        }
+
+        if (customOrder.Status != CustomOrderStatus.Completed)
+        {
+            throw new ConflictException("Mark the custom order Completed before handing it to a logistics partner.");
+        }
+
+        if (string.IsNullOrWhiteSpace(customOrder.ShippingAddressLine) || string.IsNullOrWhiteSpace(customOrder.RecipientName))
+        {
+            throw new ConflictException("The customer has not provided a delivery address for this custom order yet.");
+        }
+
+        var shipment = await _deliveryTrackingService.CreateForOrderHandoffAsync(
+            request.LogisticsPartnerProfileId, customOrder.ProducerId, customOrder.Producer.FullName,
+            new OrderHandoffDetails
+            {
+                OrderId = null,
+                RecipientName = customOrder.RecipientName!,
+                RecipientPhone = customOrder.RecipientPhone ?? string.Empty,
+                DestinationAddressLine = customOrder.ShippingAddressLine!,
+                DestinationCity = "Bangladesh",
+                DestinationDistrictId = customOrder.ShippingDistrictId,
+                ParcelCount = 1,
+                DeclaredValue = customOrder.QuotedPrice,
+                Description = $"Custom order: {customOrder.Title}",
+                DeliveryRouteId = request.DeliveryRouteId,
+                WeightKg = request.WeightKg,
+                Notes = request.Notes,
+            },
+            cancellationToken);
+
+        var now = DateTime.UtcNow;
+        customOrder.Status = CustomOrderStatus.Shipped;
+        customOrder.TrackingNumber = shipment.TrackingNumber;
+        customOrder.Carrier = shipment.LogisticsPartnerName ?? "Logistics partner";
+        customOrder.ShippedAt = now;
+        customOrder.UpdatedAt = now;
+
+        await _customOrderRepository.SaveChangesAsync(cancellationToken);
         return ToDto(customOrder);
     }
 
@@ -162,6 +253,14 @@ public class CustomOrderService : ICustomOrderService
         QuotedPrice = request.QuotedPrice,
         ProducerResponse = request.ProducerResponse,
         RespondedAt = request.RespondedAt,
+        RecipientName = request.RecipientName,
+        RecipientPhone = request.RecipientPhone,
+        ShippingAddressLine = request.ShippingAddressLine,
+        ShippingDistrictId = request.ShippingDistrictId,
+        TrackingNumber = request.TrackingNumber,
+        Carrier = request.Carrier,
+        ShippedAt = request.ShippedAt,
+        DeliveredAt = request.DeliveredAt,
         CreatedAt = request.CreatedAt,
         UpdatedAt = request.UpdatedAt,
     };

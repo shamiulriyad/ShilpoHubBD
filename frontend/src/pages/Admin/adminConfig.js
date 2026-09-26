@@ -33,7 +33,7 @@ const district = text('districtId', 'District', true, {
   lookup: '/districts'
 });
 const publish = bool('publish', 'Publish now');
-export const adminGroups = [['users', 'User Management', [['directory', 'User directory'], ['verification', 'User Verification'], ['roles', 'Role Management'], ['permissions', 'Permissions'], ['identity', 'Identity Verification']]], ['heritage', 'Heritage Management', [['categories', 'Craft Categories'], ['villages', 'Heritage Villages'], ['places', 'Heritage Places'], ['locations', 'Tourism Locations'], ['districts', 'Districts'], ['festivals', 'Festivals']]], ['marketplace', 'Marketplace', [['approval', 'Product Approval'], ['monitoring', 'Marketplace Monitoring'], ['refunds', 'Refund Management'], ['fraud', 'Fraud Control']]], ['cms', 'CMS', [['homepage', 'Homepage'], ['blogs', 'Blogs'], ['news', 'News'], ['events', 'Events'], ['announcements', 'Announcements']]], ['moderation', 'AI Moderation', [['reviews', 'Fake Reviews'], ['spam', 'Spam Detection'], ['content', 'Content Moderation'], ['images', 'Image Moderation']]], ['security', 'Security', [['audit', 'Audit Logs'], ['backups', 'Backups'], ['health', 'System Monitoring'], ['keys', 'API Management'], ['threats', 'Threat Detection']]]];
+export const adminGroups = [['users', 'User Management', [['directory', 'User directory'], ['verification', 'User Verification'], ['roles', 'Role Management'], ['permissions', 'Permissions'], ['identity', 'Identity Verification']]], ['heritage', 'Heritage Management', [['categories', 'Craft Categories'], ['villages', 'Heritage Villages'], ['places', 'Heritage Places'], ['locations', 'Tourism Locations'], ['districts', 'Districts'], ['festivals', 'Festivals'], ['culturalEvents', 'Cultural Events'], ['routes', 'Tour Routes'], ['cuisines', 'Local Cuisines'], ['museum', 'Digital Museum'], ['unesco', 'UNESCO Heritage'], ['craftHeritage', 'Craft Heritage']]], ['marketplace', 'Marketplace', [['approval', 'Product Approval'], ['productTypes', 'Product Types'], ['materials', 'Materials'], ['monitoring', 'Marketplace Monitoring'], ['refunds', 'Refund Management'], ['fraud', 'Fraud Control']]], ['cms', 'CMS', [['homepage', 'Homepage'], ['blogs', 'Blogs'], ['news', 'News'], ['events', 'Events'], ['announcements', 'Announcements'], ['siteContent', 'Site Content']]], ['moderation', 'AI Moderation', [['reviews', 'Fake Reviews'], ['spam', 'Spam Detection'], ['content', 'Content Moderation'], ['images', 'Image Moderation']]], ['security', 'Security', [['audit', 'Audit Logs'], ['backups', 'Backups'], ['health', 'System Monitoring'], ['keys', 'API Management'], ['threats', 'Threat Detection']]]];
 export const resources = {
   categories: {
     path: '/categories',
@@ -43,13 +43,13 @@ export const resources = {
   },
   villages: {
     path: '/villages',
-    fields: [name, text('craft', 'Craft'), district, long('description', 'Description', false), image],
+    fields: [name, text('craft', 'Craft'), district, long('description', 'Description', false), long('visitTips', 'Visit tips', false, 1000), text('sourceUrl', 'Source URL', false, { maxLength: 1000 }), text('sourceLabel', 'Source label', false, { maxLength: 200 }), image, text('imageCredit', 'Image credit', false, { maxLength: 500 })],
     update: [active],
     columns: ['name', 'craft', 'districtName', 'isActive']
   },
   places: {
     path: '/heritage-places',
-    fields: [name, long('description', 'Description'), text('placeType', 'Place type', true, { options: ['Village', 'HistoricalSite', 'Museum', 'Temple', 'Monument', 'CraftCenter', 'NaturalSite', 'Other'] }), district, text('address', 'Address', false), text('latitude', 'Latitude', true, { type: 'number', min: -90, max: 90 }), text('longitude', 'Longitude', true, { type: 'number', min: -180, max: 180 }), image, bool('isFeatured', 'Featured')],
+    fields: [name, long('description', 'Description'), text('placeType', 'Place type', true, { options: ['Village', 'HistoricalSite', 'Museum', 'Temple', 'Monument', 'CraftCenter', 'NaturalSite', 'Other'] }), district, text('address', 'Address', false), text('latitude', 'Latitude', true, { type: 'number', min: -90, max: 90 }), text('longitude', 'Longitude', true, { type: 'number', min: -180, max: 180 }), text('knownFor', 'Known for (one line)', false, { maxLength: 300 }), text('sourceUrl', 'Source URL', false, { maxLength: 1000 }), image, text('imageCredit', 'Image credit', false, { maxLength: 500 }), bool('isFeatured', 'Featured')],
     update: [active],
     columns: ['name', 'placeType', 'districtName', 'isFeatured', 'isActive']
   },
@@ -83,6 +83,67 @@ export const resources = {
     }), date('startDate', 'Starts'), date('endDate', 'Ends'), bool('isRecurringAnnually', 'Repeats annually'), image],
     update: [active],
     columns: ['name', 'districtName', 'startDate', 'endDate', 'isActive']
+  },
+  culturalEvents: {
+    path: '/cultural-events',
+    fields: [name, long('description', 'Description'), text('category', 'Category', true, { maxLength: 100 }), district, text('heritagePlaceId', 'Heritage place', false, { lookup: '/heritage-places' }), date('eventDate', 'Starts'), date('endDate', 'Ends', false), image],
+    update: [active],
+    columns: ['name', 'category', 'districtName', 'eventDate', 'isActive']
+  },
+  routes: {
+    path: '/heritage-routes',
+    fields: [name, long('description', 'Description'), text('estimatedDurationMinutes', 'Estimated duration (minutes)', true, { type: 'number', min: 1 }), bool('isRecommended', 'Recommended')],
+    update: [text('status', 'Status', true, { options: ['Draft', 'Published', 'Archived'] })],
+    columns: ['name', 'estimatedDurationMinutes', 'totalDistanceKm', 'isRecommended', 'status']
+  },
+  cuisines: {
+    path: '/local-cuisines',
+    fields: [name, long('description', 'Description'), district, text('heritagePlaceId', 'Heritage place', false, { lookup: '/heritage-places' }), text('kind', 'Dish type (e.g. Sweet, Main dish)', false, { maxLength: 60 }), text('ingredients', 'Typical ingredients', false, { maxLength: 500 }), text('whereToTry', 'Where to try', false, { maxLength: 500 }), text('sourceUrl', 'Source URL', false, { maxLength: 1000 }), bool('isNationwide', 'Available across Bangladesh'), image],
+    update: [active],
+    columns: ['name', 'districtName', 'whereToTry', 'isActive']
+  },
+  museum: {
+    path: '/museum-items',
+    fields: [title, long('description', 'Description'), text('category', 'Category', true, { maxLength: 100 }), text('era', 'Era', false, { maxLength: 100 }), district, text('coverImageUrl', 'Cover image', true, { maxLength: 1000, type: 'image-upload' }), text('modelUrl', '3D model URL', false, { maxLength: 1000 }), bool('isFeatured', 'Featured')],
+    update: [active],
+    columns: ['title', 'category', 'era', 'districtName', 'isFeatured', 'isActive']
+  },
+  unesco: {
+    path: '/unesco-records',
+    params: { includeInactive: true },
+    fields: [title, text('type', 'Type', true, { options: ['CulturalHeritageSite', 'NaturalHeritageSite', 'IntangibleCulturalHeritage', 'MemoryOfTheWorld'] }), long('description', 'Description'), text('inscribedYear', 'Inscribed year', true, { type: 'number', min: 1972, max: 2100 }), text('districtId', 'District', false, { lookup: '/districts' }), image, text('officialUrl', 'Official UNESCO URL', false, { maxLength: 1000 }), order],
+    update: [active],
+    columns: ['title', 'type', 'inscribedYear', 'displayOrder', 'isActive']
+  },
+  productTypes: {
+    path: '/product-types',
+    params: { includeInactive: true },
+    noDetail: true,
+    fields: [name, text('nameBn', 'Bangla name', false, { maxLength: 120 }), text('slug', 'Slug (made from the name if empty)', false, { maxLength: 120 }), order],
+    update: [active],
+    columns: ['name', 'nameBn', 'slug', 'displayOrder', 'isActive']
+  },
+  materials: {
+    path: '/materials',
+    params: { includeInactive: true },
+    noDetail: true,
+    fields: [name, text('nameBn', 'Bangla name', false, { maxLength: 120 }), text('slug', 'Slug (made from the name if empty)', false, { maxLength: 120 }), order],
+    update: [active],
+    columns: ['name', 'nameBn', 'slug', 'displayOrder', 'isActive']
+  },
+  craftHeritage: {
+    path: '/craft-heritage',
+    params: { includeInactive: true },
+    fields: [text('slug', 'Slug (matches the craft category)', true, { maxLength: 100 }), name, text('aliases', 'Also known as (comma separated)', false, { maxLength: 500 }), text('region', 'Region', true, { maxLength: 200 }), text('type', 'Heritage type', true, { maxLength: 100 }), text('giName', 'GI registration name', false, { maxLength: 300 }), text('unesco', 'UNESCO inscription', false, { maxLength: 300 }), long('summary', 'Summary', true, 2000), long('history', 'History & community', false), long('materials', 'Materials', false, 2000), long('process', 'How it is made', false), long('products', 'Products', false, 2000), long('story', 'Story', false), long('visit', 'Visiting respectfully', false, 2000), long('sources', 'Sources (one per line: Label | https://url)', false), order],
+    update: [active],
+    columns: ['name', 'type', 'region', 'giName', 'displayOrder', 'isActive']
+  },
+  siteContent: {
+    path: '/cms/site-content',
+    params: { includeInactive: true },
+    fields: [text('group', 'Group', true, { options: ['about-stat', 'about-purpose', 'about-landscape', 'about-stakeholder', 'about-capability', 'footer-about', 'footer-explore', 'footer-marketplace', 'footer-resources', 'travel-resource'] }), text('title', 'Title / label / value', true, { maxLength: 300 }), text('subtitle', 'Subtitle / caption', false, { maxLength: 300 }), long('body', 'Text', false), text('linkUrl', 'Link (path like /tourism or full URL)', false, { maxLength: 1000 }), long('extra', 'Extra (flip-card back text, "highlight", or travel resource "Type|Button text")', false), order],
+    update: [active],
+    columns: ['group', 'title', 'subtitle', 'displayOrder', 'isActive']
   },
   homepage: {
     path: '/cms/homepage',
