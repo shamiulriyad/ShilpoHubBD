@@ -1,4 +1,4 @@
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { tourismLocationsService } from '../services/tourismLocationsService';
 
 export function useTourismLocations(params = {}) {
@@ -14,32 +14,52 @@ export function useTourismLocation(id) {
 }
 
 // The TourismLocation types that count as somewhere to stay.
-export const ACCOMMODATION_TYPES = ['Hotel', 'Resort', 'Hostel'];
+export const ACCOMMODATION_TYPES = ['Hotel', 'Resort', 'Hostel', 'GuestHouse', 'Motel', 'Homestay'];
 
-const STATUS_ORDER = { Verified: 0, SecondarySource: 1 };
-
-// Active Hotel / Resort / Hostel records for one district, from the existing /tourism-locations
-// endpoint (its `type` filter takes a single value, so this is one request per type). Nothing runs
-// until a district is chosen, and the list follows the district as it changes.
+// Where to stay for one district: admin-entered records plus OpenStreetMap listings, from one
+// backend call (the backend refreshes stale OpenStreetMap data itself and falls back to what it has
+// stored if that source is down). Nothing runs until a district is chosen.
 export function useAccommodationLocations(districtId) {
-  const queries = useQueries({
-    queries: ACCOMMODATION_TYPES.map((type) => {
-      const params = { type, districtId, isActive: true, pageSize: 50 };
-      return {
-        queryKey: ['tourism-locations', params],
-        queryFn: () => tourismLocationsService.list(params),
-        enabled: Boolean(districtId),
-      };
-    }),
+  const query = useQuery({
+    queryKey: ['tourism-accommodations', districtId],
+    queryFn: () => tourismLocationsService.accommodations(districtId),
+    enabled: Boolean(districtId),
+    staleTime: 5 * 60 * 1000,
   });
-
-  const items = queries
-    .flatMap((q) => q.data?.items ?? [])
-    .filter((l) => l.isActive !== false && ACCOMMODATION_TYPES.includes(l.type))
-    .sort(
-      (a, b) =>
-        (STATUS_ORDER[a.verificationStatus] ?? 2) - (STATUS_ORDER[b.verificationStatus] ?? 2) || a.name.localeCompare(b.name),
-    );
-
-  return { queries, items, isLoading: queries.some((q) => q.isLoading) };
+  return { queries: [query], items: query.data ?? [], isLoading: query.isLoading };
 }
+
+// Accommodation around the destination's coordinates, nearest first. The backend pulls it from
+// OpenStreetMap on demand; while that import is still running it says so and we ask again a few
+// times instead of showing an empty list.
+export function useNearbyAccommodations(districtId, radiusKm) {
+  return useQuery({
+    queryKey: ['tourism-accommodations-nearby', districtId, radiusKm],
+    queryFn: () => tourismLocationsService.nearbyAccommodations(districtId, radiusKm),
+    enabled: Boolean(districtId),
+    staleTime: 5 * 60 * 1000,
+    refetchInterval: (query) => (query.state.data?.isImporting && query.state.dataUpdateCount < 8 ? 8000 : false),
+  });
+}
+
+// Restaurants, attractions, heritage, museums, parks... for one district (same source rules).
+export function useTourismPois(districtId) {
+  const query = useQuery({
+    queryKey: ['tourism-pois', districtId],
+    queryFn: () => tourismLocationsService.pois(districtId),
+    enabled: Boolean(districtId),
+    staleTime: 5 * 60 * 1000,
+    // An empty first answer usually means the OpenStreetMap import is still running in the background.
+    refetchInterval: (query) => (query.state.data?.length === 0 && query.state.dataUpdateCount < 4 ? 10000 : false),
+  });
+  return { query, items: query.data ?? [] };
+}
+
+// Card grouping for the "More places" section.
+export const POI_GROUPS = [
+  ['Restaurants & cafes', ['Restaurant', 'Cafe']],
+  ['Attractions', ['Attraction', 'TouristPlace', 'Viewpoint', 'Beach']],
+  ['Heritage & historical', ['HeritageSite', 'HistoricalPlace', 'Mosque', 'Temple']],
+  ['Museums', ['Museum']],
+  ['Parks', ['Park']],
+];
