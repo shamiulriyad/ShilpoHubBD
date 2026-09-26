@@ -15,6 +15,10 @@ public class VillageConfiguration : IEntityTypeConfiguration<Village>
         builder.Property(v => v.Craft).IsRequired().HasMaxLength(100);
         builder.Property(v => v.Description).HasMaxLength(2000);
         builder.Property(v => v.ImageUrl).HasMaxLength(2000);
+        builder.Property(v => v.VisitTips).HasMaxLength(1000);
+        builder.Property(v => v.SourceUrl).HasMaxLength(1000);
+        builder.Property(v => v.SourceLabel).HasMaxLength(200);
+        builder.Property(v => v.ImageCredit).HasMaxLength(500);
         builder.Property(v => v.IsActive).IsRequired();
         builder.Property(v => v.CreatedAt).IsRequired();
         builder.Property(v => v.UpdatedAt).IsRequired();
