@@ -32,17 +32,24 @@ public class DummyAITourismProvider : IAITourismProvider
             .ToList();
 
         var accommodationStops = context.TourismLocations
-            .Where(l => l.Type is "Hotel" or "Resort" or "Hostel")
+            .Where(l => l.Type is "Hotel" or "Resort" or "Hostel" or "GuestHouse" or "Motel" or "Homestay")
             .OrderByDescending(l => l.IsVerified)
             .Select(l => new TourStopDto { ReferenceId = l.Id, Type = "TourismLocation", Name = l.Name, Notes = BuildLocationNote(l) })
             .ToList();
 
         var attractionStops = context.TourismLocations
-            .Where(l => l.Type is not ("Hotel" or "Resort" or "Hostel"))
+            .Where(l => l.Type is not ("Hotel" or "Resort" or "Hostel" or "GuestHouse" or "Motel" or "Homestay"))
             .OrderByDescending(l => l.IsVerified)
             .ThenBy(l => l.Name)
             .Select(l => new TourStopDto { ReferenceId = l.Id, Type = "TourismLocation", Name = l.Name, Notes = BuildLocationNote(l) })
             .ToList();
+
+        // Ranked by the dataset lookup (interest matches first); the dataset states no fees, hours or
+        // durations, so the stop carries only its description.
+        var datasetStops = context.Dataset.Places
+            .Select(p => new TourStopDto { ReferenceId = p.Id, Type = "DatasetPlace", Name = p.Name, Notes = p.Description })
+            .ToList();
+        var datasetIndex = 0;
 
         var days = new List<TourDayPlanDto>();
         var placeIndex = 0;
@@ -61,6 +68,11 @@ public class DummyAITourismProvider : IAITourismProvider
             for (var i = 0; i < PlacesPerDay && placeIndex < placeStops.Count; i++)
             {
                 stops.Add(placeStops[placeIndex++]);
+            }
+
+            for (var i = 0; i < PlacesPerDay && datasetIndex < datasetStops.Count; i++)
+            {
+                stops.Add(datasetStops[datasetIndex++]);
             }
 
             if (attractionIndex < attractionStops.Count)
@@ -100,7 +112,7 @@ public class DummyAITourismProvider : IAITourismProvider
 
         var coveredPlaces = Math.Min(placeStops.Count, placeIndex);
         var coveredServices = Math.Min(serviceStops.Count, serviceIndex);
-        var coveredLocations = Math.Min(attractionStops.Count, attractionIndex) + Math.Min(accommodationStops.Count, 1);
+        var coveredLocations = Math.Min(attractionStops.Count, attractionIndex) + Math.Min(accommodationStops.Count, 1) + datasetIndex;
         var summary = coveredPlaces == 0 && coveredServices == 0 && coveredLocations == 0
             ? $"No curated heritage places or experiences have been added for {context.DistrictName} yet, " +
               $"so this {context.DurationDays}-day plan is left as free time for local exploration. " +

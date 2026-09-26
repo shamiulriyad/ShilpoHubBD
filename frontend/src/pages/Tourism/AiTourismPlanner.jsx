@@ -8,7 +8,7 @@ import LocationMedia from '../../components/tourism/LocationMedia';
 import { useDistricts } from '../../hooks/useDistricts';
 import { useSavedTourPlan, useTourPlan } from '../../hooks/useAITourism';
 import { useTouristServices } from '../../hooks/useTouristServices';
-import { ACCOMMODATION_TYPES, useAccommodationLocations, useTourismLocations } from '../../hooks/useTourismLocations';
+import { ACCOMMODATION_TYPES, POI_GROUPS, useNearbyAccommodations, useTourismLocations, useTourismPois } from '../../hooks/useTourismLocations';
 import { coordinatesNote, verificationBadge } from '../../utils/tourismLocation';
 import { useMessagingMutations } from '../../hooks/useMessaging';
 
@@ -182,6 +182,28 @@ function ServiceCard({ service, onContact, contacted }) {
   );
 }
 
+const RADIUS_OPTIONS = [5, 10, 15, 25, 40];
+const TYPE_LABELS = { GuestHouse: 'Guest House', HeritageSite: 'Heritage Site', TouristPlace: 'Tourist Place' };
+
+// Popup for an accommodation marker: name, type, distance and whatever the record actually holds.
+function buildNearbyPopupHtml(item) {
+  const lines = [
+    `<strong>${escapeHtml(item.name)}</strong>`,
+    `<div style="opacity:.7">${escapeHtml(TYPE_LABELS[item.type] || item.type)}</div>`,
+    `<div>${Number(item.distanceKm).toFixed(1)} km from destination centre</div>`,
+    item.address && `<div>${escapeHtml(item.address)}</div>`,
+    item.contactInfo && `<div>${escapeHtml(item.contactInfo)}</div>`,
+    item.openingHours && `<div>Hours: ${escapeHtml(item.openingHours)}</div>`,
+    item.price != null && `<div>৳ ${Number(item.price).toLocaleString('en-BD')}/night</div>`,
+    item.price == null && `<div style="opacity:.7">Price: not available</div>`,
+    `<div style="opacity:.7">${escapeHtml(verificationBadge(item).label)}</div>`,
+    `<a href="/tourism/locations/${item.id}" style="font-weight:600">View Details →</a>`,
+  ].filter(Boolean);
+  return `<div style="font-size:12px;line-height:1.5">${lines.join('')}</div>`;
+}
+
+const STOP_TYPE_LABELS = { DatasetPlace: 'Tourism dataset', TourismLocation: 'ShilpoHub listing', HeritagePlace: 'Heritage place', TouristService: 'Experience' };
+
 function LocationCard({ location }) {
   return (
     <article className="flex flex-col overflow-hidden rounded-xl border border-border bg-surface">
@@ -192,6 +214,7 @@ function LocationCard({ location }) {
           <Badge tone={verificationBadge(location).tone}>{verificationBadge(location).label}</Badge>
         </div>
         <h4 className="mt-1 text-sm font-semibold text-heading">{location.name}</h4>
+        {location.source && <p className="mt-1 text-xs text-body/50">Source: {location.source === 'Admin' ? 'ShilpoHub admin' : location.source}</p>}
         {(location.address || location.area) && <p className="mt-1 text-xs text-body/60">{location.address || location.area}</p>}
         {location.facilities && <p className="mt-1 text-xs text-body/60">{location.facilities}</p>}
         {location.openingHours && <p className="mt-1 text-xs text-body/60">Hours: {location.openingHours}</p>}
@@ -238,7 +261,6 @@ export default function AiTourismPlanner() {
   });
   const [contactedIds, setContactedIds] = useState(() => new Set());
 
-  const accommodation = useAccommodationLocations(form.districtId || undefined);
   const localTransportQuery = useTouristServices({ type: 'TransportationBooking', districtId: form.districtId || undefined, pageSize: 6 });
   const tourismLocationsQuery = useTourismLocations({ districtId: form.districtId || undefined, isActive: true, pageSize: 50 });
 
@@ -298,10 +320,14 @@ export default function AiTourismPlanner() {
   const freshPlan = tourPlan.data && (!savedPlanId || tourPlan.data.savedPlanId === savedPlanId) ? tourPlan.data : null;
   const plan = freshPlan || savedPlanQuery.data?.plan;
   // Accommodation has its own section above; keep the rest of the admin-curated list to non-lodging places.
-  const explorableLocations = useMemo(
-    () => list(tourismLocationsQuery.data).filter((l) => !ACCOMMODATION_TYPES.includes(l.type)),
-    [tourismLocationsQuery.data],
-  );
+  const poiState = useTourismPois(form.districtId || undefined);
+  const explorableLocations = poiState.items;
+  const poiGroups = useMemo(() => {
+    const known = new Set(POI_GROUPS.flatMap(([, types]) => types));
+    const groups = POI_GROUPS.map(([label, types]) => [label, explorableLocations.filter((l) => types.includes(l.type))]);
+    groups.push(['Other places', explorableLocations.filter((l) => !known.has(l.type))]);
+    return groups.filter(([, items]) => items.length > 0);
+  }, [explorableLocations]);
   const locationsById = useMemo(() => {
     const map = new Map();
     list(tourismLocationsQuery.data).forEach((l) => map.set(l.id, l));
@@ -331,6 +357,28 @@ export default function AiTourismPlanner() {
     })),
     [tourismLocationsQuery.data],
   );
+  const [radiusKm, setRadiusKm] = useState(15);
+  const nearbyQuery = useNearbyAccommodations(form.districtId || undefined, radiusKm);
+  const nearby = nearbyQuery.data;
+  // The "Where to stay" cards and the map above share one source: accommodation within the search radius.
+  const accommodation = { queries: [nearbyQuery], items: nearby?.items ?? [], isLoading: nearbyQuery.isLoading || Boolean(nearby?.isImporting) };
+  const nearbyMarkers = useMemo(
+    () => (nearby?.items ?? []).map((a) => ({
+      id: a.id, name: a.name, latitude: a.latitude, longitude: a.longitude,
+      kind: a.type.toLowerCase(), popupHtml: buildNearbyPopupHtml(a),
+    })),
+    [nearby],
+  );
+  const nearbyMapPlaces = useMemo(
+    () => [
+      nearby?.centerLatitude != null && {
+        id: 'nearby-destination', name: `Destination: ${nearby.destinationName}`,
+        latitude: nearby.centerLatitude, longitude: nearby.centerLongitude, kind: 'destination',
+      },
+      ...nearbyMarkers,
+    ].filter(Boolean),
+    [nearby, nearbyMarkers],
+  );
   const mapPlaces = useMemo(() => {
     const origin = plan?.transportEstimate?.originPoint;
     const destination = plan?.transportEstimate?.destinationPoint;
@@ -340,9 +388,10 @@ export default function AiTourismPlanner() {
       destination && { id: 'destination', name: `Destination: ${destination.displayName}`, latitude: destination.latitude, longitude: destination.longitude, kind: 'destination' },
       ...stopsWithCoords,
       ...locationMarkers,
+      ...nearbyMarkers,
     ].filter(Boolean);
     return combined.filter((p) => (seenIds.has(p.id) ? false : (seenIds.add(p.id), true)));
-  }, [plan, stopsWithCoords, locationMarkers]);
+  }, [plan, stopsWithCoords, locationMarkers, nearbyMarkers]);
   const routeStopIds = useMemo(() => stopsWithCoords.map((s) => s.id), [stopsWithCoords]);
 
   return (
@@ -370,7 +419,7 @@ export default function AiTourismPlanner() {
           </div>
         }
       />
-      {savedPlanId && <QueryStatusBanner queries={[savedPlanQuery]} loadingLabel="Loading your saved trip…" />}
+      {savedPlanId && !freshPlan && <QueryStatusBanner queries={[savedPlanQuery]} loadingLabel="Loading your saved trip…" />}
 
       <form onSubmit={handleSubmit} className="mb-10 grid gap-4 rounded-xl border border-border bg-surface p-6 sm:grid-cols-2 lg:grid-cols-3">
         <label className="block text-sm">
@@ -479,6 +528,52 @@ export default function AiTourismPlanner() {
         </Button>
       </form>
 
+      {form.districtId && (
+        <div className="mt-8">
+          <SectionHeader
+            eyebrow="Near your destination"
+            title="Places to stay on the map"
+            description="Hotels, hostels, resorts and guest houses around the destination, found from OpenStreetMap. Click a marker for its name, type and distance."
+          />
+          <div className="mb-3 flex flex-wrap items-center gap-3 text-sm">
+            <label className="flex items-center gap-2 text-body/70">
+              Search radius
+              <select
+                value={radiusKm}
+                onChange={(event) => setRadiusKm(Number(event.target.value))}
+                className="rounded-md border border-border bg-background px-2 py-1 text-sm"
+              >
+                {RADIUS_OPTIONS.map((r) => (
+                  <option key={r} value={r}>{r} km</option>
+                ))}
+              </select>
+            </label>
+            {nearbyQuery.isLoading && <span className="text-body/60">Searching for accommodation around the destination…</span>}
+            {nearby?.isImporting && <span className="text-body/60">Still fetching from OpenStreetMap — results will appear here shortly.</span>}
+            {nearby && !nearby.isImporting && (
+              <span className="text-body/60">
+                {nearby.items.length > 0
+                  ? `${nearby.items.length} place${nearby.items.length === 1 ? '' : 's'} to stay within ${nearby.radiusKm} km`
+                  : 'No accommodations found within this radius.'}
+              </span>
+            )}
+            {nearbyQuery.isError && <span className="text-red-700">Could not load nearby accommodation. Please try again.</span>}
+          </div>
+          {nearby?.message && <p className="mb-3 text-xs text-body/60">{nearby.message}</p>}
+          {nearbyMapPlaces.length > 0 && !plan && <HeritageLeafletMap places={nearbyMapPlaces} />}
+          {nearby?.items?.length > 0 && (
+            <ul className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+              {nearby.items.slice(0, 12).map((a) => (
+                <li key={a.id} className="flex items-center justify-between rounded-lg border border-border bg-surface px-3 py-2">
+                  <span><span className="font-medium text-heading">{a.name}</span> <span className="text-body/60">· {TYPE_LABELS[a.type] || a.type}</span></span>
+                  <span className="text-xs text-body/60">{a.distanceKm.toFixed(1)} km</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
       <QueryStatusBanner queries={[tourPlan]} loadingLabel="Building your itinerary…" />
 
       {plan && (
@@ -503,7 +598,12 @@ export default function AiTourismPlanner() {
                   <ul className="mt-3 space-y-2">
                     {day.stops.map((stop, i) => (
                       <li key={i} className="text-sm text-body/70">
-                        <span className="font-medium text-heading">{stop.name}</span> ({stop.type})
+                        <span className="font-medium text-heading">{stop.name}</span> ({STOP_TYPE_LABELS[stop.type] || stop.type})
+                        {stop.type !== 'FreeTime' && stop.type !== 'Meal' && stop.type !== 'Rest' && stop.latitude == null && (
+                          <span className="ml-2 rounded-full bg-border px-2 py-0.5 text-[10px] font-semibold uppercase text-body/60">
+                            Coordinates unavailable
+                          </span>
+                        )}
                         {!stop.referenceId && !['FreeTime', 'Meal', 'Rest'].includes(stop.type) && (
                           <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-800">
                             AI-suggested · unverified location
@@ -590,7 +690,7 @@ export default function AiTourismPlanner() {
             <SectionHeader
               eyebrow="Where to stay"
               title="Accommodation"
-              description="Hotels, resorts and hostels listed for this district."
+              description={`Hotels, resorts, hostels and guest houses within ${radiusKm} km of the destination, nearest first — from ShilpoHub admins and OpenStreetMap.`}
             />
             {form.districtId && <QueryStatusBanner queries={accommodation.queries} loadingLabel="Finding accommodation…" />}
             {!form.districtId ? (
@@ -608,7 +708,7 @@ export default function AiTourismPlanner() {
               !accommodation.isLoading &&
               !accommodation.queries.some((q) => q.isError) && (
                 <p className="rounded-xl border border-border bg-surface p-5 text-sm text-body/70">
-                  No accommodations are currently listed for this district.
+                  No accommodations found within {radiusKm} km of this destination. Try a larger search radius above.
                 </p>
               )
             )}
@@ -616,22 +716,29 @@ export default function AiTourismPlanner() {
 
           <div>
             <SectionHeader
-              eyebrow="Admin-curated"
+              eyebrow="Explore & eat"
               title="More places to explore & eat"
-              description="Restaurants, attractions and heritage sites added by ShilpoHub admins for this district."
+              description="Restaurants, attractions and heritage sites for this district, from ShilpoHub admins and OpenStreetMap."
             />
-            <QueryStatusBanner queries={[tourismLocationsQuery]} loadingLabel="Loading tourism locations…" />
+            <QueryStatusBanner queries={[poiState.query]} loadingLabel="Loading places…" />
             {explorableLocations.length > 0 ? (
-              <ShowMoreGrid
-                key={form.districtId}
-                items={explorableLocations}
-                noun="place"
-                renderItem={(location) => <LocationCard key={location.id} location={location} />}
-              />
+              <div className="space-y-6">
+                {poiGroups.map(([label, items]) => (
+                  <div key={label}>
+                    <h4 className="mb-3 text-sm font-semibold text-heading">{label}</h4>
+                    <ShowMoreGrid
+                      key={`${form.districtId}-${label}`}
+                      items={items}
+                      noun="place"
+                      renderItem={(location) => <LocationCard key={location.id} location={location} />}
+                    />
+                  </div>
+                ))}
+              </div>
             ) : (
-              !tourismLocationsQuery.isLoading && (
+              !poiState.query.isLoading && (
                 <p className="rounded-xl border border-border bg-surface p-5 text-sm text-body/70">
-                  No other tourism locations have been added for this district yet.
+                  No other places found for this district.
                 </p>
               )
             )}
@@ -650,14 +757,42 @@ export default function AiTourismPlanner() {
                   ))}
                 </ul>
                 <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-                  <span className="text-sm font-semibold text-heading">Total estimate</span>
+                  <span className="text-sm font-semibold text-heading">Known / verified total</span>
                   <span className="text-lg font-semibold text-primary">৳ {Number(plan.estimatedBudget.totalEstimatedCost).toLocaleString('en-BD')}</span>
                 </div>
                 <p className="mt-1 text-xs text-body/50">৳ {Number(plan.estimatedBudget.perPersonCost).toLocaleString('en-BD')} per person</p>
-                {form.budget && Number(form.budget) < plan.estimatedBudget.totalEstimatedCost && (
+                {form.budget && Number(form.budget) < (plan.estimatedBudget.estimatedTotal || plan.estimatedBudget.totalEstimatedCost) && (
                   <p className="mt-3 text-sm text-amber-700">This is above your stated budget of ৳ {Number(form.budget).toLocaleString('en-BD')}.</p>
                 )}
-                <p className="mt-3 text-xs text-body/50">{plan.estimatedBudget.notes}</p>
+                {plan.estimatedBudget.estimatedItems?.length > 0 && (
+                  <div className="mt-4 rounded-lg border border-border p-3">
+                    <p className="text-xs font-semibold text-heading">Rough estimate for the unverified parts</p>
+                    <ul className="mt-2 space-y-1">
+                      {plan.estimatedBudget.estimatedItems.map((item, i) => (
+                        <li key={i} className="flex justify-between text-xs text-body/70">
+                          <span>{item.label}</span>
+                          <span className="font-medium text-heading">৳ {Number(item.amount).toLocaleString('en-BD')}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
+                      <span className="text-sm font-semibold text-heading">Estimated total (with assumptions)</span>
+                      <span className="text-lg font-semibold text-primary">৳ {Number(plan.estimatedBudget.estimatedTotal).toLocaleString('en-BD')}</span>
+                    </div>
+                    <p className="mt-1 text-xs text-body/50">৳ {Number(plan.estimatedBudget.estimatedPerPerson).toLocaleString('en-BD')} per person · {plan.estimatedBudget.estimateNote}</p>
+                  </div>
+                )}
+                {plan.estimatedBudget.unverifiedCosts?.length > 0 && (
+                  <div className="mt-4 rounded-lg bg-amber-50 p-3">
+                    <p className="text-xs font-semibold text-amber-800">Unverified / excluded from the total</p>
+                    <ul className="mt-1 list-disc pl-5 text-xs text-amber-800/80">
+                      {plan.estimatedBudget.unverifiedCosts.map((note, i) => (
+                        <li key={i}>{note}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {plan.estimatedBudget.notes && <p className="mt-3 text-xs text-body/50">{plan.estimatedBudget.notes}</p>}
               </div>
             </div>
           )}

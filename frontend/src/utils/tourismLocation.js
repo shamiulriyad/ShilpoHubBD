@@ -2,6 +2,12 @@
 // verificationStatus and a coordinatesPrecision; hand-entered/sample rows fall through to "Unverified".
 
 export function verificationBadge(location) {
+  // Imported OpenStreetMap listings are community data: never "verified" until an admin reviews them.
+  if (location.source === 'OpenStreetMap') {
+    return location.isVerified
+      ? { tone: 'success', label: 'Admin verified' }
+      : { tone: 'secondary', label: 'OpenStreetMap · not yet verified' };
+  }
   switch (location.verificationStatus) {
     case 'Verified':
       return { tone: 'success', label: 'Verified · official source' };

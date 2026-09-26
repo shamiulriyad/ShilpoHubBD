@@ -33,6 +33,7 @@ public static class DependencyInjection
         services.Configure<ShilpoHubBD.Infrastructure.ProductSearch.ProductSearchServiceOptions>(configuration.GetSection("ProductSearch"));
         services.Configure<GeminiOptions>(configuration.GetSection("Gemini"));
         services.Configure<NominatimOptions>(configuration.GetSection("Nominatim"));
+        services.Configure<ShilpoHubBD.Application.Options.ExternalPoiOptions>(configuration.GetSection("Tourism:ExternalPoi"));
         services.Configure<OsrmOptions>(configuration.GetSection("Osrm"));
 
         services.AddMemoryCache();
@@ -52,6 +53,11 @@ public static class DependencyInjection
             client.BaseAddress = new Uri(geminiOptions.BaseUrl);
             client.Timeout = TimeSpan.FromSeconds(geminiOptions.TimeoutSeconds);
         });
+        services.AddHttpClient<IExternalPoiClient, ShilpoHubBD.Infrastructure.Tourism.OverpassPoiClient>();
+        services.AddScoped<ShilpoHubBD.Infrastructure.Tourism.TourismExternalSyncService>();
+        services.AddScoped<ITourismExternalSyncService>(sp => sp.GetRequiredService<ShilpoHubBD.Infrastructure.Tourism.TourismExternalSyncService>());
+        services.AddScoped<IAccommodationService, ShilpoHubBD.Infrastructure.Tourism.AccommodationService>();
+        services.AddScoped<ITourismPoiService, ShilpoHubBD.Infrastructure.Tourism.TourismPoiService>();
         services.AddHttpClient<IGeocodingProvider, NominatimGeocodingProvider>((sp, client) =>
         {
             var nominatimOptions = sp.GetRequiredService<IOptions<NominatimOptions>>().Value;

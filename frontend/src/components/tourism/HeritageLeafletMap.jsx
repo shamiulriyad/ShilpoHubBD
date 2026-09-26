@@ -6,6 +6,7 @@ import { hasCoordinates } from '../../utils/tourismAdapters';
 const MARKER_COLORS = {
   origin: '#2f7d4f', destination: '#173b35', stop: '#af4d29',
   hotel: '#2f6f8f', resort: '#7a4fa8', hostel: '#b8860b',
+  guesthouse: '#8a5a44', motel: '#5b6b7a', homestay: '#4d7c0f',
   touristplace: '#af4d29', heritagesite: '#1f6f4a', restaurant: '#c2410c', attraction: '#0f766e',
 };
 
