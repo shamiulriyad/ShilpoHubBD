@@ -49,6 +49,7 @@ from api.ingest import ingest_dataset
 from rag.pipeline import build_context
 from rag.step05_embedding import get_embeddings, get_sparse_embeddings
 from rag.step06_vector_store import delete_collection, delete_document, get_client
+from rag.travel.normalize_districts import district_entities, load_districts
 from rag.travel.retrieve import retrieve_travel_context
 
 # The embedding models and LLMs are process-wide (one embedding model per service,
@@ -222,6 +223,20 @@ def retrieve(collection: str, body: RetrieveIn) -> RetrieveOut:
         top_k=body.topK or 6,
     )
     return RetrieveOut(results=[RetrievedSnippet(**r) for r in results])
+
+
+class EntitiesIn(BaseModel):
+    district: str
+    interests: Optional[List[str]] = None
+    limit: Optional[int] = None
+
+
+@app.post("/api/travel/entities")
+def travel_entities(body: EntitiesIn) -> dict:
+    """Deterministic (no embeddings) district + interest filter over the 64-district tourism
+    dataset. The Travel Planner grounds Gemini's stops on these; the file has no coordinates,
+    prices or hours, so none are returned."""
+    return district_entities(load_districts(), body.district, body.interests, body.limit or 12)
 
 
 @app.delete("/api/kb/{collection}/documents/{document_id}", status_code=204)
