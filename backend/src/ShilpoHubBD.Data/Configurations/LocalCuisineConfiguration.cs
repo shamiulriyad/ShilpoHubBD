@@ -15,6 +15,9 @@ public class LocalCuisineConfiguration : IEntityTypeConfiguration<LocalCuisine>
         builder.Property(c => c.Description).IsRequired().HasMaxLength(4000);
         builder.Property(c => c.WhereToTry).HasMaxLength(1000);
         builder.Property(c => c.ImageUrl).HasMaxLength(1000);
+        builder.Property(c => c.Kind).HasMaxLength(60);
+        builder.Property(c => c.Ingredients).HasMaxLength(500);
+        builder.Property(c => c.SourceUrl).HasMaxLength(1000);
         builder.Property(c => c.CreatedAt).IsRequired();
         builder.Property(c => c.UpdatedAt).IsRequired();
 
