@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using NpgsqlTypes;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Domain.Entities.Marketplace;
 
 namespace ShilpoHubBD.Data.Search;
 
-// PostgreSQL-backed implementation of ISearchProvider using native full-text search
-// (to_tsvector / plainto_tsquery) with an ILIKE fallback for partial/substring matches
-// that full-text stemming would otherwise miss. No AI/embedding integration.
+// PostgreSQL-backed implementation of ISearchProvider using native full-text search over the indexed, generated
+// Products.SearchVector column (name + description + story), with an ILIKE fallback for partial/substring matches
+// that full-text stemming would otherwise miss. No AI/embedding integration (see rag/products for AI search).
+//
+// Only public products are searchable: active AND admin-approved, exactly like the storefront listing.
 public class PostgresProductSearchProvider : ISearchProvider
 {
     private readonly ShilpoHubDbContext _context;
@@ -20,25 +23,26 @@ public class PostgresProductSearchProvider : ISearchProvider
 
     public async Task<(List<Product> Items, int TotalCount)> SearchAsync(string query, int page, int pageSize, CancellationToken cancellationToken)
     {
-        var tsQuery = EF.Functions.PlainToTsQuery("english", query);
         var likePattern = $"%{query}%";
 
+        // The tsquery must be built INSIDE the LINQ expression so EF translates it to SQL; calling
+        // PlainToTsQuery on a local variable throws "switched to client-evaluation" at runtime.
         var matches = _context.Products
             .Include(p => p.Category)
             .Include(p => p.District)
             .Include(p => p.Producer)
             .Include(p => p.Images)
-            .Where(p => p.IsActive)
+            .Where(p => p.IsActive && p.ApprovalStatus == ProductApprovalStatus.Approved)
             .Where(p =>
-                EF.Functions.ToTsVector("english", p.Name + " " + p.Description).Matches(tsQuery) ||
+                EF.Property<NpgsqlTsVector>(p, "SearchVector").Matches(EF.Functions.PlainToTsQuery("english", query)) ||
                 EF.Functions.ILike(p.Name, likePattern) ||
                 EF.Functions.ILike(p.Description, likePattern));
 
         var totalCount = await matches.CountAsync(cancellationToken);
 
         var items = await matches
-            .OrderByDescending(p => EF.Functions.ToTsVector("english", p.Name + " " + p.Description).Rank(tsQuery))
-            .ThenByDescending(p => p.AverageRating)
+            .OrderByDescending(p => EF.Property<NpgsqlTsVector>(p, "SearchVector").Rank(EF.Functions.PlainToTsQuery("english", query)))
+            .ThenByDescending(p => p.BayesianRating)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
