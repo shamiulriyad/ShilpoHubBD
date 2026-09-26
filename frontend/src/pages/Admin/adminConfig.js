@@ -55,9 +55,9 @@ export const resources = {
   },
   locations: {
     path: '/tourism-locations',
-    fields: [name, long('description', 'Description'), text('type', 'Type', true, { options: ['Hotel', 'Resort', 'Hostel', 'TouristPlace', 'HeritageSite', 'Restaurant', 'Attraction'] }), district, text('address', 'Address', false), text('latitude', 'Latitude', true, { type: 'number', min: -90, max: 90 }), text('longitude', 'Longitude', true, { type: 'number', min: -180, max: 180 }), text('price', 'Price / price per night', false, { type: 'number' }), text('entryFee', 'Entry fee', false, { type: 'number' }), text('openingHours', 'Opening hours', false), text('contactInfo', 'Contact info', false), long('facilities', 'Facilities', false, 1000), image],
+    fields: [name, long('description', 'Description'), text('type', 'Type', true, { options: ['Hotel', 'Resort', 'Hostel', 'GuestHouse', 'Motel', 'Homestay', 'TouristPlace', 'HeritageSite', 'Restaurant', 'Cafe', 'Attraction', 'Museum', 'Park', 'Beach', 'Viewpoint', 'Mosque', 'Temple', 'HistoricalPlace'] }), district, text('address', 'Address', false), text('latitude', 'Latitude', true, { type: 'number', min: -90, max: 90 }), text('longitude', 'Longitude', true, { type: 'number', min: -180, max: 180 }), text('price', 'Price / price per night', false, { type: 'number' }), text('entryFee', 'Entry fee', false, { type: 'number' }), text('openingHours', 'Opening hours', false), text('contactInfo', 'Contact info', false), long('facilities', 'Facilities', false, 1000), image],
     update: [active, bool('isVerified', 'Verified')],
-    columns: ['name', 'type', 'districtName', 'isActive', 'isVerified']
+    columns: ['name', 'type', 'districtName', 'source', 'externalId', 'lastSyncedAt', 'isActive', 'isVerified']
   },
   districts: {
     path: '/districts',
