@@ -32,6 +32,9 @@ public interface IKnowledgeGraphRepository
 
     // Existing-entity resolution (reused modules)
     Task<string?> ResolveExternalLabelAsync(KnowledgeNodeType type, Guid externalEntityId, CancellationToken cancellationToken);
+    Task<List<KnowledgeEntityCandidateDto>> SearchExternalEntitiesAsync(
+        KnowledgeNodeType type, string? search, int take, CancellationToken cancellationToken);
+    Task<KnowledgeGraphStatsDto> GetStatsAsync(CancellationToken cancellationToken);
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }
