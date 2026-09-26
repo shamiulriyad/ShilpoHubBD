@@ -142,6 +142,8 @@ export const routePaths = {
   producerInvestments: '/producer/investment-opportunities',
   producerInventory: '/producer/inventory',
   producerProducts: '/producer/products',
+  producerProductAttributes: '/producer/products/:productId/attributes',
+  producerProductDetails: '/producer/products/:productId',
   producerOrders: '/producer/orders',
   producerCustomOrders: '/producer/custom-orders',
   producerAuctions: '/producer/auctions',
