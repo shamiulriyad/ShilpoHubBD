@@ -9,6 +9,7 @@ import { useDistricts } from '../../hooks/useDistricts';
 import { priceRangeToQuery } from '../../components/ui/MarketplaceFilter';
 import { toProductCardItem } from '../../utils/productAdapters';
 import { routePaths } from '../../routes/routePaths';
+import AiProductSearch from '../../components/marketplace/AiProductSearch';
 
 export default function Marketplace() {
   const [params, setParams] = useSearchParams();
@@ -33,6 +34,8 @@ export default function Marketplace() {
   ];
   return <div>
     <PageHeader title="Marketplace" description="Find handmade pieces for everyday living. Search by product name or description." breadcrumbs={[{label:'Dashboard',path:routePaths.customer},{label:'Marketplace'}]} action={<ShoppingCartLink/>}/>
+    <AiProductSearch params={params} setParams={setParams} categories={categories.data || []} productPath={routePaths.customerProductDetails}/>
+    {!params.get('ai') && <>
     <section aria-label="Search and filter products" className="mb-8 space-y-5 rounded-2xl border border-border bg-surface p-5 sm:p-6">
       <SearchBar placeholder="Search products…" value={input} onChange={e => setInput(e.target.value)} onSubmit={value => change('search', (value || '').trim())}/>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{groups.map(([key,label,options]) => <label key={key} className="space-y-2 text-sm font-medium text-heading"><span>{label}</span><select className="block min-h-11 w-full rounded-lg border border-border bg-background px-3 focus:outline-primary" value={params.get(key) || (key === 'sortBy' ? 'Newest' : '')} onChange={e => change(key,e.target.value)}>{key !== 'sortBy' && <option value="">All {label.toLowerCase()}</option>}{options.map(([value,name]) => <option key={value} value={value}>{name}</option>)}</select></label>)}</div>
@@ -46,5 +49,6 @@ export default function Marketplace() {
     </AsyncState>
     {products.isError && <button className="mt-4 rounded-lg border border-border px-5 py-3" onClick={() => products.refetch()}>Retry loading products</button>}
     {!products.isError && products.data?.totalPages > 1 && <div className="mt-8"><Pagination currentPage={page} totalPages={products.data.totalPages} onPageChange={value => change('page',String(value))}/></div>}
+    </>}
   </div>;
 }

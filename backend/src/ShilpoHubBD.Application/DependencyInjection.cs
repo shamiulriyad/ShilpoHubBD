@@ -190,6 +190,10 @@ public static class DependencyInjection
         services.AddScoped<IUnescoRecordService, UnescoRecordService>();
         services.AddScoped<ICraftHeritageService, CraftHeritageService>();
         services.AddScoped<ISiteContentService, SiteContentService>();
+        services.AddScoped<IProductLookupService, ShilpoHubBD.Application.Services.ProductSearch.ProductLookupService>();
+        services.AddScoped<IProductAttributesService, ShilpoHubBD.Application.Services.ProductSearch.ProductAttributesService>();
+        services.AddScoped<IProductIndexService, ShilpoHubBD.Application.Services.ProductSearch.ProductIndexService>();
+        services.AddScoped<IProductSearchService, ShilpoHubBD.Application.Services.ProductSearch.ProductSearchService>();
         services.AddScoped<ICulturalEventService, CulturalEventService>();
         services.AddScoped<ILocalCuisineService, LocalCuisineService>();
         services.AddScoped<IHeritageRouteService, HeritageRouteService>();

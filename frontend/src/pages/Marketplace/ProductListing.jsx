@@ -9,6 +9,7 @@ import { useDistricts } from '../../hooks/useDistricts';
 import { useProducerDirectory } from '../../hooks/useProducerDirectory';
 import { toProductCardItem } from '../../utils/productAdapters';
 import { fieldClass, EmptyResults } from '../../components/tourism/TravelUI';
+import AiProductSearch from '../../components/marketplace/AiProductSearch';
 
 export default function ProductListing() {
   const [params,setParams]=useSearchParams();
@@ -25,6 +26,8 @@ export default function ProductListing() {
   const filtersActive=['categoryId','districtId','producerId','search','minPrice','maxPrice'].filter(k=>params.get(k));
   return <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
     <PageHeader title="Discover handmade work" description="Browse published products by craft, maker, district and budget." breadcrumbs={[{label:'Home',path:'/'},{label:'Products'}]}/>
+    <AiProductSearch params={params} setParams={setParams} categories={categories.data||[]}/>
+    {!params.get('ai')&&<>
     <form onSubmit={apply} aria-label="Product search and filters" className="mb-7 rounded-xl border border-border bg-surface p-5 sm:p-6">
       <label className="block text-sm font-medium">Search products<input type="search" value={form.search||''} onChange={e=>set('search',e.target.value)} placeholder="Product name or description…" className={fieldClass}/></label>
       <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{groups.map(([key,label,options])=><label key={key} className="text-sm font-medium">{label}<select value={form[key]||''} onChange={e=>set(key,e.target.value)} className={fieldClass}><option value="">All {label === 'Craft category' ? 'craft categories' : label.toLowerCase()+'s'}</option>{options.map(o=><option key={o.id} value={o.id}>{o.name}</option>)}</select></label>)}
@@ -40,5 +43,6 @@ export default function ProductListing() {
     <p role="status" className="mb-5 text-sm text-body/70">{query.isFetching?'Updating products…':`${query.data?.totalCount??0} products`}</p>
     <QueryState query={query} isEmpty={()=>false}>{data=><><div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-busy={query.isFetching}>{(data?.items||[]).map(p=><ProductCard key={p.id} product={toProductCardItem(p)} to={routePaths.marketplaceProductDetails.replace(':productId',p.id)}/>)}</div>{!data?.items?.length&&<EmptyResults onClear={clear}/>}</>}</QueryState>
     {query.data?.totalPages>1&&<div className="mt-8"><Pagination currentPage={page} totalPages={query.data.totalPages} onPageChange={value=>{const next=new URLSearchParams(params);next.set('page',String(value));setParams(next);}}/></div>}
+    </>}
   </div>;
 }
