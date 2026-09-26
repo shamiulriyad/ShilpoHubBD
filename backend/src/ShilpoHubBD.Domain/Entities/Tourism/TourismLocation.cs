@@ -35,6 +35,14 @@ public class TourismLocation
     public string? CoordinatesPrecision { get; set; }
     public DateTime? DataRetrievedOn { get; set; }
     public bool IsActive { get; set; } = true;
+
+    // Where the record came from: "Admin" (entered/seeded by ShilpoHub) or "OpenStreetMap" (imported
+    // from Overpass, unverified until an admin reviews it -- IsVerified). ExternalId is the OSM
+    // object ("node/123") and is what an import uses to update, never duplicate, its own rows.
+    public string Source { get; set; } = "Admin";
+    public string? ExternalId { get; set; }
+    public string? Upazila { get; set; }
+    public DateTime? LastSyncedAt { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
