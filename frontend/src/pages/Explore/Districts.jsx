@@ -2,7 +2,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, QueryState } from '../../components/ui';
 import { useDistricts } from '../../hooks/useDistricts';
-import { districtReference } from '../../data/tourismGuides';
+import { toPhoto } from '../../utils/tourismAdapters';
 import { DirectoryFilters, TravelPhoto, EmptyResults } from '../../components/tourism/TravelUI';
 
 export default function Districts() {
@@ -10,7 +10,7 @@ export default function Districts() {
   const [params,setParams]=useSearchParams();
   const search=params.get('q')||'',division=params.get('division')||'';
   const change=(key,value)=>{const next=new URLSearchParams(params);if(value)next.set(key,value);else next.delete(key);setParams(next,{replace:true});};
-  const records=(query.data||[]).map(d=>({...d,reference:districtReference(d.name)}));
+  const records=(query.data||[]).map(d=>({...d,reference:{knownFor:d.knownFor,description:d.description,image:toPhoto(d.imageUrl,d.name,d.imageCredit)}}));
   const filtered=records.filter(d=>(!division||d.division===division)&&[d.name,d.division,d.reference?.knownFor,d.reference?.description].join(' ').toLowerCase().includes(search.toLowerCase().trim()));
   return <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
     <PageHeader title="Explore Bangladesh by district" description="Discover regional identity, historic places and landscapes. Start with a district, then explore its story." breadcrumbs={[{label:'Home',path:'/'},{label:'Explore',path:routePaths.explore},{label:'Districts'}]}/>

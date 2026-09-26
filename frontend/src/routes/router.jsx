@@ -268,10 +268,6 @@ const router = createBrowserRouter([
           { path: routePaths.marketplaceWishlist, element: <Wishlist /> },
           { path: routePaths.marketplaceCart, element: <Cart /> },
           { path: routePaths.marketplaceCheckout, element: <Checkout /> },
-          { path: routePaths.tourismPassport, element: <TravelPassport /> },
-          { path: routePaths.tourismBookings, element: <MyBookings /> },
-          { path: routePaths.tourismAiPlanner, element: <AiTourismPlanner /> },
-          { path: routePaths.tourismMyPlans, element: <MyTripPlans /> },
           { path: routePaths.researchWorkspace, element: <ResearchWorkspace /> },
           { path: routePaths.researchAiAssistant, element: <ResearchAiAssistant /> },
           { path: routePaths.researchFieldResearch, element: <FieldResearch /> },
@@ -341,6 +337,16 @@ const router = createBrowserRouter([
           { path: routePaths.apprenticeStudent, element: <ApprenticeStudentPage /> },
           { path: routePaths.apprenticeStudentMyApprenticeships, element: <MyApprenticeships /> },
           { path: routePaths.apprenticeStudentBrowsePrograms, element: <BrowsePrograms /> },
+        ],
+      },
+      {
+        // Personal trip tools: only travellers (and admins) plan trips, book services and keep a passport.
+        element: <RoleBasedRoute allowedRoles={['Tourist', 'SuperAdmin']} />,
+        children: [
+          { path: routePaths.tourismPassport, element: <TravelPassport /> },
+          { path: routePaths.tourismBookings, element: <MyBookings /> },
+          { path: routePaths.tourismAiPlanner, element: <AiTourismPlanner /> },
+          { path: routePaths.tourismMyPlans, element: <MyTripPlans /> },
         ],
       },
       {

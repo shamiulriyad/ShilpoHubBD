@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { hasCoordinates } from '../../data/tourismGuides';
+import { hasCoordinates } from '../../utils/tourismAdapters';
 
 const MARKER_COLORS = {
   origin: '#2f7d4f', destination: '#173b35', stop: '#af4d29',

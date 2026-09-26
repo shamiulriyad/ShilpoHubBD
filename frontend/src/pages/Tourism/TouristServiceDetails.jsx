@@ -9,7 +9,8 @@ import SafeImage from '../../components/media/SafeImage';
 
 export default function TouristServiceDetails() {
   const { serviceId } = useParams();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, hasAnyRole } = useAuth();
+  const canBook = hasAnyRole(['Tourist', 'SuperAdmin']);
   const serviceQuery = useTouristService(serviceId);
   const slotsQuery = useServiceAvailabilitySlots(serviceId, { onlyAvailable: true, pageSize: 20 });
   const { create } = useBookingMutations();
@@ -87,7 +88,9 @@ export default function TouristServiceDetails() {
                   />
                 </div>
 
-                {isAuthenticated ? (
+                {isAuthenticated && !canBook ? (
+                  <p className="text-xs text-body/60">Booking is available to Tourist accounts. Your current role cannot book tourist services.</p>
+                ) : isAuthenticated ? (
                   <Button
                     variant="primary"
                     className="w-full"

@@ -49,6 +49,11 @@ public class DistrictConfiguration : IEntityTypeConfiguration<District>
 
         builder.Property(d => d.Division).IsRequired().HasMaxLength(100);
         builder.Property(d => d.DisplayOrder).IsRequired();
+        builder.Property(d => d.Description).HasMaxLength(2000);
+        builder.Property(d => d.KnownFor).HasMaxLength(300);
+        builder.Property(d => d.SourceUrl).HasMaxLength(1000);
+        builder.Property(d => d.ImageUrl).HasMaxLength(1000);
+        builder.Property(d => d.ImageCredit).HasMaxLength(500);
         builder.Property(d => d.IsActive).IsRequired();
 
         builder.HasData(Districts.Select((d, i) => new

@@ -54,6 +54,10 @@ public class LocalCuisineService : ILocalCuisineService
             HeritagePlaceId = request.HeritagePlaceId,
             WhereToTry = request.WhereToTry?.Trim(),
             ImageUrl = request.ImageUrl?.Trim(),
+            Kind = request.Kind?.Trim(),
+            Ingredients = request.Ingredients?.Trim(),
+            SourceUrl = request.SourceUrl?.Trim(),
+            IsNationwide = request.IsNationwide,
             IsActive = true,
             CreatedAt = now,
             UpdatedAt = now,
@@ -79,6 +83,10 @@ public class LocalCuisineService : ILocalCuisineService
         cuisine.HeritagePlaceId = request.HeritagePlaceId;
         cuisine.WhereToTry = request.WhereToTry?.Trim();
         cuisine.ImageUrl = request.ImageUrl?.Trim();
+        cuisine.Kind = request.Kind?.Trim();
+        cuisine.Ingredients = request.Ingredients?.Trim();
+        cuisine.SourceUrl = request.SourceUrl?.Trim();
+        cuisine.IsNationwide = request.IsNationwide;
         cuisine.IsActive = request.IsActive;
         cuisine.UpdatedAt = DateTime.UtcNow;
 
@@ -117,6 +125,10 @@ public class LocalCuisineService : ILocalCuisineService
         Description = cuisine.Description,
         WhereToTry = cuisine.WhereToTry,
         ImageUrl = cuisine.ImageUrl,
+        Kind = cuisine.Kind,
+        Ingredients = cuisine.Ingredients,
+        SourceUrl = cuisine.SourceUrl,
+        IsNationwide = cuisine.IsNationwide,
         IsActive = cuisine.IsActive,
         DistrictId = cuisine.DistrictId,
         DistrictName = cuisine.District.Name,

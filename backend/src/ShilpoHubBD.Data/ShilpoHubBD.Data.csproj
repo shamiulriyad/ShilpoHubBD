@@ -14,6 +14,7 @@
     <Content Include="Seed\TourismData\*.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Seed\TransportData\*.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Seed\ContentData\*.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Seed\HeritageData\*.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

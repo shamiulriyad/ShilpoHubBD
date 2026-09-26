@@ -27,6 +27,7 @@ public class BookingsController : ControllerBase
 
     private bool IsAdmin => User.IsInRole(RoleNames.SuperAdmin);
 
+    [Authorize(Roles = $"{RoleNames.Tourist},{RoleNames.SuperAdmin}")]
     [HttpPost]
     public async Task<ActionResult<BookingDto>> Create(CreateBookingRequest request, CancellationToken cancellationToken)
     {
@@ -34,6 +35,7 @@ public class BookingsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
+    [Authorize(Roles = $"{RoleNames.Tourist},{RoleNames.SuperAdmin}")]
     [HttpGet("mine")]
     public async Task<ActionResult<PagedResult<BookingDto>>> GetMine(
         [FromQuery] BookingQueryParameters query, CancellationToken cancellationToken)

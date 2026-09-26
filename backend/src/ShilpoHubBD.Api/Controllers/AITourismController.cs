@@ -1,3 +1,4 @@
+using ShilpoHubBD.Domain.Constants;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +30,7 @@ public class AITourismController : ControllerBase
         Guid.Parse(User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             ?? User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
+    [Authorize(Roles = $"{RoleNames.Tourist},{RoleNames.SuperAdmin}")]
     [HttpPost("tour-plan")]
     public async Task<ActionResult<TourPlanResult>> PlanTour(TourPlanRequest request, CancellationToken cancellationToken)
     {
@@ -48,15 +50,18 @@ public class AITourismController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = $"{RoleNames.Tourist},{RoleNames.SuperAdmin}")]
     [HttpGet("saved-plans")]
     public async Task<ActionResult<PagedResult<SavedTourPlanSummaryDto>>> GetMySavedPlans(
         int page = 1, int pageSize = 12, CancellationToken cancellationToken = default)
         => Ok(await _savedPlanService.GetMyPlansAsync(CurrentUserId, page, pageSize, cancellationToken));
 
+    [Authorize(Roles = $"{RoleNames.Tourist},{RoleNames.SuperAdmin}")]
     [HttpGet("saved-plans/{id:guid}")]
     public async Task<ActionResult<SavedTourPlanDto>> GetMySavedPlan(Guid id, CancellationToken cancellationToken)
         => Ok(await _savedPlanService.GetMyPlanAsync(CurrentUserId, id, cancellationToken));
 
+    [Authorize(Roles = $"{RoleNames.Tourist},{RoleNames.SuperAdmin}")]
     [HttpDelete("saved-plans/{id:guid}")]
     public async Task<IActionResult> DeleteMySavedPlan(Guid id, CancellationToken cancellationToken)
     {

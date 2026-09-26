@@ -43,13 +43,13 @@ export const resources = {
   },
   villages: {
     path: '/villages',
-    fields: [name, text('craft', 'Craft'), district, long('description', 'Description', false), image],
+    fields: [name, text('craft', 'Craft'), district, long('description', 'Description', false), long('visitTips', 'Visit tips', false, 1000), text('sourceUrl', 'Source URL', false, { maxLength: 1000 }), text('sourceLabel', 'Source label', false, { maxLength: 200 }), image, text('imageCredit', 'Image credit', false, { maxLength: 500 })],
     update: [active],
     columns: ['name', 'craft', 'districtName', 'isActive']
   },
   places: {
     path: '/heritage-places',
-    fields: [name, long('description', 'Description'), text('placeType', 'Place type', true, { options: ['Village', 'HistoricalSite', 'Museum', 'Temple', 'Monument', 'CraftCenter', 'NaturalSite', 'Other'] }), district, text('address', 'Address', false), text('latitude', 'Latitude', true, { type: 'number', min: -90, max: 90 }), text('longitude', 'Longitude', true, { type: 'number', min: -180, max: 180 }), image, bool('isFeatured', 'Featured')],
+    fields: [name, long('description', 'Description'), text('placeType', 'Place type', true, { options: ['Village', 'HistoricalSite', 'Museum', 'Temple', 'Monument', 'CraftCenter', 'NaturalSite', 'Other'] }), district, text('address', 'Address', false), text('latitude', 'Latitude', true, { type: 'number', min: -90, max: 90 }), text('longitude', 'Longitude', true, { type: 'number', min: -180, max: 180 }), text('knownFor', 'Known for (one line)', false, { maxLength: 300 }), text('sourceUrl', 'Source URL', false, { maxLength: 1000 }), image, text('imageCredit', 'Image credit', false, { maxLength: 500 }), bool('isFeatured', 'Featured')],
     update: [active],
     columns: ['name', 'placeType', 'districtName', 'isFeatured', 'isActive']
   },
@@ -98,7 +98,7 @@ export const resources = {
   },
   cuisines: {
     path: '/local-cuisines',
-    fields: [name, long('description', 'Description'), district, text('heritagePlaceId', 'Heritage place', false, { lookup: '/heritage-places' }), text('whereToTry', 'Where to try', false, { maxLength: 500 }), image],
+    fields: [name, long('description', 'Description'), district, text('heritagePlaceId', 'Heritage place', false, { lookup: '/heritage-places' }), text('kind', 'Dish type (e.g. Sweet, Main dish)', false, { maxLength: 60 }), text('ingredients', 'Typical ingredients', false, { maxLength: 500 }), text('whereToTry', 'Where to try', false, { maxLength: 500 }), text('sourceUrl', 'Source URL', false, { maxLength: 1000 }), bool('isNationwide', 'Available across Bangladesh'), image],
     update: [active],
     columns: ['name', 'districtName', 'whereToTry', 'isActive']
   },
