@@ -168,7 +168,24 @@ def _facility_practical_parts(rec: Dict[str, Any]) -> List[str]:
     return [p for p in parts if p]
 
 
+def _entity_overview_parts(ent: Dict[str, Any]) -> List[str]:
+    where = ", ".join(b for b in (ent.get("area"), ent.get("district"), ent.get("division")) if b)
+    parts = [f"{ent['name']} ({_pretty(ent.get('entity_type') or 'tourism entity')}) - {where}."]
+    if ent.get("description"):
+        parts.append(_end(ent["description"]))
+    if ent.get("interests"):
+        parts.append(f"Suits travellers interested in: {_join(ent['interests'])}.")
+    if ent.get("tags"):
+        parts.append(f"Tags: {_join(ent['tags'])}.")
+    return parts
+
+
+def _entity_practical_parts(ent: Dict[str, Any]) -> List[str]:
+    return ["Entry fee, opening hours, exact coordinates and visit duration are not in this dataset: not verified."]
+
+
 _BUILDERS = {
+    "district_entity": (("overview", _entity_overview_parts), ("practical", _entity_practical_parts)),
     "facility": (("overview", _facility_overview_parts), ("practical", _facility_practical_parts)),
     "place": (("overview", _overview_parts), ("experience", _experience_parts), ("access", _access_parts)),
     "heritage_place": (("overview", _heritage_overview_parts), ("visit", _heritage_visit_parts),
