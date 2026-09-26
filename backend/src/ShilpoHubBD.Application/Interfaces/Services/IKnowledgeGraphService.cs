@@ -28,4 +28,8 @@ public interface IKnowledgeGraphService
     Task<KnowledgeGraphDto> TraverseAsync(Guid nodeId, GraphTraversalQueryParameters query, CancellationToken cancellationToken);
     Task<KnowledgePathDto> FindPathAsync(GraphPathQueryParameters query, CancellationToken cancellationToken);
     Task<KnowledgeGraphDto> GetNetworkAsync(string network, KnowledgeNetworkQueryParameters query, CancellationToken cancellationToken);
+    Task<KnowledgeGraphStatsDto> GetStatsAsync(CancellationToken cancellationToken);
+    IReadOnlyList<KnowledgeRelationshipRuleDto> GetRules();
+    Task<List<KnowledgeEntityCandidateDto>> SearchEntitiesAsync(
+        string nodeType, string? search, int take, CancellationToken cancellationToken);
 }
