@@ -18,25 +18,45 @@ function Stat({ label, value, onClick }) {
 function NewNodePanel({ onClose }) {
   const [type, setType] = useState('Heritage');
   const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState(null);
+  const [isOpen, setIsOpen] = useState(true);
+  const [selectedEntityId, setSelectedEntityId] = useState('');
+  const [selectedEntityType, setSelectedEntityType] = useState('');
+  const [selectedEntityName, setSelectedEntityName] = useState('');
+  const [selectedDescription, setSelectedDescription] = useState('');
   const [manual, setManual] = useState({ label: '', description: '' });
   const candidates = useKnowledgeEntities({ nodeType: type, search, take: 30 });
   const { createNode, importNode } = useKnowledgeGraphMutations();
   const usesDatabase = !manualTypes.has(type);
-  const mutation = selected ? importNode : createNode;
+  const hasValidSelection = Boolean(selectedEntityId && selectedEntityType === type && selectedEntityName);
+  const hasValidManualNode = Boolean(manualTypes.has(type) && manual.label.trim());
+  const mutation = usesDatabase ? importNode : createNode;
+  const clearSelection = () => {
+    setSelectedEntityId(''); setSelectedEntityType(''); setSelectedEntityName(''); setSelectedDescription('');
+  };
+  const changeType = (nextType) => {
+    setType(nextType); setSearch(''); clearSelection(); setManual({ label: '', description: '' }); setIsOpen(true);
+  };
+  const selectRecord = (record) => {
+    setSelectedEntityId(record.id); setSelectedEntityType(record.entityType); setSelectedEntityName(record.name);
+    setSelectedDescription(record.description || ''); setSearch(record.name); setIsOpen(false);
+  };
   const submit = (event) => {
     event.preventDefault();
-    const payload = selected ? { nodeType: type, externalEntityId: selected.id, description: selected.description } : { nodeType: type, label: manual.label, description: manual.description };
+    if (usesDatabase && !hasValidSelection) return;
+    if (!usesDatabase && !hasValidManualNode) return;
+    const payload = usesDatabase
+      ? { nodeType: type, entityId: selectedEntityId, entityType: selectedEntityType }
+      : { nodeType: type, label: manual.label.trim(), description: manual.description.trim() };
     mutation.mutate(payload, { onSuccess: onClose });
   };
   return <div className="mb-6 rounded-2xl border border-primary/25 bg-surface p-5 shadow-sm">
     <div className="mb-4 flex items-start justify-between"><div><h2 className="font-semibold text-heading">Add knowledge node</h2><p className="text-sm text-body/60">Link an existing ShilpoHub record whenever one is available.</p></div><button type="button" onClick={onClose} aria-label="Close">×</button></div>
     <form onSubmit={submit} className="grid gap-4 lg:grid-cols-[220px_1fr]">
-      <label className="grid gap-1 text-sm font-medium">Node type<select className={inputClass} value={type} onChange={(e) => { setType(e.target.value); setSelected(null); setSearch(''); }}>{nodeTypes.map((item) => <option key={item} value={item}>{humanize(item)}</option>)}</select></label>
-      {usesDatabase ? <div className="grid gap-2"><label className="grid gap-1 text-sm font-medium">Find an existing record<input className={inputClass} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={`Search ${humanize(type).toLowerCase()} records`} /></label><div className="max-h-48 overflow-auto rounded-lg border border-border bg-background p-1">{candidates.isLoading && <p className="p-3 text-sm text-body/60">Loading records…</p>}{candidates.data?.map((item) => <button key={item.id} type="button" onClick={() => setSelected(item)} className={`block w-full rounded-md px-3 py-2 text-left ${selected?.id === item.id ? 'bg-primary/10 text-primary' : 'hover:bg-muted'}`}><span className="block text-sm font-medium">{item.name}</span>{item.description && <span className="line-clamp-1 text-xs text-body/60">{item.description}</span>}</button>)}{!candidates.isLoading && candidates.data?.length === 0 && <p className="p-3 text-sm text-body/60">No matching database records.</p>}</div></div> : <div className="grid gap-3"><label className="grid gap-1 text-sm font-medium">Name<input required className={inputClass} value={manual.label} onChange={(e) => setManual((p) => ({ ...p, label: e.target.value }))} /></label><label className="grid gap-1 text-sm font-medium">Description<textarea rows="3" className={inputClass} value={manual.description} onChange={(e) => setManual((p) => ({ ...p, description: e.target.value }))} /></label></div>}
-      {selected && <div className="lg:col-start-2 rounded-lg border border-border bg-background p-3"><p className="text-xs font-semibold uppercase tracking-wide text-primary">Selected record</p><p className="font-semibold text-heading">{selected.name}</p><p className="text-sm text-body/60">{selected.description || 'No description available.'}</p></div>}
+      <label className="grid gap-1 text-sm font-medium">Node type<select className={inputClass} value={type} onChange={(e) => changeType(e.target.value)}>{nodeTypes.map((item) => <option key={item} value={item}>{humanize(item)}</option>)}</select></label>
+      {usesDatabase ? <div className="grid gap-2"><label className="grid gap-1 text-sm font-medium">Find an existing record<div role="combobox" aria-expanded={isOpen} aria-haspopup="listbox" className="relative"><input aria-autocomplete="list" aria-controls="knowledge-record-options" className={`${inputClass} w-full`} value={search} onFocus={() => setIsOpen(true)} onChange={(e) => { setSearch(e.target.value); clearSelection(); setIsOpen(true); }} placeholder={`Search ${humanize(type).toLowerCase()} records`} />{isOpen && <ul id="knowledge-record-options" role="listbox" className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-lg border border-border bg-surface p-1 shadow-lg">{candidates.isLoading && <li className="p-3 text-sm text-body/60">Loading records...</li>}{candidates.isError && <li role="alert" className="p-3 text-sm text-danger">Could not load existing records.</li>}{!candidates.isLoading && !candidates.isError && candidates.data?.map((item) => <li key={item.id} role="option" aria-selected={selectedEntityId === item.id}><button type="button" onClick={() => selectRecord(item)} className={`block w-full rounded-md px-3 py-2 text-left ${selectedEntityId === item.id ? 'bg-primary/10 text-primary' : 'hover:bg-muted'}`}><span className="block text-sm font-medium">{item.name}</span><span className="block text-xs text-body/60">{humanize(item.entityType)}</span></button></li>)}{!candidates.isLoading && !candidates.isError && candidates.data?.length === 0 && <li className="p-3 text-sm text-body/60">No existing records found. You can create this node manually if supported.</li>}</ul>}</div></label></div> : <div className="grid gap-3"><label className="grid gap-1 text-sm font-medium">Name<input required className={inputClass} value={manual.label} onChange={(e) => setManual((p) => ({ ...p, label: e.target.value }))} /></label><label className="grid gap-1 text-sm font-medium">Description<textarea rows="3" className={inputClass} value={manual.description} onChange={(e) => setManual((p) => ({ ...p, description: e.target.value }))} /></label></div>}
+      {hasValidSelection && <div className="lg:col-start-2 rounded-lg border border-primary/30 bg-primary/5 p-3"><div className="flex items-start justify-between"><div><p className="text-xs font-semibold uppercase tracking-wide text-primary">Selected record</p><p className="font-semibold text-heading">{selectedEntityName}</p><p className="text-xs text-body/60">{humanize(selectedEntityType)} · ID {selectedEntityId}</p></div><button type="button" className="text-sm text-body/60 hover:text-heading" onClick={() => { clearSelection(); setSearch(''); setIsOpen(true); }}>Change</button></div>{selectedDescription && <p className="mt-2 text-sm text-body/60">{selectedDescription}</p>}</div>}
       {mutation.isError && <p role="alert" className="lg:col-span-2 text-sm text-danger">{errorMessage(mutation.error)}</p>}
-      <div className="flex gap-2 lg:col-span-2"><Button type="submit" variant="primary" disabled={mutation.isPending || (usesDatabase ? !selected : !manual.label.trim())}>{mutation.isPending ? 'Adding…' : 'Add to Knowledge Graph'}</Button><Button type="button" variant="secondary" onClick={onClose}>Cancel</Button></div>
+      <div className="flex gap-2 lg:col-span-2"><Button type="submit" variant="primary" disabled={mutation.isPending || (usesDatabase ? !hasValidSelection : !hasValidManualNode)}>{mutation.isPending ? 'Adding…' : 'Add to Knowledge Graph'}</Button><Button type="button" variant="secondary" onClick={onClose}>Cancel</Button></div>
     </form>
   </div>;
 }
