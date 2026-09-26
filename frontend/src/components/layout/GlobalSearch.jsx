@@ -7,7 +7,7 @@ import { routePaths } from '../../routes/routePaths';
 import { presentNavigation } from './workspaceNavigation';
 import NavigationIcon from './NavigationIcon';
 
-export default function GlobalSearch({ navItems }) {
+export default function GlobalSearch({ navItems, iconOnly = false }) {
   const dialog = useRef(null);
   const input = useRef(null);
   const trigger = useRef(null);
@@ -22,7 +22,7 @@ export default function GlobalSearch({ navItems }) {
     else if(dialog.current?.open) { dialog.current.close(); trigger.current?.focus(); }
   },[open]);
   return <>
-    <button ref={trigger} type="button" onClick={()=>setOpen(true)} className="global-search-trigger" aria-label="Search ShilpoHub" aria-haspopup="dialog"><NavigationIcon label="Search"/><span>Search products or find a workspace page…</span><kbd>Ctrl K</kbd></button>
+    <button ref={trigger} type="button" onClick={()=>setOpen(true)} className={`global-search-trigger${iconOnly ? ' global-search-icon' : ''}`} title={iconOnly ? 'Search ShilpoHub (Ctrl K)' : undefined} aria-label="Search ShilpoHub" aria-haspopup="dialog"><NavigationIcon label="Search"/><span>Search products or find a workspace page…</span><kbd>Ctrl K</kbd></button>
     <dialog ref={dialog} className="global-search-dialog" aria-label="Search ShilpoHub" onCancel={()=>setOpen(false)} onClick={event=>{if(event.target===dialog.current)setOpen(false);}}>
       {open && <SearchContent inputRef={input} navItems={navItems} onClose={()=>setOpen(false)}/>}
     </dialog>

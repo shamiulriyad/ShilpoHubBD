@@ -40,8 +40,12 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-surface/10">
-        <div className="mx-auto max-w-7xl px-4 py-5 text-xs text-surface/50 lg:px-8">
-          © {new Date().getFullYear()} ShilpoHub. All rights reserved.
+        <div className="footer-bottom mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-5 text-xs text-surface/50 lg:px-8">
+          <span>© {new Date().getFullYear()} ShilpoHub. All rights reserved.</span>
+          <a href="tel:98675" className="footer-helpline" aria-label="Call admin helpline at 98675">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 1.9Z"/></svg>
+            <span>Admin helpline <strong>98675</strong></span>
+          </a>
         </div>
       </div>
     </footer>

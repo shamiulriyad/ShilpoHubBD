@@ -347,3 +347,43 @@ html {
   .public-nav-links.mobile-open { position:static; width:100%; padding:0 0 10px; gap:0 22px; border-bottom:0; }
   .public-mega-menu { position:relative; top:auto; max-height:none; overflow:visible; border-top:1px solid rgb(var(--color-border)); padding:24px 16px; }
 }
+
+/* Single-row public navigation with compact search. */
+.public-header-inline .public-topbar { max-width:1600px; gap:24px; flex-wrap:wrap; }
+.public-header-inline .public-nav { margin:0; padding:0; border:0; min-height:0; flex:1; }
+.public-header-inline .public-nav-links { gap:20px; }
+.public-header-inline .public-nav-item { white-space:nowrap; gap:2px; }
+.public-header-inline .public-nav-item > a { padding:18px 0; }
+.public-header-inline .global-search-icon { margin:0; width:40px; height:40px; min-width:40px; padding:10px; border:0; background:transparent; justify-content:center; }
+.global-search-icon > span, .global-search-icon > kbd { display:none; }
+.global-search-icon:hover { background:rgb(var(--color-primary) / .07); color:rgb(var(--color-primary)); }
+@media (max-width:1199px) {
+ .public-header-inline .public-topbar { gap:12px; }
+ .public-header-inline .public-nav { order:3; flex-basis:100%; flex-wrap:wrap; }
+ .public-header-inline .public-menu-toggle { display:flex; align-items:center; gap:8px; width:100%; padding:10px 0; font-size:13px; }
+ .public-header-inline .public-nav-links { display:none; }
+ .public-header-inline .public-nav-links.mobile-open { display:flex; flex-wrap:wrap; position:static; width:100%; gap:0 22px; padding:0 0 8px; }
+ .public-header-inline .public-mega-menu { position:relative; top:auto; max-height:none; padding:24px; }
+ .public-header-inline:has(.mobile-open) { max-height:100dvh; overflow-y:auto; }
+}
+@media (max-width:479px) {
+ .public-header-inline .public-topbar { gap:5px; }
+ .public-header-inline .topbar-actions { margin-left:auto; gap:4px; }
+ .public-header-inline .global-search-icon { min-width:32px; width:32px; padding:7px; }
+}
+@media (min-width:1200px) and (max-width:1399px) {
+ .public-header-inline .public-topbar { gap:16px; padding-inline:20px; }
+ .public-header-inline .public-nav-links { gap:12px; }
+ .public-header-inline .public-nav-item { font-size:12px; }
+ .public-header-inline .topbar-actions { gap:8px; }
+ .public-header-inline .brand-tagline { display:none; }
+}
+
+/* Complete the dashboard frame without an empty rail beside the footer. */
+.dashboard-shell > footer { margin-left:0; }
+.workspace-content { padding-bottom:32px; }
+.footer-helpline { display:inline-flex; align-items:center; gap:8px; min-height:40px; padding:6px 12px; border:1px solid currentColor; border-radius:8px; color:inherit; text-decoration:none; }
+.footer-helpline strong { margin-left:5px; font-weight:600; }
+.footer-helpline:hover { text-decoration:underline; text-underline-offset:3px; }
+.footer-helpline:focus-visible { outline:2px solid currentColor; outline-offset:3px; }
+@media (max-width:767px) { .workspace-content { padding-bottom:24px; } }
