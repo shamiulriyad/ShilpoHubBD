@@ -130,6 +130,7 @@ public class GeminiAITourismProvider : IAITourismProvider
         var knownPlaceIds = context.Places.Select(p => p.Id).ToHashSet();
         var knownServiceIds = context.Services.Select(s => s.Id).ToHashSet();
         var knownLocationIds = context.TourismLocations.Select(l => l.Id).ToHashSet();
+        var knownDatasetIds = context.Dataset.Places.Select(p => p.Id).ToHashSet();
 
         var days = (parsed.Days ?? [])
             .Select(d => new TourDayPlanDto
@@ -137,12 +138,13 @@ public class GeminiAITourismProvider : IAITourismProvider
                 DayNumber = d.DayNumber,
                 Date = context.StartDate?.AddDays(d.DayNumber - 1),
                 Stops = (d.Stops ?? [])
+                    .Where(s => IsGroundedStop(s, knownPlaceIds, knownServiceIds, knownLocationIds, knownDatasetIds))
                     .Select(s =>
                     {
                         var referenceId = s.ReferenceId;
                         var isKnown = referenceId.HasValue
                             && (knownPlaceIds.Contains(referenceId.Value) || knownServiceIds.Contains(referenceId.Value)
-                                || knownLocationIds.Contains(referenceId.Value));
+                                || knownLocationIds.Contains(referenceId.Value) || knownDatasetIds.Contains(referenceId.Value));
                         return new TourStopDto
                         {
                             ReferenceId = isKnown ? referenceId : null,
@@ -168,22 +170,37 @@ public class GeminiAITourismProvider : IAITourismProvider
         };
     }
 
+    // Meals, rests and free time are structure, not places. Any other stop must carry an id that was
+    // actually supplied -- a model-invented "Attraction" or an unknown id is dropped, never shown.
+    private static bool IsGroundedStop(
+        GeminiStop stop, HashSet<Guid> places, HashSet<Guid> services, HashSet<Guid> locations, HashSet<Guid> dataset)
+    {
+        if (stop.Type is "Meal" or "Rest" or "FreeTime")
+        {
+            return true;
+        }
+
+        return stop.ReferenceId is { } id
+            && (places.Contains(id) || services.Contains(id) || locations.Contains(id) || dataset.Contains(id));
+    }
+
     private static string BuildTourPlanPrompt(TourPlanContext context)
     {
         var sb = new StringBuilder();
-        sb.AppendLine("You are a travel itinerary organiser for a Bangladesh heritage tourism platform.");
-        sb.AppendLine("Prefer the curated places and services listed below -- use their exact id so the app can show real details. " +
-            "If the curated list for this district is thin, you may ALSO suggest a few real, well-known, independently " +
-            "verifiable public attractions (for example a named beach, park or landmark you are confident actually exists " +
-            "in or near this district) as stops of type \"Attraction\" with no id. Never invent a place, festival, price, " +
-            "opening hour or schedule that isn't real.");
-        sb.AppendLine("HARD RULES: (1) Never state or guess a transport schedule, ticket price, entry fee, opening hours or hotel " +
-            "availability. If the data below does not give it, write exactly \"not verified\" for that item and add a line about it " +
-            "to unverifiedNotes. (2) Use the reference notes below as the primary source for what each place is, what to do there, " +
-            "and how long to spend (\"Suggested visit duration\"); mention a caution from the notes when one applies. " +
-            "(3) Order each day's stops so nearby places follow each other; do not compute distances or road routes -- the app does that. " +
-            "(4) Give every visit stop estimatedDurationHours; set durationIsEstimated=false only when a note states the duration, otherwise true. " +
-            "(5) Include a lunch stop (type \"Meal\") and, on long days, a \"Rest\" stop, without naming a specific restaurant unless it is in the curated list.");
+        sb.AppendLine("You are the planning layer of a Bangladesh tourism platform. You ORGANISE facts that are supplied below " +
+            "into an itinerary; you are not a source of facts. The supplied context is the only truth.");
+        sb.AppendLine("RULES:");
+        sb.AppendLine("1. Use ONLY the supplied places, services, tourism locations, accommodation, transport and reference notes. " +
+            "Every visit stop must use the exact id and name of a supplied record. Never add a place from your own knowledge.");
+        sb.AppendLine("2. Never invent or guess hotels, transport schedules, prices, fares, entrance fees, opening hours, contact details, " +
+            "facilities, addresses or real-time availability. If a value is not supplied write exactly \"not verified\" and add a line to unverifiedNotes.");
+        sb.AppendLine("3. Recommend accommodation only from the supplied Hotel/Resort/Hostel records. If there are none, say no verified accommodation is available.");
+        sb.AppendLine("4. Never present road/driving time as bus, train or plane time. Do not compute distances or routes -- the app does that.");
+        sb.AppendLine("5. Prefer places whose matchedInterests cover the traveller's interests. Respect the trip length: exactly the requested number of days, " +
+            "no more than 3-4 visit stops per day, nearby places on the same day.");
+        sb.AppendLine("6. Give every visit stop estimatedDurationHours. Set durationIsEstimated=false only when a supplied note states the duration; otherwise true.");
+        sb.AppendLine("7. Add a lunch stop (type \"Meal\") each day, with no restaurant name unless a supplied Restaurant record covers it, and a \"Rest\" stop on long days.");
+        sb.AppendLine("8. Reply with JSON only.");
         sb.AppendLine();
         sb.AppendLine($"Destination district: {context.DistrictName}");
         if (!string.IsNullOrWhiteSpace(context.OriginText)) sb.AppendLine($"Starting from: {context.OriginText}");
@@ -205,6 +222,23 @@ public class GeminiAITourismProvider : IAITourismProvider
         foreach (var service in context.Services)
         {
             sb.AppendLine($"- id={service.Id} name=\"{service.Title}\" type={service.Type} price=BDT{service.Price:N0}");
+        }
+
+        sb.AppendLine(context.Dataset.Places.Count > 0
+            ? "Tourism dataset places for this district, already filtered and ranked for the traveller's interests (use their exact id and name; " +
+              "they have NO coordinates, fees, hours or visit durations in the data):"
+            : "Tourism dataset places for this district: none match.");
+        foreach (var place in context.Dataset.Places)
+        {
+            var matched = place.MatchedInterests.Count > 0 ? $" matchedInterests=[{string.Join(", ", place.MatchedInterests)}]" : string.Empty;
+            sb.AppendLine($"- id={place.Id} name=\"{place.Name}\" type={place.EntityType} area=\"{place.Area}\" interests=[{string.Join(", ", place.Interests)}]{matched} " +
+                $"description=\"{place.Description}\"");
+        }
+
+        if (context.Dataset.UnmatchedInterests.Count > 0)
+        {
+            sb.AppendLine($"The dataset has NO destination in this district for: {string.Join(", ", context.Dataset.UnmatchedInterests)}. " +
+                "Do not invent one; mention this in unverifiedNotes.");
         }
 
         sb.AppendLine("Admin-curated tourism locations -- hotels, resorts, restaurants and attractions with real " +
@@ -238,12 +272,12 @@ public class GeminiAITourismProvider : IAITourismProvider
         sb.AppendLine("Respond with strict JSON only, matching this shape: " +
             "{ \"summary\": string, \"accommodationRecommendation\": string, \"unverifiedNotes\": string[], \"highlightedFestivals\": string[], " +
             "\"days\": [ { \"dayNumber\": number, \"stops\": [ { \"referenceId\": string|null, \"type\": " +
-            "\"HeritagePlace\"|\"TouristService\"|\"TourismLocation\"|\"Attraction\"|\"Meal\"|\"Rest\"|\"FreeTime\", \"name\": string, \"notes\": string|null (activities to do there), " +
+            "\"HeritagePlace\"|\"TouristService\"|\"TourismLocation\"|\"DatasetPlace\"|\"Meal\"|\"Rest\"|\"FreeTime\", \"name\": string, \"notes\": string|null (activities to do there), " +
             "\"estimatedDurationHours\": number, \"durationIsEstimated\": boolean } ] } ]. " +
             "accommodationRecommendation must name a curated hotel/resort from the list above if one exists, otherwise say no verified accommodation data is available and suggest checking locally. " +
             "Produce exactly the requested number of days. " +
-            "Every stop with type HeritagePlace, TouristService or TourismLocation must use one of the matching ids listed above as referenceId. " +
-            "A stop with type Attraction must leave referenceId null and use only a real, well-known place name.");
+            "Every stop with type HeritagePlace, TouristService, TourismLocation or DatasetPlace must use one of the matching ids listed above as referenceId. " +
+            "Do not output any other kind of visit stop.");
 
         return sb.ToString();
     }

@@ -9,4 +9,9 @@ public interface ITravelPlannerRagProvider
 {
     Task<List<RagTravelNoteDto>> RetrieveAsync(
         string query, string? district, IReadOnlyList<string>? interests, CancellationToken cancellationToken);
+
+    // Deterministic district + interest filter over the 64-district tourism dataset (the entities
+    // the planner may put in an itinerary). Empty result on any failure.
+    Task<DistrictDatasetResult> GetDistrictEntitiesAsync(
+        string district, IReadOnlyList<string>? interests, int limit, CancellationToken cancellationToken);
 }

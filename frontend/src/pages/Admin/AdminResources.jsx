@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { superAdminService as api } from '../../services/superAdminService';
 import { resources, editorFields } from './adminConfig';
+import { useDistricts } from '../../hooks/useDistricts';
 import { Action, DataTable, Editor, ErrorNotice, Modal, Panel, useAdminQuery, inputClass, labelOf } from './AdminUI';
 export default function AdminResources({
   view
@@ -12,6 +13,12 @@ export default function AdminResources({
     [editing, setEditing] = useState(null),
     [remove, setRemove] = useState(null);
   const cache = useQueryClient();
+  const districts = useDistricts();
+  const [syncDistrict, setSyncDistrict] = useState('');
+  const sync = useMutation({
+    mutationFn: () => api.action('post', '/tourism/sync', undefined, { districtId: syncDistrict }),
+    onSuccess: () => cache.invalidateQueries(),
+  });
   const query = useAdminQuery(config.path + (drafts ? '/drafts' : ''), {
     page,
     pageSize: 20,
@@ -43,6 +50,13 @@ export default function AdminResources({
           save.reset();
           setEditing({});
         }}>Create new</Action>}<Action onClick={() => query.refetch()} disabled={query.isFetching}>Refresh</Action></div></div>
+    {view === 'locations' && <div className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-border p-3">
+      <span className="text-sm text-body/70">Import from OpenStreetMap:</span>
+      <select aria-label="District to sync" className={inputClass} value={syncDistrict} onChange={e => setSyncDistrict(e.target.value)}><option value="">Choose district</option>{(districts.data ?? []).map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select>
+      <Action disabled={!syncDistrict || sync.isPending} onClick={() => sync.mutate()}>{sync.isPending ? 'Syncing…' : 'Sync now'}</Action>
+      {sync.data && <span className="text-xs text-body/60">{sync.data.message}</span>}
+      <ErrorNotice error={sync.error} />
+    </div>}
     {['categories', 'villages'].includes(view) && <p className="mb-4 text-sm text-body/60">This list contains active records. Deactivated records are excluded by the server.</p>}
     <ErrorNotice error={detail.error} /><DataTable query={query} columns={config.columns} page={page} onPage={setPage} actions={row => <><Action disabled={detail.isPending} onClick={() => {
         save.reset();

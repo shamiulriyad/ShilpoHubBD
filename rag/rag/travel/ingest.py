@@ -11,6 +11,7 @@ from rag.step01_load_json import load_json
 from rag.step04_chunking import chunk_documents
 from rag.step06_vector_store import store_chunks
 from rag.travel.clean import clean_travel_data
+from rag.travel.normalize_districts import DISTRICTS_FILE, normalize_districts_json
 from rag.travel.normalize import TOURISM_FILE, normalize_travel_json
 from rag.travel.normalize_facilities import FACILITIES_FILE, facilities_available, normalize_facilities_json
 from rag.travel.normalize_heritage import HERITAGE_FILE, normalize_heritage_json
@@ -27,10 +28,10 @@ def ingest_travel_dataset(
     Mirrors `api/ingest.py`'s `ingest_dataset` shape for the craft datasets, but points at a
     different file and a different (isolated) Qdrant collection by default."""
     base = data_dir or config.DATA_DIR
-    files = (TOURISM_FILE, HERITAGE_FILE) + ((FACILITIES_FILE,) if facilities_available(base) else ())
+    files = (TOURISM_FILE, HERITAGE_FILE, DISTRICTS_FILE) + ((FACILITIES_FILE,) if facilities_available(base) else ())
     datasets = load_json(base, filenames=files)                                  # 1 (reused)
     docs = clean_travel_data(                                                           # 2-3 (new)
-        normalize_travel_json(datasets) + normalize_heritage_json(datasets)
+        normalize_travel_json(datasets) + normalize_heritage_json(datasets) + normalize_districts_json(datasets)
         + normalize_facilities_json(datasets))
     chunks = chunk_documents(docs)                                               # 4 (reused)
     store_chunks(chunks, embeddings, collection_name, recreate=recreate, sparse=sparse)  # 5+6 (reused)

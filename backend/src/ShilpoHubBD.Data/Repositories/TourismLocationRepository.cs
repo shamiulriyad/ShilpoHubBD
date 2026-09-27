@@ -47,7 +47,7 @@ public class TourismLocationRepository : ITourismLocationRepository
             locations = locations.Where(l => l.IsVerified == query.IsVerified.Value);
         }
 
-        locations = locations.OrderByDescending(l => l.IsVerified).ThenBy(l => l.Name);
+        locations = locations.OrderBy(l => l.Source == "OpenStreetMap").ThenByDescending(l => l.IsVerified).ThenBy(l => l.Name);
 
         var totalCount = await locations.CountAsync(cancellationToken);
         var items = await locations
@@ -63,6 +63,26 @@ public class TourismLocationRepository : ITourismLocationRepository
 
     public Task<List<TourismLocation>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
         => WithDetails().Where(l => ids.Contains(l.Id)).ToListAsync(cancellationToken);
+
+    public async Task<List<TourismLocation>> GetForDistrictAsync(Guid districtId, IReadOnlyCollection<TourismLocationType> types, CancellationToken cancellationToken)
+        => await WithDetails()
+            .Where(l => l.DistrictId == districtId && l.IsActive && types.Contains(l.Type))
+            .OrderBy(l => l.Source == "OpenStreetMap").ThenByDescending(l => l.IsVerified).ThenBy(l => l.Name)
+            .ToListAsync(cancellationToken);
+
+    public async Task<List<TourismLocation>> GetInBoundsAsync(double minLat, double maxLat, double minLon, double maxLon, IReadOnlyCollection<TourismLocationType> types, CancellationToken cancellationToken)
+        => await WithDetails()
+            .Where(l => l.IsActive && types.Contains(l.Type)
+                && l.Latitude >= minLat && l.Latitude <= maxLat && l.Longitude >= minLon && l.Longitude <= maxLon)
+            .ToListAsync(cancellationToken);
+
+    public Task<List<TourismLocation>> GetAllForDistrictTrackedAsync(Guid districtId, CancellationToken cancellationToken)
+        => _context.TourismLocations.Where(l => l.DistrictId == districtId).ToListAsync(cancellationToken);
+
+    public Task<DateTime?> GetLastSyncedAtAsync(Guid districtId, IReadOnlyCollection<TourismLocationType>? types, CancellationToken cancellationToken)
+        => _context.TourismLocations
+            .Where(l => l.DistrictId == districtId && l.Source == "OpenStreetMap" && (types == null || types.Contains(l.Type)))
+            .MaxAsync(l => l.LastSyncedAt, cancellationToken);
 
     public async Task AddAsync(TourismLocation location, CancellationToken cancellationToken)
         => await _context.TourismLocations.AddAsync(location, cancellationToken);

@@ -79,6 +79,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         services.Configure<HeritageScoreOptions>(configuration.GetSection("HeritageScore"));
+        services.Configure<BudgetEstimateOptions>(configuration.GetSection("Tourism:BudgetEstimate"));
         services.Configure<SustainabilityScoreOptions>(configuration.GetSection("SustainabilityScore"));
 
         services.AddScoped<IAuthService, AuthService>();

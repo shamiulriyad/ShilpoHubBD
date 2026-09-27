@@ -71,8 +71,14 @@ public static class TourismLocationSeeder
         var districts = await context.Districts.ToListAsync(cancellationToken);
         var districtByName = districts.ToDictionary(d => d.Name, d => d.Id, StringComparer.OrdinalIgnoreCase);
 
+<<<<<<< HEAD
         var existing = await context.TourismLocations.ToListAsync(cancellationToken);
         var existingByKey = IndexLocations(existing);
+=======
+        // Imported OpenStreetMap rows are not seed data (and may legitimately share a name within a district).
+        var existing = await context.TourismLocations.Where(l => l.Source != "OpenStreetMap").ToListAsync(cancellationToken);
+        var existingByKey = existing.GroupBy(l => (l.DistrictId, l.Name)).ToDictionary(g => g.Key, g => g.First());
+>>>>>>> origin/main
         var now = DateTime.UtcNow;
 
         foreach (var item in Locations)
@@ -143,7 +149,12 @@ public static class TourismLocationSeeder
 
         var districtByName = (await context.Districts.ToListAsync(cancellationToken))
             .ToDictionary(d => d.Name, d => d.Id, StringComparer.OrdinalIgnoreCase);
+<<<<<<< HEAD
         var existing = IndexLocations(await context.TourismLocations.ToListAsync(cancellationToken));
+=======
+        var existing = (await context.TourismLocations.Where(l => l.Source != "OpenStreetMap").ToListAsync(cancellationToken))
+            .GroupBy(l => (l.DistrictId, l.Name)).ToDictionary(g => g.Key, g => g.First());
+>>>>>>> origin/main
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         var now = DateTime.UtcNow;
 

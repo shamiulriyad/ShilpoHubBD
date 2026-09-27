@@ -53,7 +53,7 @@ public class NominatimGeocodingProvider : IGeocodingProvider
         {
             await _rateGate.WaitAsync(cancellationToken);
 
-            var url = $"search?q={Uri.EscapeDataString(query)}&format=json&limit=1&countrycodes=bd";
+            var url = $"search?q={Uri.EscapeDataString(query)}&format=json&limit=1&countrycodes=bd&accept-language=en";
             using var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.UserAgent.ParseAdd(_options.UserAgent);
 

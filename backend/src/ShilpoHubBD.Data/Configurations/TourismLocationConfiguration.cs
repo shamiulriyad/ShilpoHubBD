@@ -31,6 +31,9 @@ public class TourismLocationConfiguration : IEntityTypeConfiguration<TourismLoca
         builder.Property(l => l.UnverifiedFields).HasMaxLength(1000);
         builder.Property(l => l.CoordinatesSource).HasMaxLength(300);
         builder.Property(l => l.CoordinatesPrecision).HasMaxLength(30);
+        builder.Property(l => l.Source).IsRequired().HasMaxLength(30).HasDefaultValue("Admin");
+        builder.Property(l => l.ExternalId).HasMaxLength(100);
+        builder.Property(l => l.Upazila).HasMaxLength(200);
         builder.Property(l => l.CreatedAt).IsRequired();
         builder.Property(l => l.UpdatedAt).IsRequired();
 
@@ -38,6 +41,7 @@ public class TourismLocationConfiguration : IEntityTypeConfiguration<TourismLoca
         builder.HasIndex(l => l.Type);
         builder.HasIndex(l => l.IsActive);
         builder.HasIndex(l => l.DistrictId);
+        builder.HasIndex(l => new { l.Source, l.ExternalId }).IsUnique().HasFilter("\"ExternalId\" IS NOT NULL");
 
         builder.HasOne(l => l.District)
             .WithMany()
