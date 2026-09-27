@@ -12862,6 +12862,443 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("ProcurementStatusEvents", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAgreement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AgreementTerms")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<Guid?>("AuctionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AuctionLotId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("BusinessPartnerConfirmedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("BusinessPartnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("BusinessPartnerSharePercentage")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CustomSettlementPeriodDays")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EndReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime?>("EndedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("MinimumSettlementAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<int?>("PartnershipDurationMonths")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("PlatformFeePercentage")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<DateTime?>("ProducerConfirmedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProducerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("ProducerSharePercentage")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<string>("SettlementFrequency")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("WinningBidAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuctionId");
+
+                    b.HasIndex("AuctionLotId")
+                        .IsUnique();
+
+                    b.HasIndex("BusinessPartnerId");
+
+                    b.HasIndex("ProducerId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("ProducerPartnershipAgreements", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("AuctionDurationHours")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AuctionYear")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("BiddingClosesAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("BiddingOpensAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("BusinessPartnerEligibilityCriteria")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<int>("DefaultPartnershipDurationMonths")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("DefaultRevenueSharePercentage")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("EligibilityCriteria")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<Guid>("ManagedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("MaxProducersPerBusinessPartner")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("MinimumBidIncrement")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("MinimumStartingBid")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<decimal?>("ParticipationFee")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime?>("RegistrationClosesAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("RegistrationOpensAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SettlementRulesDescription")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuctionYear");
+
+                    b.HasIndex("ManagedByUserId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("ProducerPartnershipAuctions", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionBid", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid>("BusinessPartnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LotId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("PlacedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessPartnerId");
+
+                    b.HasIndex("LotId");
+
+                    b.HasIndex("LotId", "Amount");
+
+                    b.ToTable("ProducerPartnershipAuctionBids", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionLot", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuctionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("BidCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("CurrentHighestBid")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid?>("CurrentHighestBidderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProducerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("StartingBid")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("WinningBidId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentHighestBidderId");
+
+                    b.HasIndex("ProducerId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("WinningBidId");
+
+                    b.HasIndex("AuctionId", "ProducerId")
+                        .IsUnique();
+
+                    b.ToTable("ProducerPartnershipAuctionLots", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionParticipant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("AppliedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("AuctionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BusinessPartnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DecidedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DecidedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DecisionNotes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessPartnerId");
+
+                    b.HasIndex("DecidedByUserId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("AuctionId", "BusinessPartnerId")
+                        .IsUnique();
+
+                    b.ToTable("ProducerPartnershipAuctionParticipants", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipSettlement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AgreementId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ApprovedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("BelowMinimumThreshold")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal>("BusinessPartnerShareAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("BusinessPartnerSharePercentageApplied")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<DateTime>("CalculatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("GrossRevenue")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("NetPartnershipRevenue")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<int>("OrderCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PayoutReference")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("PeriodEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("PlatformFeeAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("PlatformFeePercentageApplied")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<decimal>("ProducerShareAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("ProducerSharePercentageApplied")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<decimal>("RefundDeductions")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("RejectionReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgreementId");
+
+                    b.HasIndex("ApprovedByUserId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("AgreementId", "PeriodStart", "PeriodEnd");
+
+                    b.ToTable("ProducerPartnershipSettlements", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipStatusEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AgreementId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ChangedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgreementId");
+
+                    b.HasIndex("ChangedByUserId");
+
+                    b.ToTable("ProducerPartnershipStatusEvents", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProductDevelopment.ProductDevelopmentComment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -19446,6 +19883,164 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("ProcurementRequest");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAgreement", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuction", "Auction")
+                        .WithMany("Agreements")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionLot", "AuctionLot")
+                        .WithMany()
+                        .HasForeignKey("AuctionLotId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "BusinessPartner")
+                        .WithMany()
+                        .HasForeignKey("BusinessPartnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
+                        .WithMany()
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Auction");
+
+                    b.Navigation("AuctionLot");
+
+                    b.Navigation("BusinessPartner");
+
+                    b.Navigation("Producer");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuction", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "ManagedBy")
+                        .WithMany()
+                        .HasForeignKey("ManagedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ManagedBy");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionBid", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "BusinessPartner")
+                        .WithMany()
+                        .HasForeignKey("BusinessPartnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionLot", "Lot")
+                        .WithMany("Bids")
+                        .HasForeignKey("LotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BusinessPartner");
+
+                    b.Navigation("Lot");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionLot", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuction", "Auction")
+                        .WithMany("Lots")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "CurrentHighestBidder")
+                        .WithMany()
+                        .HasForeignKey("CurrentHighestBidderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
+                        .WithMany()
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionBid", "WinningBid")
+                        .WithMany()
+                        .HasForeignKey("WinningBidId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Auction");
+
+                    b.Navigation("CurrentHighestBidder");
+
+                    b.Navigation("Producer");
+
+                    b.Navigation("WinningBid");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionParticipant", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuction", "Auction")
+                        .WithMany("Participants")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "BusinessPartner")
+                        .WithMany()
+                        .HasForeignKey("BusinessPartnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "DecidedBy")
+                        .WithMany()
+                        .HasForeignKey("DecidedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Auction");
+
+                    b.Navigation("BusinessPartner");
+
+                    b.Navigation("DecidedBy");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipSettlement", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAgreement", "Agreement")
+                        .WithMany("Settlements")
+                        .HasForeignKey("AgreementId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "ApprovedBy")
+                        .WithMany()
+                        .HasForeignKey("ApprovedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Agreement");
+
+                    b.Navigation("ApprovedBy");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipStatusEvent", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAgreement", "Agreement")
+                        .WithMany("StatusHistory")
+                        .HasForeignKey("AgreementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "ChangedBy")
+                        .WithMany()
+                        .HasForeignKey("ChangedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Agreement");
+
+                    b.Navigation("ChangedBy");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProductDevelopment.ProductDevelopmentComment", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Author")
@@ -20815,6 +21410,27 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("StatusHistory");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAgreement", b =>
+                {
+                    b.Navigation("Settlements");
+
+                    b.Navigation("StatusHistory");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuction", b =>
+                {
+                    b.Navigation("Agreements");
+
+                    b.Navigation("Lots");
+
+                    b.Navigation("Participants");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuctionLot", b =>
+                {
+                    b.Navigation("Bids");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProductDevelopment.ProductDevelopmentProject", b =>

@@ -31,6 +31,7 @@ using ShilpoHubBD.Domain.Entities.Logistics;
 using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
+using ShilpoHubBD.Domain.Entities.ProducerPartnership;
 using ShilpoHubBD.Domain.Entities.Marketplace;
 using ShilpoHubBD.Domain.Entities.Mentorship;
 using ShilpoHubBD.Domain.Entities.Messaging;
@@ -202,6 +203,14 @@ public partial class ShilpoHubDbContext : DbContext
 	public DbSet<ManufacturingPartnership> ManufacturingPartnerships => Set<ManufacturingPartnership>();
 	public DbSet<ManufacturingMilestone> ManufacturingMilestones => Set<ManufacturingMilestone>();
 	public DbSet<PartnershipStatusEvent> PartnershipStatusEvents => Set<PartnershipStatusEvent>();
+
+	public DbSet<ProducerPartnershipAuction> ProducerPartnershipAuctions => Set<ProducerPartnershipAuction>();
+	public DbSet<ProducerPartnershipAgreement> ProducerPartnershipAgreements => Set<ProducerPartnershipAgreement>();
+	public DbSet<ProducerPartnershipStatusEvent> ProducerPartnershipStatusEvents => Set<ProducerPartnershipStatusEvent>();
+	public DbSet<ProducerPartnershipAuctionLot> ProducerPartnershipAuctionLots => Set<ProducerPartnershipAuctionLot>();
+	public DbSet<ProducerPartnershipAuctionBid> ProducerPartnershipAuctionBids => Set<ProducerPartnershipAuctionBid>();
+	public DbSet<ProducerPartnershipAuctionParticipant> ProducerPartnershipAuctionParticipants => Set<ProducerPartnershipAuctionParticipant>();
+	public DbSet<ProducerPartnershipSettlement> ProducerPartnershipSettlements => Set<ProducerPartnershipSettlement>();
 
 	public DbSet<DesignCollaborationProject> DesignCollaborationProjects => Set<DesignCollaborationProject>();
 	public DbSet<DesignFile> DesignFiles => Set<DesignFile>();

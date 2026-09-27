@@ -136,6 +136,7 @@ export const routePaths = {
   producerContracts: '/producer/contracts',
   producerQuotations: '/producer/quotations',
   producerPartnerships: '/producer/partnerships',
+  producerPartnershipAgreements: '/producer/partnership-agreements',
   producerDesignCollaborations: '/producer/design-collaborations',
   producerProductDevelopment: '/producer/product-development',
   producerCsr: '/producer/csr-sponsorship',
@@ -170,6 +171,9 @@ export const routePaths = {
   businessPartnerSupplierDiscovery: '/business-partner/supplier-discovery',
   businessPartnerSupplierMatching: '/business-partner/supplier-matching',
   businessPartnerProducerComparison: '/business-partner/producer-comparison',
+  businessPartnerPartnershipAuctions: '/business-partner/partnership-auctions',
+  businessPartnerPartnershipAgreements: '/business-partner/partnership-agreements',
+  businessPartnerProductIntelligence: '/business-partner/product-intelligence',
   businessPartnerAnalytics: '/business-partner/analytics',
   businessPartnerAiIntelligence: '/business-partner/ai-intelligence',
 
@@ -223,6 +227,9 @@ export const routePaths = {
   adminProcurementInspections: '/admin/procurement-inspections',
   adminProfileApprovals: '/admin/profile-approvals',
   adminExpertiseCertificates: '/admin/expertise-certificates',
+  adminProducerPartnershipAuctions: '/admin/producer-partnership-auctions',
+  adminProducerPartnershipAgreements: '/admin/producer-partnership-agreements',
+  adminProducerPartnershipSettlements: '/admin/producer-partnership-settlements',
 
   unauthorized: '/unauthorized',
   notFound: '*',

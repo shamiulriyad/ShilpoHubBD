@@ -95,6 +95,11 @@ public static class DependencyInjection
 		services.AddScoped<IProcurementRepository, ProcurementRepository>();
 		services.AddScoped<IContractRepository, ContractRepository>();
 		services.AddScoped<IPartnershipRepository, PartnershipRepository>();
+		services.AddScoped<IProducerPartnershipAuctionRepository, ProducerPartnershipAuctionRepository>();
+		services.AddScoped<IProducerPartnershipAgreementRepository, ProducerPartnershipAgreementRepository>();
+		services.AddScoped<IProducerPartnershipAuctionLotRepository, ProducerPartnershipAuctionLotRepository>();
+		services.AddScoped<IProducerPartnershipAuctionParticipantRepository, ProducerPartnershipAuctionParticipantRepository>();
+		services.AddScoped<IProducerPartnershipSettlementRepository, ProducerPartnershipSettlementRepository>();
 		services.AddScoped<IAIIntelligenceRepository, AIIntelligenceRepository>();
 		services.AddScoped<IDesignCollaborationRepository, DesignCollaborationRepository>();
 		services.AddScoped<ICSRSponsorshipRepository, CSRSponsorshipRepository>();

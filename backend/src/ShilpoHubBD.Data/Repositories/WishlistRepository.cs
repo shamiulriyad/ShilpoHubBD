@@ -24,6 +24,12 @@ public class WishlistRepository : IWishlistRepository
             .OrderByDescending(w => w.CreatedAt)
             .ToListAsync(cancellationToken);
 
+    public Task<List<WishlistItem>> GetByProductAsync(Guid productId, CancellationToken cancellationToken)
+        => _context.WishlistItems
+            .Where(w => w.ProductId == productId)
+            .OrderBy(w => w.CreatedAt)
+            .ToListAsync(cancellationToken);
+
     public Task<WishlistItem?> GetAsync(Guid userId, Guid productId, CancellationToken cancellationToken)
         => WithDetails().FirstOrDefaultAsync(w => w.UserId == userId && w.ProductId == productId, cancellationToken);
 
