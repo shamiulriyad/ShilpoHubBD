@@ -238,6 +238,7 @@ const base_producerSidebarNav = [
       { label: 'Quotation Requests', path: routePaths.producerQuotations, icon: '🧾' },
       { label: 'Bulk Procurement', path: routePaths.producerProcurements, icon: '📦' },
       { label: 'Manufacturing', path: routePaths.producerPartnerships, icon: '🏭' },
+      { label: 'Partnership Agreements', path: routePaths.producerPartnershipAgreements, icon: '🤝' },
       { label: 'Design Collaborations', path: routePaths.producerDesignCollaborations, icon: '🎨' },
       { label: 'Product Development', path: routePaths.producerProductDevelopment, icon: '🛠️' },
     ],
@@ -273,6 +274,9 @@ const base_businessPartnerSidebarNav = [
       { label: 'Find Suppliers', path: routePaths.businessPartnerSupplierMatching, icon: '🧠' },
       { label: 'Compare Producers', path: routePaths.businessPartnerProducerComparison, icon: '⚖️' },
       { label: 'Procurement', path: routePaths.businessPartnerProcurements, icon: '🛒' },
+      { label: 'Partnership Auctions', path: routePaths.businessPartnerPartnershipAuctions, icon: '🔨' },
+      { label: 'Partnership Agreements', path: routePaths.businessPartnerPartnershipAgreements, icon: '🤝' },
+      { label: 'Product Intelligence', path: routePaths.businessPartnerProductIntelligence, icon: '📈' },
     ],
   },
   {
@@ -304,7 +308,7 @@ export const businessPartnerSidebarNav = withGeneral(base_businessPartnerSidebar
 
 // Admin / platform-operations workspace.
 const base_adminSidebarNav = [
-  { section: 'Overview', items: [{ label: 'Dashboard', path: routePaths.admin, icon: '⌂' }, { label: 'Bulk Deal Inspections', path: routePaths.adminProcurementInspections, icon: '🔍' }, { label: 'Profile Approvals', path: routePaths.adminProfileApprovals, icon: '🪪' }, { label: 'Expertise Certificates', path: routePaths.adminExpertiseCertificates, icon: '🏅' }] },
+  { section: 'Overview', items: [{ label: 'Dashboard', path: routePaths.admin, icon: '⌂' }, { label: 'Bulk Deal Inspections', path: routePaths.adminProcurementInspections, icon: '🔍' }, { label: 'Profile Approvals', path: routePaths.adminProfileApprovals, icon: '🪪' }, { label: 'Expertise Certificates', path: routePaths.adminExpertiseCertificates, icon: '🏅' }, { label: 'Partnership Auctions', path: routePaths.adminProducerPartnershipAuctions, icon: '🔨' }, { label: 'Partnership Agreements', path: routePaths.adminProducerPartnershipAgreements, icon: '🤝' }, { label: 'Settlement Dashboard', path: routePaths.adminProducerPartnershipSettlements, icon: '💰' }] },
   ...adminGroups.map(([key, section, views]) => ({ section, items: views.map(([view, label]) => ({ label, path: `/admin/${key}/${view}` })) })),
 ];
 export const adminSidebarNav = withGeneral(base_adminSidebarNav);
