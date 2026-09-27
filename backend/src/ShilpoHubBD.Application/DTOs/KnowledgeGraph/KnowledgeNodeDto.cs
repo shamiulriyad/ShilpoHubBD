@@ -5,10 +5,13 @@ public class KnowledgeNodeDto
     public Guid Id { get; set; }
     public string NodeType { get; set; } = string.Empty;
     public string Label { get; set; } = string.Empty;
+    public string Name => Label;
+    public string EntityType => NodeType;
     public Guid? ExternalEntityId { get; set; }
     public string? Description { get; set; }
     public string? MetadataJson { get; set; }
     public bool IsCurated { get; set; }
+    public string Status => IsCurated ? "Active" : "Archived";
     public int OutgoingCount { get; set; }
     public int IncomingCount { get; set; }
     public Guid CreatedByUserId { get; set; }

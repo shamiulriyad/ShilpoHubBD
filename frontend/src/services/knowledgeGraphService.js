@@ -4,6 +4,7 @@ export const knowledgeGraphService = {
   listNodes: (params) => apiClient.get('/knowledge-graph/nodes', { params }).then((res) => res.data),
   getNode: (id) => apiClient.get(`/knowledge-graph/nodes/${id}`).then((res) => res.data),
   createNode: (payload) => apiClient.post('/knowledge-graph/nodes', payload).then((res) => res.data),
+  importNode: (payload) => apiClient.post('/knowledge-graph/nodes/import', payload).then((res) => res.data),
   updateNode: (id, payload) => apiClient.put(`/knowledge-graph/nodes/${id}`, payload).then((res) => res.data),
   removeNode: (id) => apiClient.delete(`/knowledge-graph/nodes/${id}`).then((res) => res.data),
   getNeighbors: (id) => apiClient.get(`/knowledge-graph/nodes/${id}/neighbors`).then((res) => res.data),
@@ -15,4 +16,16 @@ export const knowledgeGraphService = {
 
   getNetwork: (network, params) => apiClient.get(`/knowledge-graph/networks/${network}`, { params }).then((res) => res.data),
   findPath: (params) => apiClient.get('/knowledge-graph/paths', { params }).then((res) => res.data),
+  getStats: () => apiClient.get('/knowledge-graph/stats').then((res) => res.data),
+  getRules: () => apiClient.get('/knowledge-graph/rules').then((res) => res.data),
+  searchEntities: (params) => apiClient.get('/knowledge-graph/entities', { params }).then((res) => {
+    const payload = res.data;
+    const records = Array.isArray(payload) ? payload : (payload?.items || payload?.data || []);
+    return records.map((record) => ({
+      id: record.id ?? record.Id,
+      name: record.name ?? record.Name,
+      entityType: record.entityType ?? record.EntityType,
+      description: record.description ?? record.Description ?? null,
+    })).filter((record) => record.id && record.name && record.entityType);
+  }),
 };

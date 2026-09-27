@@ -10,7 +10,7 @@ namespace ShilpoHubBD.Application.Services.KnowledgeGraph;
 
 public class KnowledgeGraphService : IKnowledgeGraphService
 {
-    private const int MaxTraversalDepth = 6;
+    private const int MaxTraversalDepth = 50;
     private const int MaxTraversalNodes = 1000;
 
     private static readonly IReadOnlyDictionary<KnowledgeNetwork, KnowledgeRelationshipType[]> NetworkTypes =
@@ -18,33 +18,41 @@ public class KnowledgeGraphService : IKnowledgeGraphService
         {
             [KnowledgeNetwork.ProducerRelationships] = new[]
             {
-                KnowledgeRelationshipType.MentoredBy, KnowledgeRelationshipType.CollaboratesWith,
-                KnowledgeRelationshipType.DescendedFrom, KnowledgeRelationshipType.BelongsToFamily,
+                KnowledgeRelationshipType.Creates, KnowledgeRelationshipType.Practices,
+                KnowledgeRelationshipType.Produces, KnowledgeRelationshipType.OperatesIn,
+                KnowledgeRelationshipType.SpecializesIn, KnowledgeRelationshipType.BelongsTo,
             },
             [KnowledgeNetwork.VillageConnections] = new[]
             {
-                KnowledgeRelationshipType.LocatedInVillage, KnowledgeRelationshipType.VillageHasCulture,
-                KnowledgeRelationshipType.AssociatedWith,
+                KnowledgeRelationshipType.LocatedIn, KnowledgeRelationshipType.OriginatesFrom,
+                KnowledgeRelationshipType.LivesIn, KnowledgeRelationshipType.OperatesIn,
+                KnowledgeRelationshipType.KnownFor, KnowledgeRelationshipType.Near,
             },
             [KnowledgeNetwork.MaterialNetwork] = new[]
             {
-                KnowledgeRelationshipType.CraftUsesMaterial, KnowledgeRelationshipType.SuppliesMaterialTo,
+                KnowledgeRelationshipType.MadeFrom, KnowledgeRelationshipType.UsesMaterial,
+                KnowledgeRelationshipType.UsesTechnique, KnowledgeRelationshipType.SourcedFrom,
             },
             [KnowledgeNetwork.CulturalNetwork] = new[]
             {
-                KnowledgeRelationshipType.VillageHasCulture, KnowledgeRelationshipType.PractisesCraft,
-                KnowledgeRelationshipType.AssociatedWith,
+                KnowledgeRelationshipType.CelebratedIn, KnowledgeRelationshipType.AssociatedWith,
+                KnowledgeRelationshipType.PartOf, KnowledgeRelationshipType.Represents,
+                KnowledgeRelationshipType.RelatedTo,
             },
             [KnowledgeNetwork.FamilyTree] = new[]
             {
-                KnowledgeRelationshipType.BelongsToFamily, KnowledgeRelationshipType.DescendedFrom,
+                KnowledgeRelationshipType.ParentOf, KnowledgeRelationshipType.SubtypeOf,
+                KnowledgeRelationshipType.VariantOf, KnowledgeRelationshipType.EvolvedFrom,
+                KnowledgeRelationshipType.BelongsToCategory,
             },
         };
 
     private static readonly KnowledgeNodeType[] ExternalBackedTypes =
     {
-        KnowledgeNodeType.Producer, KnowledgeNodeType.Village, KnowledgeNodeType.Product,
-        KnowledgeNodeType.HeritagePlace, KnowledgeNodeType.Family,
+        KnowledgeNodeType.Heritage, KnowledgeNodeType.Artisan, KnowledgeNodeType.Producer,
+        KnowledgeNodeType.Village, KnowledgeNodeType.District, KnowledgeNodeType.Product,
+        KnowledgeNodeType.Craft, KnowledgeNodeType.Material, KnowledgeNodeType.TouristPlace,
+        KnowledgeNodeType.Food, KnowledgeNodeType.Festival, KnowledgeNodeType.CulturalSite,
     };
 
     private readonly IKnowledgeGraphRepository _repository;
@@ -103,14 +111,14 @@ public class KnowledgeGraphService : IKnowledgeGraphService
             var existingExternal = await _repository.GetNodeByExternalAsync(type, request.ExternalEntityId.Value, cancellationToken);
             if (existingExternal is not null)
             {
-                throw new ConflictException("A node for this entity already exists.");
+                throw new ConflictException("This record already exists in the Knowledge Graph.");
             }
         }
 
         var normalized = Normalize(label);
         if (await _repository.GetNodeByLabelAsync(type, normalized, cancellationToken) is not null)
         {
-            throw new ConflictException($"A {type} node with this label already exists.");
+            throw new ConflictException("This record already exists in the Knowledge Graph.");
         }
 
         var now = DateTime.UtcNow;
@@ -139,28 +147,32 @@ public class KnowledgeGraphService : IKnowledgeGraphService
         Guid userId, ImportKnowledgeNodeRequest request, CancellationToken cancellationToken)
     {
         var type = ParseNodeType(request.NodeType);
+        var entityType = ParseNodeType(request.EntityType);
+        if (type != entityType)
+        {
+            throw new ConflictException("EntityType must match NodeType.");
+        }
         if (!ExternalBackedTypes.Contains(type))
         {
             throw new ConflictException(
-                "Import is only supported for Producer, Village, Product, HeritagePlace and Family nodes.");
+                "This node type does not have a linked ShilpoHub database record.");
         }
 
-        var existing = await _repository.GetNodeByExternalAsync(type, request.ExternalEntityId, cancellationToken);
+        var existing = await _repository.GetNodeByExternalAsync(type, request.EntityId, cancellationToken);
         if (existing is not null)
         {
-            return existing.ToDto();
+            throw new ConflictException("This record already exists in the Knowledge Graph.");
         }
 
-        var resolvedLabel = await _repository.ResolveExternalLabelAsync(type, request.ExternalEntityId, cancellationToken)
+        var entity = await _repository.ResolveExternalEntityAsync(type, request.EntityId, cancellationToken)
             ?? throw new NotFoundException($"No {type} entity was found for the supplied id.");
-
-        var label = string.IsNullOrWhiteSpace(request.LabelOverride) ? resolvedLabel : request.LabelOverride!.Trim();
+        var label = entity.Name.Trim();
         var normalized = Normalize(label);
 
         // Keep the label unique within the type; disambiguate with a short id suffix if needed.
         if (await _repository.GetNodeByLabelAsync(type, normalized, cancellationToken) is not null)
         {
-            label = $"{label} ({request.ExternalEntityId.ToString()[..8]})";
+            label = $"{label} ({request.EntityId.ToString()[..8]})";
             normalized = Normalize(label);
         }
 
@@ -171,8 +183,8 @@ public class KnowledgeGraphService : IKnowledgeGraphService
             NodeType = type,
             Label = label,
             LabelNormalized = normalized,
-            ExternalEntityId = request.ExternalEntityId,
-            Description = request.Description?.Trim(),
+            ExternalEntityId = request.EntityId,
+            Description = entity.Description?.Trim(),
             IsCurated = true,
             CreatedByUserId = userId,
             CreatedAt = now,
@@ -275,16 +287,21 @@ public class KnowledgeGraphService : IKnowledgeGraphService
         var target = await _repository.GetNodeByIdAsync(request.TargetNodeId, cancellationToken)
             ?? throw new NotFoundException("Target node not found.");
 
+        if (!KnowledgeRelationshipRules.IsValid(source.NodeType, type, target.NodeType))
+        {
+            throw new ConflictException("Invalid relationship for the selected node types.");
+        }
+
         if (await _repository.GetRelationshipAsync(source.Id, target.Id, type, cancellationToken) is not null)
         {
-            throw new ConflictException("A relationship of this type already exists between these nodes.");
+            throw new ConflictException("This relationship already exists.");
         }
 
         // Reject the mirror of an existing undirected edge as well.
         if (!request.IsDirected
             && await _repository.GetRelationshipAsync(target.Id, source.Id, type, cancellationToken) is not null)
         {
-            throw new ConflictException("An undirected relationship of this type already exists between these nodes.");
+            throw new ConflictException("This relationship already exists.");
         }
 
         var now = DateTime.UtcNow;
@@ -317,13 +334,21 @@ public class KnowledgeGraphService : IKnowledgeGraphService
             ?? throw new NotFoundException("Relationship not found.");
 
         var type = ParseRelationshipType(request.RelationshipType);
+        var source = await _repository.GetNodeByIdAsync(relationship.SourceNodeId, cancellationToken)
+            ?? throw new NotFoundException("Source node not found.");
+        var target = await _repository.GetNodeByIdAsync(relationship.TargetNodeId, cancellationToken)
+            ?? throw new NotFoundException("Target node not found.");
+        if (!KnowledgeRelationshipRules.IsValid(source.NodeType, type, target.NodeType))
+        {
+            throw new ConflictException("Invalid relationship for the selected node types.");
+        }
         if (type != relationship.RelationshipType)
         {
             var clash = await _repository.GetRelationshipAsync(
                 relationship.SourceNodeId, relationship.TargetNodeId, type, cancellationToken);
             if (clash is not null && clash.Id != relationship.Id)
             {
-                throw new ConflictException("A relationship of this type already exists between these nodes.");
+                throw new ConflictException("This relationship already exists.");
             }
         }
 
@@ -433,13 +458,17 @@ public class KnowledgeGraphService : IKnowledgeGraphService
 
     public async Task<KnowledgePathDto> FindPathAsync(GraphPathQueryParameters query, CancellationToken cancellationToken)
     {
+        var sourceNode = await _repository.GetNodeByIdAsync(query.SourceNodeId, cancellationToken)
+            ?? throw new NotFoundException("Source node not found.");
         if (query.SourceNodeId == query.TargetNodeId)
         {
-            throw new ConflictException("Source and target nodes must be different.");
+            return new KnowledgePathDto
+            {
+                Found = true,
+                Length = 0,
+                Nodes = new List<KnowledgeNodeDto> { sourceNode.ToDto() },
+            };
         }
-
-        _ = await _repository.GetNodeByIdAsync(query.SourceNodeId, cancellationToken)
-            ?? throw new NotFoundException("Source node not found.");
         _ = await _repository.GetNodeByIdAsync(query.TargetNodeId, cancellationToken)
             ?? throw new NotFoundException("Target node not found.");
 
@@ -612,6 +641,15 @@ public class KnowledgeGraphService : IKnowledgeGraphService
             dto.TargetNodeType = target.NodeType.ToString();
         }
 
+        if (byId.TryGetValue(e.SourceNodeId, out var sourceForRule)
+            && byId.TryGetValue(e.TargetNodeId, out var targetForRule))
+        {
+            dto.ReverseLabel = KnowledgeRelationshipRules.All.FirstOrDefault(rule =>
+                rule.SourceType == sourceForRule.NodeType
+                && rule.RelationshipType == e.RelationshipType
+                && rule.TargetType == targetForRule.NodeType)?.ReverseLabel ?? string.Empty;
+        }
+
         return dto;
     }
 
@@ -659,4 +697,20 @@ public class KnowledgeGraphService : IKnowledgeGraphService
     }
 
     private static string Normalize(string label) => SlugGenerator.Generate(label);
+
+    public Task<KnowledgeGraphStatsDto> GetStatsAsync(CancellationToken cancellationToken)
+        => _repository.GetStatsAsync(cancellationToken);
+
+    public IReadOnlyList<KnowledgeRelationshipRuleDto> GetRules()
+        => KnowledgeRelationshipRules.All.Select(rule => new KnowledgeRelationshipRuleDto
+        {
+            SourceType = rule.SourceType.ToString(),
+            RelationshipType = rule.RelationshipType.ToString(),
+            TargetType = rule.TargetType.ToString(),
+            ReverseLabel = rule.ReverseLabel,
+        }).ToList();
+
+    public Task<List<KnowledgeEntityCandidateDto>> SearchEntitiesAsync(
+        string nodeType, string? search, int take, CancellationToken cancellationToken)
+        => _repository.SearchExternalEntitiesAsync(ParseNodeType(nodeType), search, take, cancellationToken);
 }

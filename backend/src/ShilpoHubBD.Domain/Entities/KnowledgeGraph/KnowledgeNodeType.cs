@@ -7,13 +7,21 @@ namespace ShilpoHubBD.Domain.Entities.KnowledgeGraph;
 /// </summary>
 public enum KnowledgeNodeType
 {
+    Heritage,
+    Artisan,
     Producer,
     Village,
+    District,
+    Division,
     Product,
     Craft,
     Material,
-    Culture,
-    Family,
-    HeritagePlace,
-    Custom,
+    Technique,
+    TouristPlace,
+    Food,
+    Festival,
+    CulturalSite,
+    Community,
+    CulturalTradition,
+    HeritageCategory,
 }

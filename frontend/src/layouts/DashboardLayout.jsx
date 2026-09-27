@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-import Footer from '../components/layout/Footer';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import DashboardFooter from '../components/layout/DashboardFooter';
 import Sidebar from '../components/layout/Sidebar';
 import ProfileDropdown from '../components/layout/ProfileDropdown';
 import NotificationBell from '../components/notifications/NotificationBell';
@@ -19,6 +19,9 @@ import { useLogoutFlow } from '../hooks/useLogoutFlow';
 
 export default function DashboardLayout({ navItems, sidebarTitle }) {
   const sidebarRef = useRef(null);
+  const contentRef = useRef(null);
+  const { pathname } = useLocation();
+  useEffect(() => { contentRef.current?.scrollTo({ top: 0, left: 0 }); }, [pathname]);
   const menuTrigger = useRef(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [compact, setCompact] = useState(()=>{try{return localStorage.getItem('sh:sidebar:compact')==='true';}catch{return false;}});
@@ -99,12 +102,12 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
           <Sidebar items={items} title={title} presentationRole={presentationRole} compact={compact && !sidebarOpen} onExpand={()=>setCompact(false)} onToggle={toggleCompact} onNavigate={() => setSidebarOpen(false)} />
         </div>
 
-        <main id="main-content" className="workspace-content">
+        <main ref={contentRef} id="main-content" className="workspace-content" tabIndex={-1}>
           <ProfileStatusBanner />
           <Outlet />
         </main>
       </div>
-      <Footer />
+      <DashboardFooter role={activeRole} />
       <AIAssistantWidget />
       <ConfirmDialog
         open={backGuard.state === 'blocked'}

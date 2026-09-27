@@ -32,6 +32,12 @@ internal static class KnowledgeGraphMappings
         TargetLabel = r.TargetNode?.Label ?? string.Empty,
         TargetNodeType = r.TargetNode?.NodeType.ToString() ?? string.Empty,
         RelationshipType = r.RelationshipType.ToString(),
+        ReverseLabel = r.SourceNode is null || r.TargetNode is null
+            ? string.Empty
+            : KnowledgeRelationshipRules.All.FirstOrDefault(rule =>
+                rule.SourceType == r.SourceNode.NodeType &&
+                rule.RelationshipType == r.RelationshipType &&
+                rule.TargetType == r.TargetNode.NodeType)?.ReverseLabel ?? string.Empty,
         IsDirected = r.IsDirected,
         Weight = r.Weight,
         Label = r.Label,

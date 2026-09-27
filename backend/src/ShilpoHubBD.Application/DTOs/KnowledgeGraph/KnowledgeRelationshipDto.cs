@@ -10,6 +10,7 @@ public class KnowledgeRelationshipDto
     public string TargetLabel { get; set; } = string.Empty;
     public string TargetNodeType { get; set; } = string.Empty;
     public string RelationshipType { get; set; } = string.Empty;
+    public string ReverseLabel { get; set; } = string.Empty;
     public bool IsDirected { get; set; }
     public double? Weight { get; set; }
     public string? Label { get; set; }

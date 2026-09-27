@@ -21,20 +21,42 @@ export function useKnowledgePath(params) {
   });
 }
 
+export function useKnowledgeStats() {
+  return useQuery({ queryKey: ['knowledge-stats'], queryFn: knowledgeGraphService.getStats });
+}
+
+export function useKnowledgeRules() {
+  return useQuery({ queryKey: ['knowledge-rules'], queryFn: knowledgeGraphService.getRules });
+}
+
+export function useKnowledgeEntities(params) {
+  return useQuery({
+    queryKey: ['knowledge-entities', params],
+    queryFn: () => knowledgeGraphService.searchEntities(params),
+    enabled: Boolean(params?.nodeType),
+  });
+}
+
 export function useKnowledgeGraphMutations() {
   const queryClient = useQueryClient();
-  const invalidateNodes = () => queryClient.invalidateQueries({ queryKey: ['knowledge-nodes'] });
+  const invalidateGraph = () => {
+    queryClient.invalidateQueries({ queryKey: ['knowledge-nodes'] });
+    queryClient.invalidateQueries({ queryKey: ['knowledge-network'] });
+    queryClient.invalidateQueries({ queryKey: ['knowledge-stats'] });
+  };
 
   return {
-    createNode: useMutation({ mutationFn: (payload) => knowledgeGraphService.createNode(payload), onSuccess: invalidateNodes }),
-    removeNode: useMutation({ mutationFn: (id) => knowledgeGraphService.removeNode(id), onSuccess: invalidateNodes }),
+    createNode: useMutation({ mutationFn: (payload) => knowledgeGraphService.createNode(payload), onSuccess: invalidateGraph }),
+    importNode: useMutation({ mutationFn: (payload) => knowledgeGraphService.importNode(payload), onSuccess: invalidateGraph }),
+    updateNode: useMutation({ mutationFn: ({ id, payload }) => knowledgeGraphService.updateNode(id, payload), onSuccess: invalidateGraph }),
+    removeNode: useMutation({ mutationFn: (id) => knowledgeGraphService.removeNode(id), onSuccess: invalidateGraph }),
     createRelationship: useMutation({
       mutationFn: (payload) => knowledgeGraphService.createRelationship(payload),
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['knowledge-nodes'] }),
+      onSuccess: invalidateGraph,
     }),
     removeRelationship: useMutation({
       mutationFn: (id) => knowledgeGraphService.removeRelationship(id),
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['knowledge-nodes'] }),
+      onSuccess: invalidateGraph,
     }),
   };
 }

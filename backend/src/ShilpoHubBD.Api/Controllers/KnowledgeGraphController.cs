@@ -9,8 +9,8 @@ using ShilpoHubBD.Domain.Constants;
 
 namespace ShilpoHubBD.Api.Controllers;
 
-/// <summary>Heritage Knowledge Graph: browse/traverse nodes and relationships (Cross-Platform AI: public
-/// read, a discovery tool for everyone); curating the graph (create/import/update/delete) stays
+/// <summary>Heritage Knowledge Graph: deterministic database-backed nodes, relationships and traversal.
+/// Read access is public; curating the graph (create/import/update/delete) stays
 /// restricted to <see cref="StewardRoles"/>.</summary>
 [ApiController]
 [Route("api/knowledge-graph")]
@@ -37,6 +37,20 @@ public class KnowledgeGraphController : ControllerBase
     public async Task<ActionResult<PagedResult<KnowledgeNodeDto>>> GetNodes(
         [FromQuery] KnowledgeNodeQueryParameters query, CancellationToken cancellationToken)
         => Ok(await _graphService.GetNodesAsync(query, cancellationToken));
+
+    [HttpGet("stats")]
+    public async Task<ActionResult<KnowledgeGraphStatsDto>> GetStats(CancellationToken cancellationToken)
+        => Ok(await _graphService.GetStatsAsync(cancellationToken));
+
+    [HttpGet("rules")]
+    public ActionResult<IReadOnlyList<KnowledgeRelationshipRuleDto>> GetRules()
+        => Ok(_graphService.GetRules());
+
+    [HttpGet("entities")]
+    public async Task<ActionResult<List<KnowledgeEntityCandidateDto>>> SearchEntities(
+        [FromQuery] string nodeType, [FromQuery] string? search, [FromQuery] int take = 30,
+        CancellationToken cancellationToken = default)
+        => Ok(await _graphService.SearchEntitiesAsync(nodeType, search, take, cancellationToken));
 
     [HttpGet("nodes/{id:guid}")]
     public async Task<ActionResult<KnowledgeNodeDto>> GetNode(Guid id, CancellationToken cancellationToken)
