@@ -33,4 +33,11 @@ public class SupplierDiscoveryController : ControllerBase
         var result = await _supplierDiscoveryService.GetProducerProfileAsync(producerId, cancellationToken);
         return Ok(result);
     }
+
+    [HttpGet("producers/{producerId:guid}/business-profile")]
+    public async Task<ActionResult<ProducerBusinessProfileDto>> GetBusinessProfile(Guid producerId, CancellationToken cancellationToken)
+    {
+        var result = await _supplierDiscoveryService.GetBusinessProfileAsync(producerId, cancellationToken);
+        return Ok(result);
+    }
 }
