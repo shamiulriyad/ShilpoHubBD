@@ -12,6 +12,13 @@ public class DummyAITourismProvider : IAITourismProvider
     private const double EarthRadiusKm = 6371.0;
     private const int PlacesPerDay = 3;
 
+    private readonly IRoutingProvider _routingProvider;
+
+    public DummyAITourismProvider(IRoutingProvider routingProvider)
+    {
+        _routingProvider = routingProvider;
+    }
+
     public Task<TourPlanResult> PlanTourAsync(TourPlanContext context, CancellationToken cancellationToken)
     {
         var placeStops = context.Places
@@ -170,65 +177,117 @@ public class DummyAITourismProvider : IAITourismProvider
         });
     }
 
-    public Task<RouteOptimizationResult> OptimizeRouteAsync(RouteOptimizationContext context, CancellationToken cancellationToken)
+    public async Task<RouteOptimizationResult> OptimizeRouteAsync(RouteOptimizationContext context, CancellationToken cancellationToken)
     {
         var remaining = new List<RoutePlaceDto>(context.Places);
         var stops = new List<OptimizedStopDto>();
 
         if (remaining.Count == 0)
         {
-            return Task.FromResult(new RouteOptimizationResult
+            return new RouteOptimizationResult
             {
                 Stops = stops,
                 TotalDistanceKm = 0,
                 Notes = "No places were provided to build a route from.",
-            });
+            };
         }
 
         double currentLat;
         double currentLng;
+        string originDescription;
 
         if (context.StartLatitude.HasValue && context.StartLongitude.HasValue)
         {
             currentLat = context.StartLatitude.Value;
             currentLng = context.StartLongitude.Value;
+            originDescription = "Custom starting point";
         }
         else
         {
             currentLat = remaining[0].Latitude;
             currentLng = remaining[0].Longitude;
+            originDescription = $"First selected place: {remaining[0].Name}";
         }
 
+        var originLat = currentLat;
+        var originLng = currentLng;
+
         var totalDistance = 0.0;
+        double? totalDuration = 0.0;
         var order = 1;
+        var usedRealRouting = false;
+        var usedFallback = false;
 
         while (remaining.Count > 0)
         {
-            var nearest = remaining
-                .Select(p => (Place: p, Distance: HaversineDistanceKm(currentLat, currentLng, p.Latitude, p.Longitude)))
-                .OrderBy(x => x.Distance)
-                .First();
+            RoutePlaceDto? nearestPlace = null;
+            var nearestDistance = double.MaxValue;
+            double? nearestDuration = null;
+            var nearestIsReal = false;
+
+            foreach (var place in remaining)
+            {
+                var (distance, duration, isReal) = await DistanceKmAsync(currentLat, currentLng, place.Latitude, place.Longitude, cancellationToken);
+                if (distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearestDuration = duration;
+                    nearestIsReal = isReal;
+                    nearestPlace = place;
+                }
+            }
+
+            usedRealRouting |= nearestIsReal;
+            usedFallback |= !nearestIsReal;
+            totalDuration = totalDuration.HasValue && nearestDuration.HasValue ? totalDuration + nearestDuration : null;
 
             stops.Add(new OptimizedStopDto
             {
-                PlaceId = nearest.Place.Id,
-                Name = nearest.Place.Name,
+                PlaceId = nearestPlace!.Id,
+                Name = nearestPlace.Name,
                 Order = order++,
-                DistanceFromPreviousKm = Math.Round(nearest.Distance, 2),
+                DistanceFromPreviousKm = Math.Round(nearestDistance, 2),
+                EstimatedTravelMinutesFromPrevious = nearestDuration.HasValue ? Math.Round(nearestDuration.Value, 0) : null,
             });
 
-            totalDistance += nearest.Distance;
-            currentLat = nearest.Place.Latitude;
-            currentLng = nearest.Place.Longitude;
-            remaining.Remove(nearest.Place);
+            totalDistance += nearestDistance;
+            currentLat = nearestPlace.Latitude;
+            currentLng = nearestPlace.Longitude;
+            remaining.Remove(nearestPlace);
         }
 
-        return Task.FromResult(new RouteOptimizationResult
+        var routingNote = usedRealRouting switch
+        {
+            true when !usedFallback => "real road distances and travel times",
+            true => "real road distances where available, straight-line distance elsewhere (travel time only available for the real-routed legs)",
+            _ => "straight-line distance (road routing unavailable, no travel time estimate)",
+        };
+
+        return new RouteOptimizationResult
         {
             Stops = stops,
             TotalDistanceKm = Math.Round(totalDistance, 2),
-            Notes = $"Nearest-neighbor route covering {stops.Count} stop(s) with an estimated {Math.Round(totalDistance, 1)} km of travel.",
-        });
+            TotalEstimatedTravelMinutes = totalDuration.HasValue ? Math.Round(totalDuration.Value, 0) : null,
+            OriginLatitude = originLat,
+            OriginLongitude = originLng,
+            OriginDescription = originDescription,
+            Notes = $"Nearest-neighbor route covering {stops.Count} stop(s) with an estimated {Math.Round(totalDistance, 1)} km of travel, using {routingNote}.",
+        };
+    }
+
+    // Real road distance when OSRM is reachable; straight-line otherwise, so a route can never fail
+    // to build just because the routing engine is temporarily unavailable.
+    private async Task<(double DistanceKm, double? DurationMinutes, bool IsReal)> DistanceKmAsync(
+        double lat1, double lon1, double lat2, double lon2, CancellationToken cancellationToken)
+    {
+        var route = await _routingProvider.GetDrivingRouteAsync(
+            new GeoPointDto { Latitude = lat1, Longitude = lon1 },
+            new GeoPointDto { Latitude = lat2, Longitude = lon2 },
+            cancellationToken);
+
+        return route is not null
+            ? (route.DistanceKm, (double)route.DurationMinutes, true)
+            : (HaversineDistanceKm(lat1, lon1, lat2, lon2), null, false);
     }
 
     public Task<TourismTranslationResult> TranslateAsync(TourismTranslationRequest request, CancellationToken cancellationToken)
