@@ -7,6 +7,7 @@ import AdminMarketplace from './AdminMarketplace';
 import AdminModeration from './AdminModeration';
 import AdminSecurity, { SystemHealth } from './AdminSecurity';
 import { Panel, ErrorNotice, useAdminQuery } from './AdminUI';
+import { useSupportDashboard } from '../../hooks/useArtisanSupport';
 export default function AdminWorkspace({
   section: providedSection
 }) {
@@ -38,7 +39,8 @@ function QueueCard({
   return <Panel><p className="text-sm text-body/60">{title}</p><p className="my-3 text-3xl font-semibold">{q.isPending ? '…' : q.isError ? '—' : q.data?.totalCount ?? 0}</p><ErrorNotice error={q.error} /><Link to={to} className="text-sm font-semibold text-primary">Open queue →</Link></Panel>;
 }
 function Overview() {
-  return <div><PageHeader title="Super Admin" description="Manage access, preserve heritage, and keep the marketplace safe." /><div className="mb-6 rounded-2xl bg-[#173f32] p-6 text-white sm:p-8"><p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d7c39d]">ShilpoHub control centre</p><h2 className="mt-3 text-2xl font-semibold text-white">A trusted platform starts here.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-[#d1dfd4]">Review pending decisions, publish community stories, and monitor platform operations from one workspace.</p></div><div className="mb-6 grid gap-4 md:grid-cols-3"><QueueCard title="Products awaiting approval" path="/products/pending-approval" to="/admin/marketplace/approval" /><QueueCard title="Identity checks awaiting review" path="/identity-verifications" params={{
+  const support = useSupportDashboard();
+  return <div><PageHeader title="Super Admin" description="Manage access, preserve heritage, and keep the marketplace safe." /><div className="mb-6 rounded-2xl bg-[#173f32] p-6 text-white sm:p-8"><p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d7c39d]">ShilpoHub control centre</p><h2 className="mt-3 text-2xl font-semibold text-white">A trusted platform starts here.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-[#d1dfd4]">Review pending decisions, publish community stories, and monitor platform operations from one workspace.</p></div>{support.data&&<div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">{[['Pending Organization Verification',support.data.pendingOrganizationVerification],['Verified NGOs/Government',support.data.verifiedOrganizations],['Active Support Cases',support.data.activeCases],['Reports Waiting Review',support.data.reportsWaitingReview],['Overdue Reports',support.data.overdueReports],['Disputes',support.data.disputes],['Flagged Cases',support.data.flaggedCases]].map(([label,value])=><Link key={label} to="/admin/artisan-support" className="rounded-xl border border-border bg-surface p-4 hover:border-primary"><p className="text-2xl font-semibold text-primary">{value}</p><p className="text-xs text-body/60">{label}</p></Link>)}</div>}<div className="mb-6 grid gap-4 md:grid-cols-3"><QueueCard title="Products awaiting approval" path="/products/pending-approval" to="/admin/marketplace/approval" /><QueueCard title="Identity checks awaiting review" path="/identity-verifications" params={{
         status: 'Pending'
       }} to="/admin/users/identity" /><QueueCard title="Open fraud findings" path="/governance/monitoring/flags" params={{
         status: 'Open', flagType: 'FraudRisk'
