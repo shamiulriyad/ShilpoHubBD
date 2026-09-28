@@ -96,7 +96,12 @@ def _craft_lines(catalog: Dict[str, Any]) -> str:
 def get_analysis_llm() -> ChatGoogleGenerativeAI:
     """The same Gemini model as step 10, at temperature 0 and asked for JSON."""
     config.require_api_key()
-    settings = dict(model=config.LLM_MODEL, google_api_key=config.GOOGLE_API_KEY, temperature=0)
+    # timeout+max_retries=0: see the matching comment in step10_generate.get_llm -- the client
+    # library's own silent internal retries must not swallow the time budget before
+    # prompts.invoke_llm's own visible retry schedule gets a chance to run.
+    settings = dict(
+        model=config.LLM_MODEL, google_api_key=config.GOOGLE_API_KEY, temperature=0, timeout=20, max_retries=0,
+    )
     try:
         return ChatGoogleGenerativeAI(**settings, response_mime_type="application/json")
     except Exception:  # noqa: BLE001 - an older client without JSON mode: the prompt still asks for JSON

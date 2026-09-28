@@ -2,9 +2,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using ShilpoHubBD.Application.Interfaces.Services;
+using ShilpoHubBD.Application.Services.AIShopping;
 using ShilpoHubBD.Infrastructure.AIBusiness;
 using ShilpoHubBD.Infrastructure.AIBusinessPartner;
 using ShilpoHubBD.Infrastructure.AILogistics;
+using ShilpoHubBD.Infrastructure.AIShopping;
 using ShilpoHubBD.Infrastructure.AITourism;
 using ShilpoHubBD.Infrastructure.CounterfeitDetection;
 using ShilpoHubBD.Infrastructure.Email;
@@ -48,6 +50,18 @@ public static class DependencyInjection
         services.AddScoped<IAIBusinessPartnerProvider, DummyBusinessPartnerAIProvider>();
         services.AddScoped<DummyAITourismProvider>();
         services.AddHttpClient<IAITourismProvider, GeminiAITourismProvider>((sp, client) =>
+        {
+            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value;
+            client.BaseAddress = new Uri(geminiOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(geminiOptions.TimeoutSeconds);
+        });
+        services.AddHttpClient<ITranslationService, GeminiTranslationProvider>((sp, client) =>
+        {
+            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value;
+            client.BaseAddress = new Uri(geminiOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(geminiOptions.TimeoutSeconds);
+        });
+        services.AddHttpClient<IInteriorPreviewService, GeminiInteriorPreviewProvider>((sp, client) =>
         {
             var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value;
             client.BaseAddress = new Uri(geminiOptions.BaseUrl);

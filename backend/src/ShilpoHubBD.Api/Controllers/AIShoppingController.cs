@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShilpoHubBD.Application.DTOs.AIShopping;
 using ShilpoHubBD.Application.Interfaces.Services;
@@ -39,9 +40,30 @@ public class AIShoppingController : ControllerBase
         return Ok(result);
     }
 
+    // multipart/form-data, same upload convention as MediaController/ChatMediaController/ProfileController:
+    // a real room photo plus the product to place in it, not a JSON body of free-text fields.
     [HttpPost("interior-preview")]
-    public async Task<ActionResult<InteriorPreviewDto>> GetInteriorPreview(InteriorPreviewRequest request, CancellationToken cancellationToken)
+    [RequestSizeLimit(20 * 1024 * 1024)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 20 * 1024 * 1024)]
+    public async Task<ActionResult<InteriorPreviewDto>> GetInteriorPreview(
+        [FromForm] Guid productId, IFormFile roomImage, [FromForm] string? style, CancellationToken cancellationToken)
     {
+        var roomImageBytes = Array.Empty<byte>();
+        if (roomImage is not null)
+        {
+            await using var stream = new MemoryStream();
+            await roomImage.CopyToAsync(stream, cancellationToken);
+            roomImageBytes = stream.ToArray();
+        }
+
+        var request = new InteriorPreviewRequest
+        {
+            ProductId = productId,
+            RoomImageBytes = roomImageBytes,
+            RoomImageContentType = roomImage?.ContentType ?? string.Empty,
+            Style = style,
+        };
+
         var result = await _interiorPreviewService.GetPreviewAsync(request, cancellationToken);
         return Ok(result);
     }

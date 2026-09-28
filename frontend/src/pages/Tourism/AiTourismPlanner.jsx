@@ -6,11 +6,21 @@ import HeritageLeafletMap from '../../components/tourism/HeritageLeafletMap';
 import SafeImage from '../../components/media/SafeImage';
 import LocationMedia from '../../components/tourism/LocationMedia';
 import { useDistricts } from '../../hooks/useDistricts';
-import { useSavedTourPlan, useTourPlan } from '../../hooks/useAITourism';
+import { useBudgetPlan, useRouteOptimization, useSavedTourPlan, useTourPlan } from '../../hooks/useAITourism';
 import { useTouristServices } from '../../hooks/useTouristServices';
+import { useHeritagePlaces } from '../../hooks/useHeritagePlaces';
 import { ACCOMMODATION_TYPES, POI_GROUPS, useNearbyAccommodations, useTourismLocations, useTourismPois } from '../../hooks/useTourismLocations';
 import { coordinatesNote, verificationBadge } from '../../utils/tourismLocation';
 import { useMessagingMutations } from '../../hooks/useMessaging';
+import BudgetBreakdown from '../../components/tourism/BudgetBreakdown';
+
+const SERVICE_TYPE_LABELS = {
+  GuideBooking: 'Local guide',
+  WorkshopBooking: 'Craft workshop',
+  ArtisanHomeVisit: 'Artisan visit',
+  HomestayBooking: 'Accommodation',
+  TransportationBooking: 'Transport',
+};
 
 const TRANSPORT_MODES = [
   { value: 'Bus', label: 'Bus / Road' },
@@ -263,6 +273,13 @@ export default function AiTourismPlanner() {
 
   const localTransportQuery = useTouristServices({ type: 'TransportationBooking', districtId: form.districtId || undefined, pageSize: 6 });
   const tourismLocationsQuery = useTourismLocations({ districtId: form.districtId || undefined, isActive: true, pageSize: 50 });
+  const districtServicesQuery = useTouristServices({ districtId: form.districtId || undefined, pageSize: 24 });
+  const budgetPlan = useBudgetPlan();
+  const [selectedServiceIds, setSelectedServiceIds] = useState(() => new Set());
+
+  const heritagePlacesQuery = useHeritagePlaces({ districtId: form.districtId || undefined, pageSize: 50 });
+  const routeOptimization = useRouteOptimization();
+  const [selectedPlaceIds, setSelectedPlaceIds] = useState(() => new Set());
 
   // Opening a saved trip (?plan=<id>) refills the form with the request it was generated from.
   const savedRequest = savedPlanQuery.data?.request;
@@ -279,6 +296,55 @@ export default function AiTourismPlanner() {
       preferences: savedRequest.preferences || [],
     });
   }, [savedRequest]);
+
+  // A destination change invalidates any picked services/places and the results calculated from them.
+  useEffect(() => {
+    setSelectedServiceIds(new Set());
+    budgetPlan.reset();
+    setSelectedPlaceIds(new Set());
+    routeOptimization.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.districtId]);
+
+  const toggleServiceSelection = (serviceId) => {
+    setSelectedServiceIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(serviceId)) next.delete(serviceId);
+      else next.add(serviceId);
+      return next;
+    });
+  };
+
+  const handleCalculateBudget = () => {
+    budgetPlan.mutate({
+      selections: [...selectedServiceIds].map((serviceId) => ({
+        serviceId,
+        partySize: Math.min(100, Math.max(1, Math.round(Number(form.partySize)) || 1)),
+      })),
+      durationDays: Math.min(30, Math.max(1, Math.round(Number(form.durationDays)) || 1)),
+      partySize: Math.min(100, Math.max(1, Math.round(Number(form.partySize)) || 1)),
+    });
+  };
+
+  const togglePlaceSelection = (placeId) => {
+    setSelectedPlaceIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(placeId)) next.delete(placeId);
+      else next.add(placeId);
+      return next;
+    });
+  };
+
+  // Uses the trip's real geocoded starting point (from the transport estimate) as the route's start
+  // when one exists; otherwise the backend starts from the first selected place, and says so honestly.
+  const handleOptimizeRoute = () => {
+    const origin = plan?.transportEstimate?.originPoint;
+    routeOptimization.mutate({
+      placeIds: [...selectedPlaceIds],
+      startLatitude: origin?.latitude,
+      startLongitude: origin?.longitude,
+    });
+  };
 
   const togglePreference = (value) => {
     setForm((prev) => ({
@@ -379,6 +445,15 @@ export default function AiTourismPlanner() {
     ].filter(Boolean),
     [nearby, nearbyMarkers],
   );
+  // The route-optimization candidates (real HeritagePlace records for the district) -- a separate
+  // dataset from the generated itinerary's stops, so they need their own markers to be selectable
+  // and to resolve on the shared map below.
+  const heritagePlaceMarkers = useMemo(
+    () => list(heritagePlacesQuery.data).map((p) => ({
+      id: p.id, name: p.name, latitude: p.latitude, longitude: p.longitude, kind: 'heritagesite',
+    })),
+    [heritagePlacesQuery.data],
+  );
   const mapPlaces = useMemo(() => {
     const origin = plan?.transportEstimate?.originPoint;
     const destination = plan?.transportEstimate?.destinationPoint;
@@ -389,10 +464,21 @@ export default function AiTourismPlanner() {
       ...stopsWithCoords,
       ...locationMarkers,
       ...nearbyMarkers,
+      ...heritagePlaceMarkers,
     ].filter(Boolean);
     return combined.filter((p) => (seenIds.has(p.id) ? false : (seenIds.add(p.id), true)));
-  }, [plan, stopsWithCoords, locationMarkers, nearbyMarkers]);
-  const routeStopIds = useMemo(() => stopsWithCoords.map((s) => s.id), [stopsWithCoords]);
+  }, [plan, stopsWithCoords, locationMarkers, nearbyMarkers, heritagePlaceMarkers]);
+  // The optimized visit order (real backend-computed order) takes over the map's dashed route line
+  // whenever one has been calculated; otherwise the generated itinerary's own stop order is shown,
+  // exactly as before.
+  const optimizedStopIds = useMemo(
+    () => (routeOptimization.data?.stops?.length > 0 ? routeOptimization.data.stops.map((s) => s.placeId) : null),
+    [routeOptimization.data],
+  );
+  const routeStopIds = useMemo(
+    () => optimizedStopIds || stopsWithCoords.map((s) => s.id),
+    [optimizedStopIds, stopsWithCoords],
+  );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 lg:px-8">
@@ -747,53 +833,176 @@ export default function AiTourismPlanner() {
           {plan.estimatedBudget && (
             <div>
               <SectionHeader eyebrow="Budget" title="Estimated trip cost" />
-              <div className="rounded-xl border border-border bg-surface p-5">
-                <ul className="space-y-2">
-                  {plan.estimatedBudget.lineItems.map((item, i) => (
-                    <li key={i} className="flex justify-between text-sm text-body/70">
-                      <span>{item.label} <span className="text-body/40">({item.category})</span></span>
-                      <span className="font-medium text-heading">৳ {Number(item.amount).toLocaleString('en-BD')}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-                  <span className="text-sm font-semibold text-heading">Known / verified total</span>
-                  <span className="text-lg font-semibold text-primary">৳ {Number(plan.estimatedBudget.totalEstimatedCost).toLocaleString('en-BD')}</span>
-                </div>
-                <p className="mt-1 text-xs text-body/50">৳ {Number(plan.estimatedBudget.perPersonCost).toLocaleString('en-BD')} per person</p>
-                {form.budget && Number(form.budget) < (plan.estimatedBudget.estimatedTotal || plan.estimatedBudget.totalEstimatedCost) && (
-                  <p className="mt-3 text-sm text-amber-700">This is above your stated budget of ৳ {Number(form.budget).toLocaleString('en-BD')}.</p>
-                )}
-                {plan.estimatedBudget.estimatedItems?.length > 0 && (
-                  <div className="mt-4 rounded-lg border border-border p-3">
-                    <p className="text-xs font-semibold text-heading">Rough estimate for the unverified parts</p>
-                    <ul className="mt-2 space-y-1">
-                      {plan.estimatedBudget.estimatedItems.map((item, i) => (
-                        <li key={i} className="flex justify-between text-xs text-body/70">
-                          <span>{item.label}</span>
-                          <span className="font-medium text-heading">৳ {Number(item.amount).toLocaleString('en-BD')}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
-                      <span className="text-sm font-semibold text-heading">Estimated total (with assumptions)</span>
-                      <span className="text-lg font-semibold text-primary">৳ {Number(plan.estimatedBudget.estimatedTotal).toLocaleString('en-BD')}</span>
+              <BudgetBreakdown budget={plan.estimatedBudget} statedBudget={form.budget} />
+            </div>
+          )}
+
+          {form.districtId && (
+            <div>
+              <SectionHeader
+                eyebrow="Build your own"
+                title="Custom budget calculator"
+                description="Pick the exact guides, workshops, homestays or transport you want to book and get a precise budget for just those selections — same real prices as above, calculated on demand."
+              />
+              <QueryStatusBanner queries={[districtServicesQuery]} loadingLabel="Loading bookable experiences…" />
+              {list(districtServicesQuery.data).length === 0 ? (
+                !districtServicesQuery.isLoading && (
+                  <p className="rounded-xl border border-border bg-surface p-5 text-sm text-body/70">
+                    No bookable experiences are published in this district yet.
+                  </p>
+                )
+              ) : (
+                <>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {list(districtServicesQuery.data).map((service) => (
+                      <label
+                        key={service.id}
+                        className={`flex items-start gap-3 rounded-xl border p-4 text-sm transition ${
+                          selectedServiceIds.has(service.id) ? 'border-primary bg-primary/5' : 'border-border bg-surface'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          className="mt-0.5"
+                          checked={selectedServiceIds.has(service.id)}
+                          onChange={() => toggleServiceSelection(service.id)}
+                        />
+                        <span className="min-w-0 flex-1">
+                          <span className="block font-medium text-heading">{service.title}</span>
+                          <span className="block text-xs text-body/60">
+                            {SERVICE_TYPE_LABELS[service.type] || service.type} · {service.districtName}
+                          </span>
+                          <span className="block text-xs font-medium text-heading">৳ {Number(service.price).toLocaleString('en-BD')}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap items-center gap-3">
+                    <Button
+                      type="button"
+                      variant="primary"
+                      disabled={selectedServiceIds.size === 0 || budgetPlan.isPending}
+                      onClick={handleCalculateBudget}
+                    >
+                      {budgetPlan.isPending ? 'Calculating…' : `Calculate budget for ${selectedServiceIds.size} selected`}
+                    </Button>
+                    {selectedServiceIds.size === 0 && (
+                      <span className="text-xs text-body/50">Select at least one experience above.</span>
+                    )}
+                  </div>
+                  <QueryStatusBanner queries={[budgetPlan]} loadingLabel="Calculating your budget…" />
+                  {budgetPlan.data && (
+                    <div className="mt-4">
+                      <BudgetBreakdown budget={budgetPlan.data} statedBudget={form.budget} />
                     </div>
-                    <p className="mt-1 text-xs text-body/50">৳ {Number(plan.estimatedBudget.estimatedPerPerson).toLocaleString('en-BD')} per person · {plan.estimatedBudget.estimateNote}</p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
+          {form.districtId && (
+            <div>
+              <SectionHeader
+                eyebrow="Plan your visit order"
+                title="Optimize your route"
+                description="Pick the heritage places you want to see and get the shortest visiting order, using real road distance and travel time (OSRM) where available — shown on the map below."
+              />
+              <QueryStatusBanner queries={[heritagePlacesQuery]} loadingLabel="Loading heritage places…" />
+              {list(heritagePlacesQuery.data).length === 0 ? (
+                !heritagePlacesQuery.isLoading && (
+                  <p className="rounded-xl border border-border bg-surface p-5 text-sm text-body/70">
+                    No heritage places found for this district yet.
+                  </p>
+                )
+              ) : (
+                <>
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {list(heritagePlacesQuery.data).map((place) => (
+                      <label
+                        key={place.id}
+                        className={`flex items-start gap-3 rounded-xl border p-4 text-sm transition ${
+                          selectedPlaceIds.has(place.id) ? 'border-primary bg-primary/5' : 'border-border bg-surface'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          className="mt-0.5"
+                          checked={selectedPlaceIds.has(place.id)}
+                          onChange={() => togglePlaceSelection(place.id)}
+                        />
+                        <span className="min-w-0 flex-1">
+                          <span className="block font-medium text-heading">{place.name}</span>
+                          <span className="block text-xs text-body/60">{place.placeType}</span>
+                        </span>
+                      </label>
+                    ))}
                   </div>
-                )}
-                {plan.estimatedBudget.unverifiedCosts?.length > 0 && (
-                  <div className="mt-4 rounded-lg bg-amber-50 p-3">
-                    <p className="text-xs font-semibold text-amber-800">Unverified / excluded from the total</p>
-                    <ul className="mt-1 list-disc pl-5 text-xs text-amber-800/80">
-                      {plan.estimatedBudget.unverifiedCosts.map((note, i) => (
-                        <li key={i}>{note}</li>
-                      ))}
-                    </ul>
+
+                  <div className="mt-4 flex flex-wrap items-center gap-3">
+                    <Button
+                      type="button"
+                      variant="primary"
+                      disabled={selectedPlaceIds.size < 2 || routeOptimization.isPending}
+                      onClick={handleOptimizeRoute}
+                    >
+                      {routeOptimization.isPending ? 'Optimizing…' : `Optimize route for ${selectedPlaceIds.size} selected`}
+                    </Button>
+                    {selectedPlaceIds.size < 2 && (
+                      <span className="text-xs text-body/50">Select at least 2 places to optimize a visiting order.</span>
+                    )}
                   </div>
-                )}
-                {plan.estimatedBudget.notes && <p className="mt-3 text-xs text-body/50">{plan.estimatedBudget.notes}</p>}
-              </div>
+                  <QueryStatusBanner queries={[routeOptimization]} loadingLabel="Calculating the best route…" />
+
+                  {routeOptimization.data && (
+                    <div className="mt-4 rounded-xl border border-border bg-surface p-5">
+                      {routeOptimization.data.stops.length === 0 ? (
+                        <p className="text-sm text-body/70">
+                          {routeOptimization.data.notes || 'No route could be calculated for the selected places.'}
+                        </p>
+                      ) : (
+                        <>
+                          <ol className="space-y-2">
+                            {routeOptimization.data.stops.map((stop) => (
+                              <li key={stop.placeId} className="flex flex-wrap items-center justify-between gap-2 text-sm text-body/80">
+                                <span><span className="font-semibold text-heading">{stop.order}.</span> {stop.name}</span>
+                                <span className="text-xs text-body/60">
+                                  +{stop.distanceFromPreviousKm} km
+                                  {stop.estimatedTravelMinutesFromPrevious != null
+                                    ? ` · ~${Math.round(stop.estimatedTravelMinutesFromPrevious)} min (real road route)`
+                                    : ' · straight-line distance, no time estimate'}
+                                </span>
+                              </li>
+                            ))}
+                          </ol>
+                          <div className="mt-4 flex items-center justify-between border-t border-border pt-4 text-sm">
+                            <span className="font-semibold text-heading">Total distance</span>
+                            <span className="font-semibold text-primary">{routeOptimization.data.totalDistanceKm} km</span>
+                          </div>
+                          <p className="mt-1 text-xs text-body/50">
+                            {routeOptimization.data.totalEstimatedTravelMinutes != null
+                              ? `≈ ${Math.floor(routeOptimization.data.totalEstimatedTravelMinutes / 60)}h ${Math.round(routeOptimization.data.totalEstimatedTravelMinutes % 60)}m of real road travel`
+                              : 'Total travel time not available — one or more legs used straight-line distance instead of a real road route.'}
+                          </p>
+                          {routeOptimization.data.originDescription && (
+                            <p className="mt-2 text-xs text-body/50">Starting from: {routeOptimization.data.originDescription}</p>
+                          )}
+                        </>
+                      )}
+                      {routeOptimization.data.excludedPlaces?.length > 0 && (
+                        <div className="mt-4 rounded-lg bg-amber-50 p-3">
+                          <p className="text-xs font-semibold text-amber-800">Excluded — no verified coordinates</p>
+                          <p className="mt-1 text-xs text-amber-800/80">{routeOptimization.data.excludedPlaces.join(', ')}</p>
+                        </div>
+                      )}
+                      {routeOptimization.data.notes && routeOptimization.data.stops.length > 0 && (
+                        <p className="mt-3 text-xs text-body/50">{routeOptimization.data.notes}</p>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           )}
 

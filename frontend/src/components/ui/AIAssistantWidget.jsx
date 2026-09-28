@@ -114,16 +114,13 @@ const ERROR_ANSWER = {
   tone: 'error',
 };
 
-// Retrieval plus Gemini generation can take longer than the shared API client's
-// short UI timeout, especially on the first request after startup.
-const HERITAGE_ASSISTANT_TIMEOUT_MS = 180_000;
-
+// The RAG pipeline runs two sequential Gemini calls (query analysis, then answer generation), each
+// of which now retries through Gemini's transient "rate limited"/"overloaded" errors (up to ~100s of
+// backoff apiece) before giving up -- so this call is given the same ceiling as the backend's own
+// RagService HttpClient timeout (180s, appsettings.json), rather than cutting a retry off early and
+// showing a worse, less honest error than the backend would have.
 async function requestHeritageAnswer(question) {
-  const { data } = await apiClient.post(
-    '/ai/heritage-assistant/ask',
-    { question },
-    { timeout: HERITAGE_ASSISTANT_TIMEOUT_MS },
-  );
+  const { data } = await apiClient.post('/ai/heritage-assistant/ask', { question }, { timeout: 185000 });
   return {
     answer: data.answer,
     source: data.sources?.length ? data.sources : undefined,
