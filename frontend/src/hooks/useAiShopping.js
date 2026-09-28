@@ -12,3 +12,7 @@ export function useFashionMatches() {
 export function useInteriorPreview() {
   return useMutation({ mutationFn: (payload) => aiShoppingService.interiorPreview(payload) });
 }
+
+export function useTranslate() {
+  return useMutation({ mutationFn: (payload) => aiShoppingService.translate(payload) });
+}
