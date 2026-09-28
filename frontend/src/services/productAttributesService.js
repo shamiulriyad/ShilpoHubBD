@@ -7,7 +7,9 @@ export const productAttributesService = {
 
   // 204 No Content (no pending suggestion) comes back as an empty string.
   suggestion: (productId) => apiClient.get(`/products/${productId}/attributes/suggestion`).then((res) => res.data || null),
-  generate: (productId) => apiClient.post(`/products/${productId}/attributes/suggestion/generate`).then((res) => res.data),
+  generate: (productId) => apiClient
+    .post(`/products/${productId}/attributes/suggestion/generate`, null, { timeout: 180_000 })
+    .then((res) => res.data),
   confirm: (productId, suggestionId, attributes) => apiClient.post(`/products/${productId}/attributes/suggestion/${suggestionId}/confirm`, { attributes }).then((res) => res.data),
   dismiss: (productId, suggestionId) => apiClient.post(`/products/${productId}/attributes/suggestion/${suggestionId}/dismiss`),
 
