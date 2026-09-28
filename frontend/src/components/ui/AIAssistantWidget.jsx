@@ -114,8 +114,16 @@ const ERROR_ANSWER = {
   tone: 'error',
 };
 
+// Retrieval plus Gemini generation can take longer than the shared API client's
+// short UI timeout, especially on the first request after startup.
+const HERITAGE_ASSISTANT_TIMEOUT_MS = 180_000;
+
 async function requestHeritageAnswer(question) {
-  const { data } = await apiClient.post('/ai/heritage-assistant/ask', { question });
+  const { data } = await apiClient.post(
+    '/ai/heritage-assistant/ask',
+    { question },
+    { timeout: HERITAGE_ASSISTANT_TIMEOUT_MS },
+  );
   return {
     answer: data.answer,
     source: data.sources?.length ? data.sources : undefined,
