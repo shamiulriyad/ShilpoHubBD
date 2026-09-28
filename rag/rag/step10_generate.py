@@ -44,10 +44,15 @@ _TOKEN_ONLY = re.compile(r"^\W*NOT_AVAILABLE\W*$", re.I)
 
 def get_llm() -> ChatGoogleGenerativeAI:
     config.require_api_key()
+    # timeout+max_retries=0: the client library's own default (6 silent internal retries, no
+    # timeout) can block for minutes on a single call with zero visibility. Failing fast here hands
+    # control back to prompts.invoke_llm's own visible, logged retry schedule instead.
     return ChatGoogleGenerativeAI(
         model=config.LLM_MODEL,
         google_api_key=config.GOOGLE_API_KEY,
         temperature=config.TEMPERATURE,
+        timeout=20,
+        max_retries=0,
     )
 
 
