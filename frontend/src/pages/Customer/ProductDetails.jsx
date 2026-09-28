@@ -16,7 +16,9 @@ import { useAuth } from '../../hooks/useAuth';
 import { useCraftStory } from '../../hooks/useCraftStories';
 import { useProductTraceability } from '../../hooks/useTraceability';
 import { useVerifyQRCode } from '../../hooks/useQRVerification';
+import { useTranslate } from '../../hooks/useAiShopping';
 import { toProductCardItem } from '../../utils/productAdapters';
+import { getApiErrorMessage } from '../../utils/apiError';
 
 const tabs = ['Details', 'Craft Story', 'Journey', 'Traceability', 'Authenticity', 'Reviews'];
 
@@ -30,6 +32,8 @@ export default function ProductDetails() {
   const [messaging, setMessaging] = useState(false);
   const [qrCode, setQrCode] = useState('');
   const verifyQr = useVerifyQRCode();
+  const translate = useTranslate();
+  const [translateTarget, setTranslateTarget] = useState('');
 
   const productQuery = useProduct(productId);
   const product = productQuery.data;
@@ -45,6 +49,12 @@ export default function ProductDetails() {
   const traceabilityQuery = useProductTraceability(productId);
   const craftStory = craftStoryQuery.data;
   const traceability = traceabilityQuery.data;
+
+  const handleTranslate = (targetLanguage) => {
+    if (!product?.description) return;
+    setTranslateTarget(targetLanguage);
+    translate.mutate({ text: product.description, targetLanguage });
+  };
 
   const handleSubmitReview = (event) => {
     event.preventDefault();
@@ -113,6 +123,40 @@ export default function ProductDetails() {
                 <p className="mt-2 text-sm text-body/70">
                   {product.description || `Handcrafted by ${product.producerName} in ${product.districtName}.`}
                 </p>
+
+                {product.description && (
+                  <div className="mt-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs text-body/50">Translate description:</span>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        disabled={translate.isPending}
+                        onClick={() => handleTranslate('English')}
+                      >
+                        {translate.isPending && translateTarget === 'English' ? 'Translating…' : 'To English'}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        disabled={translate.isPending}
+                        onClick={() => handleTranslate('Bangla')}
+                      >
+                        {translate.isPending && translateTarget === 'Bangla' ? 'Translating…' : 'বাংলায়'}
+                      </Button>
+                    </div>
+                    {translate.isSuccess && (
+                      <p className="mt-2 rounded-lg border border-border bg-background/60 p-3 text-sm text-body/80">
+                        {translate.data.translatedText}
+                      </p>
+                    )}
+                    {translate.isError && (
+                      <p role="alert" className="mt-2 text-xs text-error">{getApiErrorMessage(translate.error)}</p>
+                    )}
+                  </div>
+                )}
 
                 <label className="mt-5 block text-sm font-medium">Quantity
                   <input type="number" min="1" max={product.stock || 1} value={quantity} onChange={e => setQuantity(Number(e.target.value))} className="ml-3 w-24 rounded-lg border border-border px-3 py-2"/>
