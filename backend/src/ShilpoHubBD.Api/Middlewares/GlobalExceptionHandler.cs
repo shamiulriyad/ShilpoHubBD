@@ -29,6 +29,8 @@ public class GlobalExceptionHandler : IExceptionHandler
                 StatusCodes.Status409Conflict, conflictException.Message, null),
             NotFoundException notFoundException => (
                 StatusCodes.Status404NotFound, notFoundException.Message, null),
+            AiServiceUnavailableException aiUnavailableException => (
+                StatusCodes.Status503ServiceUnavailable, aiUnavailableException.Message, null),
             UnauthorizedAccessException unauthorizedException => (
                 StatusCodes.Status401Unauthorized, unauthorizedException.Message, null),
             _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.", null),
