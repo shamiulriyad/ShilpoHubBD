@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, AsyncState } from '../../components/ui';
 import { useProduct } from '../../hooks/useProducts';
@@ -50,11 +50,15 @@ export default function AIFashionMatching() {
       <AsyncState isLoading={fashionMatches.isPending} isError={fashionMatches.isError} error={fashionMatches.error}>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {(fashionMatches.data || []).map((match, i) => (
-            <div key={i} className="rounded-xl border border-border bg-surface p-4">
+            <Link
+              key={i}
+              to={routePaths.customerProductDetails.replace(':productId', match.productId)}
+              className="rounded-xl border border-border bg-surface p-4 transition hover:border-primary hover:shadow-md"
+            >
               <Badge tone="secondary">{match.matchType}</Badge>
               <p className="mt-2 text-sm font-semibold text-heading">{match.itemName}</p>
               <p className="mt-1 text-xs text-body/60">{match.reason}</p>
-            </div>
+            </Link>
           ))}
           {fashionMatches.data?.length === 0 && (
             <p className="col-span-full text-sm text-body/60">No matches found for this item.</p>
