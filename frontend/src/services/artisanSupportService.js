@@ -1,0 +1,27 @@
+import apiClient from './apiClient';
+
+const base = '/artisan-support';
+export const artisanSupportService = {
+  myOrganization: () => apiClient.get(`${base}/organization/me`).then((r) => r.data),
+  saveOrganization: (payload) => apiClient.put(`${base}/organization/me`, payload).then((r) => r.data),
+  uploadOrganizationDocument: (file) => { const body = new FormData(); body.append('file', file); return apiClient.post(`${base}/organization/document`, body, { headers: { 'Content-Type': 'multipart/form-data' } }).then((r) => r.data); },
+  organizations: () => apiClient.get(`${base}/organizations`).then((r) => r.data),
+  reviewOrganization: (id, payload) => apiClient.post(`${base}/organizations/${id}/review`, payload).then((r) => r.data),
+  artisans: () => apiClient.get(`${base}/artisans`).then((r) => r.data),
+  organizationOptions: () => apiClient.get(`${base}/organizations/options`).then((r) => r.data),
+  cases: () => apiClient.get(`${base}/cases`).then((r) => r.data),
+  createCase: (payload) => apiClient.post(`${base}/cases`, payload).then((r) => r.data),
+  assign: (id, payload) => apiClient.post(`${base}/cases/${id}/assign`, payload).then((r) => r.data),
+  accept: (id) => apiClient.post(`${base}/cases/${id}/accept`).then((r) => r.data),
+  inspect: (id, payload) => apiClient.post(`${base}/cases/${id}/inspection`, payload).then((r) => r.data),
+  plan: (id, payload) => apiClient.post(`${base}/cases/${id}/support-plan`, payload).then((r) => r.data),
+  provided: (id, payload) => apiClient.post(`${base}/cases/${id}/support-provided`, payload).then((r) => r.data),
+  confirm: (id, payload) => apiClient.post(`${base}/cases/${id}/confirmation`, payload).then((r) => r.data),
+  monitor: (id, payload) => apiClient.post(`${base}/cases/${id}/monitoring`, payload).then((r) => r.data),
+  report: (id, payload) => apiClient.post(`${base}/cases/${id}/final-report`, payload).then((r) => r.data),
+  reviewReport: (id, payload) => apiClient.post(`${base}/cases/${id}/review-report`, payload).then((r) => r.data),
+  flag: (id, payload) => apiClient.post(`${base}/cases/${id}/flag`, payload).then((r) => r.data),
+  evidence: (id, payload) => apiClient.post(`${base}/cases/${id}/evidence`, payload).then((r) => r.data),
+  uploadEvidence: (id, file, stage, caption) => { const body = new FormData(); body.append('file', file); body.append('stage', stage); body.append('caption', caption || ''); return apiClient.post(`${base}/cases/${id}/evidence-upload`, body, { headers: { 'Content-Type': 'multipart/form-data' } }).then((r) => r.data); },
+  dashboard: () => apiClient.get(`${base}/dashboard`).then((r) => r.data),
+};
