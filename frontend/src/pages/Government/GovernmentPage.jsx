@@ -3,6 +3,7 @@ import { PageHeader, Button } from '../../components/ui';
 import { DashboardCard } from '../../components/cards';
 import { useNationalOverview, useDistrictRankings, useDashboardSnapshots, useNationalDashboardMutations } from '../../hooks/useNationalDashboard';
 import { useHeritageIndexRecords, useComputeHeritageIndex } from '../../hooks/useHeritageIntelligence';
+import { useSupportDashboard } from '../../hooks/useArtisanSupport';
 
 const inputClass = 'rounded-md border border-border bg-background px-3 py-2 text-sm';
 const rankingMetrics = ['sales', 'producers', 'products', 'villages', 'orders'];
@@ -19,6 +20,7 @@ export default function GovernmentPage() {
   const heritageIndexQuery = useHeritageIndexRecords({ pageSize: 10 });
   const computeIndex = useComputeHeritageIndex();
   const [indexType, setIndexType] = useState('HeritageRiskIndex');
+  const supportDashboard = useSupportDashboard();
 
   const overview = overviewQuery.data;
 
@@ -37,6 +39,25 @@ export default function GovernmentPage() {
         description="Live national heritage-economy metrics, district rankings and historical snapshots."
         action={<Button variant="primary" onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'Capture Snapshot'}</Button>}
       />
+
+      {supportDashboard.data && (
+        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {[
+            ['Active Cases', supportDashboard.data.activeCases],
+            ['Pending Inspections', supportDashboard.data.pendingInspections],
+            ['Verified Cases', supportDashboard.data.verifiedCases],
+            ['Support In Progress', supportDashboard.data.supportInProgress],
+            ['Monitoring', supportDashboard.data.monitoring],
+            ['Reports Due', supportDashboard.data.reportsDue],
+            ['Reports Submitted', supportDashboard.data.reportsSubmitted],
+            ['Beneficiaries Supported', supportDashboard.data.beneficiariesSupported],
+          ].map(([label, value]) => (
+            <DashboardCard key={label} title={label} description="Artisan support workflow">
+              <p className="text-2xl font-semibold text-primary">{value}</p>
+            </DashboardCard>
+          ))}
+        </div>
+      )}
 
       {overview && (
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
