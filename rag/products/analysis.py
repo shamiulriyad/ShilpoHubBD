@@ -14,6 +14,7 @@ from typing import Any, Dict, List, Optional
 import config
 from rag.prompts import invoke_llm, render      # existing helpers, used read-only
 
+from products import settings as product_settings
 from products.vocab import Vocabulary
 
 PROMPT_PATH = Path(__file__).with_name("query_analysis_prompt.txt")
@@ -36,7 +37,7 @@ def empty_analysis(question: str) -> Dict[str, Any]:
 def get_llm():
     from langchain_google_genai import ChatGoogleGenerativeAI
 
-    settings = dict(model=config.LLM_MODEL, google_api_key=config.GOOGLE_API_KEY, temperature=0)
+    settings = dict(model=product_settings.LLM_MODEL, google_api_key=config.GOOGLE_API_KEY, temperature=0)
     try:
         return ChatGoogleGenerativeAI(**settings, response_mime_type="application/json")
     except TypeError:
