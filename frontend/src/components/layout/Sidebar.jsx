@@ -61,14 +61,13 @@ export default function Sidebar({ items = [], title = 'Menu', className = '', on
           </div>;
         })}
       </div>}
+      {(onToggle || !!pinned.length) && <div className="sb-bottom">
+        {pinned.map(item => itemLink(item))}
+        {onToggle && <button type="button" className="sb-link sb-collapse" onClick={onToggle} aria-expanded={!compact} aria-label={compact ? 'Expand sidebar' : 'Collapse sidebar'} title={compact ? 'Expand sidebar' : undefined}>
+          <NavigationIcon label="Menu"/>{!compact && <span className="sb-label">Collapse navigation</span>}
+        </button>}
+      </div>}
     </nav>
-    {(onToggle || !!pinned.length) && <div className="sb-bottom">
-      {compact && <hr className="sb-divider"/>}
-      {pinned.map(item => itemLink(item))}
-      {onToggle && <>      <button type="button" className="sb-link sb-collapse" onClick={onToggle} aria-expanded={!compact} aria-label={compact ? 'Expand sidebar' : 'Collapse sidebar'} title={compact ? 'Expand sidebar' : undefined}>
-        <NavigationIcon label="Menu"/>{!compact && <span className="sb-label">Collapse navigation</span>}
-      </button></>}
-    </div>}
     <ConfirmDialog open={logout.confirming} title="Sign out?" message="You will be signed out of your ShilpoHub workspace." confirmLabel="Sign out" cancelLabel="Stay" busy={logout.busy} onConfirm={logout.confirm} onCancel={logout.cancel}/>
   </aside>;
 }
