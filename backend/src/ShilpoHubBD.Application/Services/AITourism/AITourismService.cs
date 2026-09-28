@@ -576,17 +576,102 @@ public class AITourismService : IAITourismService
             });
         }
 
+        var partySize = Math.Max(1, request.PartySize);
+        var durationDays = Math.Clamp(request.DurationDays, 1, 90);
+
         var context = new BudgetPlanContext
         {
             ServiceLines = serviceLines,
-            DurationDays = Math.Clamp(request.DurationDays, 1, 90),
-            PartySize = Math.Max(1, request.PartySize),
-            DailyFoodBudgetPerPerson = request.DailyFoodBudgetPerPerson ?? DefaultDailyFoodBudgetPerPerson,
-            DailyMiscBudgetPerPerson = request.DailyMiscBudgetPerPerson ?? DefaultDailyMiscBudgetPerPerson,
+            DurationDays = durationDays,
+            PartySize = partySize,
+            // Per-diem figures are added below as clearly-labelled EstimatedItems instead, the same
+            // split BuildEstimatedBudgetAsync uses for a full trip -- they are planning assumptions,
+            // not a verified cost, so they must not be folded into the verified total.
+            DailyFoodBudgetPerPerson = 0m,
+            DailyMiscBudgetPerPerson = 0m,
         };
 
-        return await _aiTourismProvider.PlanBudgetAsync(context, cancellationToken);
+        var budget = await _aiTourismProvider.PlanBudgetAsync(context, cancellationToken);
+        budget.Notes = services.Count == 0
+            ? "No services selected yet -- add guide, workshop, homestay or transport bookings to refine this estimate."
+            : $"Verified total covers {services.Count} selected service(s).";
+
+        await AddStandaloneTransportCostAsync(budget, services, partySize, cancellationToken);
+        AddStandalonePerDiemEstimates(budget, request, partySize, durationDays);
+
+        return budget;
     }
+
+    // Adds a real round-trip bus fare when every selected service sits in the same district; otherwise
+    // (no single district, or no fare data for it) the cost is named in UnverifiedCosts instead of
+    // being guessed. Mirrors AddTransportCost's labelling for the full-trip path.
+    private async Task AddStandaloneTransportCostAsync(
+        BudgetPlanResult budget,
+        List<Domain.Entities.TouristBooking.TouristService> services,
+        int partySize,
+        CancellationToken cancellationToken)
+    {
+        var districts = services.Select(s => s.District.Name).Distinct().ToList();
+        if (districts.Count != 1)
+        {
+            if (districts.Count > 1)
+            {
+                budget.UnverifiedCosts.Add("Transport fare: selected services span multiple districts, so a single fare could not be estimated.");
+            }
+            return;
+        }
+
+        var options = await _transportOptionRepository.GetForDestinationAsync(districts[0], "Bus", cancellationToken);
+        var cheapest = options.Where(o => o.FareBdt.HasValue).OrderBy(o => o.FareBdt).FirstOrDefault();
+        if (cheapest is null)
+        {
+            budget.UnverifiedCosts.Add($"Bus fare to {districts[0]}: no verified service and fare data for this route, so it is not in the total.");
+            return;
+        }
+
+        var verified = cheapest.VerificationStatus == "Verified";
+        budget.LineItems.Add(new BudgetLineItemDto
+        {
+            Label = $"Bus tickets ({cheapest.Operator}, lowest reported fare, {partySize} traveller(s), round trip"
+                + (verified ? ")" : "; fare unverified)"),
+            Category = "Transport",
+            Amount = cheapest.FareBdt!.Value * partySize * 2,
+        });
+        budget.TotalEstimatedCost = budget.LineItems.Sum(l => l.Amount);
+        budget.PerPersonCost = partySize > 0 ? Math.Round(budget.TotalEstimatedCost / partySize, 2) : budget.TotalEstimatedCost;
+        if (!verified)
+        {
+            budget.Notes = $"{budget.Notes} The transport fare comes from a single unverified source and assumes the same fare for the return -- confirm before booking.".Trim();
+        }
+    }
+
+    // Meals/incidentals have no verified per-trip figure, so they are a separate, clearly-labelled
+    // estimate (using the caller-suppliable or default planning rate) rather than part of the total.
+    private void AddStandalonePerDiemEstimates(BudgetPlanResult budget, BudgetPlanRequest request, int partySize, int durationDays)
+    {
+        var foodRate = request.DailyFoodBudgetPerPerson ?? DefaultDailyFoodBudgetPerPerson;
+        var miscRate = request.DailyMiscBudgetPerPerson ?? DefaultDailyMiscBudgetPerPerson;
+
+        void Add(string label, string category, decimal amount)
+        {
+            if (amount > 0) budget.EstimatedItems.Add(new BudgetLineItemDto { Label = label, Category = category, Amount = Math.Round(amount, 2) });
+        }
+
+        Add($"Meals (assumed ৳{foodRate:N0} per person per day)", "Food", foodRate * partySize * durationDays);
+        Add($"Miscellaneous & souvenirs (assumed ৳{miscRate:N0} per person per day)", "Miscellaneous", miscRate * partySize * durationDays);
+
+        budget.EstimatedTotal = budget.TotalEstimatedCost + budget.EstimatedItems.Sum(i => i.Amount);
+        budget.EstimatedPerPerson = partySize > 0 ? Math.Round(budget.EstimatedTotal / partySize, 2) : budget.EstimatedTotal;
+        budget.EstimateNote = "Rough planning estimate: the verified total plus assumed rates for meals and incidentals. Actual costs will differ.";
+    }
+
+    // HeritagePlace.Latitude/Longitude are non-nullable columns, so a place that was never geocoded
+    // defaults to (0,0) -- a real point off the coast of West Africa, nowhere near Bangladesh. Treating
+    // that (or any out-of-range value) as "missing" and excluding it, rather than silently routing
+    // through it, is the same "located vs unlocated" split RuleBasedAiRouteOptimizationProvider already
+    // uses for logistics stops (there, via a genuinely nullable lat/lng).
+    private static bool HasValidCoordinates(double latitude, double longitude)
+        => !(latitude == 0 && longitude == 0) && latitude is >= -90 and <= 90 && longitude is >= -180 and <= 180;
 
     public async Task<RouteOptimizationResult> OptimizeRouteAsync(RouteOptimizationRequest request, CancellationToken cancellationToken)
     {
@@ -599,14 +684,50 @@ public class AITourismService : IAITourismService
             throw new NotFoundException($"Heritage place(s) not found: {string.Join(", ", missing)}.");
         }
 
+        var validPlaces = places.Where(p => HasValidCoordinates(p.Latitude, p.Longitude)).ToList();
+        var excludedPlaceNames = places.Where(p => !HasValidCoordinates(p.Latitude, p.Longitude)).Select(p => p.Name).ToList();
+
+        var startLatitude = request.StartLatitude;
+        var startLongitude = request.StartLongitude;
+        var startWasInvalid = false;
+        if (startLatitude.HasValue && startLongitude.HasValue && !HasValidCoordinates(startLatitude.Value, startLongitude.Value))
+        {
+            startWasInvalid = true;
+            startLatitude = null;
+            startLongitude = null;
+        }
+
+        if (validPlaces.Count == 0)
+        {
+            return new RouteOptimizationResult
+            {
+                ExcludedPlaces = excludedPlaceNames,
+                Notes = excludedPlaceNames.Count > 0
+                    ? "None of the selected places have verified coordinates, so no route could be calculated."
+                    : "No places were provided to build a route from.",
+            };
+        }
+
         var context = new RouteOptimizationContext
         {
-            Places = places.Select(p => new RoutePlaceDto { Id = p.Id, Name = p.Name, Latitude = p.Latitude, Longitude = p.Longitude }).ToList(),
-            StartLatitude = request.StartLatitude,
-            StartLongitude = request.StartLongitude,
+            Places = validPlaces.Select(p => new RoutePlaceDto { Id = p.Id, Name = p.Name, Latitude = p.Latitude, Longitude = p.Longitude }).ToList(),
+            StartLatitude = startLatitude,
+            StartLongitude = startLongitude,
         };
 
-        return await _aiTourismProvider.OptimizeRouteAsync(context, cancellationToken);
+        var result = await _aiTourismProvider.OptimizeRouteAsync(context, cancellationToken);
+        result.ExcludedPlaces = excludedPlaceNames;
+        if (excludedPlaceNames.Count > 0)
+        {
+            result.Notes = $"{result.Notes} {excludedPlaceNames.Count} place(s) were excluded because they have no verified coordinates: {string.Join(", ", excludedPlaceNames)}.".Trim();
+        }
+
+        if (startWasInvalid)
+        {
+            result.Notes = $"{result.Notes} The provided starting coordinates looked invalid and were ignored; the route starts from the first selected place instead.".Trim();
+        }
+
+        return result;
     }
 
     public Task<TourismTranslationResult> TranslateAsync(TourismTranslationRequest request, CancellationToken cancellationToken)
