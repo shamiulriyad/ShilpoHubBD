@@ -1,8 +1,7 @@
-<#
+﻿<#
   run-all.ps1  -  One-command dev startup for ShilpoHubBD.
 
-  Starts all 4 services, each in its own visible PowerShell window (so logs stay readable
-  and closing one doesn't kill the others):
+  Starts all 4 services in hidden PowerShell windows, with logs in .run-logs:
     1. Backend   (.NET API)          http://localhost:5065
     2. Frontend  (Vite/React)        http://localhost:5173
     3. Heritage RAG (Python)         http://localhost:8000
@@ -11,8 +10,7 @@
   What it does for you automatically:
     - Creates any missing .env file from its .env.example (you still must fill in real
       secrets - Gemini API key, DB connection - it will tell you exactly which ones).
-    - Kills stray processes from a previous run that are still holding files/ports locked
-      (the #1 cause of "Building..." or "Address already in use" hangs).
+    - Replaces previous listeners on the four dedicated development ports.
     - Creates the Python venv and installs dependencies if missing.
     - Waits for each service to actually respond before declaring it ready.
 
@@ -24,7 +22,7 @@ $ErrorActionPreference = "Stop"
 $root = $PSScriptRoot
 
 function Write-Step($msg) { Write-Host "`n==> $msg" -ForegroundColor Cyan }
-function Write-Ok($msg)   { Write-Host "    OK: $msg" -ForegroundColor Green }
+function Write-Ok($msg) { Write-Host "    OK: $msg" -ForegroundColor Green }
 function Write-Warn($msg) { Write-Host "    WARN: $msg" -ForegroundColor Yellow }
 function Write-Err($msg)  { Write-Host "    ERROR: $msg" -ForegroundColor Red }
 
@@ -41,8 +39,11 @@ $needsSecrets = $false
 foreach ($pair in $envPairs) {
     if (-not (Test-Path $pair.Path)) {
         Copy-Item $pair.Example $pair.Path
-        Write-Warn "$($pair.Path) was missing - created from .env.example. You MUST edit it and fill in real values."
-        $needsSecrets = $true
+        Write-Warn "$($pair.Path) was missing - created from .env.example."
+        if ($pair.Path -ne "$root\frontend\.env") {
+            Write-Warn 'Review the new environment file and fill in real values before continuing.'
+            $needsSecrets = $true
+        }
     } else {
         Write-Ok "$($pair.Path) exists"
     }
@@ -55,7 +56,7 @@ $requiredKeys = @(
     @{ Key = "ConnectionStrings__DefaultConnection"; Placeholder = "YOUR_DATABASE_HOST" }
 )
 foreach ($req in $requiredKeys) {
-    if ($rootEnvContent -match [regex]::Escape($req.Key) + "=\s*(.*)") {
+    if ($rootEnvContent -match ('(?m)^' + [regex]::Escape($req.Key) + '[ \t]*=[ \t]*([^\r\n]*)')) {
         $val = $matches[1].Trim()
         if ([string]::IsNullOrWhiteSpace($val) -or $val -like "*$($req.Placeholder)*") {
             Write-Err "$root\.env : $($req.Key) is empty or still a placeholder - fill in a real value before continuing."
@@ -77,50 +78,24 @@ if ($needsSecrets) {
 }
 
 # ---------------------------------------------------------------------------
-# 2. Kill stray processes from a previous run that are still holding locks/ports
+# 2. Stop previous service listeners on this project's dedicated development ports.
 # ---------------------------------------------------------------------------
-Write-Step "Clearing stray processes from previous runs"
-
-# .NET: kill any dotnet.exe whose command line is THIS project's API (not VS Code's build
-# host or generic MSBuild node-reuse workers, which we must not touch).
-Get-CimInstance Win32_Process -Filter "Name='dotnet.exe'" |
-    Where-Object { $_.CommandLine -match "ShilpoHubBD\.Api" } |
-    ForEach-Object {
-        Write-Warn "Killing stale backend process PID $($_.ProcessId)"
-        Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
-    }
-
-# Python: kill any python.exe running uvicorn for main:app or product_main:app from this repo
-Get-CimInstance Win32_Process -Filter "Name='python.exe'" |
-    Where-Object { $_.CommandLine -match "uvicorn" -and ($_.CommandLine -match "main:app" -or $_.CommandLine -match "product_main:app") } |
-    ForEach-Object {
-        Write-Warn "Killing stale RAG process PID $($_.ProcessId)"
-        Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
-    }
-
-# Frontend: kill any stray vite dev server from this repo (avoids a silent port bump to 5174)
-Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
-    Where-Object { $_.CommandLine -match "vite" -and $_.CommandLine -match [regex]::Escape("$root\frontend") } |
-    ForEach-Object {
-        Write-Warn "Killing stale frontend process PID $($_.ProcessId)"
-        Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
-    }
-
-# Safety net: whatever's still LISTENING on our 4 ports gets removed too, but only if it's
-# one of our own runtimes (dotnet/node/python) - never touch an unrelated process.
+Write-Step 'Stopping services from previous runs'
 foreach ($port in 5065, 5173, 8000, 8001) {
-    Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue |
-        ForEach-Object {
-            $proc = Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue
-            if ($proc -and $proc.ProcessName -in @("dotnet", "node", "python")) {
-                Write-Warn "Killing process still listening on port $port ($($proc.ProcessName), PID $($proc.Id))"
-                Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
-            }
+    $listeners = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue |
+        Sort-Object OwningProcess -Unique
+    foreach ($listener in $listeners) {
+        $process = Get-Process -Id $listener.OwningProcess -ErrorAction SilentlyContinue
+        if ($process -and $process.ProcessName -in @('ShilpoHubBD.Api', 'dotnet', 'node', 'python')) {
+            Write-Warn "Stopping $($process.ProcessName) PID $($process.Id) on port $port"
+            Stop-Process -Id $process.Id -Force
+        } elseif ($process) {
+            throw "Port $port is used by unexpected process $($process.ProcessName) (PID $($process.Id))."
         }
+    }
 }
-
-Start-Sleep -Seconds 1
-Write-Ok "Stray processes cleared"
+Start-Sleep -Seconds 2
+Write-Ok 'Previous service listeners stopped'
 
 # ---------------------------------------------------------------------------
 # 3. Make sure dependencies are installed
@@ -129,78 +104,98 @@ Write-Step "Checking dependencies"
 
 if (-not (Test-Path "$root\frontend\node_modules")) {
     Write-Warn "frontend\node_modules missing - running npm install (this can take a few minutes)"
-    Push-Location "$root\frontend"; npm install; Pop-Location
+    Push-Location "$root\frontend"
+    try {
+        npm.cmd install
+        if ($LASTEXITCODE -ne 0) { throw "npm install failed." }
+    } finally {
+        Pop-Location
+    }
 } else {
     Write-Ok "frontend dependencies installed"
 }
 
-$ragVenvPython = "$root\rag\venv\Scripts\python.exe"
+$ragVenvPython = "$root\rag\.venv\Scripts\python.exe"
+if (-not (Test-Path $ragVenvPython) -and (Test-Path "$root\rag\venv\Scripts\python.exe")) {
+    $ragVenvPython = "$root\rag\venv\Scripts\python.exe"
+}
 if (-not (Test-Path $ragVenvPython)) {
-    Write-Warn "rag\venv missing - creating it and installing requirements (this can take a few minutes)"
-    Push-Location "$root\rag"
-    py -3.11 -m venv venv 2>$null
-    if (-not (Test-Path $ragVenvPython)) { python -m venv venv }
-    & "$root\rag\venv\Scripts\pip.exe" install -r requirements.txt
-    Pop-Location
+    Write-Warn "RAG environment missing - creating rag\.venv and installing requirements"
+    py -3.12 -m venv "$root\rag\.venv"
+    if ($LASTEXITCODE -ne 0) { throw "Creating the Python 3.12 environment failed." }
+    & $ragVenvPython -m pip install -r "$root\rag\requirements.txt"
+    if ($LASTEXITCODE -ne 0) { throw "Installing RAG requirements failed." }
 } else {
     Write-Ok "rag venv exists"
 }
 
 # ---------------------------------------------------------------------------
-# 4. Launch all 4 services, each in its own window
+# 4. Launch all 4 services in the background with separate logs
 # ---------------------------------------------------------------------------
 Write-Step "Starting services"
 
-Start-Process powershell -ArgumentList @(
-    "-NoExit", "-Command",
-    "cd '$root\backend'; Write-Host 'Backend API - http://localhost:5065/swagger' -ForegroundColor Cyan; dotnet run --project src/ShilpoHubBD.Api"
-)
-Write-Ok "Backend launching in its own window"
+$logDirectory = Join-Path $root '.run-logs'
+New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
 
-Start-Process powershell -ArgumentList @(
-    "-NoExit", "-Command",
-    "cd '$root\frontend'; Write-Host 'Frontend - http://localhost:5173' -ForegroundColor Cyan; npm run dev"
-)
-Write-Ok "Frontend launching in its own window"
+function Start-ServiceProcess($name, $directory, $command) {
+    $escapedDirectory = $directory.Replace("'", "''")
+    $script = "Set-Location -LiteralPath '$escapedDirectory'; $command"
+    $encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($script))
+    $process = Start-Process powershell.exe -WindowStyle Hidden -PassThru -ArgumentList @(
+        '-NoProfile', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', $encoded
+    ) -RedirectStandardOutput "$logDirectory\$name.stdout.log" -RedirectStandardError "$logDirectory\$name.stderr.log"
+    Write-Ok "$name launching (PID $($process.Id)); logs: $logDirectory\$name.*.log"
+}
 
-Start-Process powershell -ArgumentList @(
-    "-NoExit", "-Command",
-    "cd '$root\rag'; Write-Host 'Heritage RAG - http://localhost:8000/docs' -ForegroundColor Cyan; .\venv\Scripts\python.exe -m uvicorn main:app --port 8000"
-)
-Write-Ok "Heritage RAG launching in its own window"
-
-Start-Process powershell -ArgumentList @(
-    "-NoExit", "-Command",
-    "cd '$root\rag'; Write-Host 'Product Search RAG - http://localhost:8001/health' -ForegroundColor Cyan; .\venv\Scripts\python.exe -m uvicorn product_main:app --port 8001"
-)
-Write-Ok "Product Search RAG launching in its own window"
+$escapedPython = $ragVenvPython.Replace("'", "''")
+$apiProject = (Join-Path $root 'backend\src\ShilpoHubBD.Api').Replace("'", "''")
+Start-ServiceProcess 'backend' "$root\backend" "dotnet run --project '$apiProject' --launch-profile http"
+Start-ServiceProcess 'frontend' "$root\frontend" 'npm.cmd run dev -- --host 127.0.0.1 --port 5173 --strictPort'
+Start-ServiceProcess 'heritage-rag' "$root\rag" "& '$escapedPython' -m uvicorn main:app --host 127.0.0.1 --port 8000"
+Start-ServiceProcess 'product-rag' "$root\rag" "& '$escapedPython' -m uvicorn product_main:app --host 127.0.0.1 --port 8001"
 
 # ---------------------------------------------------------------------------
-# 5. Wait for each to actually respond
+# 5. Wait for each service to respond; report failures accurately.
 # ---------------------------------------------------------------------------
-Write-Step "Waiting for services to become healthy (up to 3 minutes each)"
+Write-Step 'Waiting for services (up to 3 minutes each)'
 
 function Wait-Healthy($name, $url, $timeoutSec = 180) {
-    $elapsed = 0
-    while ($elapsed -lt $timeoutSec) {
+    $timer = [Diagnostics.Stopwatch]::StartNew()
+    while ($timer.Elapsed.TotalSeconds -lt $timeoutSec) {
         try {
-            $resp = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
-            if ($resp.StatusCode -ge 200 -and $resp.StatusCode -lt 500) {
-                Write-Ok "$name is up ($url)"
+            $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
+            if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
+                if ($name -eq 'Heritage RAG') {
+                    $health = $response.Content | ConvertFrom-Json
+                    if (-not $health.ready) { throw 'Heritage RAG is still initializing.' }
+                }
+                if ($name -eq 'Product Search RAG') {
+                    $health = $response.Content | ConvertFrom-Json
+                    if ($health.status -ne 'ok') { throw 'Product Search RAG is still initializing.' }
+                }
+                Write-Ok "$name is ready ($url)"
                 return $true
             }
-        } catch { }
+        } catch {
+            # Allow startup to finish before retrying.
+        }
         Start-Sleep -Seconds 3
-        $elapsed += 3
     }
-    Write-Err "$name did not respond within $timeoutSec s - check its window for errors."
+    Write-Err "$name did not become ready within $timeoutSec seconds. Check $logDirectory."
     return $false
 }
 
-Wait-Healthy "Backend"             "http://localhost:5065/swagger/index.html"
-Wait-Healthy "Frontend"            "http://localhost:5173/"
-Wait-Healthy "Heritage RAG"        "http://localhost:8000/docs"
-Wait-Healthy "Product Search RAG"  "http://localhost:8001/health"
+$results = @(
+    (Wait-Healthy 'Backend' 'http://127.0.0.1:5065/swagger/index.html')
+    (Wait-Healthy 'Frontend' 'http://127.0.0.1:5173/')
+    (Wait-Healthy 'Heritage RAG' 'http://127.0.0.1:8000/health')
+    (Wait-Healthy 'Product Search RAG' 'http://127.0.0.1:8001/health')
+)
 
-Write-Host "`nAll set. Open http://localhost:5173 to use the app." -ForegroundColor Cyan
-Write-Host "Each service is running in its own window - close a window (or Ctrl+C in it) to stop that service."
+if ($results -contains $false) {
+    Write-Err "Some services failed to start. Check $logDirectory for details."
+    exit 1
+}
+
+Write-Host "`nAll four services are ready. Open http://localhost:5173 to use the app." -ForegroundColor Cyan
+Write-Host "Services run in the background. Logs: $logDirectory"

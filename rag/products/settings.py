@@ -35,6 +35,10 @@ QDRANT_PATH = None if QDRANT_URL else str(Path(os.getenv("PRODUCT_QDRANT_PATH") 
 API_URL = os.getenv("PRODUCT_INDEX_API_URL", "http://localhost:5065/api").rstrip("/")
 API_KEY = os.getenv("ProductIndex__ApiKey") or None
 
+# Product query analysis and attribute suggestions have their own generation
+# quota and do not need to share the Heritage RAG answer model.
+LLM_MODEL = os.getenv("PRODUCT_LLM_MODEL", "gemini-3.5-flash-lite").strip()
+
 BATCH_SIZE = int(os.getenv("PRODUCT_SYNC_BATCH", "25"))
 CHUNK_KINDS = ("overview", "story")
 

@@ -245,6 +245,7 @@ public static class DependencyInjection
         services.AddScoped<IFundingService, FundingService>();
         services.AddScoped<IGovReportService, GovReportService>();
         services.AddScoped<IGovForecastService, GovForecastService>();
+        services.AddScoped<IArtisanSupportService, ArtisanSupportService>();
 
         services.AddScoped<ILogisticsPartnerService, LogisticsPartnerService>();
         services.AddScoped<IUserProfileService, UserProfileService>();

@@ -144,7 +144,8 @@ public static class TourismLocationSeeder
 
         var districtByName = (await context.Districts.ToListAsync(cancellationToken))
             .ToDictionary(d => d.Name, d => d.Id, StringComparer.OrdinalIgnoreCase);
-        var existing = IndexLocations(await context.TourismLocations.Where(l => l.Source != "OpenStreetMap").ToListAsync(cancellationToken));
+        var existing = IndexLocations(await context.TourismLocations
+            .Where(l => l.Source != "OpenStreetMap").ToListAsync(cancellationToken));
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         var now = DateTime.UtcNow;
 

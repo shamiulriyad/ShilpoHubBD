@@ -150,6 +150,7 @@ public static class DependencyInjection
 		services.AddScoped<IComplianceRepository, ComplianceRepository>();
 		services.AddScoped<IFundingRepository, FundingRepository>();
 		services.AddScoped<IGovAnalyticsRepository, GovAnalyticsRepository>();
+		services.AddScoped<IArtisanSupportRepository, ArtisanSupportRepository>();
 
 		services.AddScoped<ILogisticsPartnerRepository, LogisticsPartnerRepository>();
 		services.AddScoped<IUserProfileRepository, UserProfileRepository>();

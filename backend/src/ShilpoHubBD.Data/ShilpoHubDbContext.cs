@@ -363,6 +363,11 @@ public partial class ShilpoHubDbContext : DbContext
 	public DbSet<AnalyticsExport> AnalyticsExports => Set<AnalyticsExport>();
 	public DbSet<GovForecast> GovForecasts => Set<GovForecast>();
 	public DbSet<GovForecastPoint> GovForecastPoints => Set<GovForecastPoint>();
+	public DbSet<SupportOrganizationProfile> SupportOrganizationProfiles => Set<SupportOrganizationProfile>();
+	public DbSet<ArtisanSupportCase> ArtisanSupportCases => Set<ArtisanSupportCase>();
+	public DbSet<ArtisanSupportEvidence> ArtisanSupportEvidence => Set<ArtisanSupportEvidence>();
+	public DbSet<ArtisanSupportMonitoring> ArtisanSupportMonitoringEntries => Set<ArtisanSupportMonitoring>();
+	public DbSet<ArtisanSupportReport> ArtisanSupportReports => Set<ArtisanSupportReport>();
 
 	public DbSet<LogisticsPartnerProfile> LogisticsPartnerProfiles => Set<LogisticsPartnerProfile>();
 	public DbSet<LogisticsServiceArea> LogisticsServiceAreas => Set<LogisticsServiceArea>();
