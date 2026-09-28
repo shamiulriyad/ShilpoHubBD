@@ -9,7 +9,6 @@ public enum TourismLocationType
     HeritageSite,
     Restaurant,
     Attraction,
-    // Appended (the column stores the name, not the number, so existing rows are unaffected).
     GuestHouse,
     Motel,
     Park,

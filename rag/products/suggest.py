@@ -12,8 +12,8 @@ from typing import Any, Dict, List, Optional
 
 from rag.prompts import invoke_llm, render      # existing helpers, used read-only
 
-import config
 from products.analysis import _FENCE, get_llm
+from products import settings as product_settings
 from products.vocab import Vocabulary
 
 PROMPT_PATH = Path(__file__).with_name("suggest_prompt.txt")
@@ -66,7 +66,9 @@ def suggest(product: Dict[str, Any], vocab: Vocabulary, llm=None) -> Dict[str, A
     prompt = render(
         PROMPT_PATH.read_text(encoding="utf-8"), product_types=_lines(vocab.product_types, True), materials=_lines(vocab.materials, True),
         name=field("name"), category=field("category"), district=field("district"), description=field("description"), story=field("story"))
-    reply = _FENCE.sub("", invoke_llm(llm or get_llm(), prompt, retries=1).strip())
+    # Allow the normal short retry plus one longer retry for minute-level
+    # throttling. Product generation uses its own model/quota in settings.
+    reply = _FENCE.sub("", invoke_llm(llm or get_llm(), prompt, retries=2).strip())
     start, end = reply.find("{"), reply.rfind("}")
     if start < 0 or end <= start:
         raise ValueError("the model did not return a JSON object")
@@ -74,4 +76,4 @@ def suggest(product: Dict[str, Any], vocab: Vocabulary, llm=None) -> Dict[str, A
 
 
 def model_name() -> str:
-    return config.LLM_MODEL
+    return product_settings.LLM_MODEL

@@ -27,9 +27,9 @@ if (builder.Environment.IsDevelopment())
 {
 	var envCandidates = new[]
 	{
-		Path.Combine(builder.Environment.ContentRootPath, ".env"),
-		Path.Combine(builder.Environment.ContentRootPath, "..", "..", ".env"),
 		Path.Combine(builder.Environment.ContentRootPath, "..", "..", "..", ".env"),
+		Path.Combine(builder.Environment.ContentRootPath, "..", "..", ".env"),
+		Path.Combine(builder.Environment.ContentRootPath, ".env"),
 	};
 
 	var envFile = envCandidates.FirstOrDefault(File.Exists);

@@ -125,6 +125,7 @@ import ProducerReturns from '../pages/Producer/Returns';
 import ProducerProcurements from '../pages/Producer/Procurements';
 import ProducerComplaints from '../pages/Producer/Complaints';
 import ProducerExpertise from '../pages/Producer/Expertise';
+import ProducerSupportCases from '../pages/Producer/SupportCases';
 import CustomerComplaints from '../pages/Customer/Complaints';
 import ProcurementInspections from '../pages/Admin/ProcurementInspections';
 import ProducerPartnershipAuctions from '../pages/Admin/ProducerPartnershipAuctions';
@@ -132,6 +133,7 @@ import AdminProducerPartnershipAgreements from '../pages/Admin/ProducerPartnersh
 import AdminProducerPartnershipSettlements from '../pages/Admin/ProducerPartnershipSettlements';
 import ProfileApprovals from '../pages/Admin/ProfileApprovals';
 import AdminExpertiseCertificates from '../pages/Admin/ExpertiseCertificates';
+import SupportOversight from '../pages/Admin/SupportOversight';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -198,6 +200,8 @@ import MyApprenticeships from '../pages/ApprenticeStudent/MyApprenticeships';
 import BrowsePrograms from '../pages/ApprenticeStudent/BrowsePrograms';
 import ApprenticeStudentPage from '../pages/ApprenticeStudent/ApprenticeStudentPage';
 import GovernmentPage from '../pages/Government/GovernmentPage';
+import OrganizationProfile from '../pages/Government/OrganizationProfile';
+import ArtisanSupportCases from '../pages/Government/ArtisanSupportCases';
 import GovReportsForecasts from '../pages/Government/GovReportsForecasts';
 import PolicyCompliance from '../pages/Government/PolicyCompliance';
 import ComplaintsMonitoring from '../pages/Government/ComplaintsMonitoring';
@@ -431,6 +435,8 @@ const router = createBrowserRouter([
             element: <DashboardLayout navItems={governmentNgoSidebarNav} sidebarTitle="Government & NGO" />,
             children: [
               { path: routePaths.government, element: <GovernmentPage /> },
+              { path: routePaths.governmentOrganizationProfile, element: <OrganizationProfile /> },
+              { path: routePaths.governmentArtisanSupport, element: <ArtisanSupportCases /> },
               { path: routePaths.governmentReportsForecasts, element: <GovReportsForecasts /> },
               { path: routePaths.governmentPolicyCompliance, element: <PolicyCompliance /> },
               { path: routePaths.governmentComplaintsMonitoring, element: <ComplaintsMonitoring /> },
@@ -458,6 +464,7 @@ const router = createBrowserRouter([
               { path: routePaths.adminProducerPartnershipSettlements, element: <AdminProducerPartnershipSettlements /> },
               { path: routePaths.adminProfileApprovals, element: <ProfileApprovals /> },
               { path: routePaths.adminExpertiseCertificates, element: <AdminExpertiseCertificates /> },
+              { path: routePaths.adminSupportOversight, element: <SupportOversight /> },
               { path: "/admin/:section/:view", element: <AdminWorkspace /> },
               { path: "/admin/:section", element: <AdminWorkspace /> },
             ],
@@ -536,6 +543,7 @@ const router = createBrowserRouter([
           { path: routePaths.producerProcurements, element: <ProducerProcurements /> },
           { path: routePaths.producerComplaints, element: <ProducerComplaints /> },
           { path: routePaths.producerExpertise, element: <ProducerExpertise /> },
+          { path: routePaths.producerSupportCases, element: <ProducerSupportCases /> },
           { path: routePaths.producerAuctions, element: <ProducerAuctions /> },
           { path: routePaths.producerSustainability, element: <ProducerSustainability /> },
           { path: routePaths.producerLiveShopping, element: <ProducerLiveShoppingManager /> },

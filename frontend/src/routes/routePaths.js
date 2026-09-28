@@ -156,6 +156,7 @@ export const routePaths = {
   producerProcurements: '/producer/procurements',
   producerComplaints: '/producer/complaints',
   producerExpertise: '/producer/expertise',
+  producerSupportCases: '/producer/support-cases',
 
   // Business Partner dashboard (backend role: BusinessPartner)
   businessPartner: '/business-partner',
@@ -207,6 +208,8 @@ export const routePaths = {
   governmentFunding: '/government/funding',
   governmentKnowledgeGraph: '/government/knowledge-graph',
   governmentHeritageDatabase: '/government/heritage-database',
+  governmentOrganizationProfile: '/government/organization-profile',
+  governmentArtisanSupport: '/government/artisan-support',
   ngo: '/ngo',
   researcher: '/researcher',
   logisticsPartner: '/logistics-partner',
@@ -227,6 +230,7 @@ export const routePaths = {
   adminProcurementInspections: '/admin/procurement-inspections',
   adminProfileApprovals: '/admin/profile-approvals',
   adminExpertiseCertificates: '/admin/expertise-certificates',
+  adminSupportOversight: '/admin/artisan-support',
   adminProducerPartnershipAuctions: '/admin/producer-partnership-auctions',
   adminProducerPartnershipAgreements: '/admin/producer-partnership-agreements',
   adminProducerPartnershipSettlements: '/admin/producer-partnership-settlements',

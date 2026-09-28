@@ -7,5 +7,5 @@ public class RagServiceOptions
     // A separate, isolated Qdrant collection/Knowledge Base for the Tourist AI Travel Planner --
     // never shares data with the general Heritage Assistant's `Collection` above.
     public string TravelPlannerCollection { get; set; } = "travel-planner";
-    public int TimeoutSeconds { get; set; } = 30;
+    public int TimeoutSeconds { get; set; } = 180;
 }

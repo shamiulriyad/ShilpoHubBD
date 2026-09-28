@@ -12,6 +12,7 @@ using ShilpoHubBD.Domain.Entities.CustomOrders;
 using ShilpoHubBD.Domain.Entities.Community;
 using ShilpoHubBD.Domain.Entities.Procurement;
 using ShilpoHubBD.Domain.Entities.Certificate;
+using ShilpoHubBD.Domain.Entities.Governance;
 
 namespace ShilpoHubBD.Data;
 
@@ -49,6 +50,33 @@ public partial class ShilpoHubDbContext
             if (entry.Entity is UserNotification) continue;
             if (entry.Metadata.ClrType.Name.EndsWith("Event", StringComparison.Ordinal)) continue;
             var added = entry.State == EntityState.Added;
+            if (entry.Entity is SupportOrganizationProfile organization && organization.Status == OrganizationVerificationStatus.Pending
+                && (added || entry.Property(nameof(SupportOrganizationProfile.Status)).IsModified))
+            {
+                var admins = await UserRoles.Where(r => r.Role.Name == "SuperAdmin").Select(r => r.UserId).ToListAsync(ct);
+                foreach (var admin in admins) Add(admin, "Organization awaiting verification", $"{organization.OrganizationName} submitted registration details for review.", "Approvals", "/admin/artisan-support");
+                continue;
+            }
+            if (entry.Entity is ArtisanSupportCase supportCase)
+            {
+                if (added)
+                {
+                    var admins = await UserRoles.Where(r => r.Role.Name == "SuperAdmin").Select(r => r.UserId).ToListAsync(ct);
+                    foreach (var admin in admins) Add(admin, "New artisan support case", $"{supportCase.CaseNumber} requires oversight.", "Artisan support", "/admin/artisan-support");
+                    if (supportCase.OrganizationUserId is Guid owner) Add(owner, "Artisan case created", $"{supportCase.CaseNumber} is ready for field work.", "Artisan support", "/government/artisan-support");
+                }
+                else if (entry.Property(nameof(ArtisanSupportCase.Status)).IsModified)
+                {
+                    Add(supportCase.ArtisanUserId, "Support case updated", $"{supportCase.CaseNumber} is now {Words(supportCase.Status.ToString()).ToLowerInvariant()}.", "Artisan support", "/producer/support-cases");
+                    if (supportCase.OrganizationUserId is Guid owner) Add(owner, "Support case updated", $"{supportCase.CaseNumber} is now {Words(supportCase.Status.ToString()).ToLowerInvariant()}.", "Artisan support", "/government/artisan-support");
+                    if (supportCase.HasDispute || supportCase.IsFlagged || supportCase.Status == ArtisanSupportCaseStatus.ReportSubmitted)
+                    {
+                        var admins = await UserRoles.Where(r => r.Role.Name == "SuperAdmin").Select(r => r.UserId).ToListAsync(ct);
+                        foreach (var admin in admins) Add(admin, supportCase.HasDispute ? "Artisan support dispute" : supportCase.IsFlagged ? "Artisan support case flagged" : "Final support report submitted", $"Review {supportCase.CaseNumber}.", "Artisan support", "/admin/artisan-support");
+                    }
+                }
+                continue;
+            }
             if (entry.Entity is Message message && added)
             {
                 var recipients = await ConversationParticipants.Where(p => p.ConversationId == message.ConversationId && p.UserId != message.SenderId)
