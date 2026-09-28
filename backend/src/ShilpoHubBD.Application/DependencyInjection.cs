@@ -122,8 +122,6 @@ public static class DependencyInjection
 
         services.AddScoped<IGiftRecommendationService, GiftRecommendationService>();
         services.AddScoped<IFashionMatchingService, FashionMatchingService>();
-        services.AddScoped<IInteriorPreviewService, InteriorPreviewService>();
-        services.AddScoped<ITranslationService, TranslationService>();
 
         services.AddScoped<IPassportService, PassportService>();
 

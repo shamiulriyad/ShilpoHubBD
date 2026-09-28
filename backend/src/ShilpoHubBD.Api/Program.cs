@@ -18,6 +18,7 @@ using ShilpoHubBD.Data;
 using ShilpoHubBD.Data.Seed;
 using ShilpoHubBD.Domain.Constants;
 using ShilpoHubBD.Infrastructure;
+using ShilpoHubBD.Infrastructure.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +81,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.Configure<ImageStorageOptions>(o =>
+	o.WebRootPath = builder.Environment.WebRootPath ?? Path.Combine(builder.Environment.ContentRootPath, "wwwroot"));
 
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IMessageNotifier, SignalRMessageNotifier>();
