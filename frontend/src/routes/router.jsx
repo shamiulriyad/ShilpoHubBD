@@ -22,6 +22,7 @@ import ProducerDashboard from '../pages/Producer/ProducerDashboard';
 import ProducerContracts from '../pages/Producer/Contracts';
 import ProducerQuotations from '../pages/Producer/Quotations';
 import ProducerManufacturingPartnerships from '../pages/Producer/ManufacturingPartnerships';
+import ProducerPartnershipAgreements from '../pages/Producer/PartnershipAgreements';
 import ProducerDesignCollaborations from '../pages/Producer/DesignCollaborations';
 import ProducerProductDevelopment from '../pages/Producer/ProductDevelopment';
 import ProducerCsrSponsorship from '../pages/Producer/CsrSponsorship';
@@ -47,6 +48,9 @@ import BusinessPartnerInvestmentMarketplace from '../pages/BusinessPartner/Inves
 import BusinessPartnerSupplierDiscovery from '../pages/BusinessPartner/SupplierDiscovery';
 import BusinessPartnerSupplierMatching from '../pages/BusinessPartner/SupplierMatching';
 import BusinessPartnerProducerComparison from '../pages/BusinessPartner/ProducerComparison';
+import BusinessPartnerPartnershipAuctions from '../pages/BusinessPartner/PartnershipAuctions';
+import BusinessPartnerPartnershipAgreements from '../pages/BusinessPartner/PartnershipAgreements';
+import BusinessPartnerProductIntelligence from '../pages/BusinessPartner/ProductIntelligence';
 import BusinessPartnerAnalytics from '../pages/BusinessPartner/Analytics';
 import BusinessPartnerAiIntelligence from '../pages/BusinessPartner/AiIntelligence';
 
@@ -123,6 +127,9 @@ import ProducerComplaints from '../pages/Producer/Complaints';
 import ProducerExpertise from '../pages/Producer/Expertise';
 import CustomerComplaints from '../pages/Customer/Complaints';
 import ProcurementInspections from '../pages/Admin/ProcurementInspections';
+import ProducerPartnershipAuctions from '../pages/Admin/ProducerPartnershipAuctions';
+import AdminProducerPartnershipAgreements from '../pages/Admin/ProducerPartnershipAgreements';
+import AdminProducerPartnershipSettlements from '../pages/Admin/ProducerPartnershipSettlements';
 import ProfileApprovals from '../pages/Admin/ProfileApprovals';
 import AdminExpertiseCertificates from '../pages/Admin/ExpertiseCertificates';
 import Publications from '../pages/Research/Publications';
@@ -446,6 +453,9 @@ const router = createBrowserRouter([
               { path: routePaths.adminHeritage, element: <AdminWorkspace section="heritage" /> },
               { path: routePaths.adminMarketplace, element: <AdminWorkspace section="marketplace" /> },
               { path: routePaths.adminProcurementInspections, element: <ProcurementInspections /> },
+              { path: routePaths.adminProducerPartnershipAuctions, element: <ProducerPartnershipAuctions /> },
+              { path: routePaths.adminProducerPartnershipAgreements, element: <AdminProducerPartnershipAgreements /> },
+              { path: routePaths.adminProducerPartnershipSettlements, element: <AdminProducerPartnershipSettlements /> },
               { path: routePaths.adminProfileApprovals, element: <ProfileApprovals /> },
               { path: routePaths.adminExpertiseCertificates, element: <AdminExpertiseCertificates /> },
               { path: "/admin/:section/:view", element: <AdminWorkspace /> },
@@ -510,6 +520,7 @@ const router = createBrowserRouter([
           { path: routePaths.producerContracts, element: <ProducerContracts /> },
           { path: routePaths.producerQuotations, element: <ProducerQuotations /> },
           { path: routePaths.producerPartnerships, element: <ProducerManufacturingPartnerships /> },
+          { path: routePaths.producerPartnershipAgreements, element: <ProducerPartnershipAgreements /> },
           { path: routePaths.producerDesignCollaborations, element: <ProducerDesignCollaborations /> },
           { path: routePaths.producerProductDevelopment, element: <ProducerProductDevelopment /> },
           { path: routePaths.producerCsr, element: <ProducerCsrSponsorship /> },
@@ -551,6 +562,9 @@ const router = createBrowserRouter([
           { path: routePaths.businessPartnerSupplierDiscovery, element: <BusinessPartnerSupplierDiscovery /> },
           { path: routePaths.businessPartnerSupplierMatching, element: <BusinessPartnerSupplierMatching /> },
           { path: routePaths.businessPartnerProducerComparison, element: <BusinessPartnerProducerComparison /> },
+          { path: routePaths.businessPartnerPartnershipAuctions, element: <BusinessPartnerPartnershipAuctions /> },
+          { path: routePaths.businessPartnerPartnershipAgreements, element: <BusinessPartnerPartnershipAgreements /> },
+          { path: routePaths.businessPartnerProductIntelligence, element: <BusinessPartnerProductIntelligence /> },
           { path: routePaths.businessPartnerAnalytics, element: <BusinessPartnerAnalytics /> },
           { path: routePaths.businessPartnerAiIntelligence, element: <BusinessPartnerAiIntelligence /> },
         ],

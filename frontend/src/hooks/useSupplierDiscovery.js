@@ -12,3 +12,11 @@ export function useSupplierProfile(producerId) {
     enabled: Boolean(producerId),
   });
 }
+
+export function useSupplierBusinessProfile(producerId) {
+  return useQuery({
+    queryKey: ['supplier-discovery', 'producer', producerId, 'business-profile'],
+    queryFn: () => supplierDiscoveryService.getBusinessProfile(producerId),
+    enabled: Boolean(producerId),
+  });
+}
