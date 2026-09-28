@@ -42,7 +42,7 @@ function SearchContent({ inputRef, navItems, onClose }) {
   const searchPath = activeRole === 'Customer' ? routePaths.customerMarketplace : routePaths.marketplaceProducts;
   return <div>
     <form className="global-search-input" role="search" onSubmit={event=>{event.preventDefault();navigate(`${searchPath}?search=${encodeURIComponent(value.trim())}`);onClose();}}><NavigationIcon label="Search"/><input ref={inputRef} aria-label="Global search" placeholder="Search products or find a page…" value={value} onChange={event=>setValue(event.target.value)}/><button type="button" onClick={onClose} aria-label="Close search">Esc</button></form>
-    <div className="global-search-results"><p className="menu-eyebrow">{value ? 'Matching pages' : 'Quick navigation'}</p>{links.map(item=><Link key={item.path} to={item.path} onClick={onClose} className="search-result"><NavigationIcon label={item.label}/><span>{item.label}</span><span aria-hidden="true">↗</span></Link>)}
+    <div className="global-search-results"><p className="menu-eyebrow">{value ? 'Matching pages' : 'Quick navigation'}</p>{links.map(item=><Link key={`${item.path}-${item.label}`} to={item.path} onClick={onClose} className="search-result"><NavigationIcon label={item.label}/><span>{item.label}</span><span aria-hidden="true">↗</span></Link>)}
       {value && !links.length && <p className="px-3 py-3 text-sm text-muted">No matching workspace pages.</p>}
       {query.length>=2 && <ProductResults query={query} productPath={productPath} onClose={onClose}/>}
     </div><div className="search-footer">Find a page by name, or search the product collection.<span>Enter to view all products</span></div>
