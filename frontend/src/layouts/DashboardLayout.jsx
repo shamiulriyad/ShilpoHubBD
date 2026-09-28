@@ -67,7 +67,7 @@ export default function DashboardLayout({ navItems, sidebarTitle }) {
         </Link>
         <GlobalSearch navItems={items}/>
         <div className="topbar-actions">
-          <HelplineChip />
+          {activeRole !== 'SuperAdmin' && <HelplineChip />}
           <NotificationBell />
           <LanguageMenu/>
           <ProfileDropdown />
