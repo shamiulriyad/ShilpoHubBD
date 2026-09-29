@@ -1996,7 +1996,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `UserProfileService` | Service | `Application/Services/Profiles/UserProfileService.cs` | `Services/UserProfileServiceTests.cs` |  |
+| ✅ | `UserProfileService` | Service | `Application/Services/Profiles/UserProfileService.cs` | `Services/UserProfileServiceTests.cs` |  |
 | ☐ | `UpsertUserProfileRequestValidator` | Validator | `Application/Validators/Profiles/UpsertUserProfileRequestValidator.cs` | `Validators/UpsertUserProfileRequestValidatorTests.cs` |  |
 | ☐ | `UserProfileRepository` | Repository | `Data/Repositories/UserProfileRepository.cs` | `Repositories/UserProfileRepositoryTests.cs` | needs the test database |
 | ☐ | `ProfileController` | Controller | `Api/Controllers/ProfileController.cs` | `Controllers/ProfileControllerTests.cs` |  |
