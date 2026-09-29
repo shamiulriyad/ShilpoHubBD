@@ -12,6 +12,8 @@ public class LogisticsPartnerProfileConfiguration : IEntityTypeConfiguration<Log
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.CompanyName).IsRequired().HasMaxLength(200);
+        builder.Property(p => p.LogoUrl).HasMaxLength(1000);
+        builder.Property(p => p.Description).HasMaxLength(4000);
         builder.Property(p => p.LegalName).HasMaxLength(200);
         builder.Property(p => p.RegistrationNumber).HasMaxLength(100);
         builder.Property(p => p.ContactPersonName).IsRequired().HasMaxLength(160);
@@ -62,9 +64,12 @@ public class LogisticsServiceAreaConfiguration : IEntityTypeConfiguration<Logist
 
         builder.Property(a => a.DistrictName).IsRequired().HasMaxLength(120);
         builder.Property(a => a.Division).IsRequired().HasMaxLength(120);
+        builder.Property(a => a.AreaName).HasMaxLength(160);
+        builder.Property(a => a.DeliveryMethod).IsRequired().HasMaxLength(80);
         builder.Property(a => a.SurchargeAmount).HasColumnType("numeric(12,2)");
+        builder.Property(a => a.DeliveryCharge).HasColumnType("numeric(12,2)");
 
-        builder.HasIndex(a => new { a.LogisticsPartnerProfileId, a.DistrictId }).IsUnique();
+        builder.HasIndex(a => new { a.LogisticsPartnerProfileId, a.DistrictId, a.AreaName, a.DeliveryMethod }).IsUnique();
         builder.HasIndex(a => a.DistrictId);
 
         builder.HasOne(a => a.District)
