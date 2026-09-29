@@ -31,6 +31,7 @@ using ShilpoHubBD.Domain.Entities.Logistics;
 using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
+using ShilpoHubBD.Domain.Entities.ProducerBusiness;
 using ShilpoHubBD.Domain.Entities.ProducerPartnership;
 using ShilpoHubBD.Domain.Entities.Marketplace;
 using ShilpoHubBD.Domain.Entities.Mentorship;
@@ -212,6 +213,10 @@ public partial class ShilpoHubDbContext : DbContext
 	public DbSet<ProducerPartnershipAuctionParticipant> ProducerPartnershipAuctionParticipants => Set<ProducerPartnershipAuctionParticipant>();
 	public DbSet<ProducerPartnershipSettlement> ProducerPartnershipSettlements => Set<ProducerPartnershipSettlement>();
 
+	public DbSet<ProducerMonthlyReport> ProducerMonthlyReports => Set<ProducerMonthlyReport>();
+
+	public DbSet<ProducerMonthlyReportShare> ProducerMonthlyReportShares => Set<ProducerMonthlyReportShare>();
+
 	public DbSet<DesignCollaborationProject> DesignCollaborationProjects => Set<DesignCollaborationProject>();
 	public DbSet<DesignFile> DesignFiles => Set<DesignFile>();
 	public DbSet<DesignComment> DesignComments => Set<DesignComment>();
@@ -368,6 +373,10 @@ public partial class ShilpoHubDbContext : DbContext
 	public DbSet<ArtisanSupportEvidence> ArtisanSupportEvidence => Set<ArtisanSupportEvidence>();
 	public DbSet<ArtisanSupportMonitoring> ArtisanSupportMonitoringEntries => Set<ArtisanSupportMonitoring>();
 	public DbSet<ArtisanSupportReport> ArtisanSupportReports => Set<ArtisanSupportReport>();
+	public DbSet<ArtisanSupportImpactAssessment> ArtisanSupportImpactAssessments => Set<ArtisanSupportImpactAssessment>();
+	public DbSet<ArtisanSupportImpactMetric> ArtisanSupportImpactMetrics => Set<ArtisanSupportImpactMetric>();
+	public DbSet<ProducerImpactAIAnalysis> ProducerImpactAIAnalyses => Set<ProducerImpactAIAnalysis>();
+	public DbSet<ProducerImpactAIFinding> ProducerImpactAIFindings => Set<ProducerImpactAIFinding>();
 
 	public DbSet<LogisticsPartnerProfile> LogisticsPartnerProfiles => Set<LogisticsPartnerProfile>();
 	public DbSet<LogisticsServiceArea> LogisticsServiceAreas => Set<LogisticsServiceArea>();
