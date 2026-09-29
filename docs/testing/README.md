@@ -540,7 +540,7 @@ Contains: 1 service, 2 validators, 1 repository, 1 controller.
 | ✅ | `AchievementService` | Service | `Application/Services/Achievement/AchievementService.cs` | `Services/AchievementServiceTests.cs` |  |
 | ✅ | `AwardXpRequestValidator` | Validator | `Application/Validators/Achievement/AwardXpRequestValidator.cs` | `Validators/AwardXpRequestValidatorTests.cs` |  |
 | ✅ | `CreateAchievementRequestValidator` | Validator | `Application/Validators/Achievement/CreateAchievementRequestValidator.cs` | `Validators/CreateAchievementRequestValidatorTests.cs` |  |
-| ☐ | `AchievementRepository` | Repository | `Data/Repositories/AchievementRepository.cs` | `Repositories/AchievementRepositoryTests.cs` | needs the test database |
+| ✅ | `AchievementRepository` | Repository | `Data/Repositories/AchievementRepository.cs` | `Repositories/AchievementRepositoryTests.cs` | needs the test database |
 | ☐ | `AchievementsController` | Controller | `Api/Controllers/AchievementsController.cs` | `Controllers/AchievementsControllerTests.cs` |  |
 
 <a id="be-admin"></a>
