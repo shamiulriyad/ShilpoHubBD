@@ -2,6 +2,9 @@ namespace ShilpoHubBD.Application.DTOs.Learning;
 
 public class EnrollmentListItemDto
 {
+    public string AttendanceMode { get; set; } = "Online";
+    public decimal FeeAmount { get; set; }
+    public string PaymentStatus { get; set; } = "Free";
     public Guid Id { get; set; }
     public Guid CourseId { get; set; }
     public string CourseTitle { get; set; } = string.Empty;
