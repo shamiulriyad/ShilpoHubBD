@@ -747,7 +747,7 @@ Contains: 2 services, 9 validators, 3 infrastructure classes, 4 repositories, 2 
 | ✅ | `AssignRoleRequestValidator` | Validator | `Application/Validators/Roles/AssignRoleRequestValidator.cs` | `Validators/AssignRoleRequestValidatorTests.cs` |  |
 | ✅ | `ForgotPasswordRequestValidator` | Validator | `Application/Validators/Auth/ForgotPasswordRequestValidator.cs` | `Validators/ForgotPasswordRequestValidatorTests.cs` |  |
 | ✅ | `LoginRequestValidator` | Validator | `Application/Validators/Auth/LoginRequestValidator.cs` | `Validators/LoginRequestValidatorTests.cs` |  |
-| ☐ | `LogoutRequestValidator` | Validator | `Application/Validators/Auth/LogoutRequestValidator.cs` | `Validators/LogoutRequestValidatorTests.cs` |  |
+| ✅ | `LogoutRequestValidator` | Validator | `Application/Validators/Auth/LogoutRequestValidator.cs` | `Validators/LogoutRequestValidatorTests.cs` |  |
 | ☐ | `RefreshTokenRequestValidator` | Validator | `Application/Validators/Auth/RefreshTokenRequestValidator.cs` | `Validators/RefreshTokenRequestValidatorTests.cs` |  |
 | ☐ | `RegisterRequestValidator` | Validator | `Application/Validators/Auth/RegisterRequestValidator.cs` | `Validators/RegisterRequestValidatorTests.cs` |  |
 | ☐ | `RemoveRoleRequestValidator` | Validator | `Application/Validators/Roles/RemoveRoleRequestValidator.cs` | `Validators/RemoveRoleRequestValidatorTests.cs` |  |
