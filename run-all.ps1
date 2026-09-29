@@ -149,7 +149,8 @@ function Start-ServiceProcess($name, $directory, $command) {
 
 $escapedPython = $ragVenvPython.Replace("'", "''")
 $apiProject = (Join-Path $root 'backend\src\ShilpoHubBD.Api').Replace("'", "''")
-Start-ServiceProcess 'backend' "$root\backend" "dotnet run --project '$apiProject' --launch-profile http"
+# Keep the running API separate from normal Debug/Release build output.
+Start-ServiceProcess 'backend' "$root\backend" "dotnet run --project '$apiProject' --configuration Development --launch-profile http"
 Start-ServiceProcess 'frontend' "$root\frontend" 'npm.cmd run dev -- --host 127.0.0.1 --port 5173 --strictPort'
 Start-ServiceProcess 'heritage-rag' "$root\rag" "& '$escapedPython' -m uvicorn main:app --host 127.0.0.1 --port 8000"
 Start-ServiceProcess 'product-rag' "$root\rag" "& '$escapedPython' -m uvicorn product_main:app --host 127.0.0.1 --port 8001"
