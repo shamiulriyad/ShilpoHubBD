@@ -549,7 +549,7 @@ Contains: 3 services, 4 validators, 3 repositories, 3 controllers.
 | ✅ | `SubmitIdentityVerificationRequestValidator` | Validator | `Application/Validators/Admin/IdentityVerificationValidators.cs` | `Validators/SubmitIdentityVerificationRequestValidatorTests.cs` |  |
 | ✅ | `SyncRolePermissionsRequestValidator` | Validator | `Application/Validators/Admin/PermissionValidators.cs` | `Validators/SyncRolePermissionsRequestValidatorTests.cs` |  |
 | ✅ | `AdminUserRepository` | Repository | `Data/Repositories/AdminUserRepository.cs` | `Repositories/AdminUserRepositoryTests.cs` | needs the test database |
-| ☐ | `IdentityVerificationRepository` | Repository | `Data/Repositories/IdentityVerificationRepository.cs` | `Repositories/IdentityVerificationRepositoryTests.cs` | needs the test database |
+| ✅ | `IdentityVerificationRepository` | Repository | `Data/Repositories/IdentityVerificationRepository.cs` | `Repositories/IdentityVerificationRepositoryTests.cs` | needs the test database |
 | ☐ | `PermissionRepository` | Repository | `Data/Repositories/PermissionRepository.cs` | `Repositories/PermissionRepositoryTests.cs` | needs the test database |
 | ☐ | `AdminUsersController` | Controller | `Api/Controllers/AdminUsersController.cs` | `Controllers/AdminUsersControllerTests.cs` |  |
 | ☐ | `IdentityVerificationsController` | Controller | `Api/Controllers/IdentityVerificationsController.cs` | `Controllers/IdentityVerificationsControllerTests.cs` |  |
