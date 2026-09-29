@@ -2022,7 +2022,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `QRVerificationService` | Service | `Application/Services/QRVerification/QRVerificationService.cs` | `Services/QRVerificationServiceTests.cs` |  |
+| ✅ | `QRVerificationService` | Service | `Application/Services/QRVerification/QRVerificationService.cs` | `Services/QRVerificationServiceTests.cs` |  |
 | ☐ | `GenerateQRCodeRequestValidator` | Validator | `Application/Validators/QRVerification/GenerateQRCodeRequestValidator.cs` | `Validators/GenerateQRCodeRequestValidatorTests.cs` |  |
 | ☐ | `QRVerificationQueryParametersValidator` | Validator | `Application/Validators/QRVerification/QRVerificationQueryParametersValidator.cs` | `Validators/QRVerificationQueryParametersValidatorTests.cs` |  |
 | ☐ | `VerifyQRRequestValidator` | Validator | `Application/Validators/QRVerification/VerifyQRRequestValidator.cs` | `Validators/VerifyQRRequestValidatorTests.cs` |  |
