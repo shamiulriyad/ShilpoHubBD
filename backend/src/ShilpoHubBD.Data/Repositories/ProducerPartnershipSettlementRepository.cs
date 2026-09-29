@@ -68,6 +68,22 @@ public class ProducerPartnershipSettlementRepository : IProducerPartnershipSettl
     public Task SaveChangesAsync(CancellationToken cancellationToken)
         => _context.SaveChangesAsync(cancellationToken);
 
+    public async Task<PlatformRevenueSummaryDto> GetApprovedTotalsAsync(CancellationToken cancellationToken)
+    {
+        var approved = await _context.ProducerPartnershipSettlements
+            .Where(s => s.Status == ProducerPartnershipSettlementStatus.Approved)
+            .Select(s => new { s.PlatformFeeAmount, s.GrossRevenue, s.NetPartnershipRevenue })
+            .ToListAsync(cancellationToken);
+
+        return new PlatformRevenueSummaryDto
+        {
+            TotalPlatformFee = approved.Sum(s => s.PlatformFeeAmount),
+            TotalGrossRevenue = approved.Sum(s => s.GrossRevenue),
+            TotalNetPartnershipRevenue = approved.Sum(s => s.NetPartnershipRevenue),
+            ApprovedSettlementCount = approved.Count,
+        };
+    }
+
     public async Task<decimal> GetRefundDeductionsAsync(Guid producerId, DateTime periodStart, DateTime periodEnd, CancellationToken cancellationToken)
     {
         var returnItems = await _context.Set<ReturnItem>()
