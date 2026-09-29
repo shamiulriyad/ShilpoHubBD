@@ -1748,7 +1748,7 @@ Contains: 1 DbContext (notifications), 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `ShilpoHubDbContext.Notifications` | DbContext (notifications) | `Data/ShilpoHubDbContext.Notifications.cs` | `Data/ShilpoHubDbContextNotificationsTests.cs` | partly tested by `backend/tests/NotificationsRegression`; notification rows created on SaveChanges |
+| ✅ | `ShilpoHubDbContext.Notifications` | DbContext (notifications) | `Data/ShilpoHubDbContext.Notifications.cs` | `Data/ShilpoHubDbContextNotificationsTests.cs` | partly tested by `backend/tests/NotificationsRegression`; notification rows created on SaveChanges |
 | ☐ | `NotificationsController` | Controller | `Api/Controllers/NotificationsController.cs` | `Controllers/NotificationsControllerTests.cs` | queries ShilpoHubDbContext directly (Postgres ILike): needs the test database |
 
 <a id="be-passport"></a>
