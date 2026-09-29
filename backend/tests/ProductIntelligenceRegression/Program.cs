@@ -186,6 +186,7 @@ class FakeProducerOrderRepository : IProducerOrderRepository
 
 class FakeReviewRepository : IReviewRepository
 {
+    public Task<(double AverageRating, int ReviewCount)> GetAggregateByProducerAsync(Guid producerId, DateTime start, DateTime end, CancellationToken ct) => throw new NotSupportedException("Producer-period aggregation is outside this fixture.");
     private readonly List<Review> _reviews = new();
     public void AddReviews(Guid productId, params DateTime[] createdAts)
     {
