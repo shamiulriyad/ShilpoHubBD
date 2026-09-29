@@ -753,7 +753,7 @@ Contains: 2 services, 9 validators, 3 infrastructure classes, 4 repositories, 2 
 | ✅ | `RemoveRoleRequestValidator` | Validator | `Application/Validators/Roles/RemoveRoleRequestValidator.cs` | `Validators/RemoveRoleRequestValidatorTests.cs` |  |
 | ✅ | `ResetPasswordRequestValidator` | Validator | `Application/Validators/Auth/ResetPasswordRequestValidator.cs` | `Validators/ResetPasswordRequestValidatorTests.cs` |  |
 | ✅ | `SwitchRoleRequestValidator` | Validator | `Application/Validators/Auth/SwitchRoleRequestValidator.cs` | `Validators/SwitchRoleRequestValidatorTests.cs` |  |
-| ☐ | `BCryptPasswordHasher` | Infrastructure | `Infrastructure/Security/BCryptPasswordHasher.cs` | `Infrastructure/BCryptPasswordHasherTests.cs` |  |
+| ✅ | `BCryptPasswordHasher` | Infrastructure | `Infrastructure/Security/BCryptPasswordHasher.cs` | `Infrastructure/BCryptPasswordHasherTests.cs` |  |
 | ☐ | `ConsoleEmailSender` | Infrastructure | `Infrastructure/Email/ConsoleEmailSender.cs` | `Infrastructure/ConsoleEmailSenderTests.cs` |  |
 | ☐ | `JwtTokenService` | Infrastructure | `Infrastructure/Security/JwtTokenService.cs` | `Infrastructure/JwtTokenServiceTests.cs` |  |
 | ☐ | `PasswordResetTokenRepository` | Repository | `Data/Repositories/PasswordResetTokenRepository.cs` | `Repositories/PasswordResetTokenRepositoryTests.cs` | needs the test database |
