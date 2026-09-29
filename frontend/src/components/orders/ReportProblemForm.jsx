@@ -1,3 +1,4 @@
+import SafeImage from '../media/SafeImage';
 import { useState } from 'react';
 import { Button } from '../ui';
 import MutationFeedback from '../ui/MutationFeedback';
@@ -36,7 +37,7 @@ export default function ReportProblemForm({ orderId, productId, productName }) {
       <textarea aria-label="Details" required rows={3} maxLength={2000} placeholder="Describe the problem" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm" />
       {image && (
         <div className="flex items-center gap-2">
-          <img src={resolveUploadUrl(image)} alt="Attached" className="h-14 w-14 rounded-md object-cover" />
+          <SafeImage src={resolveUploadUrl(image)} alt="Attached" className="h-14 w-14 rounded-md object-cover" />
           <button type="button" onClick={() => setImage('')} className="text-xs text-danger hover:underline">Remove picture</button>
         </div>
       )}
