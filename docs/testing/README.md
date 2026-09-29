@@ -430,6 +430,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Certificates](#be-certificates) | Backend | 3 / 3 | 47 | `backend/tests/ShilpoHubBD.UnitTests/Features/Certificates/` | 2026-09-29 |
 | [Search](#be-search) | Backend | 3 / 3 | 21 | `backend/tests/ShilpoHubBD.UnitTests/Features/Search/` | 2026-09-29 |
 | [Inventory](#be-inventory) | Backend | 4 / 4 | 40 | `backend/tests/ShilpoHubBD.UnitTests/Features/Inventory/` | 2026-09-29 |
+| [Certificate](#be-certificate) | Backend | 5 / 5 | 57 | `backend/tests/ShilpoHubBD.UnitTests/Features/Certificate/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -818,7 +819,7 @@ Contains: 1 service, 2 validators, 1 repository, 1 controller.
 | ✅ | `GenerateCertificateRequestValidator` | Validator | `Application/Validators/Certificate/GenerateCertificateRequestValidator.cs` | `Validators/GenerateCertificateRequestValidatorTests.cs` |  |
 | ✅ | `VerifyCertificateRequestValidator` | Validator | `Application/Validators/Certificate/VerifyCertificateRequestValidator.cs` | `Validators/VerifyCertificateRequestValidatorTests.cs` |  |
 | ✅ | `CertificateRepository` | Repository | `Data/Repositories/CertificateRepository.cs` | `Repositories/CertificateRepositoryTests.cs` | needs the test database |
-| ☐ | `CertificatesController` | Controller | `Api/Controllers/CertificatesController.cs` | `Controllers/CertificatesControllerTests.cs` |  |
+| ✅ | `CertificatesController` | Controller | `Api/Controllers/CertificatesController.cs` | `Controllers/CertificatesControllerTests.cs` |  |
 
 <a id="be-certificates"></a>
 
