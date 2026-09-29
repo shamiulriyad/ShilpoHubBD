@@ -16,7 +16,7 @@ public class MentorMatchingRepository : IMentorMatchingRepository
     public async Task<List<MentorMatchCandidateDto>> GetCandidatesAsync(MentorMatchRequest request, CancellationToken cancellationToken)
     {
         var mentors = await _context.MentorProfiles
-            .Where(m => m.IsActive)
+            .Where(m => m.IsActive && m.ApprovalStatus == "Approved")
             .Include(m => m.User)
             .Include(m => m.Skills)
             .AsSplitQuery()
