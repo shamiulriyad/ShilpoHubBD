@@ -396,6 +396,11 @@ class Router(unittest.TestCase):
         self.assertTrue(r.skipped)
         self.assertEqual(r.hits, [])
 
+    def test_greeting_skips_retrieval_entirely(self):
+        r = self.run_route("greeting", "hi")
+        self.assertTrue(r.skipped)
+        self.assertEqual(r.hits, [])
+
     def test_build_filter_targets_the_metadata_payload_keys(self):
         self.assertIsNone(build_filter())
         keys = [c.key for c in build_filter(craft_key=["a", "b"], is_unesco=True, aspect=["overview"]).must]
@@ -446,6 +451,9 @@ class Answering(unittest.TestCase):
         skipped = Retrieval("out_of_scope", skipped=True)
         self.assertEqual(generate_answer({**self.ANALYSIS, "language": "Bangla"}, skipped, llm=Boom()),
                          (FIXED_REPLIES["out_of_scope"]["Bangla"], True))
+        greeted = Retrieval("greeting", skipped=True)
+        self.assertEqual(generate_answer({**self.ANALYSIS, "question_type": "greeting"}, greeted, llm=Boom()),
+                         (FIXED_REPLIES["greeting"]["English"], True))
 
     def test_the_not_available_token_becomes_the_fixed_reply_in_the_questions_language(self):
         for language in ("English", "Bangla"):
