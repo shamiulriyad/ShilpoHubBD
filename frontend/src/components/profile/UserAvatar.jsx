@@ -1,3 +1,4 @@
+import SafeImage from '../media/SafeImage';
 import { useAuth } from '../../hooks/useAuth';
 import { useMyProfile } from '../../hooks/useProfile';
 import { resolveMediaUrl } from '../media/CardMedia';
@@ -11,7 +12,7 @@ export default function UserAvatar({ className = '', name: nameOverride, photoUr
   const src = resolveMediaUrl(photoOverride ?? data?.photoUrl);
   return (
     <span className={className} aria-hidden="true">
-      {src ? <img src={src} alt="" className="h-full w-full object-cover" style={{ borderRadius: 'inherit' }} /> : (name || 'U').trim().slice(0, 1).toUpperCase()}
+      {src ? <SafeImage src={src} alt="" className="h-full w-full object-cover" style={{ borderRadius: 'inherit' }} /> : (name || 'U').trim().slice(0, 1).toUpperCase()}
     </span>
   );
 }
