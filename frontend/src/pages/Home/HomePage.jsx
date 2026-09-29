@@ -19,13 +19,13 @@ const photos = { loom: '/images/loom-photo.jpg', river: '/images/bangladesh-rive
 const shell = 'mx-auto max-w-7xl px-5 lg:px-8';
 const cta = 'inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark';
 const workspaces = [
-  ['P', 'Producer', 'Turn your craft into income. List products, run your shop and tell your story to buyers everywhere.', 'register', 'Become a producer'],
-  ['B', 'Business Partner', 'Source authentic materials in bulk, place long-term contracts and collaborate directly with artisan communities.', 'register', 'Explore business tools'],
-  ['T', 'Tourist', 'Plan an AI-guided heritage trip, book village visits and workshops, and explore Bangladesh like a local.', 'tourism', 'Plan your trip'],
-  ['A', 'Heritage Academy', 'Learn from master artisans, earn certificates and build a career keeping traditional skills alive.', 'academy', 'Start learning'],
-  ['I', 'Innovation Hub', 'Access live heritage data, run AI-assisted research and help design policy that protects living traditions.', 'register', 'Join as a researcher'],
-  ['G', 'Government & NGO', 'Track heritage risk, simulate policy outcomes, and manage funding and preservation programmes nationwide.', 'register', 'Partner with us'],
-  ['L', 'Logistics Partner', 'Handle pickups, deliveries and warehousing for a nationwide network of artisans and customers.', 'register', 'Join the logistics network'],
+  ['For makers', 'Producer', 'Open your shop, present your work and reach customers who value authentic craft.', 'register', 'Become a producer'],
+  ['For buyers', 'Business Partner', 'Build dependable sourcing relationships and work directly with artisan communities.', 'register', 'Explore business tools'],
+  ['For travellers', 'Tourist', 'Discover villages, book local experiences and plan a journey rooted in culture.', 'tourism', 'Plan your visit'],
+  ['For learners', 'Heritage Academy', 'Learn from experienced artisans and develop practical skills through guided courses.', 'academy', 'Browse courses'],
+  ['For researchers', 'Innovation Hub', 'Study living heritage, contribute evidence and turn research into useful action.', 'register', 'Explore the hub'],
+  ['For institutions', 'Government & NGO', 'Coordinate preservation programmes, funding and community partnerships in one place.', 'register', 'Work with us'],
+  ['For delivery teams', 'Logistics Partner', 'Manage pickups, storage and delivery for products travelling across Bangladesh.', 'register', 'Join the network'],
 ];
 const aiFeatures = ['AI Heritage Assistant', 'AI Image-Based Craft Recognition', 'AI Price Recommendation', 'AI Counterfeit Detection', 'AI Tour Planner', 'AI Policy Simulator', 'AI Fraud Detection', 'AI Translation', 'AI Demand Forecast', 'AI Knowledge Graph Explorer'];
 function Photo({ src, alt, className = '', eager = false }) {
@@ -77,24 +77,21 @@ export default function HomePage() {
       {[['Districts to explore',districtsQuery,districts.length],['Heritage villages',villagesQuery,list(villagesQuery.data).length],['Marketplace finds',catalogQuery,catalogQuery.data?.totalCount ?? list(catalogQuery.data).length]].map(([label,query,value])=><div key={label} className="px-2"><p className="text-2xl font-semibold text-heading">{query.isLoading || query.isError ? '—' : value.toLocaleString()}</p><p className="mt-1 text-xs text-muted">{label}</p></div>)}
     </div>
     <section className={`${shell} py-16 lg:py-20`}>
-      <SectionHeader eyebrow="One platform, every role" title="A workspace for every part of the heritage economy." description="ShilpoHub isn't only a shop — it's where producers, buyers, travellers, learners, researchers and government partners meet." />
-      <div className="grid gap-5 lg:grid-cols-[1.15fr_1fr]">
-        <Link to={routes.register} className="group relative flex min-h-[24rem] flex-col justify-end overflow-hidden rounded-2xl border border-border">
-          <Photo src={photos.ceramics} alt="Handmade ceramic vases arranged on a white surface" className="absolute inset-0 transition duration-500 group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-          <div className="relative p-8">
-            <p className="text-xs font-bold uppercase tracking-[.2em] text-white/80">01 / Producer</p>
-            <h3 className="mt-3 text-3xl text-white" style={{ fontFamily: 'Georgia, serif' }}>Turn your craft into income.</h3>
-            <p className="mt-3 max-w-sm text-sm leading-6 text-white/80">List products, run your own shop and tell your story to buyers everywhere.</p>
-            <span className="mt-5 inline-block text-sm font-semibold text-white">Become a producer →</span>
+      <SectionHeader eyebrow="Find your place" title="Built around the people who keep heritage moving." description="Choose the part of ShilpoHub that fits what you want to make, learn, discover or support." />
+      <div className="grid gap-5 md:grid-cols-2">
+        <Link to={routes.register} className="group grid min-h-[22rem] overflow-hidden rounded-2xl border border-border bg-[#173f35] sm:grid-cols-[1.05fr_.95fr] md:col-span-2">
+          <div className="flex flex-col justify-between p-7 sm:p-9">
+            <p className="text-xs font-bold uppercase tracking-[.18em] text-white/60">{workspaces[0][0]}</p>
+            <div className="mt-16 sm:mt-8"><h3 className="text-3xl leading-tight text-white sm:text-4xl" style={{ fontFamily: 'Georgia, serif' }}>A better storefront for remarkable work.</h3><p className="mt-4 max-w-md text-sm leading-7 text-white/75">{workspaces[0][2]}</p><span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white">{workspaces[0][4]} <span aria-hidden="true" className="transition group-hover:translate-x-1">→</span></span></div>
           </div>
+          <div className="min-h-64 overflow-hidden"><Photo src={photos.ceramics} alt="Handmade ceramic vases arranged on a white surface" className="transition duration-500 group-hover:scale-105" /></div>
         </Link>
-        <div className="divide-y divide-border rounded-2xl border border-border bg-surface">
-          {workspaces.slice(1).map(([, title, description, toKey, label], i) => <Link key={title} to={routes[toKey]} className="group flex items-start gap-4 p-5 transition hover:bg-background">
-            <span className="mt-0.5 shrink-0 text-xs font-bold text-primary/50">{String(i + 2).padStart(2, '0')}</span>
-            <div className="min-w-0 flex-1"><h3 className="font-semibold text-heading">{title}</h3><p className="mt-1 text-sm leading-6 text-muted">{description}</p><span className="mt-2 inline-block text-xs font-semibold text-primary opacity-0 transition group-hover:opacity-100">{label} →</span></div>
-          </Link>)}
-        </div>
+        {workspaces.slice(1).map(([audience, title, description, toKey, label]) => <Link key={title} to={routes[toKey]} className="group flex min-h-56 flex-col rounded-2xl border border-border bg-surface p-6 transition duration-200 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
+          <p className="text-[11px] font-bold uppercase tracking-[.16em] text-primary/70">{audience}</p>
+          <h3 className="mt-4 text-xl font-semibold tracking-tight text-heading">{title}</h3>
+          <p className="mt-3 flex-1 text-sm leading-7 text-muted">{description}</p>
+          <span className="mt-6 inline-flex items-center gap-2 border-t border-border pt-4 text-sm font-semibold text-primary">{label} <span aria-hidden="true" className="transition group-hover:translate-x-1">→</span></span>
+        </Link>)}
       </div>
     </section>
     <section className={`${shell} py-16 lg:py-20`}>
