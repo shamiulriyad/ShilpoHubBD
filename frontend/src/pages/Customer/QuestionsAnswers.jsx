@@ -1,3 +1,4 @@
+import SafeImage from '../../components/media/SafeImage';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
@@ -80,7 +81,7 @@ export default function QuestionsAnswers() {
           />
           {questionImage && (
             <div className="flex items-center gap-2">
-              <img src={resolveUploadUrl(questionImage)} alt="Attached" className="h-16 w-16 rounded-md object-cover" />
+              <SafeImage src={resolveUploadUrl(questionImage)} alt="Attached" className="h-16 w-16 rounded-md object-cover" />
               <button type="button" onClick={() => setQuestionImage('')} className="text-xs text-danger hover:underline">Remove picture</button>
             </div>
           )}
