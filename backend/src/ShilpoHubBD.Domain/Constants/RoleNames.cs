@@ -25,6 +25,8 @@ public static class RoleNames
         SuperAdmin,
     };
 
+    // GovernmentNGO is intentionally excluded: those accounts are created only by a SuperAdmin
+    // (see AdminUsersController's government-ngo endpoint), not via public self-registration.
     public static readonly IReadOnlyList<string> SelfRegisterableRoles = new[]
     {
         Customer,
@@ -33,7 +35,6 @@ public static class RoleNames
         Tourist,
         HeritageAcademyMember,
         HeritageInnovationHub,
-        GovernmentNGO,
         LogisticsPartner,
     };
 }
