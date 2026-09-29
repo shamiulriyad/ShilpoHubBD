@@ -16,7 +16,8 @@ function Directory({
     [term, setTerm] = useState(''),
     [status, setStatus] = useState(''),
     [selected, setSelected] = useState(null),
-    [decision, setDecision] = useState(null);
+    [decision, setDecision] = useState(null),
+    [create, setCreate] = useState(false);
   const identity = view === 'identity',
     verify = view === 'verification';
   const path = identity ? '/identity-verifications' : verify ? '/business-partners' : '/admin/users';
@@ -51,8 +52,32 @@ function Directory({
     }}><input aria-label="Search users" className={`${inputClass} max-w-sm`} value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name or email" /><button className="rounded-lg bg-primary px-4 py-2 text-sm text-white">Search</button><select aria-label="Filter status" className={`${inputClass} max-w-xs`} value={status} onChange={e => {
         setStatus(e.target.value);
         setPage(1);
-      }}><option value="">All statuses</option>{(identity ? ['Pending', 'Approved', 'Rejected'] : verify ? ['Pending', 'Verified', 'Rejected', 'Suspended'] : ['active', 'inactive']).map(s => <option key={s}>{s}</option>)}</select></form>
+      }}><option value="">All statuses</option>{(identity ? ['Pending', 'Approved', 'Rejected'] : verify ? ['Pending', 'Verified', 'Rejected', 'Suspended'] : ['active', 'inactive']).map(s => <option key={s}>{s}</option>)}</select>{!identity && !verify && <Action onClick={() => {
+        mutation.reset();
+        setCreate(true);
+      }}>Add Government/NGO account</Action>}</form>
     <DataTable query={query} columns={columns} page={page} onPage={setPage} actions={row => <><Action onClick={() => setSelected(row)}>Review</Action>{!identity && !verify && <Action onClick={() => act(row.isActive ? 'Deactivate user' : 'Activate user', `/admin/users/${row.id}/${row.isActive ? 'deactivate' : 'activate'}`)}>{row.isActive ? 'Deactivate' : 'Activate'}</Action>}</>} />
+    {create && <Modal title="Add Government/NGO account" onClose={() => !mutation.isPending && setCreate(false)}><p className="mb-4 text-sm text-body/70">Government/NGO self-registration is disabled — this creates the account directly. Share the email and initial password with them; they can change the password after logging in.</p><Editor fields={[{
+        key: 'email',
+        label: 'Email',
+        required: true,
+        type: 'email'
+      }, {
+        key: 'fullName',
+        label: 'Full name (optional)',
+        required: false,
+        maxLength: 200
+      }, {
+        key: 'password',
+        label: 'Initial password',
+        required: true,
+        type: 'password'
+      }]} onSubmit={body => mutation.mutate({
+        path: '/admin/users/government-ngo',
+        payload: body
+      }, {
+        onSuccess: () => setCreate(false)
+      })} pending={mutation.isPending} error={mutation.error} submitLabel="Create account" /></Modal>}
     {selected && <Modal title="Review account" onClose={() => setSelected(null)}><ErrorNotice error={detail.error} />{detail.isPending ? <p>Loading details…</p> : detail.isSuccess && <><RecordDetails record={detail.data} />{(identity && detail.data.status === 'Pending' || verify) && <div className="mt-6 flex gap-3"><Action disabled={mutation.isPending} onClick={() => act('Approve verification', `${path}/${verify ? selected.userId : selected.id}/${verify ? 'verify' : 'approve'}`, verify ? {
             status: 'Verified'
           } : undefined)}>Approve</Action><Action danger onClick={() => act('Reject verification', `${path}/${verify ? selected.userId : selected.id}/${verify ? 'verify' : 'reject'}`, verify ? {
