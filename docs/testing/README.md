@@ -1715,7 +1715,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `MentorMatchingService` | Service | `Application/Services/MentorMatching/MentorMatchingService.cs` | `Services/MentorMatchingServiceTests.cs` |  |
+| ✅ | `MentorMatchingService` | Service | `Application/Services/MentorMatching/MentorMatchingService.cs` | `Services/MentorMatchingServiceTests.cs` |  |
 | ☐ | `MentorMatchRequestValidator` | Validator | `Application/Validators/MentorMatching/MentorMatchRequestValidator.cs` | `Validators/MentorMatchRequestValidatorTests.cs` |  |
 | ☐ | `MentorMatchingRepository` | Repository | `Data/Repositories/MentorMatchingRepository.cs` | `Repositories/MentorMatchingRepositoryTests.cs` | needs the test database |
 | ☐ | `MentorMatchingController` | Controller | `Api/Controllers/MentorMatchingController.cs` | `Controllers/MentorMatchingControllerTests.cs` |  |
