@@ -7,6 +7,13 @@ export const useSupportOrganizationOptions = (enabled = true) => useQuery({ quer
 export const useSupportArtisans = (enabled = true) => useQuery({ queryKey: ['artisan-support', 'artisans'], queryFn: api.artisans, enabled });
 export const useSupportCases = () => useQuery({ queryKey: ['artisan-support', 'cases'], queryFn: api.cases });
 export const useSupportDashboard = () => useQuery({ queryKey: ['artisan-support', 'dashboard'], queryFn: api.dashboard });
+export const useCaseImpact = (caseId, enabled = true) => useQuery({
+  queryKey: ['artisan-support', 'impact', caseId],
+  queryFn: () => api.getImpact(caseId),
+  enabled: enabled && !!caseId,
+  retry: false,
+});
+export const useImpactReport = () => useQuery({ queryKey: ['artisan-support', 'impact-report'], queryFn: api.impactReport });
 
 export function useArtisanSupportMutations() {
   const qc = useQueryClient();
@@ -19,5 +26,9 @@ export function useArtisanSupportMutations() {
     confirm: mutation(({ id, payload }) => api.confirm(id, payload)), monitor: mutation(({ id, payload }) => api.monitor(id, payload)), report: mutation(({ id, payload }) => api.report(id, payload)),
     reviewReport: mutation(({ id, payload }) => api.reviewReport(id, payload)), flag: mutation(({ id, payload }) => api.flag(id, payload)), evidence: mutation(({ id, payload }) => api.evidence(id, payload)),
     uploadEvidence: mutation(({ id, file, stage, caption }) => api.uploadEvidence(id, file, stage, caption)),
+    generateImpact: useMutation({
+      mutationFn: (id) => api.generateImpact(id),
+      onSuccess: (_, id) => qc.invalidateQueries({ queryKey: ['artisan-support', 'impact', id] }),
+    }),
   };
 }
