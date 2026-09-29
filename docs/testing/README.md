@@ -432,6 +432,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Inventory](#be-inventory) | Backend | 4 / 4 | 40 | `backend/tests/ShilpoHubBD.UnitTests/Features/Inventory/` | 2026-09-29 |
 | [Certificate](#be-certificate) | Backend | 5 / 5 | 57 | `backend/tests/ShilpoHubBD.UnitTests/Features/Certificate/` | 2026-09-29 |
 | [Auction](#be-auction) | Backend | 6 / 6 | 92 | `backend/tests/ShilpoHubBD.UnitTests/Features/Auction/` | 2026-09-29 |
+| [Reviews](#be-reviews) | Backend | 6 / 6 | 95 | `backend/tests/ShilpoHubBD.UnitTests/Features/Reviews/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -2121,7 +2122,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 | ✅ | `ReviewQueryParametersValidator` | Validator | `Application/Validators/Reviews/ReviewQueryParametersValidator.cs` | `Validators/ReviewQueryParametersValidatorTests.cs` |  |
 | ✅ | `UpdateReviewRequestValidator` | Validator | `Application/Validators/Reviews/UpdateReviewRequestValidator.cs` | `Validators/UpdateReviewRequestValidatorTests.cs` |  |
 | ✅ | `ReviewRepository` | Repository | `Data/Repositories/ReviewRepository.cs` | `Repositories/ReviewRepositoryTests.cs` | needs the test database |
-| ☐ | `ReviewsController` | Controller | `Api/Controllers/ReviewsController.cs` | `Controllers/ReviewsControllerTests.cs` |  |
+| ✅ | `ReviewsController` | Controller | `Api/Controllers/ReviewsController.cs` | `Controllers/ReviewsControllerTests.cs` |  |
 
 <a id="be-roadmap"></a>
 
