@@ -1,3 +1,4 @@
+import SafeImage from '../media/SafeImage';
 import { useEffect, useRef, useState } from 'react';
 import { Button, AsyncState } from '../ui';
 import ImageAttachButton, { resolveUploadUrl } from './ImageAttachButton';
@@ -79,7 +80,7 @@ export default function DirectMessages() {
                   <div className={`max-w-[82%] break-words rounded-xl px-3 py-2 text-sm ${self ? 'bg-primary text-surface' : 'border border-border bg-background text-body'}`}>
                     {m.imageUrl && (
                       <a href={resolveUploadUrl(m.imageUrl)} target="_blank" rel="noreferrer">
-                        <img src={resolveUploadUrl(m.imageUrl)} alt="Sent by chat" className="mb-1 max-h-56 rounded-lg object-cover" loading="lazy" />
+                        <SafeImage src={resolveUploadUrl(m.imageUrl)} alt="Sent by chat" className="mb-1 max-h-56 rounded-lg object-cover" loading="lazy" />
                       </a>
                     )}
                     {m.body && <span>{m.body}</span>}
@@ -94,7 +95,7 @@ export default function DirectMessages() {
           <form onSubmit={send} className="space-y-2 border-t border-border p-3">
             {image && (
               <div className="flex items-center gap-2">
-                <img src={resolveUploadUrl(image)} alt="To be sent" className="h-14 w-14 rounded-md object-cover" />
+                <SafeImage src={resolveUploadUrl(image)} alt="To be sent" className="h-14 w-14 rounded-md object-cover" />
                 <button type="button" onClick={() => setImage('')} className="text-xs text-danger hover:underline">Remove picture</button>
               </div>
             )}
