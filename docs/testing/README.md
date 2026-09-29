@@ -750,7 +750,7 @@ Contains: 2 services, 9 validators, 3 infrastructure classes, 4 repositories, 2 
 | ✅ | `LogoutRequestValidator` | Validator | `Application/Validators/Auth/LogoutRequestValidator.cs` | `Validators/LogoutRequestValidatorTests.cs` |  |
 | ✅ | `RefreshTokenRequestValidator` | Validator | `Application/Validators/Auth/RefreshTokenRequestValidator.cs` | `Validators/RefreshTokenRequestValidatorTests.cs` |  |
 | ✅ | `RegisterRequestValidator` | Validator | `Application/Validators/Auth/RegisterRequestValidator.cs` | `Validators/RegisterRequestValidatorTests.cs` |  |
-| ☐ | `RemoveRoleRequestValidator` | Validator | `Application/Validators/Roles/RemoveRoleRequestValidator.cs` | `Validators/RemoveRoleRequestValidatorTests.cs` |  |
+| ✅ | `RemoveRoleRequestValidator` | Validator | `Application/Validators/Roles/RemoveRoleRequestValidator.cs` | `Validators/RemoveRoleRequestValidatorTests.cs` |  |
 | ☐ | `ResetPasswordRequestValidator` | Validator | `Application/Validators/Auth/ResetPasswordRequestValidator.cs` | `Validators/ResetPasswordRequestValidatorTests.cs` |  |
 | ☐ | `SwitchRoleRequestValidator` | Validator | `Application/Validators/Auth/SwitchRoleRequestValidator.cs` | `Validators/SwitchRoleRequestValidatorTests.cs` |  |
 | ☐ | `BCryptPasswordHasher` | Infrastructure | `Infrastructure/Security/BCryptPasswordHasher.cs` | `Infrastructure/BCryptPasswordHasherTests.cs` |  |
