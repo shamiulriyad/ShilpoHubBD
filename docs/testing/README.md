@@ -828,7 +828,7 @@ Contains: 1 service, 1 repository, 1 controller.
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
 | ✅ | `ExpertiseCertificateService` | Service | `Application/Services/Certificates/ExpertiseCertificateService.cs` | `Services/ExpertiseCertificateServiceTests.cs` |  |
-| ☐ | `ExpertiseCertificateRepository` | Repository | `Data/Repositories/ExpertiseCertificateRepository.cs` | `Repositories/ExpertiseCertificateRepositoryTests.cs` | needs the test database |
+| ✅ | `ExpertiseCertificateRepository` | Repository | `Data/Repositories/ExpertiseCertificateRepository.cs` | `Repositories/ExpertiseCertificateRepositoryTests.cs` | needs the test database |
 | ☐ | `ExpertiseCertificatesController` | Controller | `Api/Controllers/ExpertiseCertificatesController.cs` | `Controllers/ExpertiseCertificatesControllerTests.cs` |  |
 
 <a id="be-cms"></a>
