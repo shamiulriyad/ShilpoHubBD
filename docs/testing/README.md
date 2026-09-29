@@ -2026,7 +2026,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 | ✅ | `GenerateQRCodeRequestValidator` | Validator | `Application/Validators/QRVerification/GenerateQRCodeRequestValidator.cs` | `Validators/GenerateQRCodeRequestValidatorTests.cs` |  |
 | ✅ | `QRVerificationQueryParametersValidator` | Validator | `Application/Validators/QRVerification/QRVerificationQueryParametersValidator.cs` | `Validators/QRVerificationQueryParametersValidatorTests.cs` |  |
 | ✅ | `VerifyQRRequestValidator` | Validator | `Application/Validators/QRVerification/VerifyQRRequestValidator.cs` | `Validators/VerifyQRRequestValidatorTests.cs` |  |
-| ☐ | `QRVerificationRepository` | Repository | `Data/Repositories/QRVerificationRepository.cs` | `Repositories/QRVerificationRepositoryTests.cs` | needs the test database |
+| ✅ | `QRVerificationRepository` | Repository | `Data/Repositories/QRVerificationRepository.cs` | `Repositories/QRVerificationRepositoryTests.cs` | needs the test database |
 | ☐ | `QRVerificationController` | Controller | `Api/Controllers/QRVerificationController.cs` | `Controllers/QRVerificationControllerTests.cs` |  |
 
 <a id="be-quotations"></a>
