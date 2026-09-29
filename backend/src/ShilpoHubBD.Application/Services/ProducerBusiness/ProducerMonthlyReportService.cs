@@ -415,7 +415,7 @@ public class ProducerMonthlyReportService : IProducerMonthlyReportService
 
         // "Listed" products only — the same ApprovalStatus.Approved gate the public storefront uses.
         var products = await _productRepository.GetByProducerAsync(producerId, cancellationToken);
-        var productCount = products.Count(p => p.ApprovalStatus == ProductApprovalStatus.Approved && p.CreatedAt <= periodEnd);
+        var productCount = products.Count(p => p.ApprovalStatus != ProductApprovalStatus.Rejected && p.CreatedAt <= periodEnd);
 
         var (averageRating, reviewCount) = await _reviewRepository.GetAggregateByProducerAsync(producerId, periodStart, periodEnd, cancellationToken);
 
