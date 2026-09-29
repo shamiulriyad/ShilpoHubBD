@@ -2275,7 +2275,7 @@ Contains: 1 service, 2 validators, 1 repository, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `SustainabilityService` | Service | `Application/Services/Sustainability/SustainabilityService.cs` | `Services/SustainabilityServiceTests.cs` |  |
+| ✅ | `SustainabilityService` | Service | `Application/Services/Sustainability/SustainabilityService.cs` | `Services/SustainabilityServiceTests.cs` |  |
 | ☐ | `CreateMaterialCertificationRequestValidator` | Validator | `Application/Validators/Sustainability/CreateMaterialCertificationRequestValidator.cs` | `Validators/CreateMaterialCertificationRequestValidatorTests.cs` |  |
 | ☐ | `CreateMaterialRecordRequestValidator` | Validator | `Application/Validators/Sustainability/CreateMaterialRecordRequestValidator.cs` | `Validators/CreateMaterialRecordRequestValidatorTests.cs` |  |
 | ☐ | `SustainabilityRepository` | Repository | `Data/Repositories/SustainabilityRepository.cs` | `Repositories/SustainabilityRepositoryTests.cs` | needs the test database |
