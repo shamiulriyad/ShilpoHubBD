@@ -443,6 +443,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Sustainability](#be-sustainability) | Backend | 5 / 5 | 58 | `backend/tests/ShilpoHubBD.UnitTests/Features/Sustainability/` | 2026-09-30 |
 | [Recommendation](#be-recommendation) | Backend | 3 / 3 | 22 | `backend/tests/ShilpoHubBD.UnitTests/Features/Recommendation/` | 2026-09-30 |
 | [MentorMatching](#be-mentormatching) | Backend | 4 / 4 | 32 | `backend/tests/ShilpoHubBD.UnitTests/Features/MentorMatching/` | 2026-09-30 |
+| [ProducerComparison](#be-producercomparison) | Backend | 4 / 4 | 20 | `backend/tests/ShilpoHubBD.UnitTests/Features/ProducerComparison/` | 2026-09-30 |
 
 ### Blocked units
 
@@ -1893,7 +1894,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 | ✅ | `ProducerComparisonService` | Service | `Application/Services/ProducerComparison/ProducerComparisonService.cs` | `Services/ProducerComparisonServiceTests.cs` |  |
 | ✅ | `ProducerComparisonRequestValidator` | Validator | `Application/Validators/ProducerComparison/ProducerComparisonRequestValidator.cs` | `Validators/ProducerComparisonRequestValidatorTests.cs` |  |
 | ✅ | `ProducerComparisonRepository` | Repository | `Data/Repositories/ProducerComparisonRepository.cs` | `Repositories/ProducerComparisonRepositoryTests.cs` | needs the test database |
-| ☐ | `ProducerComparisonController` | Controller | `Api/Controllers/ProducerComparisonController.cs` | `Controllers/ProducerComparisonControllerTests.cs` |  |
+| ✅ | `ProducerComparisonController` | Controller | `Api/Controllers/ProducerComparisonController.cs` | `Controllers/ProducerComparisonControllerTests.cs` |  |
 
 <a id="be-producerpartnership"></a>
 
