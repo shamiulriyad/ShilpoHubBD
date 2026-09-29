@@ -817,7 +817,7 @@ Contains: 1 service, 2 validators, 1 repository, 1 controller.
 | ✅ | `CertificateService` | Service | `Application/Services/Certificate/CertificateService.cs` | `Services/CertificateServiceTests.cs` |  |
 | ✅ | `GenerateCertificateRequestValidator` | Validator | `Application/Validators/Certificate/GenerateCertificateRequestValidator.cs` | `Validators/GenerateCertificateRequestValidatorTests.cs` |  |
 | ✅ | `VerifyCertificateRequestValidator` | Validator | `Application/Validators/Certificate/VerifyCertificateRequestValidator.cs` | `Validators/VerifyCertificateRequestValidatorTests.cs` |  |
-| ☐ | `CertificateRepository` | Repository | `Data/Repositories/CertificateRepository.cs` | `Repositories/CertificateRepositoryTests.cs` | needs the test database |
+| ✅ | `CertificateRepository` | Repository | `Data/Repositories/CertificateRepository.cs` | `Repositories/CertificateRepositoryTests.cs` | needs the test database |
 | ☐ | `CertificatesController` | Controller | `Api/Controllers/CertificatesController.cs` | `Controllers/CertificatesControllerTests.cs` |  |
 
 <a id="be-certificates"></a>
