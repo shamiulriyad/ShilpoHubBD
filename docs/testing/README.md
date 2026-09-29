@@ -541,7 +541,7 @@ Contains: 3 services, 4 validators, 3 repositories, 3 controllers.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `AdminUserService` | Service | `Application/Services/Admin/AdminUserService.cs` | `Services/AdminUserServiceTests.cs` |  |
+| ✅ | `AdminUserService` | Service | `Application/Services/Admin/AdminUserService.cs` | `Services/AdminUserServiceTests.cs` |  |
 | ☐ | `IdentityVerificationService` | Service | `Application/Services/Admin/IdentityVerificationService.cs` | `Services/IdentityVerificationServiceTests.cs` |  |
 | ☐ | `PermissionService` | Service | `Application/Services/Admin/PermissionService.cs` | `Services/PermissionServiceTests.cs` |  |
 | ☐ | `CreatePermissionRequestValidator` | Validator | `Application/Validators/Admin/PermissionValidators.cs` | `Validators/CreatePermissionRequestValidatorTests.cs` |  |
