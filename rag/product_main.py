@@ -75,7 +75,11 @@ def _sync_loop(worker: ProductSyncWorker) -> None:
         try:
             stats = worker.run_once()
             state.last_sync = {"at": time.time(), **stats}
-            busy = stats["fetched"] > 0 and stats["pending_total"] > stats["fetched"]
+            # Only keep going back-to-back if the batch actually made progress. Otherwise (e.g. every item
+            # failed on a Gemini quota error) looping immediately just hammers the same exhausted quota that
+            # live shopper searches need, and never gives it a chance to recover.
+            progressed = stats["upserted"] + stats["payload"] + stats["deleted"] > 0
+            busy = progressed and stats["pending_total"] > stats["fetched"]
         except Exception as exc:  # noqa: BLE001
             print(f"[sync] failed: {type(exc).__name__}: {str(exc)[:160]}")
             busy = False
