@@ -29,4 +29,27 @@ public class ArtisanSupportRepository(ShilpoHubDbContext context) : IArtisanSupp
     public async Task AddOrganizationAsync(SupportOrganizationProfile profile, CancellationToken ct) => await context.SupportOrganizationProfiles.AddAsync(profile, ct);
     public async Task AddCaseAsync(ArtisanSupportCase supportCase, CancellationToken ct) => await context.ArtisanSupportCases.AddAsync(supportCase, ct);
     public Task SaveChangesAsync(CancellationToken ct) => context.SaveChangesAsync(ct);
+
+    public Task<ArtisanSupportImpactAssessment?> GetImpactAssessmentByCaseIdAsync(Guid caseId, CancellationToken ct) =>
+        context.ArtisanSupportImpactAssessments.Include(x => x.Metrics).FirstOrDefaultAsync(x => x.CaseId == caseId, ct);
+    public async Task AddImpactAssessmentAsync(ArtisanSupportImpactAssessment assessment, CancellationToken ct) => await context.ArtisanSupportImpactAssessments.AddAsync(assessment, ct);
+
+    public async Task<Dictionary<Guid, ArtisanSupportCase>> GetLatestCasesForArtisansAsync(IEnumerable<Guid> artisanUserIds, CancellationToken ct)
+    {
+        var ids = artisanUserIds.Distinct().ToList();
+        var cases = await context.ArtisanSupportCases
+            .Where(c => ids.Contains(c.ArtisanUserId))
+            .ToListAsync(ct);
+
+        return cases
+            .GroupBy(c => c.ArtisanUserId)
+            .ToDictionary(g => g.Key, g => g.OrderByDescending(c => c.UpdatedAt).First());
+    }
+
+    public Task<ProducerImpactAIAnalysis?> GetLatestAiAnalysisByCaseIdAsync(Guid caseId, CancellationToken ct) =>
+        context.ProducerImpactAIAnalyses.Include(x => x.Findings)
+            .Where(x => x.CaseId == caseId)
+            .OrderByDescending(x => x.GeneratedAt)
+            .FirstOrDefaultAsync(ct);
+    public async Task AddAiAnalysisAsync(ProducerImpactAIAnalysis analysis, CancellationToken ct) => await context.ProducerImpactAIAnalyses.AddAsync(analysis, ct);
 }
