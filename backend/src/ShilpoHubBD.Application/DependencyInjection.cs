@@ -82,6 +82,7 @@ public static class DependencyInjection
         services.Configure<HeritageScoreOptions>(configuration.GetSection("HeritageScore"));
         services.Configure<BudgetEstimateOptions>(configuration.GetSection("Tourism:BudgetEstimate"));
         services.Configure<SustainabilityScoreOptions>(configuration.GetSection("SustainabilityScore"));
+        services.Configure<ImpactAssessmentThresholds>(configuration.GetSection("ImpactAssessment"));
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
@@ -140,6 +141,7 @@ public static class DependencyInjection
 
         services.AddScoped<IProducerOrderService, ProducerOrderService>();
         services.AddScoped<IProducerReturnService, ProducerReturnService>();
+        services.AddScoped<IProducerMonthlyReportService, ProducerMonthlyReportService>();
         services.AddScoped<IAIBusinessService, AIBusinessService>();
 
         services.AddScoped<IMentorService, MentorService>();
@@ -246,6 +248,7 @@ public static class DependencyInjection
         services.AddScoped<IGovReportService, GovReportService>();
         services.AddScoped<IGovForecastService, GovForecastService>();
         services.AddScoped<IArtisanSupportService, ArtisanSupportService>();
+        services.AddScoped<IArtisanSupportImpactService, ArtisanSupportImpactService>();
 
         services.AddScoped<ILogisticsPartnerService, LogisticsPartnerService>();
         services.AddScoped<IUserProfileService, UserProfileService>();

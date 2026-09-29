@@ -89,6 +89,8 @@ const SUGGESTIONS = heritageDemoSuggestions;
 
 /** question_type the RAG service returns when a question is outside the knowledge base. */
 const OUT_OF_SCOPE_CATEGORY = 'out_of_scope';
+/** question_type for a plain greeting/small talk - not a real topic, so it shouldn't count as "explored". */
+const GREETING_CATEGORY = 'greeting';
 
 /**
  * Before-login boundary: answers stay open to everyone, and the sign-in CTA only
@@ -101,7 +103,9 @@ const MIN_TOPICS_BEFORE_CTA = 2;
 function shouldShowSignInCta(messages, isAuthenticated) {
   if (isAuthenticated) return false;
 
-  const answers = messages.filter((message) => message.role === 'assistant' && message.category);
+  const answers = messages.filter(
+    (message) => message.role === 'assistant' && message.category && message.category !== GREETING_CATEGORY,
+  );
   if (answers.some((message) => message.category === OUT_OF_SCOPE_CATEGORY)) return true;
 
   const topics = new Set(answers.map((message) => message.category));

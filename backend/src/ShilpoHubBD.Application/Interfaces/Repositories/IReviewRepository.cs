@@ -17,6 +17,10 @@ public interface IReviewRepository
     Task<(double AverageRating, int ReviewCount)> GetAggregateByHeritagePlaceAsync(Guid heritagePlaceId, CancellationToken cancellationToken);
     Task<(double AverageRating, int ReviewCount)> GetAggregateByServiceAsync(Guid touristServiceId, CancellationToken cancellationToken);
 
+    /// <summary>Rating aggregate across a producer's products, restricted to reviews created within the period.</summary>
+    Task<(double AverageRating, int ReviewCount)> GetAggregateByProducerAsync(
+        Guid producerId, DateTime periodStart, DateTime periodEnd, CancellationToken cancellationToken);
+
     Task AddAsync(Review review, CancellationToken cancellationToken);
     Task AddImageAsync(ReviewImage image, CancellationToken cancellationToken);
     void RemoveImage(ReviewImage image);

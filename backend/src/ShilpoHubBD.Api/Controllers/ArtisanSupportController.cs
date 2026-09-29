@@ -9,7 +9,7 @@ using ShilpoHubBD.Domain.Constants;
 namespace ShilpoHubBD.Api.Controllers;
 
 [ApiController, Authorize, Route("api/artisan-support")]
-public class ArtisanSupportController(IArtisanSupportService service) : ControllerBase
+public class ArtisanSupportController(IArtisanSupportService service, IArtisanSupportImpactService impactService) : ControllerBase
 {
     private Guid UserId => Guid.Parse(User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     private bool Admin => User.IsInRole(RoleNames.SuperAdmin); private bool Government => User.IsInRole(RoleNames.GovernmentNGO);
@@ -75,4 +75,16 @@ public class ArtisanSupportController(IArtisanSupportService service) : Controll
     }
     [Authorize(Roles=$"{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin},{RoleNames.Producer}"),HttpGet("dashboard")]
     public async Task<IActionResult> Dashboard(CancellationToken ct)=>Ok(await service.DashboardAsync(UserId,Admin,Government,ct));
+
+    [Authorize(Roles=$"{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin}"),HttpPost("cases/{id:guid}/impact")]
+    public async Task<IActionResult> GenerateImpact(Guid id,CancellationToken ct)=>Ok(await impactService.GenerateAsync(UserId,id,Admin,Government,ct));
+    [Authorize(Roles=$"{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin},{RoleNames.Producer}"),HttpGet("cases/{id:guid}/impact")]
+    public async Task<IActionResult> GetImpact(Guid id,CancellationToken ct)=>Ok(await impactService.GetAsync(UserId,id,Admin,Government,ct));
+    [Authorize(Roles=$"{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin},{RoleNames.Producer}"),HttpGet("impact-report")]
+    public async Task<IActionResult> ImpactReport(CancellationToken ct)=>Ok(await impactService.GetImpactReportAsync(UserId,Admin,Government,ct));
+
+    [Authorize(Roles=$"{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin}"),HttpPost("cases/{id:guid}/impact/ai-summary")]
+    public async Task<IActionResult> GenerateAiSummary(Guid id,CancellationToken ct)=>Ok(await impactService.GenerateAiSummaryAsync(UserId,id,Admin,Government,ct));
+    [Authorize(Roles=$"{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin},{RoleNames.Producer}"),HttpGet("cases/{id:guid}/impact/ai-summary")]
+    public async Task<IActionResult> GetAiSummary(Guid id,CancellationToken ct)=>Ok(await impactService.GetLatestAiSummaryAsync(UserId,id,Admin,Government,ct));
 }

@@ -24,4 +24,7 @@ export const artisanSupportService = {
   evidence: (id, payload) => apiClient.post(`${base}/cases/${id}/evidence`, payload).then((r) => r.data),
   uploadEvidence: (id, file, stage, caption) => { const body = new FormData(); body.append('file', file); body.append('stage', stage); body.append('caption', caption || ''); return apiClient.post(`${base}/cases/${id}/evidence-upload`, body, { headers: { 'Content-Type': 'multipart/form-data' } }).then((r) => r.data); },
   dashboard: () => apiClient.get(`${base}/dashboard`).then((r) => r.data),
+  getImpact: (id) => apiClient.get(`${base}/cases/${id}/impact`).then((r) => r.data),
+  generateImpact: (id) => apiClient.post(`${base}/cases/${id}/impact`).then((r) => r.data),
+  impactReport: () => apiClient.get(`${base}/impact-report`).then((r) => r.data),
 };

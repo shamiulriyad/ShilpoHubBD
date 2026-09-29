@@ -14,7 +14,8 @@ The question may be in English, in Bangla script, or in romanised Bangla ("Jamda
 - compare         - compare or contrast two or more named crafts
 - time            - how long does X take to make / how many days, months or hours
 - heritage        - heritage sites, museums, institutions or historic places linked to crafts
-- out_of_scope    - NOT about Bangladeshi crafts or heritage in this knowledge base: greetings, chit-chat, general knowledge, politics, sport, maths, coding, other countries, personal advice
+- greeting        - greetings, small talk, thanks, farewells, or asking who/what the assistant is ("hi", "hello", "how are you", "thank you", "who are you", "what can you do") - nothing to search for, just a friendly reply
+- out_of_scope    - NOT about Bangladeshi crafts or heritage in this knowledge base and NOT a greeting: general knowledge, politics, sport, maths, coding, other countries, personal advice
 
 A question about a Bangladeshi craft that simply is not in the list below is NOT out_of_scope - use the closest type with an empty craft_keys (the search will report that nothing was found).
 
@@ -65,6 +66,9 @@ Question: Compare Jamdani and Tangail saree
 
 Question: Who won the World Cup in 2022?
 {"language": "English", "question_type": "out_of_scope", "craft_keys": [], "districts": [], "divisions": [], "category_norm": null, "risk_levels": [], "is_unesco": null, "is_gi": null, "english_query": "Who won the World Cup in 2022?"}
+
+Question: hi
+{"language": "English", "question_type": "greeting", "craft_keys": [], "districts": [], "divisions": [], "category_norm": null, "risk_levels": [], "is_unesco": null, "is_gi": null, "english_query": "hi"}
 
 ## The question to analyse
 

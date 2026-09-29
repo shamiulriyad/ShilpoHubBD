@@ -4070,6 +4070,10 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("character varying(120)");
 
+                    b.Property<string>("ExpectedOutcome")
+                        .HasMaxLength(6000)
+                        .HasColumnType("character varying(6000)");
+
                     b.Property<string>("FlagReason")
                         .HasMaxLength(6000)
                         .HasColumnType("character varying(6000)");
@@ -4099,6 +4103,10 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.Property<DateTime?>("MonitoringDueAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(6000)
+                        .HasColumnType("character varying(6000)");
 
                     b.Property<Guid?>("OrganizationUserId")
                         .HasColumnType("uuid");
@@ -4223,6 +4231,90 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("UploadedByUserId");
 
                     b.ToTable("ArtisanSupportEvidence", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportImpactAssessment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AfterMonth")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("AfterReportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AfterYear")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BeforeMonth")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("BeforeReportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("BeforeYear")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("CaseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("GeneratedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("GeneratedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AfterReportId");
+
+                    b.HasIndex("BeforeReportId");
+
+                    b.HasIndex("CaseId")
+                        .IsUnique();
+
+                    b.HasIndex("GeneratedByUserId");
+
+                    b.ToTable("ArtisanSupportImpactAssessments", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportImpactMetric", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("AfterValue")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid>("AssessmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("BeforeValue")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal?>("ChangeAbsolute")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal?>("ChangePercentage")
+                        .HasColumnType("numeric(9,2)");
+
+                    b.Property<string>("MetricType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssessmentId", "MetricType")
+                        .IsUnique();
+
+                    b.ToTable("ArtisanSupportImpactMetrics", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportMonitoring", b =>
@@ -5792,6 +5884,75 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("PolicySimulationId", "DisplayOrder");
 
                     b.ToTable("PolicySimulationRecommendations", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ProducerImpactAIAnalysis", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CaseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("GeneratedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ImpactAssessmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsAiGenerated")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ProviderName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<Guid>("RequestedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CaseId");
+
+                    b.HasIndex("ImpactAssessmentId");
+
+                    b.HasIndex("RequestedByUserId");
+
+                    b.ToTable("ProducerImpactAIAnalyses", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ProducerImpactAIFinding", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AnalysisId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalysisId");
+
+                    b.ToTable("ProducerImpactAIFindings", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.SupportOrganizationProfile", b =>
@@ -13319,6 +13480,132 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("ProcurementStatusEvents", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerBusiness.ProducerMonthlyReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("AverageRating")
+                        .HasColumnType("numeric(3,2)");
+
+                    b.Property<decimal>("CancellationRate")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<int>("CancelledOrders")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("CategoryAverageSales")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("CategoryPosition")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("DistrictAverageSales")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid?>("DistrictId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("DistrictPosition")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("NetIncome")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<int>("NewCustomers")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("OverallSalesPercentile")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<int>("OverallSalesRank")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("PeerAverageGrowthPercentage")
+                        .HasColumnType("numeric(9,2)");
+
+                    b.Property<decimal>("PreviousMonthSales")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid>("ProducerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ProductCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReturningCustomers")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReviewCount")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("SalesGrowthPercentage")
+                        .HasColumnType("numeric(9,2)");
+
+                    b.Property<int>("TotalOrders")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalSales")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<int>("UnitsSold")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("DistrictId");
+
+                    b.HasIndex("Year", "Month");
+
+                    b.HasIndex("ProducerId", "Year", "Month")
+                        .IsUnique();
+
+                    b.ToTable("ProducerMonthlyReports", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerBusiness.ProducerMonthlyReportShare", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("SharedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("SharedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SharedWithUserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SharedByUserId");
+
+                    b.HasIndex("SharedWithUserId");
+
+                    b.HasIndex("ReportId", "SharedWithUserId")
+                        .IsUnique();
+
+                    b.ToTable("ProducerMonthlyReportShares", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAgreement", b =>
                 {
                     b.Property<Guid>("Id")
@@ -17619,6 +17906,50 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("UploadedBy");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportImpactAssessment", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerBusiness.ProducerMonthlyReport", "AfterReport")
+                        .WithMany()
+                        .HasForeignKey("AfterReportId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerBusiness.ProducerMonthlyReport", "BeforeReport")
+                        .WithMany()
+                        .HasForeignKey("BeforeReportId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportCase", "Case")
+                        .WithMany()
+                        .HasForeignKey("CaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "GeneratedBy")
+                        .WithMany()
+                        .HasForeignKey("GeneratedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AfterReport");
+
+                    b.Navigation("BeforeReport");
+
+                    b.Navigation("Case");
+
+                    b.Navigation("GeneratedBy");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportImpactMetric", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportImpactAssessment", "Assessment")
+                        .WithMany("Metrics")
+                        .HasForeignKey("AssessmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assessment");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportMonitoring", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportCase", "Case")
@@ -18021,6 +18352,44 @@ namespace ShilpoHubBD.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Simulation");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ProducerImpactAIAnalysis", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportCase", "Case")
+                        .WithMany()
+                        .HasForeignKey("CaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportImpactAssessment", "ImpactAssessment")
+                        .WithMany()
+                        .HasForeignKey("ImpactAssessmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "RequestedBy")
+                        .WithMany()
+                        .HasForeignKey("RequestedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Case");
+
+                    b.Navigation("ImpactAssessment");
+
+                    b.Navigation("RequestedBy");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ProducerImpactAIFinding", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Governance.ProducerImpactAIAnalysis", "Analysis")
+                        .WithMany("Findings")
+                        .HasForeignKey("AnalysisId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Analysis");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.SupportOrganizationProfile", b =>
@@ -20455,6 +20824,58 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("ProcurementRequest");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerBusiness.ProducerMonthlyReport", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "Producer")
+                        .WithMany()
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("District");
+
+                    b.Navigation("Producer");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerBusiness.ProducerMonthlyReportShare", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.ProducerBusiness.ProducerMonthlyReport", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "SharedByUser")
+                        .WithMany()
+                        .HasForeignKey("SharedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "SharedWithUser")
+                        .WithMany()
+                        .HasForeignKey("SharedWithUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+
+                    b.Navigation("SharedByUser");
+
+                    b.Navigation("SharedWithUser");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAgreement", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.ProducerPartnership.ProducerPartnershipAuction", "Auction")
@@ -21633,6 +22054,11 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("MonitoringEntries");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ArtisanSupportImpactAssessment", b =>
+                {
+                    b.Navigation("Metrics");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.Complaint", b =>
                 {
                     b.Navigation("Updates");
@@ -21687,6 +22113,11 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Projections");
 
                     b.Navigation("Recommendations");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Governance.ProducerImpactAIAnalysis", b =>
+                {
+                    b.Navigation("Findings");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.HeritageDatabase.HeritageDataset", b =>

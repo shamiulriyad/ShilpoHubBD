@@ -29,7 +29,7 @@ from rag.step02_normalize_json import DISTRICT_ALIASES
 from rag.step03_clean_data import CATEGORIES, RISK_LEVELS
 
 QUESTION_TYPES = ("describe", "how_made", "materials_tools", "craft_location", "location_crafts",
-                  "status", "list", "compare", "time", "heritage", "out_of_scope")
+                  "status", "list", "compare", "time", "heritage", "greeting", "out_of_scope")
 
 _BANGLA_SCRIPT = re.compile("[ঀ-৿]")
 _FENCE = re.compile(r"^```(?:json)?\s*|\s*```$", re.I)

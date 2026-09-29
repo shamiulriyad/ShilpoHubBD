@@ -1,7 +1,74 @@
 import { useState } from 'react';
 import { AsyncState, Badge, Button, PageHeader } from '../../components/ui';
 import MutationFeedback from '../../components/ui/MutationFeedback';
-import { useSupportArtisans, useSupportCases, useSupportDashboard, useSupportOrganization, useArtisanSupportMutations } from '../../hooks/useArtisanSupport';
+import { useSupportArtisans, useSupportCases, useSupportDashboard, useSupportOrganization, useArtisanSupportMutations, useCaseImpact } from '../../hooks/useArtisanSupport';
+
+const statusTone2 = (s) => (s === 'Improved' ? 'success' : s === 'Declined' ? 'secondary' : 'neutral');
+
+function ImpactPanel({ caseId, supportProvidedAt, generateImpact }) {
+  const impact = useCaseImpact(caseId);
+  const notFound = impact.isError && impact.error?.response?.status === 404;
+
+  if (!supportProvidedAt) {
+    return (
+      <div className="mt-4 rounded-lg border border-dashed border-border p-4 text-sm text-body/60">
+        Before/after performance becomes available once support delivery has been recorded.
+      </div>
+    );
+  }
+
+  if (impact.isLoading) {
+    return <p className="mt-4 text-sm text-body/60">Loading impact assessment…</p>;
+  }
+
+  if (notFound) {
+    return (
+      <div className="mt-4 rounded-lg border border-border bg-background p-4">
+        <p className="mb-2 text-sm text-body/70">No impact assessment has been generated for this case yet.</p>
+        <Button size="sm" disabled={generateImpact.isPending} onClick={() => generateImpact.mutate(caseId)}>
+          {generateImpact.isPending ? 'Generating…' : 'Generate impact assessment'}
+        </Button>
+      </div>
+    );
+  }
+
+  if (impact.isError) {
+    return <p className="mt-4 text-sm text-red-600">Could not load the impact assessment.</p>;
+  }
+
+  const data = impact.data;
+  return (
+    <div className="mt-4 rounded-lg border border-border bg-background p-4">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <p className="text-sm font-semibold text-heading">
+          Before/after performance — {data.beforeYear}-{String(data.beforeMonth).padStart(2, '0')} vs {data.afterYear}-{String(data.afterMonth).padStart(2, '0')}
+        </p>
+        <Button size="sm" variant="secondary" disabled={generateImpact.isPending} onClick={() => generateImpact.mutate(caseId)}>
+          {generateImpact.isPending ? 'Refreshing…' : 'Refresh'}
+        </Button>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-xs">
+          <thead className="text-body/50">
+            <tr><th className="py-1 pr-3">Metric</th><th className="py-1 pr-3">Before</th><th className="py-1 pr-3">After</th><th className="py-1 pr-3">Change</th><th className="py-1">Status</th></tr>
+          </thead>
+          <tbody>
+            {data.metrics.map((m) => (
+              <tr key={m.metricType} className="border-t border-border">
+                <td className="py-1.5 pr-3 font-medium">{m.metricType}</td>
+                <td className="py-1.5 pr-3">{m.beforeValue ?? '—'}</td>
+                <td className="py-1.5 pr-3">{m.afterValue ?? '—'}</td>
+                <td className="py-1.5 pr-3">{m.changePercentage == null ? '—' : `${m.changePercentage >= 0 ? '+' : ''}${m.changePercentage}%`}</td>
+                <td className="py-1.5"><Badge tone={statusTone2(m.status)}>{m.status}</Badge></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-3 text-xs italic text-body/50">{data.disclaimer}</p>
+    </div>
+  );
+}
 
 const input = 'w-full rounded-lg border border-border bg-background px-3 py-2 text-sm';
 const kinds = ['MoneyGrant','ToolsEquipment','RawMaterials','Training','MarketplaceBusinessSupport','WorkshopRepair','HeritagePreservationSupport','Other'];
@@ -42,7 +109,7 @@ export default function ArtisanSupportCases() {
     <MutationFeedback mutation={actions.createCase} successMessage="Artisan case created." />
     {showCreate&&<form onSubmit={create} className="mb-5 grid gap-3 rounded-xl border border-border bg-surface p-4 md:grid-cols-2"><Labeled label="Artisan"><select aria-label="Artisan" required className={input} value={request.artisanUserId} onChange={(e)=>setRequest(p=>({...p,artisanUserId:e.target.value}))}><option value="">Select artisan</option>{(artisans.data||[]).map(a=><option key={a.id} value={a.id}>{a.name} · {a.detail}</option>)}</select></Labeled>{['problemTitle','district','craft'].map(k=><Text key={k} label={k.replace(/([A-Z])/g,' $1')} value={request[k]} onChange={(v)=>setRequest(p=>({...p,[k]:v}))} required={k==='problemTitle'} />)}<div className="md:col-span-2"><Text label="Problem details" area value={request.problemDescription} onChange={(v)=>setRequest(p=>({...p,problemDescription:v}))} /></div><Button className="md:col-span-2">Create case</Button></form>}
     <AsyncState isLoading={casesQuery.isLoading} isError={casesQuery.isError} error={casesQuery.error}><div className="grid gap-5 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]"><div className="space-y-2">{cases.map(c=><button type="button" key={c.id} onClick={()=>setSelectedId(c.id)} className={`w-full rounded-xl border p-4 text-left ${selectedId===c.id?'border-primary bg-primary/5':'border-border bg-surface'}`}><div className="flex justify-between gap-3"><div><p className="font-semibold text-heading">{c.problemTitle}</p><p className="text-xs text-body/60">{c.caseNumber} · {c.artisanName} · {c.district||'District not set'}</p></div><Badge tone={statusTone(c.status)}>{c.status}</Badge></div>{(c.isFlagged||c.hasDispute)&&<p className="mt-2 text-xs font-semibold text-red-600">⚑ {c.hasDispute?'Artisan dispute':'Flagged'}: {c.flagReason}</p>}</button>)}{!cases.length&&<p className="text-sm text-body/60">No artisan support cases yet.</p>}</div>
-      <div>{selected?<><article className="rounded-xl border border-border bg-surface p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wider text-primary">{selected.caseNumber}</p><h2 className="text-xl font-semibold text-heading">{selected.problemTitle}</h2><p className="text-sm text-body/70">{selected.artisanName} · {selected.craft||'Craft not set'} · {selected.district||'District not set'}</p></div><Badge tone={statusTone(selected.status)}>{selected.status}</Badge></div><p className="mt-4 text-sm leading-6">{selected.problemDescription}</p><dl className="mt-4 grid gap-3 text-xs sm:grid-cols-3"><div><dt className="text-body/50">Inspection</dt><dd className="font-semibold">{selected.inspectionResult}</dd></div><div><dt className="text-body/50">Artisan confirmation</dt><dd className="font-semibold">{selected.artisanConfirmation}</dd></div><div><dt className="text-body/50">Report</dt><dd className="font-semibold">{selected.finalReport?.reviewStatus||'Not submitted'}</dd></div></dl>{selected.organizationUserId==null&&<Button className="mt-4" onClick={()=>actions.accept.mutate(selected.id)}>Accept case</Button>}</article>{selected.organizationUserId&&<ActionPanel key={selected.id} selected={selected} actions={actions} />}</>:<div className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-body/60">Select a case to inspect and manage it.</div>}</div></div></AsyncState>
+      <div>{selected?<><article className="rounded-xl border border-border bg-surface p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wider text-primary">{selected.caseNumber}</p><h2 className="text-xl font-semibold text-heading">{selected.problemTitle}</h2><p className="text-sm text-body/70">{selected.artisanName} · {selected.craft||'Craft not set'} · {selected.district||'District not set'}</p></div><Badge tone={statusTone(selected.status)}>{selected.status}</Badge></div><p className="mt-4 text-sm leading-6">{selected.problemDescription}</p><dl className="mt-4 grid gap-3 text-xs sm:grid-cols-3"><div><dt className="text-body/50">Inspection</dt><dd className="font-semibold">{selected.inspectionResult}</dd></div><div><dt className="text-body/50">Artisan confirmation</dt><dd className="font-semibold">{selected.artisanConfirmation}</dd></div><div><dt className="text-body/50">Report</dt><dd className="font-semibold">{selected.finalReport?.reviewStatus||'Not submitted'}</dd></div></dl>{selected.organizationUserId==null&&<Button className="mt-4" onClick={()=>actions.accept.mutate(selected.id)}>Accept case</Button>}<ImpactPanel key={selected.id} caseId={selected.id} supportProvidedAt={selected.supportProvidedAt} generateImpact={actions.generateImpact} /></article>{selected.organizationUserId&&<ActionPanel key={selected.id} selected={selected} actions={actions} />}</>:<div className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-body/60">Select a case to inspect and manage it.</div>}</div></div></AsyncState>
   </div>;
 }
 

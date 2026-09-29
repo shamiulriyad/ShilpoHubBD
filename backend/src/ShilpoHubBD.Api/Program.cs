@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ShilpoHubBD.Api.BackgroundServices;
 using ShilpoHubBD.Api.Hubs;
 using ShilpoHubBD.Api.Middlewares;
 using ShilpoHubBD.Api.Realtime;
@@ -81,6 +82,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddHostedService<ProducerMonthlyReportGenerationHostedService>();
 builder.Services.Configure<ImageStorageOptions>(o =>
 	o.WebRootPath = builder.Environment.WebRootPath ?? Path.Combine(builder.Environment.ContentRootPath, "wwwroot"));
 

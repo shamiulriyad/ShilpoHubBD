@@ -94,6 +94,18 @@ public class ReviewRepository : IReviewRepository
         return ratings.Count == 0 ? (0, 0) : (ratings.Average(), ratings.Count);
     }
 
+    public async Task<(double AverageRating, int ReviewCount)> GetAggregateByProducerAsync(
+        Guid producerId, DateTime periodStart, DateTime periodEnd, CancellationToken cancellationToken)
+    {
+        var ratings = await _context.Reviews
+            .Where(r => r.Product != null && r.Product.ProducerId == producerId
+                && r.CreatedAt >= periodStart && r.CreatedAt <= periodEnd)
+            .Select(r => r.Rating)
+            .ToListAsync(cancellationToken);
+
+        return ratings.Count == 0 ? (0, 0) : (ratings.Average(), ratings.Count);
+    }
+
     public async Task AddAsync(Review review, CancellationToken cancellationToken)
         => await _context.Reviews.AddAsync(review, cancellationToken);
 

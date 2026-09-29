@@ -17,6 +17,7 @@ ROUTES (spec section 8):
     compare          each craft separately, top_k 6 each, under a heading per craft; + siblings
     time             craft_key; production; top_k 6; chunks from BOTH craft.json and craftDetails.json
     heritage         craft_key when named; top_k 8; + REF-SITES
+    greeting         no retrieval
     out_of_scope     no retrieval
 
 Rules that apply to every route:
@@ -77,7 +78,7 @@ class Retrieval:
     blocks: List[Block] = field(default_factory=list)
     filters: Dict[str, Any] = field(default_factory=dict)
     fallback: bool = False           # a filtered search found nothing and was retried unfiltered
-    skipped: bool = False            # out_of_scope: retrieval was not run
+    skipped: bool = False            # out_of_scope / greeting: retrieval was not run
 
     @property
     def hits(self) -> List[Hit]:
@@ -225,9 +226,9 @@ def retrieve(client, collection: str, analysis: Dict[str, Any], dense: List[floa
              min_score: Optional[float] = None) -> Retrieval:
     qtype = analysis["question_type"]
     result = Retrieval(question_type=qtype)
-    if qtype == "out_of_scope":
+    if qtype in ("out_of_scope", "greeting"):
         result.skipped = True
-        print("[9] Route      : out_of_scope - retrieval skipped")
+        print(f"[9] Route      : {qtype} - retrieval skipped")
         return result
 
     aspects, top_k = ROUTES.get(qtype, (None, config.TOP_K))
