@@ -43,7 +43,7 @@ export default function ProducerAcademy() {
       <MutationFeedback mutation={upload} /><MutationFeedback mutation={apply} />
       <Button type="submit" disabled={apply.isPending || upload.isPending || !form.proofImageUrl}>Submit for admin approval</Button>
     </form>}
-    {approved && <section className="space-y-5"><h2 className="text-xl font-semibold">Upload courses</h2>
+    {approved && <section className="space-y-6"><div><p className="text-xs font-semibold uppercase tracking-[.16em] text-primary/70">Mentor workspace</p><h2 className="mt-1 text-xl font-semibold text-heading">Course management</h2><p className="mt-1 text-sm text-body/60">Publish a new course and monitor student capacity from one place.</p></div>
       <form className="grid gap-4 rounded-xl border border-border p-5 sm:grid-cols-2" onSubmit={e => { e.preventDefault(); publish.mutate(); }}>
         {[['title', 'Course title'], ['description', 'What students will learn'], ['category', 'Craft category'], ['venue', 'Offline venue / address']].map(([key, label]) => <label key={key}>{label}<textarea className={input} required={key !== 'venue' || course.deliveryMode !== 'Online'} maxLength={key === 'description' ? 4000 : key === 'venue' ? 500 : 200} value={course[key]} disabled={!!draftId} onChange={e => setCourse(f => ({ ...f, [key]: e.target.value }))} /></label>)}
         {[['price', 'Fee (BDT)', 0, 1000000], ['durationDays', 'Duration in days', 1, 365], ['daysPerWeek', 'Class days per week', 1, 7], ['sessionMinutes', 'Minutes per class', 15, 480], ['maxApprentices', 'Maximum students', 1, 10000]].map(([key, label, min, max]) => <label key={key}>{label}<input type="number" step={key === 'price' ? '0.01' : '1'} required min={min} max={max} className={input} value={course[key]} disabled={!!draftId} onChange={e => setCourse(f => ({ ...f, [key]: Number(e.target.value) }))} /></label>)}
@@ -52,8 +52,24 @@ export default function ProducerAcademy() {
         <p>Students reserve a seat and pay the listed fee directly to the mentor. Online payment collection is not connected.</p>
         <MutationFeedback mutation={publish} /><Button type="submit" disabled={publish.isPending}>{draftId ? 'Retry publishing saved draft' : 'Submit and publish course'}</Button>
       </form>
-      {courses.isError && <p role="alert">Unable to load courses.</p>}
-      {(courses.data || []).map(c => <article key={c.id} className="rounded-lg border border-border p-4"><Link to={`/academy/courses/${c.id}`}>{c.title}</Link><p>{c.status} · BDT {c.price} · {c.activeEnrollmentCount}/{c.maxApprentices} students</p></article>)}
+      <div className="flex flex-wrap items-end justify-between gap-3 border-t border-border pt-6">
+        <div><h3 className="text-lg font-semibold text-heading">Your courses</h3><p className="mt-1 text-sm text-body/60">{(courses.data || []).length} course{(courses.data || []).length === 1 ? '' : 's'} created</p></div>
+        {!!(courses.data || []).length && <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{(courses.data || []).filter(c => c.status === 'Published').length} published</span>}
+      </div>
+      {courses.isLoading && <p role="status" className="rounded-xl border border-border bg-surface p-5 text-sm text-body/60">Loading your courses…</p>}
+      {courses.isError && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">Unable to load courses.</p>}
+      <div className="grid gap-4 lg:grid-cols-2">{(courses.data || []).map(c => {
+        const enrolled = c.activeEnrollmentCount || 0;
+        const capacity = c.maxApprentices || 0;
+        const occupancy = capacity ? Math.min(100, Math.round((enrolled / capacity) * 100)) : 0;
+        return <Link to={`/academy/courses/${c.id}`} key={c.id} className="group rounded-xl border border-border bg-surface p-5 transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md">
+          <div className="flex items-start justify-between gap-4"><div className="min-w-0"><p className="text-[11px] font-semibold uppercase tracking-[.14em] text-primary/65">{c.category || 'Heritage course'}</p><h4 className="mt-1 truncate text-base font-semibold text-heading group-hover:text-primary">{c.title}</h4></div><span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${c.status === 'Published' ? 'bg-emerald-50 text-emerald-700' : 'bg-background text-body/70'}`}>{c.status}</span></div>
+          <div className="mt-5 grid grid-cols-2 gap-4 border-y border-border py-3 text-sm"><div><p className="text-[11px] uppercase tracking-wide text-body/45">Course fee</p><p className="mt-1 font-semibold text-heading">BDT {Number(c.price || 0).toLocaleString('en-BD')}</p></div><div><p className="text-[11px] uppercase tracking-wide text-body/45">Enrollment</p><p className="mt-1 font-semibold text-heading">{enrolled} of {capacity} students</p></div></div>
+          <div className="mt-4"><div className="mb-2 flex justify-between text-[11px] text-body/55"><span>Capacity</span><span>{occupancy}% filled</span></div><div className="h-1.5 overflow-hidden rounded-full bg-background"><div className="h-full rounded-full bg-primary transition-all" style={{ width: `${occupancy}%` }} /></div></div>
+          <p className="mt-4 text-xs font-semibold text-primary">View course details <span aria-hidden="true" className="inline-block transition group-hover:translate-x-1">→</span></p>
+        </Link>;
+      })}</div>
+      {courses.isSuccess && !(courses.data || []).length && <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center"><h3 className="font-semibold text-heading">No courses yet</h3><p className="mt-1 text-sm text-body/60">Use the form above to publish your first heritage course.</p></div>}
     </section>}
   </div>;
 }
