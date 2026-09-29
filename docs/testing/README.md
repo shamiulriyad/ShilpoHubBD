@@ -444,6 +444,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Recommendation](#be-recommendation) | Backend | 3 / 3 | 22 | `backend/tests/ShilpoHubBD.UnitTests/Features/Recommendation/` | 2026-09-30 |
 | [MentorMatching](#be-mentormatching) | Backend | 4 / 4 | 32 | `backend/tests/ShilpoHubBD.UnitTests/Features/MentorMatching/` | 2026-09-30 |
 | [ProducerComparison](#be-producercomparison) | Backend | 4 / 4 | 20 | `backend/tests/ShilpoHubBD.UnitTests/Features/ProducerComparison/` | 2026-09-30 |
+| [SupplierDiscovery](#be-supplierdiscovery) | Backend | 4 / 4 | 51 | `backend/tests/ShilpoHubBD.UnitTests/Features/SupplierDiscovery/` | 2026-09-30 |
 
 ### Blocked units
 
@@ -2252,7 +2253,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 | ✅ | `SupplierDiscoveryService` | Service | `Application/Services/SupplierDiscovery/SupplierDiscoveryService.cs` | `Services/SupplierDiscoveryServiceTests.cs` |  |
 | ✅ | `SupplierSearchParametersValidator` | Validator | `Application/Validators/SupplierDiscovery/SupplierSearchParametersValidator.cs` | `Validators/SupplierSearchParametersValidatorTests.cs` |  |
 | ✅ | `SupplierDiscoveryRepository` | Repository | `Data/Repositories/SupplierDiscoveryRepository.cs` | `Repositories/SupplierDiscoveryRepositoryTests.cs` | needs the test database |
-| ☐ | `SupplierDiscoveryController` | Controller | `Api/Controllers/SupplierDiscoveryController.cs` | `Controllers/SupplierDiscoveryControllerTests.cs` |  |
+| ✅ | `SupplierDiscoveryController` | Controller | `Api/Controllers/SupplierDiscoveryController.cs` | `Controllers/SupplierDiscoveryControllerTests.cs` |  |
 
 <a id="be-suppliermatching"></a>
 
