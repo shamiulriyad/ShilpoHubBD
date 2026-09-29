@@ -759,7 +759,7 @@ Contains: 2 services, 9 validators, 3 infrastructure classes, 4 repositories, 2 
 | ✅ | `PasswordResetTokenRepository` | Repository | `Data/Repositories/PasswordResetTokenRepository.cs` | `Repositories/PasswordResetTokenRepositoryTests.cs` | needs the test database |
 | ✅ | `RefreshTokenRepository` | Repository | `Data/Repositories/RefreshTokenRepository.cs` | `Repositories/RefreshTokenRepositoryTests.cs` | needs the test database |
 | ✅ | `RoleRepository` | Repository | `Data/Repositories/RoleRepository.cs` | `Repositories/RoleRepositoryTests.cs` | needs the test database |
-| ☐ | `UserRepository` | Repository | `Data/Repositories/UserRepository.cs` | `Repositories/UserRepositoryTests.cs` | needs the test database |
+| ✅ | `UserRepository` | Repository | `Data/Repositories/UserRepository.cs` | `Repositories/UserRepositoryTests.cs` | needs the test database |
 | ☐ | `AuthController` | Controller | `Api/Controllers/AuthController.cs` | `Controllers/AuthControllerTests.cs` |  |
 | ☐ | `RolesController` | Controller | `Api/Controllers/RolesController.cs` | `Controllers/RolesControllerTests.cs` |  |
 
