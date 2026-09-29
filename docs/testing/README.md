@@ -438,6 +438,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Achievement](#be-achievement) | Backend | 5 / 5 | 61 | `backend/tests/ShilpoHubBD.UnitTests/Features/Achievement/` | 2026-09-30 |
 | [Impact](#be-impact) | Backend | 3 / 3 | 17 | `backend/tests/ShilpoHubBD.UnitTests/Features/Impact/` | 2026-09-30 |
 | [QRVerification](#be-qrverification) | Backend | 6 / 6 | 58 | `backend/tests/ShilpoHubBD.UnitTests/Features/QRVerification/` | 2026-09-30 |
+| [CounterfeitDetection](#be-counterfeitdetection) | Backend | 3 / 3 | 15 | `backend/tests/ShilpoHubBD.UnitTests/Features/CounterfeitDetection/` | 2026-09-30 |
 
 ### Blocked units
 
@@ -1001,7 +1002,7 @@ Contains: 1 service, 1 infrastructure class, 1 controller.
 |---|---|---|---|---|---|
 | ✅ | `CounterfeitDetectionService` | Service | `Application/Services/CounterfeitDetection/CounterfeitDetectionService.cs` | `Services/CounterfeitDetectionServiceTests.cs` |  |
 | ✅ | `RuleBasedCounterfeitDetectionProvider` | Infrastructure | `Infrastructure/CounterfeitDetection/RuleBasedCounterfeitDetectionProvider.cs` | `Infrastructure/RuleBasedCounterfeitDetectionProviderTests.cs` |  |
-| ☐ | `CounterfeitDetectionController` | Controller | `Api/Controllers/CounterfeitDetectionController.cs` | `Controllers/CounterfeitDetectionControllerTests.cs` |  |
+| ✅ | `CounterfeitDetectionController` | Controller | `Api/Controllers/CounterfeitDetectionController.cs` | `Controllers/CounterfeitDetectionControllerTests.cs` |  |
 
 <a id="be-csrsponsorship"></a>
 
