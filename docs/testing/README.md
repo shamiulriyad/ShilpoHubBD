@@ -959,7 +959,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 | ✅ | `CreateOrderComplaintRequestValidator` | Validator | `Application/Validators/Complaints/OrderComplaintValidators.cs` | `Validators/CreateOrderComplaintRequestValidatorTests.cs` |  |
 | ✅ | `CustomerComplaintNoteRequestValidator` | Validator | `Application/Validators/Complaints/OrderComplaintValidators.cs` | `Validators/CustomerComplaintNoteRequestValidatorTests.cs` |  |
 | ✅ | `RespondToOrderComplaintRequestValidator` | Validator | `Application/Validators/Complaints/OrderComplaintValidators.cs` | `Validators/RespondToOrderComplaintRequestValidatorTests.cs` |  |
-| ☐ | `OrderComplaintRepository` | Repository | `Data/Repositories/OrderComplaintRepository.cs` | `Repositories/OrderComplaintRepositoryTests.cs` | needs the test database |
+| ✅ | `OrderComplaintRepository` | Repository | `Data/Repositories/OrderComplaintRepository.cs` | `Repositories/OrderComplaintRepositoryTests.cs` | needs the test database |
 | ☐ | `OrderComplaintsController` | Controller | `Api/Controllers/OrderComplaintsController.cs` | `Controllers/OrderComplaintsControllerTests.cs` |  |
 
 <a id="be-contracts"></a>
