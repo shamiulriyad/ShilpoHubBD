@@ -386,6 +386,7 @@ class FakeProductRepository : IProductRepository
 
 class FakeReviewRepository : IReviewRepository
 {
+    public Task<(double AverageRating, int ReviewCount)> GetAggregateByProducerAsync(Guid producerId, DateTime start, DateTime end, CancellationToken ct) => throw new NotSupportedException("Producer-period aggregation is outside this fixture.");
     public Task<(List<Review> Items, int TotalCount)> GetPagedByProductAsync(Guid productId, int page, int pageSize, CancellationToken ct) => Task.FromResult((new List<Review>(), 0));
     public Task<(List<Review> Items, int TotalCount)> GetPagedByHeritagePlaceAsync(Guid heritagePlaceId, int page, int pageSize, CancellationToken ct) => Task.FromResult((new List<Review>(), 0));
     public Task<(List<Review> Items, int TotalCount)> GetPagedByServiceAsync(Guid touristServiceId, int page, int pageSize, CancellationToken ct) => Task.FromResult((new List<Review>(), 0));
