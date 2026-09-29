@@ -1,3 +1,4 @@
+import SafeImage from '../../components/media/SafeImage';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
@@ -22,7 +23,7 @@ function ComplaintCard({ c, m }) {
         <Badge tone={STATUS_TONE[c.status] || 'neutral'}>{STATUS_LABEL[c.status] || c.status}</Badge>
       </div>
       <p className="mt-3 whitespace-pre-line text-sm text-body/80">{c.description}</p>
-      {c.imageUrl && <img src={resolveUploadUrl(c.imageUrl)} alt="Attached to the complaint" className="mt-2 max-h-48 rounded-lg object-cover" loading="lazy" />}
+      {c.imageUrl && <SafeImage src={resolveUploadUrl(c.imageUrl)} alt="Attached to the complaint" className="mt-2 max-h-48 rounded-lg object-cover" loading="lazy" />}
       {c.producerResponse && <p className="mt-3 rounded-md bg-background px-3 py-2 text-sm text-body/80"><span className="font-medium text-heading">Producer:</span> {c.producerResponse}</p>}
 
       {c.status === 'Resolved' && (
