@@ -458,3 +458,15 @@ html {
  .workspace-footer-contact { margin-left:auto; gap:14px; }
  .workspace-copyright { font-size:11px; }
 }
+
+/* Help occupies its own heading cell on messages, outside the conversation. */
+#messages-help-slot button[aria-controls="ai-assistant-panel"] {
+  position: static;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: none;
+  transform: none;
+}
+.direct-messages { border-radius: 10px; }
+.direct-messages .inbox-row:focus-visible { outline: 2px solid #175443; outline-offset: -3px; }
