@@ -51,6 +51,16 @@ public partial class ShilpoHubDbContext
             if (entry.Entity is UserNotification) continue;
             if (entry.Metadata.ClrType.Name.EndsWith("Event", StringComparison.Ordinal)) continue;
             var added = entry.State == EntityState.Added;
+            if (entry.Entity is MentorProfile mentorApplication)
+            {
+                if (mentorApplication.ApprovalStatus == "Pending" && (added || entry.Property(nameof(MentorProfile.ApprovalStatus)).IsModified))
+                {
+                    var admins = await UserRoles.Where(r => r.Role.Name == "SuperAdmin").Select(r => r.UserId).ToListAsync(ct);
+                    foreach (var admin in admins) Add(admin, "Mentor application awaiting review", "A producer submitted expertise and photo proof for Academy approval.", "Academy", "/admin/mentor-applications");
+                }
+                else if (entry.Property(nameof(MentorProfile.ApprovalStatus)).IsModified)
+                    Add(mentorApplication.UserId, "Mentor application reviewed", $"Your mentor application is {mentorApplication.ApprovalStatus}.", "Academy", "/producer/academy");
+            }
             if (entry.Entity is SupportOrganizationProfile organization && organization.Status == OrganizationVerificationStatus.Pending
                 && (added || entry.Property(nameof(SupportOrganizationProfile.Status)).IsModified))
             {

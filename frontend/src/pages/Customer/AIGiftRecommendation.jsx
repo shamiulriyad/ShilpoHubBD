@@ -1,3 +1,4 @@
+import SafeImage from '../../components/media/SafeImage';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../routes/routePaths';
@@ -94,7 +95,7 @@ export default function AIGiftRecommendation() {
             {giftRecommendations.data.map((gift, i) => (
               <div key={i} className="rounded-xl border border-border bg-surface p-4">
                 <Badge tone="secondary">{gift.category}</Badge>
-                {gift.imageUrl && <img src={gift.imageUrl} alt={gift.productName} className="mt-2 h-28 w-full rounded-lg object-cover" loading="lazy" />}
+                {gift.imageUrl && <SafeImage src={gift.imageUrl} alt={gift.productName} className="mt-2 h-28 w-full rounded-lg object-cover" loading="lazy" />}
                 <p className="mt-2 text-sm font-semibold text-heading">
                   {gift.productId ? (
                     <Link to={routePaths.marketplaceProductDetails.replace(':productId', gift.productId)} className="hover:underline">{gift.productName}</Link>

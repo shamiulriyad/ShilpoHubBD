@@ -10,6 +10,7 @@ public class CourseEnrollmentConfiguration : IEntityTypeConfiguration<CourseEnro
     {
         builder.ToTable("CourseEnrollments");
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.FeeAmount).HasPrecision(18, 2);
 
         builder.Property(e => e.Status).IsRequired().HasConversion<string>().HasMaxLength(20);
         builder.Property(e => e.EnrolledAt).IsRequired();

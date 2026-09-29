@@ -22,7 +22,7 @@ public class EnrollmentService : IEnrollmentService
         _trainingCertificateRepository = trainingCertificateRepository;
     }
 
-    public async Task<CourseEnrollmentDto> EnrollAsync(Guid apprenticeUserId, Guid courseId, CancellationToken cancellationToken)
+    public async Task<CourseEnrollmentDto> EnrollAsync(Guid apprenticeUserId, Guid courseId, CancellationToken cancellationToken, string attendanceMode = "Online")
     {
         var course = await _courseRepository.GetByIdAsync(courseId, cancellationToken)
             ?? throw new NotFoundException("Course not found.");
@@ -36,6 +36,9 @@ public class EnrollmentService : IEnrollmentService
         {
             throw new ConflictException("You cannot enroll in your own course.");
         }
+
+        if (attendanceMode is not ("Online" or "Offline") || (course.DeliveryMode != "Both" && course.DeliveryMode != attendanceMode))
+            throw new ConflictException("Select an available online or offline attendance option.");
 
         var existing = await _enrollmentRepository.GetByCourseAndApprenticeAsync(courseId, apprenticeUserId, cancellationToken);
         if (existing is not null)
@@ -58,6 +61,9 @@ public class EnrollmentService : IEnrollmentService
             CourseId = courseId,
             ApprenticeId = apprenticeUserId,
             Status = EnrollmentStatus.Active,
+            AttendanceMode = attendanceMode,
+            FeeAmount = course.Price,
+            PaymentStatus = course.Price == 0 ? "Free" : "DueToMentor",
             EnrolledAt = DateTime.UtcNow,
         };
 
@@ -204,6 +210,9 @@ public class EnrollmentService : IEnrollmentService
 
     private static EnrollmentListItemDto ToListItemDto(CourseEnrollment enrollment) => new()
     {
+        AttendanceMode = enrollment.AttendanceMode,
+        FeeAmount = enrollment.FeeAmount,
+        PaymentStatus = enrollment.PaymentStatus,
         Id = enrollment.Id,
         CourseId = enrollment.CourseId,
         CourseTitle = enrollment.Course.Title,
@@ -222,6 +231,9 @@ public class EnrollmentService : IEnrollmentService
 
         return new CourseEnrollmentDto
         {
+            AttendanceMode = enrollment.AttendanceMode,
+            FeeAmount = enrollment.FeeAmount,
+            PaymentStatus = enrollment.PaymentStatus,
             Id = enrollment.Id,
             CourseId = enrollment.CourseId,
             CourseTitle = enrollment.Course.Title,

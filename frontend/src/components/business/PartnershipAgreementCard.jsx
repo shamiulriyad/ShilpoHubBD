@@ -146,6 +146,7 @@ export default function PartnershipAgreementCard({ agreement, viewerRole }) {
         <div className="flex items-center gap-2 border-t border-border pt-4">
           <MutationFeedback mutation={m.cancel} successMessage="Partnership cancelled." />
           <input
+            aria-label="Cancellation reason"
             placeholder="Reason (optional)" value={cancelReason} onChange={(e) => setCancelReason(e.target.value)}
             className="flex-1 rounded-md border border-border bg-background px-2 py-1.5 text-sm"
           />

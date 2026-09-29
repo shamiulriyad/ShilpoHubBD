@@ -1,3 +1,4 @@
+import SafeImage from '../../components/media/SafeImage';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Badge, AsyncState } from '../../components/ui';
 import { useUnescoRecords } from '../../hooks/useUnescoRecords';
@@ -33,7 +34,7 @@ export default function Unesco() {
             {records.map((record) => (
               <div key={record.id} className="overflow-hidden rounded-xl border border-border bg-surface">
                 {record.imageUrl ? (
-                  <img src={record.imageUrl} alt={record.title} loading="lazy" className="aspect-video w-full object-cover" />
+                  <SafeImage src={record.imageUrl} alt={record.title} loading="lazy" className="aspect-video w-full object-cover" />
                 ) : (
                   <div className="flex aspect-video items-center justify-center bg-background text-xs text-body/40">Heritage Image</div>
                 )}

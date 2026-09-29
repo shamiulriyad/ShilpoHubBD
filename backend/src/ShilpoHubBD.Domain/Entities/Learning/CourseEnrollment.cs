@@ -4,6 +4,9 @@ namespace ShilpoHubBD.Domain.Entities.Learning;
 
 public class CourseEnrollment
 {
+    public string AttendanceMode { get; set; } = "Online";
+    public decimal FeeAmount { get; set; }
+    public string PaymentStatus { get; set; } = "Free";
     public Guid Id { get; set; }
 
     public Guid CourseId { get; set; }

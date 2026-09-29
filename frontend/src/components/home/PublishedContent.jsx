@@ -6,6 +6,10 @@ import SafeImage from '../media/SafeImage';
 export function safeContentLink(value) {
   return typeof value === 'string' && (/^\/(?!\/)/.test(value) || /^https?:\/\//i.test(value)) ? value : null;
 }
+export function isQaFixture(content) {
+  return /(?:^|\s)-\s*QA\s+\d{8}-\d{6}\s*$/i.test(content?.title || '')
+    || /^Persistent QA\b/i.test(content?.message || '');
+}
 function usePublishedContent(resource, params) {
   return useQuery({queryKey:['cms-public',resource,params],queryFn:()=>apiClient.get(`/cms/${resource}`,{params}).then(r=>r.data),retry:1});
 }
@@ -16,7 +20,7 @@ export default function PublishedContent() {
   const blogs=usePublishedContent('blogs',{page:1,pageSize:3});
   const events=usePublishedContent('events',{page:1,pageSize:3});
   const activeSections=(sections.data||[]).filter(s=>s.isActive).sort((a,b)=>a.displayOrder-b.displayOrder);
-  const notices=(announcements.data||[]).filter(s=>s.isActive);
+  const notices=(announcements.data||[]).filter(s=>s.isActive&&!isQaFixture(s));
   if(!activeSections.length&&!notices.length&&![news,blogs,events].some(q=>q.data?.items?.length))return null;
   return <section aria-label="Community updates" className="mx-auto max-w-7xl space-y-8 px-5 py-12 lg:px-8">
     {notices.map(notice=><aside key={notice.id} className={`rounded-xl border p-5 ${notice.severity==='Critical'?'border-red-200 bg-red-50 text-red-900':notice.severity==='Warning'?'border-amber-200 bg-amber-50 text-amber-900':'border-border bg-surface'}`}><h2 className="text-lg font-semibold">{notice.title}</h2><p className="mt-2 whitespace-pre-wrap text-sm">{notice.message}</p></aside>)}

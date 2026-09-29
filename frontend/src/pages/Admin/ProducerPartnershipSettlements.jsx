@@ -58,7 +58,7 @@ export default function ProducerPartnershipSettlements() {
 
       <div className="mb-4 flex items-center gap-2">
         <label className="text-sm text-body/70">Filter by status</label>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-md border border-border bg-background px-2 py-1.5 text-sm">
+        <select aria-label="Settlement status" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-md border border-border bg-background px-2 py-1.5 text-sm">
           <option value="">All</option>
           <option value="Draft">Draft</option>
           <option value="PendingApproval">Pending approval</option>
@@ -129,7 +129,7 @@ function SettlementRow({ settlement: s, expanded, onToggle, onSubmit, onApprove,
           {s.status === 'PendingApproval' && (
             <div className="flex flex-wrap items-center gap-2">
               <Button variant="primary" disabled={busy} onClick={onApprove}>Approve</Button>
-              <input placeholder="Rejection reason (optional)" value={rejectReason} onChange={(e) => setRejectReason(e.target.value)} className="flex-1 rounded-md border border-border bg-background px-2 py-1.5 text-sm" />
+              <input aria-label="Rejection reason" placeholder="Rejection reason (optional)" value={rejectReason} onChange={(e) => setRejectReason(e.target.value)} className="flex-1 rounded-md border border-border bg-background px-2 py-1.5 text-sm" />
               <Button variant="secondary" disabled={busy} onClick={() => onReject(rejectReason || undefined)}>Reject</Button>
             </div>
           )}

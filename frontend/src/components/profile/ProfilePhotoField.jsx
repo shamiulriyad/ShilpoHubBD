@@ -1,3 +1,4 @@
+import SafeImage from '../media/SafeImage';
 import { useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useMyProfile, useProfilePhoto } from '../../hooks/useProfile';
@@ -32,7 +33,7 @@ export default function ProfilePhotoField() {
   return (
     <section aria-label="Profile photo" className="flex flex-wrap items-center gap-5 rounded-xl border border-border bg-surface p-5">
       <span className="grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-full bg-primary text-3xl font-bold text-surface ring-4 ring-primary/15">
-        {src ? <img src={src} alt="Your profile photo" className="h-full w-full object-cover" /> : (user?.name || 'U').trim().slice(0, 1).toUpperCase()}
+        {src ? <SafeImage src={src} alt="Your profile photo" className="h-full w-full object-cover" /> : (user?.name || 'U').trim().slice(0, 1).toUpperCase()}
       </span>
       <div className="min-w-0 flex-1">
         <h2 className="text-base font-semibold text-heading">Profile photo</h2>

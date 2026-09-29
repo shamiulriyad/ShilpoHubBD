@@ -46,7 +46,12 @@ check('all requested scan types pass the backend validator',()=>{
 });
 check('all admin navigation paths are unique',()=>{
   const paths=adminGroups.flatMap(([s,,views])=>views.map(([v])=>`/admin/${s}/${v}`));
+<<<<<<< HEAD
   assert.equal(paths.length,39);assert.equal(new Set(paths).size,paths.length);
+=======
+  assert(paths.length > 0);assert.equal(new Set(paths).size,paths.length);
+  for (const required of ['/admin/cms/blogs', '/admin/cms/siteContent', '/admin/security/threats']) assert(paths.includes(required));
+>>>>>>> origin/main
 });
 
 // Inject a transport; no live requests, tokens, or database mutations.

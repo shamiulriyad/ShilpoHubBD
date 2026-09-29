@@ -1,3 +1,4 @@
+import SafeImage from '../media/SafeImage';
 import Badge from './Badge';
 import { resolveUploadUrl } from '../messaging/ImageAttachButton';
 
@@ -13,7 +14,7 @@ export default function QnASection({ qa }) {
       <p className="text-sm font-semibold text-heading">{qa.question}</p>
       {qa.image && (
         <a href={resolveUploadUrl(qa.image)} target="_blank" rel="noreferrer">
-          <img src={resolveUploadUrl(qa.image)} alt="Attached to the question" className="mt-2 max-h-48 rounded-lg object-cover" loading="lazy" />
+          <SafeImage src={resolveUploadUrl(qa.image)} alt="Attached to the question" className="mt-2 max-h-48 rounded-lg object-cover" loading="lazy" />
         </a>
       )}
 

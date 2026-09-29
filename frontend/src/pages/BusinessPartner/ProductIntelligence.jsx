@@ -32,6 +32,7 @@ export default function ProductIntelligence() {
 
       <div className="mb-6 space-y-3">
         <input
+          aria-label="Search products by name"
           placeholder="Search products by name…" value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
@@ -56,7 +57,7 @@ export default function ProductIntelligence() {
         <div className="space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-lg font-semibold text-heading">{selectedProduct.name}</p>
-            <select value={range} onChange={(e) => { setRange(e.target.value); aiInsights.reset(); }} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+            <select aria-label="Analysis period" value={range} onChange={(e) => { setRange(e.target.value); aiInsights.reset(); }} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
               {RANGE_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
           </div>
