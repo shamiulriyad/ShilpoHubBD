@@ -2250,7 +2250,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
 | ✅ | `SupplierDiscoveryService` | Service | `Application/Services/SupplierDiscovery/SupplierDiscoveryService.cs` | `Services/SupplierDiscoveryServiceTests.cs` |  |
-| ☐ | `SupplierSearchParametersValidator` | Validator | `Application/Validators/SupplierDiscovery/SupplierSearchParametersValidator.cs` | `Validators/SupplierSearchParametersValidatorTests.cs` |  |
+| ✅ | `SupplierSearchParametersValidator` | Validator | `Application/Validators/SupplierDiscovery/SupplierSearchParametersValidator.cs` | `Validators/SupplierSearchParametersValidatorTests.cs` |  |
 | ☐ | `SupplierDiscoveryRepository` | Repository | `Data/Repositories/SupplierDiscoveryRepository.cs` | `Repositories/SupplierDiscoveryRepositoryTests.cs` | needs the test database |
 | ☐ | `SupplierDiscoveryController` | Controller | `Api/Controllers/SupplierDiscoveryController.cs` | `Controllers/SupplierDiscoveryControllerTests.cs` |  |
 
