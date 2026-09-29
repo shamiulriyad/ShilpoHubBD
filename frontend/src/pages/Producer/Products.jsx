@@ -8,15 +8,14 @@ import { useMyProducts } from '../../hooks/useProducts';
 import NewProductForm from './NewProductForm';
 
 const tones = { Approved: 'success', Pending: 'secondary', Rejected: 'neutral' };
-const STATUS_TEXT = { Approved: 'Live', Pending: 'Waiting for review', Rejected: 'Needs changes' };
+const STATUS_TEXT = { Approved: 'Live', Pending: 'Live', Rejected: 'Removed by moderation' };
 
 const isOut = (p) => p.stock === 0;
 const isLow = (p) => p.stock > 0 && p.lowStockThreshold != null && p.stock <= p.lowStockThreshold;
 const FILTERS = [
   ['all', 'All', () => true],
-  ['Approved', 'Live', (p) => p.approvalStatus === 'Approved'],
-  ['Pending', 'Waiting for review', (p) => p.approvalStatus === 'Pending'],
-  ['Rejected', 'Needs changes', (p) => p.approvalStatus === 'Rejected'],
+  ['Approved', 'Live', (p) => p.approvalStatus !== 'Rejected'],
+  ['Rejected', 'Removed', (p) => p.approvalStatus === 'Rejected'],
   ['low', 'Low stock', isLow],
   ['out', 'Out of stock', isOut],
 ];
@@ -47,8 +46,7 @@ export default function Products() {
       <section aria-label="Product summary" className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-6">
         <StatCard label="Total products" value={products.length}/>
         <StatCard label="Live" value={counts.Approved}/>
-        <StatCard label="Waiting for review" value={counts.Pending}/>
-        <StatCard label="Needs changes" value={counts.Rejected}/>
+        <StatCard label="Removed" value={counts.Rejected}/>
         <StatCard label="Low stock" value={counts.low}/>
         <StatCard label="Out of stock" value={counts.out}/>
       </section>
@@ -84,7 +82,7 @@ export default function Products() {
       </article>)}</div>
 
       {products.length > 0 && !shown.length && <div className="rounded-2xl border border-border bg-surface p-8 text-center text-sm text-body/70">No products in “{filter[1]}”. <button type="button" className="font-semibold text-primary underline" onClick={() => setFilter('all')}>Show all products</button></div>}
-      {!products.length && <div className="rounded-2xl border border-border bg-surface p-10 text-center"><h2 className="text-xl font-semibold">Launch your first product</h2><p className="my-3 text-body">Add a clear photo, price, stock and a short story. An admin reviews it before it goes live.</p><Button onClick={() => setEditing({})}>Add product</Button></div>}
+      {!products.length && <div className="rounded-2xl border border-border bg-surface p-10 text-center"><h2 className="text-xl font-semibold">Launch your first product</h2><p className="my-3 text-body">Add a clear photo, price, stock and a short story. It goes live as soon as you save it.</p><Button onClick={() => setEditing({})}>Add product</Button></div>}
     </AsyncState>
   </div>;
 }
