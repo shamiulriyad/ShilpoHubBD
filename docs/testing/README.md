@@ -2161,7 +2161,7 @@ Contains: 5 services, 2 validators, 1 infrastructure class, 5 repositories, 5 co
 | ✅ | `BlockIpRequestValidator` | Validator | `Application/Validators/Security/BlockIpRequestValidator.cs` | `Validators/BlockIpRequestValidatorTests.cs` |  |
 | ✅ | `CreateApiKeyRequestValidator` | Validator | `Application/Validators/Security/CreateApiKeyRequestValidator.cs` | `Validators/CreateApiKeyRequestValidatorTests.cs` |  |
 | ✅ | `PgDumpBackupRunner` | Infrastructure | `Infrastructure/Security/PgDumpBackupRunner.cs` | `Infrastructure/PgDumpBackupRunnerTests.cs` |  |
-| ☐ | `ApiKeyRepository` | Repository | `Data/Repositories/ApiKeyRepository.cs` | `Repositories/ApiKeyRepositoryTests.cs` | needs the test database |
+| ✅ | `ApiKeyRepository` | Repository | `Data/Repositories/ApiKeyRepository.cs` | `Repositories/ApiKeyRepositoryTests.cs` | needs the test database |
 | ☐ | `AuditLogRepository` | Repository | `Data/Repositories/AuditLogRepository.cs` | `Repositories/AuditLogRepositoryTests.cs` | needs the test database |
 | ☐ | `BackupRepository` | Repository | `Data/Repositories/BackupRepository.cs` | `Repositories/BackupRepositoryTests.cs` | needs the test database |
 | ☐ | `SystemHealthRepository` | Repository | `Data/Repositories/SystemHealthRepository.cs` | `Repositories/SystemHealthRepositoryTests.cs` | needs the test database |
