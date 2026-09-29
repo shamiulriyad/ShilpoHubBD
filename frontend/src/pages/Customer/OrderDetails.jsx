@@ -69,6 +69,18 @@ export default function OrderDetails() {
                       ) : (
                         <p className="text-sm text-body/60">No tracking events yet.</p>
                       )}
+                      {trackingQuery.data?.deliveryEvents?.length > 0 && (
+                        <div className="mt-5 space-y-3 border-t border-border pt-4">
+                          <p className="text-sm font-semibold text-heading">Delivery timeline · {trackingQuery.data.deliveryPartnerName}</p>
+                          {trackingQuery.data.deliveryEvents.map((event, i) => (
+                            <div key={`${event.occurredAt}-${i}`} className="border-l-2 border-primary/30 pl-3 text-sm">
+                              <div className="flex justify-between gap-3"><span className="font-medium text-heading">{event.status}</span><span className="text-xs text-body/50">{new Date(event.occurredAt).toLocaleString()}</span></div>
+                              {event.description && <p className="text-body/70">{event.description}</p>}
+                              {event.location && <p className="text-xs text-body/50">{event.location}</p>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </AsyncState>
                   </div>
                 </div>
