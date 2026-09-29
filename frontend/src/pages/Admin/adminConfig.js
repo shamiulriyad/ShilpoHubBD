@@ -33,7 +33,7 @@ const district = text('districtId', 'District', true, {
   lookup: '/districts'
 });
 const publish = bool('publish', 'Publish now');
-export const adminGroups = [['users', 'User Management', [['directory', 'User directory'], ['verification', 'User Verification'], ['roles', 'Role Management'], ['permissions', 'Permissions'], ['identity', 'Identity Verification']]], ['heritage', 'Heritage Management', [['categories', 'Craft Categories'], ['villages', 'Heritage Villages'], ['places', 'Heritage Places'], ['locations', 'Tourism Locations'], ['districts', 'Districts'], ['festivals', 'Festivals'], ['culturalEvents', 'Cultural Events'], ['routes', 'Tour Routes'], ['cuisines', 'Local Cuisines'], ['museum', 'Digital Museum'], ['unesco', 'UNESCO Heritage'], ['craftHeritage', 'Craft Heritage']]], ['marketplace', 'Marketplace', [['approval', 'Product Approval'], ['productTypes', 'Product Types'], ['materials', 'Materials'], ['monitoring', 'Marketplace Monitoring'], ['refunds', 'Refund Management'], ['fraud', 'Fraud Control']]], ['cms', 'CMS', [['homepage', 'Homepage'], ['blogs', 'Blogs'], ['news', 'News'], ['events', 'Events'], ['announcements', 'Announcements'], ['siteContent', 'Site Content']]], ['moderation', 'AI Moderation', [['reviews', 'Fake Reviews'], ['spam', 'Spam Detection'], ['content', 'Content Moderation'], ['images', 'Image Moderation']]], ['security', 'Security', [['audit', 'Audit Logs'], ['backups', 'Backups'], ['health', 'System Monitoring'], ['keys', 'API Management'], ['threats', 'Threat Detection']]]];
+export const adminGroups = [['users', 'User Management', [['directory', 'User directory'], ['verification', 'User Verification'], ['roles', 'Role Management'], ['permissions', 'Permissions'], ['identity', 'Identity Verification']]], ['heritage', 'Heritage Management', [['categories', 'Craft Categories'], ['villages', 'Heritage Villages'], ['places', 'Heritage Places'], ['locations', 'Tourism Locations'], ['districts', 'Districts'], ['festivals', 'Festivals'], ['culturalEvents', 'Cultural Events'], ['routes', 'Tour Routes'], ['cuisines', 'Local Cuisines'], ['museum', 'Digital Museum'], ['unesco', 'UNESCO Heritage'], ['craftHeritage', 'Craft Heritage']]], ['marketplace', 'Marketplace', [['approval', 'Product Approval'], ['productTypes', 'Product Types'], ['materials', 'Materials'], ['monitoring', 'Marketplace Monitoring'], ['refunds', 'Refund Management'], ['fraud', 'Fraud Control']]], ['cms', 'CMS', [['homepage', 'Homepage'], ['blogs', 'Blogs'], ['news', 'News'], ['events', 'Events'], ['announcements', 'Announcements'], ['siteContent', 'Site Content']]], ['moderation', 'AI Moderation', [['reviews', 'Fake Reviews'], ['spam', 'Spam Detection'], ['content', 'Content Moderation'], ['images', 'Image Moderation'], ['productComplaints', 'Product Complaints']]], ['security', 'Security', [['audit', 'Audit Logs'], ['backups', 'Backups'], ['health', 'System Monitoring'], ['keys', 'API Management'], ['threats', 'Threat Detection']]]];
 export const resources = {
   categories: {
     path: '/categories',
@@ -233,5 +233,12 @@ export const flagViews = {
   images: {
     flagType: 'InappropriateImage',
     scanType: 'InappropriateImage'
+  },
+  // Raised automatically by repeated-complaint detection (never by a manual scan): its own list/detail
+  // endpoints carry live product-moderation counters instead of the generic flag columns.
+  productComplaints: {
+    flagType: 'RepeatedProductComplaints',
+    scanType: null,
+    isProductModeration: true
   }
 };
