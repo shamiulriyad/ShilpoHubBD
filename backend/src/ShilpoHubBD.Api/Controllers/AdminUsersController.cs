@@ -43,4 +43,13 @@ public class AdminUsersController : ControllerBase
     [HttpPost("{id:guid}/deactivate")]
     public async Task<ActionResult<AdminUserDetailDto>> Deactivate(Guid id, CancellationToken cancellationToken)
         => Ok(await _adminUserService.SetActiveAsync(id, false, CurrentUserId, ClientIp, cancellationToken));
+
+    /// <summary>Creates a Government/NGO account directly — that role's public self-registration is disabled.</summary>
+    [HttpPost("government-ngo")]
+    public async Task<ActionResult<AdminUserDetailDto>> CreateGovernmentNgoUser(
+        CreateGovernmentNgoUserRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _adminUserService.CreateGovernmentNgoUserAsync(request, CurrentUserId, ClientIp, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
 }
