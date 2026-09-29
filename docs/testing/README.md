@@ -429,6 +429,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Profiles](#be-profiles) | Backend | 4 / 4 | 97 | `backend/tests/ShilpoHubBD.UnitTests/Features/Profiles/` | 2026-09-29 |
 | [Certificates](#be-certificates) | Backend | 3 / 3 | 47 | `backend/tests/ShilpoHubBD.UnitTests/Features/Certificates/` | 2026-09-29 |
 | [Search](#be-search) | Backend | 3 / 3 | 21 | `backend/tests/ShilpoHubBD.UnitTests/Features/Search/` | 2026-09-29 |
+| [Inventory](#be-inventory) | Backend | 4 / 4 | 40 | `backend/tests/ShilpoHubBD.UnitTests/Features/Inventory/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -1378,7 +1379,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 | ✅ | `InventoryService` | Service | `Application/Services/Inventory/InventoryService.cs` | `Services/InventoryServiceTests.cs` |  |
 | ✅ | `AdjustStockRequestValidator` | Validator | `Application/Validators/Inventory/AdjustStockRequestValidator.cs` | `Validators/AdjustStockRequestValidatorTests.cs` |  |
 | ✅ | `InventoryRepository` | Repository | `Data/Repositories/InventoryRepository.cs` | `Repositories/InventoryRepositoryTests.cs` | needs the test database |
-| ☐ | `InventoryController` | Controller | `Api/Controllers/InventoryController.cs` | `Controllers/InventoryControllerTests.cs` |  |
+| ✅ | `InventoryController` | Controller | `Api/Controllers/InventoryController.cs` | `Controllers/InventoryControllerTests.cs` |  |
 
 <a id="be-investment"></a>
 
