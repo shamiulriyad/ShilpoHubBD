@@ -16,6 +16,9 @@ public interface IProducerPartnershipSettlementRepository
     Task AddAsync(ProducerPartnershipSettlement settlement, CancellationToken cancellationToken);
     Task SaveChangesAsync(CancellationToken cancellationToken);
 
+    /// <summary>Totals across every Approved settlement — the platform-revenue figure.</summary>
+    Task<PlatformRevenueSummaryDto> GetApprovedTotalsAsync(CancellationToken cancellationToken);
+
     /// <summary>
     /// Sum of per-unit refund amounts (ReturnItem.UnitRefundAmount * Quantity) for this producer's
     /// products, across return requests refunded within the period. Whole-order refunds recorded
