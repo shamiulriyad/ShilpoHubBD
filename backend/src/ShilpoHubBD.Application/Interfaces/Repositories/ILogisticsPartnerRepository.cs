@@ -8,6 +8,7 @@ public interface ILogisticsPartnerRepository
     Task AddAsync(LogisticsPartnerProfile profile, CancellationToken cancellationToken);
     // Verified partners that are taking work -- the ones a producer can hand a shipment to.
     Task<List<LogisticsPartnerProfile>> GetAvailableForHandoffAsync(CancellationToken cancellationToken);
+    Task<List<LogisticsPartnerProfile>> GetAvailableForLocationAsync(Guid districtId, string? areaName, CancellationToken cancellationToken);
 
     void Remove(LogisticsPartnerProfile profile);
 
@@ -23,6 +24,7 @@ public interface ILogisticsPartnerRepository
     Task<Domain.Entities.Marketplace.District?> GetDistrictAsync(Guid districtId, CancellationToken cancellationToken);
 
     Task<bool> UserInRoleAsync(Guid userId, string roleName, CancellationToken cancellationToken);
+    Task<LogisticsPartnerPerformanceDto> GetPerformanceAsync(Guid profileId, CancellationToken cancellationToken);
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }
