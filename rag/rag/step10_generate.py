@@ -11,6 +11,7 @@ questions).
 
 Cases that never reach the model, or whose reply is replaced:
   * out_of_scope question  -> fixed out-of-scope reply, no retrieval, no generation
+  * greeting / small talk  -> fixed friendly greeting reply, no retrieval, no generation
   * nothing retrieved      -> fixed "not available" reply, no generation (nothing to ground it in)
   * the model answers NOT_AVAILABLE -> the same fixed "not available" reply
 The fixed replies exist in English and Bangla and follow the question's language.
@@ -37,6 +38,12 @@ FIXED_REPLIES = {
                    "ShilpoHub knowledge base. Try asking about a craft, a district or a heritage site.",
         "Bangla": "আমি শুধু ShilpoHub-এর জ্ঞানভাণ্ডারে থাকা বাংলাদেশের ঐতিহ্যবাহী কারুশিল্প ও ঐতিহ্য বিষয়ক প্রশ্নের "
                   "উত্তর দিতে পারি। কোনো কারুশিল্প, জেলা বা ঐতিহ্যবাহী স্থান সম্পর্কে জিজ্ঞাসা করুন।",
+    },
+    "greeting": {
+        "English": "Hello! I'm the ShilpoHub Heritage AI. Ask me about a Bangladeshi craft, a district it's made "
+                   "in, or a heritage site, and I'll answer from the ShilpoHub knowledge base.",
+        "Bangla": "হ্যালো! আমি ShilpoHub Heritage AI। আমাকে বাংলাদেশের কোনো কারুশিল্প, সেটি যে জেলায় তৈরি হয়, বা "
+                  "কোনো ঐতিহ্যবাহী স্থান সম্পর্কে জিজ্ঞাসা করুন, আমি ShilpoHub-এর জ্ঞানভাণ্ডার থেকে উত্তর দেব।",
     },
 }
 _TOKEN_ONLY = re.compile(r"^\W*NOT_AVAILABLE\W*$", re.I)
@@ -80,7 +87,7 @@ def generate_answer(analysis: Dict[str, Any], retrieval: Retrieval, llm=None) ->
     so step 11 knows to cite no sources for it."""
     language = analysis["language"]
     if retrieval.skipped:
-        return fixed_reply("out_of_scope", language), True
+        return fixed_reply(retrieval.question_type, language), True
     if not retrieval.hits:
         return fixed_reply("not_available", language), True
 
