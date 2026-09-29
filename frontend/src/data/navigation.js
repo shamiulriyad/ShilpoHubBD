@@ -213,6 +213,7 @@ export const customerSidebarNav = withGeneral(base_customerSidebarNav);
 
 // Producer workspace — production, fulfilment, B2B partnerships & growth.
 const base_producerSidebarNav = [
+  { section: 'Academy', items: [{ label: 'Academy', path: '/producer/academy', icon: '📚' }] },
   {
     section: 'Overview',
     items: [{ label: 'Dashboard', path: routePaths.producer, icon: '🏠' }],
@@ -309,6 +310,7 @@ export const businessPartnerSidebarNav = withGeneral(base_businessPartnerSidebar
 
 // Admin / platform-operations workspace.
 const base_adminSidebarNav = [
+  { section: 'Academy', items: [{ label: 'Mentor applications', path: '/admin/mentor-applications', icon: '📚' }] },
   { section: 'Overview', items: [{ label: 'Dashboard', path: routePaths.admin, icon: '⌂' }, { label: 'Artisan Support Oversight', path: routePaths.adminSupportOversight, icon: '🤲' }, { label: 'Bulk Deal Inspections', path: routePaths.adminProcurementInspections, icon: '🔍' }, { label: 'Profile Approvals', path: routePaths.adminProfileApprovals, icon: '🪪' }, { label: 'Expertise Certificates', path: routePaths.adminExpertiseCertificates, icon: '🏅' }, { label: 'Partnership Auctions', path: routePaths.adminProducerPartnershipAuctions, icon: '🔨' }, { label: 'Partnership Agreements', path: routePaths.adminProducerPartnershipAgreements, icon: '🤝' }, { label: 'Settlement Dashboard', path: routePaths.adminProducerPartnershipSettlements, icon: '💰' }, { label: 'Producer Intelligence', path: routePaths.adminProducerIntelligence, icon: '📊' }] },
   ...adminGroups.map(([key, section, views]) => ({ section, items: views.map(([view, label]) => ({ label, path: `/admin/${key}/${view}` })) })),
 ];
