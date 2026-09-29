@@ -2,6 +2,13 @@ namespace ShilpoHubBD.Domain.Entities.Learning;
 
 public class Course
 {
+    public decimal Price { get; set; }
+    public int DurationDays { get; set; } = 1;
+    public int DaysPerWeek { get; set; } = 1;
+    public int SessionMinutes { get; set; } = 60;
+    public string ClassTime { get; set; } = "10:00";
+    public string DeliveryMode { get; set; } = "Online";
+    public string? Venue { get; set; }
     public Guid Id { get; set; }
 
     // Exactly one of MentorId/TrainerProfileId is set, identifying the course author.
