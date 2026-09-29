@@ -23,6 +23,15 @@ public class AdminUserDetailDto
     public List<IdentityVerificationDto> IdentityVerifications { get; set; } = new();
 }
 
+/// <summary>Government/NGO self-registration is disabled (see RoleNames.SelfRegisterableRoles); a SuperAdmin
+/// creates these accounts directly instead, with an initial password the user can change after logging in.</summary>
+public class CreateGovernmentNgoUserRequest
+{
+    public string Email { get; set; } = string.Empty;
+    public string? FullName { get; set; }
+    public string Password { get; set; } = string.Empty;
+}
+
 public class AdminUserQueryParameters
 {
     public string? Search { get; set; }

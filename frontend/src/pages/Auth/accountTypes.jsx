@@ -72,15 +72,6 @@ const LogisticsPartnerIcon = () => (
   </Icon>
 );
 
-const GovernmentNGOIcon = () => (
-  <Icon>
-    <path d="M3 21h18" />
-    <path d="M5 21V9l7-5 7 5v12" />
-    <path d="M9 21v-6h6v6" />
-    <path d="M9 12h.01M15 12h.01" />
-  </Icon>
-);
-
 export const ACCOUNT_TYPES = [
   {
     id: 'Customer',
@@ -123,11 +114,5 @@ export const ACCOUNT_TYPES = [
     label: 'Logistics Partner',
     description: 'Manage pickups, warehouses, and deliveries.',
     Icon: LogisticsPartnerIcon,
-  },
-  {
-    id: 'GovernmentNGO',
-    label: 'Government & NGO',
-    description: 'Manage heritage programs and national initiatives.',
-    Icon: GovernmentNGOIcon,
   },
 ];

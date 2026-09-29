@@ -142,6 +142,9 @@ public class ProducerPartnershipSettlementService : IProducerPartnershipSettleme
         };
     }
 
+    public Task<PlatformRevenueSummaryDto> GetPlatformRevenueSummaryAsync(CancellationToken cancellationToken)
+        => _settlementRepository.GetApprovedTotalsAsync(cancellationToken);
+
     public async Task<ProducerPartnershipSettlementDto> SubmitForApprovalAsync(Guid id, CancellationToken cancellationToken)
     {
         var settlement = await RequireSettlementAsync(id, cancellationToken);

@@ -21,6 +21,17 @@ public class ProducerPartnershipSettlementQueryParameters
     public int PageSize { get; set; } = 20;
 }
 
+/// <summary>Platform-wide commission earned to date — the sum of <see cref="ProducerPartnershipSettlement.PlatformFeeAmount"/>
+/// across every Approved settlement (Draft/PendingApproval aren't confirmed yet; Rejected is invalid).
+/// There is no payout integration in this project, so this is "earned", not "paid out".</summary>
+public class PlatformRevenueSummaryDto
+{
+    public decimal TotalPlatformFee { get; set; }
+    public decimal TotalGrossRevenue { get; set; }
+    public decimal TotalNetPartnershipRevenue { get; set; }
+    public int ApprovedSettlementCount { get; set; }
+}
+
 public class ProducerPartnershipSettlementDto
 {
     public Guid Id { get; set; }

@@ -13,6 +13,7 @@ using ShilpoHubBD.Domain.Entities.Community;
 using ShilpoHubBD.Domain.Entities.Procurement;
 using ShilpoHubBD.Domain.Entities.Certificate;
 using ShilpoHubBD.Domain.Entities.Governance;
+using ShilpoHubBD.Domain.Entities.Reviews;
 
 namespace ShilpoHubBD.Data;
 
@@ -125,6 +126,11 @@ public partial class ShilpoHubDbContext
             if (entry.Entity is ExpertiseCertificate cert && added)
             {
                 Add(cert.ProducerId, "You earned an expertise certificate", $"An admin issued you a {cert.Level} expertise certificate ({cert.CertificateNumber}).", "Approvals", "/producer/expertise");
+                continue;
+            }
+            if (entry.Entity is ProducerModerationWarning warning && added)
+            {
+                Add(warning.ProducerId, "Product quality concern", warning.Message, "Approvals", "/producer/products");
                 continue;
             }
             if (entry.Entity is OrderComplaint complaint)

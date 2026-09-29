@@ -15393,6 +15393,134 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("ResearchTasks", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ProducerModerationWarning", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ComplaintType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<Guid>("ProducerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("SimilarComplaintCount")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProducerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProducerModerationWarnings", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ProductModerationEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ComplaintType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<double>("Confidence")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsAiGenerated")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<List<Guid>>("SimilarReviewIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId", "CreatedAt");
+
+                    b.ToTable("ProductModerationEvents", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ProductModerationState", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("HighSeverityComplaintCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("LastEvaluatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastReviewId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("NegativeComplaintCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProducerWarningCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RiskState")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("SimilarComplaintCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("ProductId");
+
+                    b.HasIndex("RiskState");
+
+                    b.ToTable("ProductModerationStates", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.Review", b =>
                 {
                     b.Property<Guid>("Id")
@@ -15446,6 +15574,55 @@ namespace ShilpoHubBD.Data.Migrations
                     b.ToTable("Reviews", (string)null);
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ReviewAiAnalysis", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ComplaintType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<double>("Confidence")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsAiGenerated")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsNegative")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsProductRelated")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("IssueSummary")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId")
+                        .IsUnique();
+
+                    b.ToTable("ReviewAiAnalyses", (string)null);
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ReviewImage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -15467,6 +15644,49 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasIndex("ReviewId");
 
                     b.ToTable("ReviewImages", (string)null);
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ReviewIndexState", b =>
+                {
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AttemptCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EmbeddingModel")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("IndexedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastError")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("TextHash")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("Status", "UpdatedAt")
+                        .HasDatabaseName("IX_ReviewIndexStates_Pending")
+                        .HasFilter("\"Status\" <> 'Synced'");
+
+                    b.ToTable("ReviewIndexStates", (string)null);
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Roadmap.LearningRoadmap", b =>
@@ -21563,6 +21783,28 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ProductModerationEvent", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Reviews.ProductModerationState", "ProductModerationState")
+                        .WithMany("Events")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductModerationState");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ProductModerationState", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.Review", b =>
                 {
                     b.HasOne("ShilpoHubBD.Domain.Entities.TouristBooking.Booking", "Booking")
@@ -21593,6 +21835,17 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ReviewAiAnalysis", b =>
+                {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Reviews.Review", "Review")
+                        .WithOne()
+                        .HasForeignKey("ShilpoHubBD.Domain.Entities.Reviews.ReviewAiAnalysis", "ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ReviewImage", b =>
@@ -22575,6 +22828,11 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Navigation("Publications");
 
                     b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.ProductModerationState", b =>
+                {
+                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Reviews.Review", b =>

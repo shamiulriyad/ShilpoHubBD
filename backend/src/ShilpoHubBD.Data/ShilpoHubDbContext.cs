@@ -97,6 +97,11 @@ public partial class ShilpoHubDbContext : DbContext
 
 	public DbSet<Review> Reviews => Set<Review>();
 	public DbSet<ReviewImage> ReviewImages => Set<ReviewImage>();
+	public DbSet<ReviewAiAnalysis> ReviewAiAnalyses => Set<ReviewAiAnalysis>();
+	public DbSet<ReviewIndexState> ReviewIndexStates => Set<ReviewIndexState>();
+	public DbSet<ProductModerationState> ProductModerationStates => Set<ProductModerationState>();
+	public DbSet<ProductModerationEvent> ProductModerationEvents => Set<ProductModerationEvent>();
+	public DbSet<ProducerModerationWarning> ProducerModerationWarnings => Set<ProducerModerationWarning>();
 
 	public DbSet<CommunityQuestion> CommunityQuestions => Set<CommunityQuestion>();
 	public DbSet<CommunityAnswer> CommunityAnswers => Set<CommunityAnswer>();

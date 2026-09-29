@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using ShilpoHubBD.Application.DTOs.Common;
 using ShilpoHubBD.Application.DTOs.Reviews;
 using ShilpoHubBD.Application.Exceptions;
@@ -18,6 +19,8 @@ public class ReviewService : IReviewService
     private readonly IBookingRepository _bookingRepository;
     private readonly ITouristServiceRepository _touristServiceRepository;
     private readonly IOrderComplaintRepository _complaintRepository;
+    private readonly IReviewAiAnalysisService _aiAnalysisService;
+    private readonly ILogger<ReviewService> _logger;
 
     public ReviewService(
         IReviewRepository reviewRepository,
@@ -27,7 +30,9 @@ public class ReviewService : IReviewService
         IHeritageCheckInRepository checkInRepository,
         IBookingRepository bookingRepository,
         ITouristServiceRepository touristServiceRepository,
-        IOrderComplaintRepository complaintRepository)
+        IOrderComplaintRepository complaintRepository,
+        IReviewAiAnalysisService aiAnalysisService,
+        ILogger<ReviewService> logger)
     {
         _complaintRepository = complaintRepository;
         _reviewRepository = reviewRepository;
@@ -37,6 +42,8 @@ public class ReviewService : IReviewService
         _checkInRepository = checkInRepository;
         _bookingRepository = bookingRepository;
         _touristServiceRepository = touristServiceRepository;
+        _aiAnalysisService = aiAnalysisService;
+        _logger = logger;
     }
 
     public async Task<PagedResult<ReviewDto>> GetByProductAsync(Guid productId, ReviewQueryParameters query, CancellationToken cancellationToken)
@@ -81,10 +88,8 @@ public class ReviewService : IReviewService
     {
         var productId = request.ProductId!.Value;
 
-        if (await _productRepository.GetByIdAsync(productId, cancellationToken) is null)
-        {
-            throw new NotFoundException("Product not found.");
-        }
+        var product = await _productRepository.GetByIdAsync(productId, cancellationToken)
+            ?? throw new NotFoundException("Product not found.");
 
         if (!await _orderRepository.HasPurchasedProductAsync(userId, productId, cancellationToken))
         {
@@ -109,6 +114,17 @@ public class ReviewService : IReviewService
         await _reviewRepository.SaveChangesAsync(cancellationToken);
 
         await RecalculateProductRatingAsync(productId, cancellationToken);
+
+        // Best-effort: AI moderation must never fail or slow down review creation itself. The service already
+        // swallows its own errors; this catch is a second line of defense in case something upstream of it throws.
+        try
+        {
+            await _aiAnalysisService.AnalyzeReviewAsync(review, product, cancellationToken);
+        }
+        catch (Exception exc)
+        {
+            _logger.LogWarning(exc, "AI moderation analysis failed for review {ReviewId}; the review was still created.", review.Id);
+        }
 
         var created = await _reviewRepository.GetByIdAsync(review.Id, cancellationToken);
         return ToDto(created!);

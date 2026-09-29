@@ -64,7 +64,7 @@ export default function RegisterPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!selectedRole || selectedRole === 'SuperAdmin' || mutation.isPending) return;
+    if (!selectedRole || selectedRole === 'SuperAdmin' || selectedRole === 'GovernmentNGO' || mutation.isPending) return;
     mutation.mutate({
       fullName: fullName.trim(),
       email: email.trim(),
@@ -213,6 +213,13 @@ export default function RegisterPage() {
               })}
             </div>
 
+            <button type="button" onClick={() => setSelectedRole('GovernmentNGO')} aria-pressed={selectedRole === 'GovernmentNGO'} className={`mt-4 w-full rounded-xl border p-5 text-left ${selectedRole === 'GovernmentNGO' ? 'border-primary bg-primary/5 ring-2 ring-primary' : 'border-border bg-background'}`}>
+              <span className="block font-semibold text-heading">Government & NGO</span>
+              <span className="mt-1 block text-sm text-body/70">This access is created by a Super Admin, not through self-registration.</span>
+            </button>
+            {selectedRole === 'GovernmentNGO' && <div role="status" className="mt-4 rounded-lg bg-primary/5 p-4 text-sm">
+              Government and NGO accounts are created directly by a platform administrator. If you were given login details, <Link to={routePaths.login} className="font-semibold text-primary underline">sign in here</Link> instead.
+            </div>}
             <button type="button" onClick={() => setSelectedRole('SuperAdmin')} aria-pressed={selectedRole === 'SuperAdmin'} className={`mt-4 w-full rounded-xl border p-5 text-left ${selectedRole === 'SuperAdmin' ? 'border-primary bg-primary/5 ring-2 ring-primary' : 'border-border bg-background'}`}>
               <span className="block font-semibold text-heading">Super Admin</span>
               <span className="mt-1 block text-sm text-body/70">Administrator access is assigned by an existing Super Admin.</span>
@@ -222,7 +229,7 @@ export default function RegisterPage() {
             </div>}
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
               <Button type="button" variant="secondary" size="lg" onClick={() => setStep(1)} className="sm:w-auto">Back</Button>
-              <Button type="submit" variant="primary" size="lg" className="flex-1" disabled={!selectedRole || selectedRole === 'SuperAdmin' || mutation.isPending}>
+              <Button type="submit" variant="primary" size="lg" className="flex-1" disabled={!selectedRole || selectedRole === 'SuperAdmin' || selectedRole === 'GovernmentNGO' || mutation.isPending}>
                 {mutation.isPending ? 'Creating account…' : 'Create Account'}
               </Button>
             </div>
