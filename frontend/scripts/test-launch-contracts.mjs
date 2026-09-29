@@ -20,7 +20,7 @@ check('checkout copies every cart product into an order item', () => {
 });
 check('producer fulfillment uses the dedicated producer API', () => {
   const service = read('frontend/src/services/producerOrdersService.js');
-  for (const path of ['/producer/orders', '/accept', '/processing', '/ship', '/deliver']) assert(service.includes(path));
+  for (const path of ['/producer/orders', '/accept', '/reject', '/processing', '/ship']) assert(service.includes(path));
 });
 check('public catalog excludes unapproved products', () => {
   const repository = read('backend/src/ShilpoHubBD.Data/Repositories/ProductRepository.cs');
@@ -35,7 +35,7 @@ check('media upload validates authorization, type and size', () => {
   assert(controller.includes('RoleNames.Producer'));
   assert(controller.includes('RoleNames.SuperAdmin'));
   assert(controller.includes('20 * 1024 * 1024'));
-  assert(controller.includes('[FromForm] IFormFile file'));
+  assert(/UploadImage\(\s*IFormFile file/.test(controller));
   assert(controller.includes('image/webp'));
 });
 check('tourist places have list, detail and admin authoring routes', () => {
