@@ -2155,7 +2155,7 @@ Contains: 5 services, 2 validators, 1 infrastructure class, 5 repositories, 5 co
 |---|---|---|---|---|---|
 | ✅ | `ApiKeyService` | Service | `Application/Services/Security/ApiKeyService.cs` | `Services/ApiKeyServiceTests.cs` |  |
 | ✅ | `AuditLogService` | Service | `Application/Services/Security/AuditLogService.cs` | `Services/AuditLogServiceTests.cs` |  |
-| ☐ | `BackupService` | Service | `Application/Services/Security/BackupService.cs` | `Services/BackupServiceTests.cs` |  |
+| ✅ | `BackupService` | Service | `Application/Services/Security/BackupService.cs` | `Services/BackupServiceTests.cs` |  |
 | ☐ | `SystemHealthService` | Service | `Application/Services/Security/SystemHealthService.cs` | `Services/SystemHealthServiceTests.cs` |  |
 | ☐ | `ThreatDetectionService` | Service | `Application/Services/Security/ThreatDetectionService.cs` | `Services/ThreatDetectionServiceTests.cs` |  |
 | ☐ | `BlockIpRequestValidator` | Validator | `Application/Validators/Security/BlockIpRequestValidator.cs` | `Validators/BlockIpRequestValidatorTests.cs` |  |
