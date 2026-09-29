@@ -310,6 +310,7 @@ export const businessPartnerSidebarNav = withGeneral(base_businessPartnerSidebar
 
 // Admin / platform-operations workspace.
 const base_adminSidebarNav = [
+  { section: 'Logistics', items: [{ label: 'Logistics Partners', path: routePaths.adminLogistics, icon: '🚚' }] },
   { section: 'Academy', items: [{ label: 'Mentor applications', path: '/admin/mentor-applications', icon: '📚' }] },
   { section: 'Overview', items: [{ label: 'Dashboard', path: routePaths.admin, icon: '⌂' }, { label: 'Artisan Support Oversight', path: routePaths.adminSupportOversight, icon: '🤲' }, { label: 'Bulk Deal Inspections', path: routePaths.adminProcurementInspections, icon: '🔍' }, { label: 'Profile Approvals', path: routePaths.adminProfileApprovals, icon: '🪪' }, { label: 'Expertise Certificates', path: routePaths.adminExpertiseCertificates, icon: '🏅' }, { label: 'Partnership Auctions', path: routePaths.adminProducerPartnershipAuctions, icon: '🔨' }, { label: 'Partnership Agreements', path: routePaths.adminProducerPartnershipAgreements, icon: '🤝' }, { label: 'Settlement Dashboard', path: routePaths.adminProducerPartnershipSettlements, icon: '💰' }, { label: 'Producer Intelligence', path: routePaths.adminProducerIntelligence, icon: '📊' }] },
   ...adminGroups.map(([key, section, views]) => ({ section, items: views.map(([view, label]) => ({ label, path: `/admin/${key}/${view}` })) })),
