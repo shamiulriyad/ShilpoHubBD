@@ -210,6 +210,7 @@ export const routePaths = {
   governmentHeritageDatabase: '/government/heritage-database',
   governmentOrganizationProfile: '/government/organization-profile',
   governmentArtisanSupport: '/government/artisan-support',
+  governmentProducerDashboard: '/government/producer-dashboard',
   ngo: '/ngo',
   researcher: '/researcher',
   logisticsPartner: '/logistics-partner',
@@ -234,6 +235,8 @@ export const routePaths = {
   adminProducerPartnershipAuctions: '/admin/producer-partnership-auctions',
   adminProducerPartnershipAgreements: '/admin/producer-partnership-agreements',
   adminProducerPartnershipSettlements: '/admin/producer-partnership-settlements',
+  adminProducerIntelligence: '/admin/producer-intelligence',
+  adminProducerIntelligenceDetail: '/admin/producer-intelligence/:producerId',
 
   unauthorized: '/unauthorized',
   notFound: '*',
