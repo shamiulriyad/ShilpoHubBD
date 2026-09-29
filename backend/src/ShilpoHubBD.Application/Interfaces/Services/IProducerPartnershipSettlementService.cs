@@ -24,6 +24,9 @@ public interface IProducerPartnershipSettlementService
     /// <summary>Admin settlement dashboard: every settlement, optionally filtered by agreement/status.</summary>
     Task<PagedResult<ProducerPartnershipSettlementDto>> GetPagedAsync(ProducerPartnershipSettlementQueryParameters parameters, CancellationToken cancellationToken);
 
+    /// <summary>Admin-only. The platform-revenue figure for the Admin dashboard: totals across every Approved settlement.</summary>
+    Task<PlatformRevenueSummaryDto> GetPlatformRevenueSummaryAsync(CancellationToken cancellationToken);
+
     Task<ProducerPartnershipSettlementDto> SubmitForApprovalAsync(Guid id, CancellationToken cancellationToken);
     Task<ProducerPartnershipSettlementDto> ApproveAsync(Guid id, Guid approvedByUserId, CancellationToken cancellationToken);
     Task<ProducerPartnershipSettlementDto> RejectAsync(Guid id, RejectProducerPartnershipSettlementRequest request, CancellationToken cancellationToken);
