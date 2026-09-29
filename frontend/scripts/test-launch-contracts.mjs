@@ -22,13 +22,14 @@ check('producer fulfillment uses the dedicated producer API', () => {
   const service = read('frontend/src/services/producerOrdersService.js');
   for (const path of ['/producer/orders', '/accept', '/reject', '/processing', '/ship']) assert(service.includes(path));
 });
-check('public catalog excludes unapproved products', () => {
+check('public catalog excludes products removed by moderation', () => {
   const repository = read('backend/src/ShilpoHubBD.Data/Repositories/ProductRepository.cs');
-  assert(repository.includes('p.ApprovalStatus == ProductApprovalStatus.Approved'));
+  assert(repository.includes('p.ApprovalStatus != ProductApprovalStatus.Rejected'));
 });
-check('producer listings expose image upload and approval status', () => {
+check('producer listings expose image upload and publish immediately', () => {
   assert(read('frontend/src/pages/Producer/NewProductForm.jsx').includes("type=\"file\""));
   assert(read('frontend/src/pages/Producer/Products.jsx').includes('product.approvalStatus'));
+  assert(read('backend/src/ShilpoHubBD.Application/Services/Marketplace/ProductService.cs').includes('ApprovalStatus = ProductApprovalStatus.Approved'));
 });
 check('media upload validates authorization, type and size', () => {
   const controller = read('backend/src/ShilpoHubBD.Api/Controllers/MediaController.cs');
