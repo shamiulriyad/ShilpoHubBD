@@ -74,6 +74,13 @@ public static class DependencyInjection
             client.BaseAddress = new Uri(geminiOptions.BaseUrl);
             client.Timeout = TimeSpan.FromSeconds(geminiOptions.TimeoutSeconds);
         });
+        services.AddScoped<ShilpoHubBD.Infrastructure.ProducerImpact.RuleBasedProducerImpactProvider>();
+        services.AddHttpClient<IProducerImpactAIProvider, ShilpoHubBD.Infrastructure.ProducerImpact.GeminiProducerImpactProvider>((sp, client) =>
+        {
+            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value;
+            client.BaseAddress = new Uri(geminiOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(geminiOptions.TimeoutSeconds);
+        });
         services.AddHttpClient<IExternalPoiClient, ShilpoHubBD.Infrastructure.Tourism.OverpassPoiClient>();
         services.AddScoped<ShilpoHubBD.Infrastructure.Tourism.TourismExternalSyncService>();
         services.AddScoped<ITourismExternalSyncService>(sp => sp.GetRequiredService<ShilpoHubBD.Infrastructure.Tourism.TourismExternalSyncService>());
