@@ -20,6 +20,12 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.Property(o => o.Subtotal).IsRequired().HasColumnType("decimal(12,2)");
         builder.Property(o => o.Total).IsRequired().HasColumnType("decimal(12,2)");
+        builder.Property(o => o.DeliveryCharge).HasColumnType("decimal(12,2)");
+        builder.Property(o => o.ShilpoHubDeliveryRevenue).HasColumnType("decimal(12,2)");
+        builder.Property(o => o.LogisticsPartnerRevenue).HasColumnType("decimal(12,2)");
+        builder.Property(o => o.DeliveryPartnerName).HasMaxLength(200);
+        builder.Property(o => o.DeliveryMethod).HasMaxLength(80);
+        builder.Property(o => o.ShippingArea).HasMaxLength(160);
 
         builder.Property(o => o.RecipientName).IsRequired().HasMaxLength(200);
         builder.Property(o => o.RecipientPhone).IsRequired().HasMaxLength(20);
@@ -45,6 +51,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasOne(o => o.ShippingDistrict)
             .WithMany()
             .HasForeignKey(o => o.ShippingDistrictId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(o => o.LogisticsPartnerProfile)
+            .WithMany()
+            .HasForeignKey(o => o.LogisticsPartnerProfileId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(o => o.Items)
