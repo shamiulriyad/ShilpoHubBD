@@ -439,6 +439,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Impact](#be-impact) | Backend | 3 / 3 | 17 | `backend/tests/ShilpoHubBD.UnitTests/Features/Impact/` | 2026-09-30 |
 | [QRVerification](#be-qrverification) | Backend | 6 / 6 | 58 | `backend/tests/ShilpoHubBD.UnitTests/Features/QRVerification/` | 2026-09-30 |
 | [CounterfeitDetection](#be-counterfeitdetection) | Backend | 3 / 3 | 15 | `backend/tests/ShilpoHubBD.UnitTests/Features/CounterfeitDetection/` | 2026-09-30 |
+| [Mentorship](#be-mentorship) | Backend | 5 / 5 | 53 | `backend/tests/ShilpoHubBD.UnitTests/Features/Mentorship/` | 2026-09-30 |
 
 ### Blocked units
 
@@ -1731,7 +1732,7 @@ Contains: 1 service, 2 validators, 1 repository, 1 controller.
 | ✅ | `CreateMentorshipRequestRequestValidator` | Validator | `Application/Validators/Mentorship/CreateMentorshipRequestRequestValidator.cs` | `Validators/CreateMentorshipRequestRequestValidatorTests.cs` |  |
 | ✅ | `RespondMentorshipRequestRequestValidator` | Validator | `Application/Validators/Mentorship/RespondMentorshipRequestRequestValidator.cs` | `Validators/RespondMentorshipRequestRequestValidatorTests.cs` |  |
 | ✅ | `MentorshipRequestRepository` | Repository | `Data/Repositories/MentorshipRequestRepository.cs` | `Repositories/MentorshipRequestRepositoryTests.cs` | needs the test database |
-| ☐ | `MentorshipRequestsController` | Controller | `Api/Controllers/MentorshipRequestsController.cs` | `Controllers/MentorshipRequestsControllerTests.cs` |  |
+| ✅ | `MentorshipRequestsController` | Controller | `Api/Controllers/MentorshipRequestsController.cs` | `Controllers/MentorshipRequestsControllerTests.cs` |  |
 
 <a id="be-messaging"></a>
 
