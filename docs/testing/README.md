@@ -431,6 +431,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Search](#be-search) | Backend | 3 / 3 | 21 | `backend/tests/ShilpoHubBD.UnitTests/Features/Search/` | 2026-09-29 |
 | [Inventory](#be-inventory) | Backend | 4 / 4 | 40 | `backend/tests/ShilpoHubBD.UnitTests/Features/Inventory/` | 2026-09-29 |
 | [Certificate](#be-certificate) | Backend | 5 / 5 | 57 | `backend/tests/ShilpoHubBD.UnitTests/Features/Certificate/` | 2026-09-29 |
+| [Auction](#be-auction) | Backend | 6 / 6 | 92 | `backend/tests/ShilpoHubBD.UnitTests/Features/Auction/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -739,7 +740,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 | ✅ | `CreateAuctionRequestValidator` | Validator | `Application/Validators/Auction/CreateAuctionRequestValidator.cs` | `Validators/CreateAuctionRequestValidatorTests.cs` |  |
 | ✅ | `PlaceBidRequestValidator` | Validator | `Application/Validators/Auction/PlaceBidRequestValidator.cs` | `Validators/PlaceBidRequestValidatorTests.cs` |  |
 | ✅ | `AuctionRepository` | Repository | `Data/Repositories/AuctionRepository.cs` | `Repositories/AuctionRepositoryTests.cs` | needs the test database |
-| ☐ | `AuctionsController` | Controller | `Api/Controllers/AuctionsController.cs` | `Controllers/AuctionsControllerTests.cs` |  |
+| ✅ | `AuctionsController` | Controller | `Api/Controllers/AuctionsController.cs` | `Controllers/AuctionsControllerTests.cs` |  |
 
 <a id="be-auth"></a>
 
