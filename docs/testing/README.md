@@ -1789,7 +1789,7 @@ Contains: 1 DbContext, 1 controller, 2 middleware, 2 JSON converters, 1 helper, 
 | ✅ | `GlobalExceptionHandler` | Middleware | `Api/Middlewares/GlobalExceptionHandler.cs` | `Middlewares/GlobalExceptionHandlerTests.cs` |  |
 | ✅ | `ValidationFilter` | Middleware | `Api/Middlewares/ValidationFilter.cs` | `Middlewares/ValidationFilterTests.cs` |  |
 | ✅ | `UtcDateTimeJsonConverter` | JSON converter | `Api/Helpers/UtcDateTimeJsonConverters.cs` | `Json/UtcDateTimeJsonConverterTests.cs` |  |
-| ☐ | `UtcNullableDateTimeJsonConverter` | JSON converter | `Api/Helpers/UtcDateTimeJsonConverters.cs` | `Json/UtcNullableDateTimeJsonConverterTests.cs` |  |
+| ✅ | `UtcNullableDateTimeJsonConverter` | JSON converter | `Api/Helpers/UtcDateTimeJsonConverters.cs` | `Json/UtcNullableDateTimeJsonConverterTests.cs` |  |
 | ☐ | `SlugGenerator` | Helper | `Application/Common/SlugGenerator.cs` | `Common/SlugGeneratorTests.cs` |  |
 | ☐ | `Application DependencyInjection` | DI registration | `Application/DependencyInjection.cs` | `DependencyInjection/ApplicationDependencyInjectionTests.cs` | every registered interface resolves |
 | ☐ | `Data DependencyInjection` | DI registration | `Data/DependencyInjection.cs` | `DependencyInjection/DataDependencyInjectionTests.cs` | every registered interface resolves |
