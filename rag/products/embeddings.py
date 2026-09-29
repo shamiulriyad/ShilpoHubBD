@@ -28,13 +28,16 @@ class ProductEmbedder:
             texts, batch_size=50, task_type="RETRIEVAL_DOCUMENT", output_dimensionality=self.dim))
 
     def embed_query(self, text: str) -> List[float]:
+        # A live shopper request has a short overall budget (the .NET backend gives this whole call ~25s), so unlike
+        # bulk indexing it must fail fast on a rate limit rather than sleep through it -- the caller (product_main.py)
+        # falls back to keyword search on any failure, and a fast failure gets that fallback back to the shopper
+        # quickly instead of guaranteeing a timeout after minutes of retrying.
         return self._retry(lambda: self._client.embed_query(
-            text, task_type="RETRIEVAL_QUERY", output_dimensionality=self.dim))
+            text, task_type="RETRIEVAL_QUERY", output_dimensionality=self.dim), attempts=2, delay=2.0)
 
     @staticmethod
-    def _retry(call, attempts: int = 4):
+    def _retry(call, attempts: int = 4, delay: float = 15.0):
         """Rate limits (HTTP 429) are normal on the free tier: back off and retry, then give up loudly."""
-        delay = 15.0
         for attempt in range(1, attempts + 1):
             try:
                 return call()
