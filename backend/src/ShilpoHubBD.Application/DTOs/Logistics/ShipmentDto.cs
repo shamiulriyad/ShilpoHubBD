@@ -41,6 +41,8 @@ public class ShipmentDto
     public string? DimensionsNote { get; set; }
     public decimal? DeclaredValue { get; set; }
     public decimal? ShippingCost { get; set; }
+    public decimal ShilpoHubRevenue { get; set; }
+    public decimal PartnerRevenue { get; set; }
 
     public bool IsCashOnDelivery { get; set; }
     public decimal? CodAmount { get; set; }
@@ -53,6 +55,8 @@ public class ShipmentDto
 
     public DateTime? EstimatedDeliveryAt { get; set; }
     public DateTime? DispatchedAt { get; set; }
+    public DateTime? PickupRequestedAt { get; set; }
+    public DateTime? PickedUpAt { get; set; }
     public DateTime? DeliveredAt { get; set; }
     public DateTime? LastStatusAt { get; set; }
     public int DeliveryAttemptCount { get; set; }
@@ -62,6 +66,7 @@ public class ShipmentDto
     public string? SignatureImageUrl { get; set; }
     public string? FailureReason { get; set; }
     public string? CancellationReason { get; set; }
+    public string? ReturnReason { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
