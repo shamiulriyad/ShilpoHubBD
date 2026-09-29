@@ -8857,13 +8857,27 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ClassTime")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DaysPerWeek")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DeliveryMode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(4000)
                         .HasColumnType("character varying(4000)");
+
+                    b.Property<int>("DurationDays")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("MaxApprentices")
                         .HasColumnType("integer");
@@ -8871,8 +8885,15 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<Guid?>("MentorId")
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
                     b.Property<DateTime?>("PublishedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("SessionMinutes")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -8889,6 +8910,9 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Venue")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -8940,6 +8964,10 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<Guid>("ApprenticeId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AttendanceMode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -8948,6 +8976,14 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.Property<DateTime>("EnrolledAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("FeeAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -9132,6 +9168,10 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ApprovalStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("AvailabilityNote")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
@@ -9159,6 +9199,19 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<string>("PreferredCategory")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<string>("ProofImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReviewNote")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ReviewedByUserId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
