@@ -428,6 +428,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Platform](#be-platform) | Backend | 10 / 10 | 64 | `backend/tests/ShilpoHubBD.UnitTests/Features/Platform/` | 2026-09-29 |
 | [Profiles](#be-profiles) | Backend | 4 / 4 | 97 | `backend/tests/ShilpoHubBD.UnitTests/Features/Profiles/` | 2026-09-29 |
 | [Certificates](#be-certificates) | Backend | 3 / 3 | 47 | `backend/tests/ShilpoHubBD.UnitTests/Features/Certificates/` | 2026-09-29 |
+| [Search](#be-search) | Backend | 3 / 3 | 21 | `backend/tests/ShilpoHubBD.UnitTests/Features/Search/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -2147,7 +2148,7 @@ Contains: 1 service, 1 data component, 1 controller.
 |---|---|---|---|---|---|
 | ✅ | `SearchService` | Service | `Application/Services/Search/SearchService.cs` | `Services/SearchServiceTests.cs` |  |
 | ✅ | `PostgresProductSearchProvider` | Data component | `Data/Search/PostgresProductSearchProvider.cs` | `Data/PostgresProductSearchProviderTests.cs` |  |
-| ☐ | `SearchController` | Controller | `Api/Controllers/SearchController.cs` | `Controllers/SearchControllerTests.cs` |  |
+| ✅ | `SearchController` | Controller | `Api/Controllers/SearchController.cs` | `Controllers/SearchControllerTests.cs` |  |
 
 <a id="be-security"></a>
 
