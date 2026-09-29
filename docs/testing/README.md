@@ -1892,7 +1892,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 |---|---|---|---|---|---|
 | ✅ | `ProducerComparisonService` | Service | `Application/Services/ProducerComparison/ProducerComparisonService.cs` | `Services/ProducerComparisonServiceTests.cs` |  |
 | ✅ | `ProducerComparisonRequestValidator` | Validator | `Application/Validators/ProducerComparison/ProducerComparisonRequestValidator.cs` | `Validators/ProducerComparisonRequestValidatorTests.cs` |  |
-| ☐ | `ProducerComparisonRepository` | Repository | `Data/Repositories/ProducerComparisonRepository.cs` | `Repositories/ProducerComparisonRepositoryTests.cs` | needs the test database |
+| ✅ | `ProducerComparisonRepository` | Repository | `Data/Repositories/ProducerComparisonRepository.cs` | `Repositories/ProducerComparisonRepositoryTests.cs` | needs the test database |
 | ☐ | `ProducerComparisonController` | Controller | `Api/Controllers/ProducerComparisonController.cs` | `Controllers/ProducerComparisonControllerTests.cs` |  |
 
 <a id="be-producerpartnership"></a>
