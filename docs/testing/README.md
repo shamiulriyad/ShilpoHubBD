@@ -1322,7 +1322,7 @@ Contains: 1 service, 1 repository, 1 controller.
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
 | ✅ | `ImpactService` | Service | `Application/Services/Impact/ImpactService.cs` | `Services/ImpactServiceTests.cs` |  |
-| ☐ | `ImpactRepository` | Repository | `Data/Repositories/ImpactRepository.cs` | `Repositories/ImpactRepositoryTests.cs` | needs the test database |
+| ✅ | `ImpactRepository` | Repository | `Data/Repositories/ImpactRepository.cs` | `Repositories/ImpactRepositoryTests.cs` | needs the test database |
 | ☐ | `ImpactController` | Controller | `Api/Controllers/ImpactController.cs` | `Controllers/ImpactControllerTests.cs` |  |
 
 <a id="be-innovation"></a>
