@@ -27,6 +27,49 @@ public class LogisticsPartnersController : ControllerBase
 
     private bool IsAdmin => User.IsInRole(RoleNames.SuperAdmin);
 
+    [HttpGet("available")]
+    [AllowAnonymous]
+    public async Task<ActionResult<List<AvailableLogisticsOptionDto>>> GetAvailable(
+        [FromQuery] Guid districtId, [FromQuery] string? areaName, CancellationToken cancellationToken)
+        => Ok(await _service.GetAvailableAsync(districtId, areaName, cancellationToken));
+
+    [HttpPost("official")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    public async Task<ActionResult<LogisticsPartnerProfileDto>> CreateOfficial(
+        UpsertLogisticsPartnerProfileRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _service.CreateOfficialAsync(CurrentUserId, request, cancellationToken);
+        return CreatedAtAction(nameof(GetOfficial), new { profileId = result.Id }, result);
+    }
+
+    [HttpGet("official/{profileId:guid}")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    public async Task<ActionResult<LogisticsPartnerProfileDto>> GetOfficial(Guid profileId, CancellationToken cancellationToken)
+        => Ok(await _service.GetByIdAsync(profileId, cancellationToken));
+
+    [HttpGet("official/{profileId:guid}/performance")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    public async Task<ActionResult<LogisticsPartnerPerformanceDto>> GetPerformance(Guid profileId, CancellationToken cancellationToken)
+        => Ok(await _service.GetPerformanceAsync(profileId, cancellationToken));
+
+    [HttpPut("official/{profileId:guid}")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    public async Task<ActionResult<LogisticsPartnerProfileDto>> UpdateOfficial(
+        Guid profileId, UpsertLogisticsPartnerProfileRequest request, CancellationToken cancellationToken)
+        => Ok(await _service.UpdateOfficialAsync(profileId, CurrentUserId, request, cancellationToken));
+
+    [HttpPut("official/{profileId:guid}/service-areas")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    public async Task<ActionResult<LogisticsPartnerProfileDto>> UpsertOfficialServiceArea(
+        Guid profileId, UpsertLogisticsServiceAreaRequest request, CancellationToken cancellationToken)
+        => Ok(await _service.UpsertOfficialServiceAreaAsync(profileId, request, cancellationToken));
+
+    [HttpDelete("official/{profileId:guid}/service-areas/{serviceAreaId:guid}")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    public async Task<ActionResult<LogisticsPartnerProfileDto>> RemoveOfficialServiceArea(
+        Guid profileId, Guid serviceAreaId, CancellationToken cancellationToken)
+        => Ok(await _service.RemoveOfficialServiceAreaAsync(profileId, serviceAreaId, cancellationToken));
+
     [HttpGet]
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<ActionResult<PagedResult<LogisticsPartnerProfileListItemDto>>> GetPaged(
