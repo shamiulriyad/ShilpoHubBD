@@ -433,6 +433,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Certificate](#be-certificate) | Backend | 5 / 5 | 57 | `backend/tests/ShilpoHubBD.UnitTests/Features/Certificate/` | 2026-09-29 |
 | [Auction](#be-auction) | Backend | 6 / 6 | 92 | `backend/tests/ShilpoHubBD.UnitTests/Features/Auction/` | 2026-09-29 |
 | [Reviews](#be-reviews) | Backend | 6 / 6 | 95 | `backend/tests/ShilpoHubBD.UnitTests/Features/Reviews/` | 2026-09-29 |
+| [Complaints](#be-complaints) | Backend | 6 / 6 | 70 | `backend/tests/ShilpoHubBD.UnitTests/Features/Complaints/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -960,7 +961,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 | ✅ | `CustomerComplaintNoteRequestValidator` | Validator | `Application/Validators/Complaints/OrderComplaintValidators.cs` | `Validators/CustomerComplaintNoteRequestValidatorTests.cs` |  |
 | ✅ | `RespondToOrderComplaintRequestValidator` | Validator | `Application/Validators/Complaints/OrderComplaintValidators.cs` | `Validators/RespondToOrderComplaintRequestValidatorTests.cs` |  |
 | ✅ | `OrderComplaintRepository` | Repository | `Data/Repositories/OrderComplaintRepository.cs` | `Repositories/OrderComplaintRepositoryTests.cs` | needs the test database |
-| ☐ | `OrderComplaintsController` | Controller | `Api/Controllers/OrderComplaintsController.cs` | `Controllers/OrderComplaintsControllerTests.cs` |  |
+| ✅ | `OrderComplaintsController` | Controller | `Api/Controllers/OrderComplaintsController.cs` | `Controllers/OrderComplaintsControllerTests.cs` |  |
 
 <a id="be-contracts"></a>
 
