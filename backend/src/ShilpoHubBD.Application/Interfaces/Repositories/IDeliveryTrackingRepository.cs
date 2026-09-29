@@ -12,6 +12,7 @@ public interface IDeliveryTrackingRepository
     Task<Shipment?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<Shipment?> GetByTrackingNumberAsync(string trackingNumber, CancellationToken cancellationToken);
+    Task<Shipment?> GetByOrderIdAsync(Guid orderId, CancellationToken cancellationToken);
 
     Task<bool> TrackingNumberExistsAsync(string trackingNumber, CancellationToken cancellationToken);
 
