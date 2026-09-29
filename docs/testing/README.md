@@ -426,6 +426,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Admin](#be-admin) | Backend | 13 / 13 | 162 | `backend/tests/ShilpoHubBD.UnitTests/Features/Admin/` | 2026-09-29 |
 | [Notifications](#be-notifications) | Backend | 2 / 2 | 27 | `backend/tests/ShilpoHubBD.UnitTests/Features/Notifications/` | 2026-09-29 |
 | [Platform](#be-platform) | Backend | 10 / 10 | 64 | `backend/tests/ShilpoHubBD.UnitTests/Features/Platform/` | 2026-09-29 |
+| [Profiles](#be-profiles) | Backend | 4 / 4 | 97 | `backend/tests/ShilpoHubBD.UnitTests/Features/Profiles/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -1999,7 +2000,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 | ✅ | `UserProfileService` | Service | `Application/Services/Profiles/UserProfileService.cs` | `Services/UserProfileServiceTests.cs` |  |
 | ✅ | `UpsertUserProfileRequestValidator` | Validator | `Application/Validators/Profiles/UpsertUserProfileRequestValidator.cs` | `Validators/UpsertUserProfileRequestValidatorTests.cs` |  |
 | ✅ | `UserProfileRepository` | Repository | `Data/Repositories/UserProfileRepository.cs` | `Repositories/UserProfileRepositoryTests.cs` | needs the test database |
-| ☐ | `ProfileController` | Controller | `Api/Controllers/ProfileController.cs` | `Controllers/ProfileControllerTests.cs` |  |
+| ✅ | `ProfileController` | Controller | `Api/Controllers/ProfileController.cs` | `Controllers/ProfileControllerTests.cs` |  |
 
 <a id="be-qrverification"></a>
 
