@@ -46,6 +46,12 @@ public class ProducerPartnershipSettlementsController : ControllerBase
         [FromQuery] ProducerPartnershipSettlementQueryParameters parameters, CancellationToken cancellationToken)
         => Ok(await _settlementService.GetPagedAsync(parameters, cancellationToken));
 
+    /// <summary>Platform revenue (commission) figure for the Admin dashboard.</summary>
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    [HttpGet("platform-revenue-summary")]
+    public async Task<ActionResult<PlatformRevenueSummaryDto>> GetPlatformRevenueSummary(CancellationToken cancellationToken)
+        => Ok(await _settlementService.GetPlatformRevenueSummaryAsync(cancellationToken));
+
     [Authorize(Roles = $"{RoleNames.BusinessPartner},{RoleNames.Producer},{RoleNames.SuperAdmin}")]
     [HttpGet("agreements/{agreementId:guid}")]
     public async Task<ActionResult<List<ProducerPartnershipSettlementDto>>> GetForAgreement(Guid agreementId, CancellationToken cancellationToken)
