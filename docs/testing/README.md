@@ -434,6 +434,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Auction](#be-auction) | Backend | 6 / 6 | 92 | `backend/tests/ShilpoHubBD.UnitTests/Features/Auction/` | 2026-09-29 |
 | [Reviews](#be-reviews) | Backend | 6 / 6 | 95 | `backend/tests/ShilpoHubBD.UnitTests/Features/Reviews/` | 2026-09-29 |
 | [Complaints](#be-complaints) | Backend | 6 / 6 | 70 | `backend/tests/ShilpoHubBD.UnitTests/Features/Complaints/` | 2026-09-29 |
+| [Traceability](#be-traceability) | Backend | 7 / 7 | 63 | `backend/tests/ShilpoHubBD.UnitTests/Features/Traceability/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -2338,7 +2339,7 @@ Contains: 1 service, 4 validators, 1 repository, 1 controller.
 | ✅ | `TimelineEventInputValidator` | Validator | `Application/Validators/Traceability/TimelineEventInputValidator.cs` | `Validators/TimelineEventInputValidatorTests.cs` |  |
 | ✅ | `UpdateProductTraceabilityRequestValidator` | Validator | `Application/Validators/Traceability/UpdateProductTraceabilityRequestValidator.cs` | `Validators/UpdateProductTraceabilityRequestValidatorTests.cs` |  |
 | ✅ | `TraceabilityRepository` | Repository | `Data/Repositories/TraceabilityRepository.cs` | `Repositories/TraceabilityRepositoryTests.cs` | needs the test database |
-| ☐ | `TraceabilityController` | Controller | `Api/Controllers/TraceabilityController.cs` | `Controllers/TraceabilityControllerTests.cs` |  |
+| ✅ | `TraceabilityController` | Controller | `Api/Controllers/TraceabilityController.cs` | `Controllers/TraceabilityControllerTests.cs` |  |
 
 ---
 
