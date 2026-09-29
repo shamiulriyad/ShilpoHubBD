@@ -74,6 +74,21 @@ public static class DependencyInjection
             client.BaseAddress = new Uri(geminiOptions.BaseUrl);
             client.Timeout = TimeSpan.FromSeconds(geminiOptions.TimeoutSeconds);
         });
+        services.AddScoped<ShilpoHubBD.Infrastructure.ReviewModeration.RuleBasedReviewModerationProvider>();
+        services.AddHttpClient<IReviewModerationAIProvider, ShilpoHubBD.Infrastructure.ReviewModeration.GeminiReviewModerationProvider>((sp, client) =>
+        {
+            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value;
+            client.BaseAddress = new Uri(geminiOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(geminiOptions.TimeoutSeconds);
+        });
+        services.AddScoped<ShilpoHubBD.Infrastructure.ReviewModeration.RuleBasedRepeatedComplaintProvider>();
+        services.AddHttpClient<IRepeatedComplaintAIProvider, ShilpoHubBD.Infrastructure.ReviewModeration.GeminiRepeatedComplaintProvider>((sp, client) =>
+        {
+            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value;
+            client.BaseAddress = new Uri(geminiOptions.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(geminiOptions.TimeoutSeconds);
+        });
+        services.AddHttpClient<IReviewSimilarityProvider, ShilpoHubBD.Infrastructure.ReviewSimilarity.PythonReviewSimilarityProvider>();
         services.AddScoped<ShilpoHubBD.Infrastructure.ProducerImpact.RuleBasedProducerImpactProvider>();
         services.AddHttpClient<IProducerImpactAIProvider, ShilpoHubBD.Infrastructure.ProducerImpact.GeminiProducerImpactProvider>((sp, client) =>
         {
