@@ -83,6 +83,7 @@ public static class DependencyInjection
         services.Configure<BudgetEstimateOptions>(configuration.GetSection("Tourism:BudgetEstimate"));
         services.Configure<SustainabilityScoreOptions>(configuration.GetSection("SustainabilityScore"));
         services.Configure<ImpactAssessmentThresholds>(configuration.GetSection("ImpactAssessment"));
+        services.Configure<ProductModerationOptions>(configuration.GetSection("ProductModeration"));
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
@@ -99,6 +100,10 @@ public static class DependencyInjection
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IReviewService, ReviewService>();
+        services.AddScoped<IReviewAiAnalysisService, ReviewAiAnalysisService>();
+        services.AddScoped<IReviewIndexService, ReviewIndexService>();
+        services.AddScoped<IRepeatedComplaintDetectionService, RepeatedComplaintDetectionService>();
+        services.AddScoped<IProductModerationAdminService, ProductModerationAdminService>();
 
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<IDiscussionService, DiscussionService>();
