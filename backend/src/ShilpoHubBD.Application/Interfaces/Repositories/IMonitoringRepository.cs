@@ -24,6 +24,10 @@ public interface IMonitoringRepository
 
     Task<bool> UserExistsAsync(Guid userId, CancellationToken cancellationToken);
 
+    /// <summary>Any one SuperAdmin's id, to attribute a flag raised by an automated backend process (no human
+    /// actor) rather than a scan an admin explicitly triggered. Null if no SuperAdmin account exists yet.</summary>
+    Task<Guid?> GetAnySuperAdminUserIdAsync(CancellationToken cancellationToken);
+
     // ---- Scan signal queries ----------------------------------------
     Task<List<ScanCandidate>> FindFraudCandidatesAsync(DateTime since, CancellationToken cancellationToken);
 
