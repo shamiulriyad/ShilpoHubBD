@@ -14,4 +14,7 @@ public enum MonitoringFlagType
     SpamContent,
     PolicyViolation,
     InappropriateImage,
+
+    /// <summary>Repeated/similar customer complaints detected for one product (AI review-moderation Part 2).</summary>
+    RepeatedProductComplaints,
 }
