@@ -1,3 +1,4 @@
+import SafeImage from '../../components/media/SafeImage';
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
 import MutationFeedback from '../../components/ui/MutationFeedback';
@@ -26,7 +27,7 @@ function QuestionCard({ question }) {
       <p className="text-sm font-semibold text-heading">{question.body}</p>
       {question.imageUrl && (
         <a href={resolveUploadUrl(question.imageUrl)} target="_blank" rel="noreferrer">
-          <img src={resolveUploadUrl(question.imageUrl)} alt="Attached by the customer" className="mt-2 max-h-48 rounded-lg object-cover" loading="lazy" />
+          <SafeImage src={resolveUploadUrl(question.imageUrl)} alt="Attached by the customer" className="mt-2 max-h-48 rounded-lg object-cover" loading="lazy" />
         </a>
       )}
 
