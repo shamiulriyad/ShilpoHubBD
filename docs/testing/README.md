@@ -1727,7 +1727,7 @@ Contains: 1 service, 2 validators, 1 repository, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `MentorshipService` | Service | `Application/Services/Mentorship/MentorshipService.cs` | `Services/MentorshipServiceTests.cs` |  |
+| ✅ | `MentorshipService` | Service | `Application/Services/Mentorship/MentorshipService.cs` | `Services/MentorshipServiceTests.cs` |  |
 | ☐ | `CreateMentorshipRequestRequestValidator` | Validator | `Application/Validators/Mentorship/CreateMentorshipRequestRequestValidator.cs` | `Validators/CreateMentorshipRequestRequestValidatorTests.cs` |  |
 | ☐ | `RespondMentorshipRequestRequestValidator` | Validator | `Application/Validators/Mentorship/RespondMentorshipRequestRequestValidator.cs` | `Validators/RespondMentorshipRequestRequestValidatorTests.cs` |  |
 | ☐ | `MentorshipRequestRepository` | Repository | `Data/Repositories/MentorshipRequestRepository.cs` | `Repositories/MentorshipRequestRepositoryTests.cs` | needs the test database |
