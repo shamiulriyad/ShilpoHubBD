@@ -116,6 +116,10 @@ public class MonitoringRepository : IMonitoringRepository
     public Task<bool> UserExistsAsync(Guid userId, CancellationToken cancellationToken)
         => _context.Users.AnyAsync(u => u.Id == userId, cancellationToken);
 
+    public Task<Guid?> GetAnySuperAdminUserIdAsync(CancellationToken cancellationToken)
+        => _context.UserRoles.Where(r => r.Role.Name == "SuperAdmin")
+            .OrderBy(r => r.UserId).Select(r => (Guid?)r.UserId).FirstOrDefaultAsync(cancellationToken);
+
     // ---- Scans ----------------------------------------------------------
 
     public async Task<List<ScanCandidate>> FindFraudCandidatesAsync(
