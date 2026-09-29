@@ -69,6 +69,8 @@ public class ArtisanSupportCase
     public string? FundingSourceName { get; set; }
     public decimal? SupportAmount { get; set; }
     public string? SupportValueDescription { get; set; }
+    /// <summary>What the organization expects this support to achieve for the artisan — set at planning time, alongside SupportPlan.</summary>
+    public string? ExpectedOutcome { get; set; }
     public DateTime? SupportProvidedAt { get; set; }
     public ArtisanSupportConfirmation ArtisanConfirmation { get; set; } = ArtisanSupportConfirmation.Pending;
     public string? ArtisanConfirmationNotes { get; set; }
@@ -77,6 +79,8 @@ public class ArtisanSupportCase
     public string? FlagReason { get; set; }
     public DateTime? MonitoringDueAt { get; set; }
     public DateTime? ReportDueAt { get; set; }
+    /// <summary>Free-form case notes, separate from the structured findings/confirmation/review notes fields above.</summary>
+    public string? Notes { get; set; }
     public ArtisanSupportCaseStatus Status { get; set; } = ArtisanSupportCaseStatus.Submitted;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
