@@ -2024,7 +2024,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 |---|---|---|---|---|---|
 | ✅ | `QRVerificationService` | Service | `Application/Services/QRVerification/QRVerificationService.cs` | `Services/QRVerificationServiceTests.cs` |  |
 | ✅ | `GenerateQRCodeRequestValidator` | Validator | `Application/Validators/QRVerification/GenerateQRCodeRequestValidator.cs` | `Validators/GenerateQRCodeRequestValidatorTests.cs` |  |
-| ☐ | `QRVerificationQueryParametersValidator` | Validator | `Application/Validators/QRVerification/QRVerificationQueryParametersValidator.cs` | `Validators/QRVerificationQueryParametersValidatorTests.cs` |  |
+| ✅ | `QRVerificationQueryParametersValidator` | Validator | `Application/Validators/QRVerification/QRVerificationQueryParametersValidator.cs` | `Validators/QRVerificationQueryParametersValidatorTests.cs` |  |
 | ☐ | `VerifyQRRequestValidator` | Validator | `Application/Validators/QRVerification/VerifyQRRequestValidator.cs` | `Validators/VerifyQRRequestValidatorTests.cs` |  |
 | ☐ | `QRVerificationRepository` | Repository | `Data/Repositories/QRVerificationRepository.cs` | `Repositories/QRVerificationRepositoryTests.cs` | needs the test database |
 | ☐ | `QRVerificationController` | Controller | `Api/Controllers/QRVerificationController.cs` | `Controllers/QRVerificationControllerTests.cs` |  |
