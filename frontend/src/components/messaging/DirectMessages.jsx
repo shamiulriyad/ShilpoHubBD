@@ -6,7 +6,7 @@ import { useConversations, useConversation, useMessagingMutations } from '../../
 import { useAuth } from '../../hooks/useAuth';
 
 // Inbox + chat used by every role: conversation list, message thread, reply box and picture sending.
-export default function DirectMessages() {
+export default function DirectMessages({ className = '' }) {
   const { user } = useAuth();
   const [activeId, setActiveId] = useState(null);
   const [draft, setDraft] = useState('');
@@ -42,7 +42,7 @@ export default function DirectMessages() {
   };
 
   return (
-    <div className="grid h-[600px] grid-cols-1 overflow-hidden rounded-xl border border-border bg-surface sm:grid-cols-[280px_1fr]">
+    <div className={`grid min-h-0 grid-cols-1 grid-rows-[minmax(140px,34%)_minmax(0,1fr)] overflow-hidden rounded-xl border border-border bg-surface shadow-sm sm:grid-cols-[minmax(240px,280px)_minmax(0,1fr)] sm:grid-rows-1 ${className}`}>
       <div className="divide-y divide-border overflow-y-auto border-b border-border sm:border-b-0 sm:border-r">
         <AsyncState isLoading={conversationsQuery.isLoading} isError={conversationsQuery.isError} error={conversationsQuery.error}>
           {conversations.map((conversation) => (
