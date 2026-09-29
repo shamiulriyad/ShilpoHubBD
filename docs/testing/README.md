@@ -2117,7 +2117,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
 | ✅ | `ReviewService` | Service | `Application/Services/Reviews/ReviewService.cs` | `Services/ReviewServiceTests.cs` |  |
-| ☐ | `CreateReviewRequestValidator` | Validator | `Application/Validators/Reviews/CreateReviewRequestValidator.cs` | `Validators/CreateReviewRequestValidatorTests.cs` |  |
+| ✅ | `CreateReviewRequestValidator` | Validator | `Application/Validators/Reviews/CreateReviewRequestValidator.cs` | `Validators/CreateReviewRequestValidatorTests.cs` |  |
 | ☐ | `ReviewQueryParametersValidator` | Validator | `Application/Validators/Reviews/ReviewQueryParametersValidator.cs` | `Validators/ReviewQueryParametersValidatorTests.cs` |  |
 | ☐ | `UpdateReviewRequestValidator` | Validator | `Application/Validators/Reviews/UpdateReviewRequestValidator.cs` | `Validators/UpdateReviewRequestValidatorTests.cs` |  |
 | ☐ | `ReviewRepository` | Repository | `Data/Repositories/ReviewRepository.cs` | `Repositories/ReviewRepositoryTests.cs` | needs the test database |
