@@ -13,11 +13,14 @@ public class LogisticsPartnerProfile
 {
     public Guid Id { get; set; }
 
-    public Guid UserId { get; set; }
-    public User User { get; set; } = null!;
+    // Optional legacy operator account. Official partners are created by admins and do not register as users.
+    public Guid? UserId { get; set; }
+    public User? User { get; set; }
 
     // ---- Company -----------------------------------------------------------
     public string CompanyName { get; set; } = string.Empty;
+    public string? LogoUrl { get; set; }
+    public string? Description { get; set; }
     public string? LegalName { get; set; }
     public string? RegistrationNumber { get; set; }
 
@@ -48,9 +51,12 @@ public class LogisticsPartnerProfile
     public bool OffersCashOnDelivery { get; set; }
     public bool OffersColdChain { get; set; }
     public bool OffersFragileHandling { get; set; }
+    public bool OffersPickup { get; set; }
+    public bool SupportsReturns { get; set; }
 
     // ---- Status ----------------------------------------------------
     public bool IsAcceptingRequests { get; set; } = true;
+    public bool IsActive { get; set; } = true;
 
     public LogisticsPartnerVerificationStatus VerificationStatus { get; set; }
         = LogisticsPartnerVerificationStatus.Pending;
