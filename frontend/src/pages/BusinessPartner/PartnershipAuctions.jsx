@@ -191,6 +191,7 @@ function LotDetail({ auctionId, lotId, auctionEnded }) {
           <form onSubmit={handleBid} className="mt-3 flex items-center gap-2">
             <MutationFeedback mutation={placeBid} />
             <input
+              aria-label="Bid amount"
               type="number" min={lot.minimumNextBid} step="0.01" required
               placeholder={`≥ ${lot.minimumNextBid}`} value={amount} onChange={(e) => setAmount(e.target.value)}
               className="w-32 rounded-md border border-border bg-background px-3 py-2 text-sm"

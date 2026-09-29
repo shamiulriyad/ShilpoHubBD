@@ -10,6 +10,7 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
     {
         builder.ToTable("Courses");
         builder.HasKey(c => c.Id);
+        builder.Property(c => c.Price).HasPrecision(18, 2);
 
         builder.Property(c => c.Title).IsRequired().HasMaxLength(200);
         builder.Property(c => c.Description).IsRequired().HasMaxLength(4000);

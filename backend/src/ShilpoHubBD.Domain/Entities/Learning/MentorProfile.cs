@@ -13,6 +13,11 @@ public class MentorProfile
     public string Expertise { get; set; } = string.Empty;
     public int YearsOfExperience { get; set; }
     public bool IsActive { get; set; } = true;
+    public string ApprovalStatus { get; set; } = "Pending";
+    public string ProofImageUrl { get; set; } = string.Empty;
+    public string? ReviewNote { get; set; }
+    public Guid? ReviewedByUserId { get; set; }
+    public DateTime? ReviewedAt { get; set; }
 
     public string? Location { get; set; }
     public string? AvailabilityNote { get; set; }

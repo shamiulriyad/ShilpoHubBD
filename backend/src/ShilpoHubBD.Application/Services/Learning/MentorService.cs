@@ -23,6 +23,22 @@ public class MentorService : IMentorService
         var existing = await _mentorRepository.GetByUserIdAsync(userId, cancellationToken);
         if (existing is not null)
         {
+            if (existing.ApprovalStatus == "Rejected")
+            {
+                existing.Bio = request.Bio.Trim();
+                existing.Expertise = request.Expertise.Trim();
+                existing.YearsOfExperience = request.YearsOfExperience;
+                existing.Location = request.Location?.Trim();
+                existing.ProofImageUrl = request.ProofImageUrl;
+                existing.ApprovalStatus = "Pending";
+                existing.IsActive = false;
+                existing.ReviewNote = null;
+                existing.ReviewedAt = null;
+                existing.ReviewedByUserId = null;
+                existing.UpdatedAt = DateTime.UtcNow;
+                await _mentorRepository.SaveChangesAsync(cancellationToken);
+                return ToDto(existing);
+            }
             throw new ConflictException("You already have a mentor profile.");
         }
 
@@ -34,7 +50,9 @@ public class MentorService : IMentorService
             Bio = request.Bio.Trim(),
             Expertise = request.Expertise.Trim(),
             YearsOfExperience = request.YearsOfExperience,
-            IsActive = true,
+            IsActive = false,
+            ApprovalStatus = "Pending",
+            ProofImageUrl = request.ProofImageUrl,
             Location = request.Location?.Trim(),
             AvailabilityNote = request.AvailabilityNote?.Trim(),
             PreferredCategory = request.PreferredCategory?.Trim(),
@@ -57,7 +75,7 @@ public class MentorService : IMentorService
         mentor.Bio = request.Bio.Trim();
         mentor.Expertise = request.Expertise.Trim();
         mentor.YearsOfExperience = request.YearsOfExperience;
-        mentor.IsActive = request.IsActive;
+        mentor.IsActive = request.IsActive && mentor.ApprovalStatus == "Approved";
         mentor.Location = request.Location?.Trim();
         mentor.AvailabilityNote = request.AvailabilityNote?.Trim();
         mentor.PreferredCategory = request.PreferredCategory?.Trim();
@@ -128,7 +146,11 @@ public class MentorService : IMentorService
         var mentor = await _mentorRepository.GetByIdAsync(mentorId, cancellationToken)
             ?? throw new NotFoundException("Mentor profile not found.");
 
-        return ToDto(mentor);
+        if (mentor.ApprovalStatus != "Approved" || !mentor.IsActive) throw new NotFoundException("Mentor profile not found.");
+        var result = ToDto(mentor);
+        result.ProofImageUrl = string.Empty;
+        result.ReviewNote = null;
+        return result;
     }
 
     public async Task<PagedResult<MentorListItemDto>> GetAllAsync(int page, int pageSize, CancellationToken cancellationToken)
@@ -143,6 +165,27 @@ public class MentorService : IMentorService
         };
     }
 
+    public async Task<List<MentorProfileDto>> GetApplicationsAsync(CancellationToken cancellationToken)
+    {
+        var (items, _) = await _mentorRepository.GetPagedAsync(false, 1, 500, cancellationToken);
+        return items.Select(ToDto).ToList();
+    }
+
+    public async Task<MentorProfileDto> ReviewAsync(Guid mentorId, Guid adminId, bool approve, string? note, CancellationToken cancellationToken)
+    {
+        var mentor = await _mentorRepository.GetByIdAsync(mentorId, cancellationToken)
+            ?? throw new NotFoundException("Mentor application not found.");
+        if (mentor.ApprovalStatus != "Pending") throw new ConflictException("This application has already been reviewed.");
+        if (approve && string.IsNullOrWhiteSpace(mentor.ProofImageUrl)) throw new ConflictException("Photo proof is required before approval.");
+        mentor.ApprovalStatus = approve ? "Approved" : "Rejected";
+        mentor.IsActive = approve;
+        mentor.ReviewNote = note?.Trim();
+        mentor.ReviewedByUserId = adminId;
+        mentor.ReviewedAt = mentor.UpdatedAt = DateTime.UtcNow;
+        await _mentorRepository.SaveChangesAsync(cancellationToken);
+        return ToDto(mentor);
+    }
+
     private static MentorListItemDto ToListItemDto(MentorProfile mentor) => new()
     {
         Id = mentor.Id,
@@ -155,6 +198,10 @@ public class MentorService : IMentorService
 
     private static MentorProfileDto ToDto(MentorProfile mentor) => new()
     {
+        ApprovalStatus = mentor.ApprovalStatus,
+        ProofImageUrl = mentor.ProofImageUrl,
+        ReviewNote = mentor.ReviewNote,
+        ReviewedAt = mentor.ReviewedAt,
         Id = mentor.Id,
         UserId = mentor.UserId,
         FullName = mentor.User.FullName,

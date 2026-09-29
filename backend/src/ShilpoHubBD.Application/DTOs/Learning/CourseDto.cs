@@ -2,6 +2,13 @@ namespace ShilpoHubBD.Application.DTOs.Learning;
 
 public class CourseDto
 {
+    public decimal Price { get; set; }
+    public int DurationDays { get; set; } = 1;
+    public int DaysPerWeek { get; set; } = 1;
+    public int SessionMinutes { get; set; } = 60;
+    public string ClassTime { get; set; } = "10:00";
+    public string DeliveryMode { get; set; } = "Online";
+    public string? Venue { get; set; }
     public Guid Id { get; set; }
     public Guid? MentorId { get; set; }
     public Guid? TrainerProfileId { get; set; }

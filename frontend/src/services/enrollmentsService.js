@@ -1,7 +1,7 @@
 import apiClient from './apiClient';
 
 export const enrollmentsService = {
-  enroll: (courseId) => apiClient.post(`/enrollments/courses/${courseId}/enroll`).then((res) => res.data),
+  enroll: (value) => { const { courseId, attendanceMode = 'Online' } = typeof value === 'string' ? { courseId: value } : value; return apiClient.post(`/enrollments/courses/${courseId}/enroll`, null, { params: { attendanceMode } }).then((res) => res.data); },
   mine: () => apiClient.get('/enrollments/mine').then((res) => res.data),
   getById: (id) => apiClient.get(`/enrollments/${id}`).then((res) => res.data),
   markProgress: (id, lessonId, isCompleted = true) =>

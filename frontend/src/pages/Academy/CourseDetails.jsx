@@ -1,4 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import MutationFeedback from '../../components/ui/MutationFeedback';
 import { routePaths } from '../../routes/routePaths';
 import { PageHeader, Button, Badge, AsyncState } from '../../components/ui';
 import { useCourse } from '../../hooks/useCourses';
@@ -10,6 +12,7 @@ import { useAuth } from '../../hooks/useAuth';
 
 export default function CourseDetails() {
   const { courseId } = useParams();
+  const [attendanceMode, setAttendanceMode] = useState('');
   const { isAuthenticated } = useAuth();
   const courseQuery = useCourse(courseId);
   const enrollmentsQuery = useMyEnrollments(isAuthenticated);
@@ -40,8 +43,8 @@ export default function CourseDetails() {
                       <Button variant="secondary">Continue Learning ({Math.round(enrollment.progressPercent)}%)</Button>
                     </Link>
                   ) : (
-                    <Button variant="primary" onClick={() => enroll.mutate(courseId)} disabled={enroll.isPending}>
-                      {enroll.isPending ? 'Enrolling…' : 'Enroll Now'}
+                    <Button variant="primary" onClick={() => enroll.mutate({ courseId, attendanceMode: attendanceMode || (course.deliveryMode === 'Offline' ? 'Offline' : 'Online') })} disabled={enroll.isPending}>
+                      {enroll.isPending ? 'Saving…' : course.price > 0 ? 'Buy course — pay mentor' : 'Enroll Now'}
                     </Button>
                   )
                 ) : (
@@ -52,9 +55,15 @@ export default function CourseDetails() {
               }
             />
 
-            <div className="mb-6 flex aspect-video items-center justify-center rounded-2xl border border-border bg-surface text-sm text-body/40">
-              Course Preview Video Placeholder
-            </div>
+            <section className="mb-6 space-y-3 rounded-xl border border-border p-5">
+              <p>BDT {course.price} · {course.durationDays} days · {course.daysPerWeek} days/week · {course.sessionMinutes} minutes/class</p>
+              <p>Class time: {course.classTime} (Bangladesh) · Capacity: {course.maxApprentices || 'Open'}</p>
+              {course.venue && <p>Offline venue: {course.venue}</p>}
+              {!enrollment && <label>Choose attendance format<select className="ml-3 rounded border border-border p-2" value={attendanceMode || (course.deliveryMode === 'Offline' ? 'Offline' : 'Online')} onChange={e => setAttendanceMode(e.target.value)}>{course.deliveryMode !== 'Offline' && <option>Online</option>}{course.deliveryMode !== 'Online' && <option>Offline</option>}</select></label>}
+              {course.price > 0 && <p>The fee is paid directly to the mentor. Reserving a seat does not charge your account.</p>}
+              {enrollment && <p>Saved enrollment: {enrollment.attendanceMode} · BDT {enrollment.feeAmount} · {enrollment.paymentStatus}</p>}
+              <MutationFeedback mutation={enroll} />
+            </section>
 
             <div className="mb-6 flex flex-wrap gap-2">
               <Badge tone="primary">{course.categoryName || course.category}</Badge>

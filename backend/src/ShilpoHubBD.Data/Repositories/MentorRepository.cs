@@ -33,7 +33,7 @@ public class MentorRepository : IMentorRepository
 
         if (activeOnly)
         {
-            query = query.Where(m => m.IsActive);
+            query = query.Where(m => m.IsActive && m.ApprovalStatus == "Approved");
         }
 
         query = query.OrderByDescending(m => m.CreatedAt);

@@ -43,6 +43,13 @@ public class CourseService : ICourseService
             CategoryId = request.CategoryId,
             Status = CourseStatus.Draft,
             MaxApprentices = request.MaxApprentices,
+            Price = request.Price,
+            DurationDays = request.DurationDays,
+            DaysPerWeek = request.DaysPerWeek,
+            SessionMinutes = request.SessionMinutes,
+            ClassTime = request.ClassTime,
+            DeliveryMode = request.DeliveryMode,
+            Venue = request.Venue,
             CreatedAt = now,
             UpdatedAt = now,
         };
@@ -64,6 +71,13 @@ public class CourseService : ICourseService
         course.Category = request.Category.Trim();
         course.CategoryId = request.CategoryId;
         course.MaxApprentices = request.MaxApprentices;
+        course.Price = request.Price;
+        course.DurationDays = request.DurationDays;
+        course.DaysPerWeek = request.DaysPerWeek;
+        course.SessionMinutes = request.SessionMinutes;
+        course.ClassTime = request.ClassTime;
+        course.DeliveryMode = request.DeliveryMode;
+        course.Venue = request.Venue;
         course.UpdatedAt = DateTime.UtcNow;
 
         await _courseRepository.SaveChangesAsync(cancellationToken);
@@ -127,7 +141,7 @@ public class CourseService : ICourseService
         var course = await _courseRepository.GetByIdAsync(courseId, cancellationToken)
             ?? throw new NotFoundException("Course not found.");
 
-        var isOwner = course.Mentor?.UserId == currentUserId || course.TrainerProfile?.UserId == currentUserId;
+        var isOwner = currentUserId.HasValue && (course.Mentor?.UserId == currentUserId || course.TrainerProfile?.UserId == currentUserId);
         if (course.Status != CourseStatus.Published && !isOwner)
         {
             throw new NotFoundException("Course not found.");
@@ -339,6 +353,8 @@ public class CourseService : ICourseService
         var mentor = await _mentorRepository.GetByUserIdAsync(userId, cancellationToken);
         if (mentor is not null)
         {
+            if (mentor.ApprovalStatus != "Approved" || !mentor.IsActive)
+                throw new ConflictException("Your mentor application must be approved before uploading courses.");
             return (mentor, null);
         }
 
@@ -386,6 +402,8 @@ public class CourseService : ICourseService
             throw new UnauthorizedAccessException("You do not have permission to manage this course.");
         }
 
+        if (course.Mentor is not null && (course.Mentor.ApprovalStatus != "Approved" || !course.Mentor.IsActive))
+            throw new ConflictException("An approved, active mentor profile is required to manage courses.");
         return course;
     }
 
@@ -394,6 +412,13 @@ public class CourseService : ICourseService
 
     private static CourseListItemDto ToListItemDto(Course course) => new()
     {
+        Price = course.Price,
+        DurationDays = course.DurationDays,
+        DaysPerWeek = course.DaysPerWeek,
+        SessionMinutes = course.SessionMinutes,
+        ClassTime = course.ClassTime,
+        DeliveryMode = course.DeliveryMode,
+        Venue = course.Venue,
         Id = course.Id,
         AuthorName = AuthorNameOf(course),
         Title = course.Title,
@@ -407,6 +432,13 @@ public class CourseService : ICourseService
 
     private static CourseDto ToDto(Course course) => new()
     {
+        Price = course.Price,
+        DurationDays = course.DurationDays,
+        DaysPerWeek = course.DaysPerWeek,
+        SessionMinutes = course.SessionMinutes,
+        ClassTime = course.ClassTime,
+        DeliveryMode = course.DeliveryMode,
+        Venue = course.Venue,
         Id = course.Id,
         MentorId = course.MentorId,
         TrainerProfileId = course.TrainerProfileId,
