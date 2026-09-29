@@ -2,6 +2,10 @@ namespace ShilpoHubBD.Application.DTOs.Learning;
 
 public class MentorProfileDto
 {
+    public string ApprovalStatus { get; set; } = "Pending";
+    public string ProofImageUrl { get; set; } = string.Empty;
+    public string? ReviewNote { get; set; }
+    public DateTime? ReviewedAt { get; set; }
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public string FullName { get; set; } = string.Empty;
