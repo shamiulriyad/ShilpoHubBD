@@ -35,6 +35,5 @@ public static class RoleNames
         Tourist,
         HeritageAcademyMember,
         HeritageInnovationHub,
-        LogisticsPartner,
     };
 }
