@@ -437,6 +437,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Traceability](#be-traceability) | Backend | 7 / 7 | 63 | `backend/tests/ShilpoHubBD.UnitTests/Features/Traceability/` | 2026-09-29 |
 | [Achievement](#be-achievement) | Backend | 5 / 5 | 61 | `backend/tests/ShilpoHubBD.UnitTests/Features/Achievement/` | 2026-09-30 |
 | [Impact](#be-impact) | Backend | 3 / 3 | 17 | `backend/tests/ShilpoHubBD.UnitTests/Features/Impact/` | 2026-09-30 |
+| [QRVerification](#be-qrverification) | Backend | 6 / 6 | 58 | `backend/tests/ShilpoHubBD.UnitTests/Features/QRVerification/` | 2026-09-30 |
 
 ### Blocked units
 
@@ -2027,7 +2028,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 | ✅ | `QRVerificationQueryParametersValidator` | Validator | `Application/Validators/QRVerification/QRVerificationQueryParametersValidator.cs` | `Validators/QRVerificationQueryParametersValidatorTests.cs` |  |
 | ✅ | `VerifyQRRequestValidator` | Validator | `Application/Validators/QRVerification/VerifyQRRequestValidator.cs` | `Validators/VerifyQRRequestValidatorTests.cs` |  |
 | ✅ | `QRVerificationRepository` | Repository | `Data/Repositories/QRVerificationRepository.cs` | `Repositories/QRVerificationRepositoryTests.cs` | needs the test database |
-| ☐ | `QRVerificationController` | Controller | `Api/Controllers/QRVerificationController.cs` | `Controllers/QRVerificationControllerTests.cs` |  |
+| ✅ | `QRVerificationController` | Controller | `Api/Controllers/QRVerificationController.cs` | `Controllers/QRVerificationControllerTests.cs` |  |
 
 <a id="be-quotations"></a>
 
