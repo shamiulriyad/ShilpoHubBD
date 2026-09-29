@@ -17,8 +17,12 @@ public class DeliveryTrackingService : IDeliveryTrackingService
 {
     private static readonly Dictionary<ShipmentStatus, ShipmentStatus[]> Transitions = new()
     {
-        [ShipmentStatus.Created] = new[] { ShipmentStatus.LabelCreated, ShipmentStatus.PickedUp, ShipmentStatus.Cancelled },
-        [ShipmentStatus.LabelCreated] = new[] { ShipmentStatus.PickedUp, ShipmentStatus.Cancelled },
+        [ShipmentStatus.Created] = new[] { ShipmentStatus.PartnerAssigned, ShipmentStatus.LabelCreated, ShipmentStatus.Cancelled },
+        [ShipmentStatus.PartnerAssigned] = new[] { ShipmentStatus.PickupRequested, ShipmentStatus.LabelCreated, ShipmentStatus.Cancelled },
+        [ShipmentStatus.PickupRequested] = new[] { ShipmentStatus.PickedUp, ShipmentStatus.PickupFailed, ShipmentStatus.Rescheduled, ShipmentStatus.Cancelled },
+        [ShipmentStatus.PickupFailed] = new[] { ShipmentStatus.PickupRequested, ShipmentStatus.Rescheduled, ShipmentStatus.Cancelled },
+        [ShipmentStatus.Rescheduled] = new[] { ShipmentStatus.PickupRequested, ShipmentStatus.OutForDelivery, ShipmentStatus.Cancelled },
+        [ShipmentStatus.LabelCreated] = new[] { ShipmentStatus.PickupRequested, ShipmentStatus.PickedUp, ShipmentStatus.Cancelled },
         [ShipmentStatus.PickedUp] = new[]
         {
             ShipmentStatus.InTransit, ShipmentStatus.AtHub, ShipmentStatus.OutForDelivery, ShipmentStatus.Cancelled,
@@ -448,6 +452,9 @@ public class DeliveryTrackingService : IDeliveryTrackingService
         shipment.Status = target;
         shipment.LastStatusAt = now;
 
+        if (target == ShipmentStatus.PickupRequested) shipment.PickupRequestedAt = occurredAt;
+        if (target == ShipmentStatus.PickedUp) shipment.PickedUpAt = occurredAt;
+
         if (target == ShipmentStatus.PickedUp && shipment.DispatchedAt is null)
         {
             shipment.DispatchedAt = occurredAt;
@@ -456,6 +463,7 @@ public class DeliveryTrackingService : IDeliveryTrackingService
         if (target == ShipmentStatus.Returned)
         {
             shipment.FailureReason = request.FailureReason?.Trim() ?? shipment.FailureReason;
+            shipment.ReturnReason = request.FailureReason?.Trim() ?? shipment.ReturnReason;
         }
 
         if (target == ShipmentStatus.DeliveryFailed)
