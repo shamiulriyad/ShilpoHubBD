@@ -2146,7 +2146,7 @@ Contains: 1 service, 1 data component, 1 controller.
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
 | ✅ | `SearchService` | Service | `Application/Services/Search/SearchService.cs` | `Services/SearchServiceTests.cs` |  |
-| ☐ | `PostgresProductSearchProvider` | Data component | `Data/Search/PostgresProductSearchProvider.cs` | `Data/PostgresProductSearchProviderTests.cs` |  |
+| ✅ | `PostgresProductSearchProvider` | Data component | `Data/Search/PostgresProductSearchProvider.cs` | `Data/PostgresProductSearchProviderTests.cs` |  |
 | ☐ | `SearchController` | Controller | `Api/Controllers/SearchController.cs` | `Controllers/SearchControllerTests.cs` |  |
 
 <a id="be-security"></a>
