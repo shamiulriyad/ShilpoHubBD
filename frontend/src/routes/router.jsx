@@ -134,6 +134,8 @@ import AdminProducerPartnershipSettlements from '../pages/Admin/ProducerPartners
 import ProfileApprovals from '../pages/Admin/ProfileApprovals';
 import AdminExpertiseCertificates from '../pages/Admin/ExpertiseCertificates';
 import SupportOversight from '../pages/Admin/SupportOversight';
+import ProducerIntelligenceDashboard from '../pages/Admin/ProducerIntelligenceDashboard';
+import ProducerIntelligenceDetail from '../pages/Admin/ProducerIntelligenceDetail';
 import Publications from '../pages/Research/Publications';
 import HeritageDatabase from '../pages/Research/HeritageDatabase';
 
@@ -202,6 +204,7 @@ import ApprenticeStudentPage from '../pages/ApprenticeStudent/ApprenticeStudentP
 import GovernmentPage from '../pages/Government/GovernmentPage';
 import OrganizationProfile from '../pages/Government/OrganizationProfile';
 import ArtisanSupportCases from '../pages/Government/ArtisanSupportCases';
+import GovProducerDashboard from '../pages/Government/GovProducerDashboard';
 import GovReportsForecasts from '../pages/Government/GovReportsForecasts';
 import PolicyCompliance from '../pages/Government/PolicyCompliance';
 import ComplaintsMonitoring from '../pages/Government/ComplaintsMonitoring';
@@ -437,6 +440,7 @@ const router = createBrowserRouter([
               { path: routePaths.government, element: <GovernmentPage /> },
               { path: routePaths.governmentOrganizationProfile, element: <OrganizationProfile /> },
               { path: routePaths.governmentArtisanSupport, element: <ArtisanSupportCases /> },
+              { path: routePaths.governmentProducerDashboard, element: <GovProducerDashboard /> },
               { path: routePaths.governmentReportsForecasts, element: <GovReportsForecasts /> },
               { path: routePaths.governmentPolicyCompliance, element: <PolicyCompliance /> },
               { path: routePaths.governmentComplaintsMonitoring, element: <ComplaintsMonitoring /> },
@@ -465,6 +469,8 @@ const router = createBrowserRouter([
               { path: routePaths.adminProfileApprovals, element: <ProfileApprovals /> },
               { path: routePaths.adminExpertiseCertificates, element: <AdminExpertiseCertificates /> },
               { path: routePaths.adminSupportOversight, element: <SupportOversight /> },
+              { path: routePaths.adminProducerIntelligence, element: <ProducerIntelligenceDashboard /> },
+              { path: routePaths.adminProducerIntelligenceDetail, element: <ProducerIntelligenceDetail /> },
               { path: "/admin/:section/:view", element: <AdminWorkspace /> },
               { path: "/admin/:section", element: <AdminWorkspace /> },
             ],
