@@ -2336,7 +2336,7 @@ Contains: 1 service, 4 validators, 1 repository, 1 controller.
 | ✅ | `CreateProductTraceabilityRequestValidator` | Validator | `Application/Validators/Traceability/CreateProductTraceabilityRequestValidator.cs` | `Validators/CreateProductTraceabilityRequestValidatorTests.cs` |  |
 | ✅ | `MaterialSourceInputValidator` | Validator | `Application/Validators/Traceability/MaterialSourceInputValidator.cs` | `Validators/MaterialSourceInputValidatorTests.cs` |  |
 | ✅ | `TimelineEventInputValidator` | Validator | `Application/Validators/Traceability/TimelineEventInputValidator.cs` | `Validators/TimelineEventInputValidatorTests.cs` |  |
-| ☐ | `UpdateProductTraceabilityRequestValidator` | Validator | `Application/Validators/Traceability/UpdateProductTraceabilityRequestValidator.cs` | `Validators/UpdateProductTraceabilityRequestValidatorTests.cs` |  |
+| ✅ | `UpdateProductTraceabilityRequestValidator` | Validator | `Application/Validators/Traceability/UpdateProductTraceabilityRequestValidator.cs` | `Validators/UpdateProductTraceabilityRequestValidatorTests.cs` |  |
 | ☐ | `TraceabilityRepository` | Repository | `Data/Repositories/TraceabilityRepository.cs` | `Repositories/TraceabilityRepositoryTests.cs` | needs the test database |
 | ☐ | `TraceabilityController` | Controller | `Api/Controllers/TraceabilityController.cs` | `Controllers/TraceabilityControllerTests.cs` |  |
 
