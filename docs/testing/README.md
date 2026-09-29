@@ -425,6 +425,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Security](#be-security) | Backend | 18 / 18 | 169 | `backend/tests/ShilpoHubBD.UnitTests/Features/Security/` | 2026-09-29 |
 | [Admin](#be-admin) | Backend | 13 / 13 | 162 | `backend/tests/ShilpoHubBD.UnitTests/Features/Admin/` | 2026-09-29 |
 | [Notifications](#be-notifications) | Backend | 2 / 2 | 27 | `backend/tests/ShilpoHubBD.UnitTests/Features/Notifications/` | 2026-09-29 |
+| [Platform](#be-platform) | Backend | 10 / 10 | 64 | `backend/tests/ShilpoHubBD.UnitTests/Features/Platform/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -1793,7 +1794,7 @@ Contains: 1 DbContext, 1 controller, 2 middleware, 2 JSON converters, 1 helper, 
 | ✅ | `SlugGenerator` | Helper | `Application/Common/SlugGenerator.cs` | `Common/SlugGeneratorTests.cs` |  |
 | ✅ | `Application DependencyInjection` | DI registration | `Application/DependencyInjection.cs` | `DependencyInjection/ApplicationDependencyInjectionTests.cs` | every registered interface resolves |
 | ✅ | `Data DependencyInjection` | DI registration | `Data/DependencyInjection.cs` | `DependencyInjection/DataDependencyInjectionTests.cs` | every registered interface resolves |
-| ☐ | `Infrastructure DependencyInjection` | DI registration | `Infrastructure/DependencyInjection.cs` | `DependencyInjection/InfrastructureDependencyInjectionTests.cs` | every registered interface resolves |
+| ✅ | `Infrastructure DependencyInjection` | DI registration | `Infrastructure/DependencyInjection.cs` | `DependencyInjection/InfrastructureDependencyInjectionTests.cs` | every registered interface resolves |
 
 <a id="be-portfolio"></a>
 
