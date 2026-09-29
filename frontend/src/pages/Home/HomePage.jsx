@@ -105,17 +105,21 @@ export default function HomePage() {
     </section>
     <HeritageGallery />
     <section className="border-y border-border bg-surface py-16"><div className={shell}><SectionHeader eyebrow="The marketplace" title="Find your next treasured piece." description="Browse products from the ShilpoHub community." action={<Link to={routes.marketplaceProducts} className="text-sm font-semibold text-primary">Shop all products →</Link>} /><AsyncState isLoading={productsQuery.isLoading} isError={productsQuery.isError} error={productsQuery.error}><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{products.map(product=><ProductCard key={product.id} product={toProductCardItem(product)} to={routes.marketplaceProductDetails.replace(':productId',product.id)} />)}</div>{!products.length && <p className="rounded-xl bg-background p-6 text-muted">The collection is being prepared. Check back for new handmade finds.</p>}</AsyncState></div></section>
-    <section className="bg-primary py-16 lg:py-20"><div className={shell}>
-      <p className="text-xs font-bold uppercase tracking-[.2em] text-white/70">Powered by AI</p>
-      <h2 className="mt-3 max-w-xl text-3xl leading-tight text-white sm:text-4xl" style={{ fontFamily: 'Georgia, serif' }}>Smart help behind every search, price and prediction.</h2>
-      <p className="mt-3 max-w-xl text-sm leading-6 text-white/75">Chat with the AI Heritage Assistant any time using the bubble in the corner of your screen.</p>
-      <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">{[
+    <section className="border-y border-white/10 bg-primary py-9 lg:py-11"><div className={shell}>
+      <div className="grid items-end gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,.7fr)] lg:gap-10">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-[.2em] text-white/60">Powered by AI</p>
+          <h2 className="mt-2 max-w-2xl text-2xl leading-tight text-white sm:text-3xl" style={{ fontFamily: 'Georgia, serif' }}>Smart help behind every search, price and prediction.</h2>
+        </div>
+        <p className="max-w-xl text-sm leading-6 text-white/70 lg:justify-self-end">Chat with the AI Heritage Assistant any time using the bubble in the corner of your screen.</p>
+      </div>
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{[
         ['01', 'Smart search & recommendations', 'Find exactly what you need, or discover something you did not know you wanted.'],
         ['02', 'Price & demand forecasting', 'Producers price with confidence and plan production around real demand.'],
         ['03', 'Counterfeit & fraud detection', 'Every product and transaction is screened to keep the marketplace authentic.'],
         ['04', 'Trip & policy planning', 'From a personalised travel itinerary to national heritage policy simulations.'],
-      ].map(([n, title, description]) => <div key={n}><p className="text-xs font-bold text-white/45">{n}</p><h3 className="mt-2 text-base font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-white/70">{description}</p></div>)}</div>
-      <p className="mt-10 border-t border-white/15 pt-6 text-xs leading-6 text-white/50">Also at work behind the scenes: {aiFeatures.join(' · ')}.</p>
+      ].map(([n, title, description]) => <div key={n} className="rounded-xl border border-white/10 bg-white/[.04] p-4"><div className="flex items-center gap-3"><span className="text-[10px] font-bold tracking-wider text-white/40">{n}</span><h3 className="text-sm font-semibold text-white">{title}</h3></div><p className="mt-2 text-xs leading-5 text-white/60">{description}</p></div>)}</div>
+      <p className="mt-5 border-t border-white/10 pt-4 text-[11px] leading-5 text-white/45"><span className="font-semibold text-white/60">More AI tools:</span> {aiFeatures.join(' · ')}.</p>
     </div></section>
     <section className={`${shell} grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-20`}>
       <figure className="h-[380px] overflow-hidden rounded-2xl"><Photo src={photos.pottery} alt="A potter shaping clay on a wheel" /></figure>
