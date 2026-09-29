@@ -423,6 +423,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 |---|---|---|---|---|---|
 | [Auth](#be-auth) | Backend | 20 / 20 | 224 | `backend/tests/ShilpoHubBD.UnitTests/Features/Auth/` | 2026-09-29 |
 | [Security](#be-security) | Backend | 18 / 18 | 169 | `backend/tests/ShilpoHubBD.UnitTests/Features/Security/` | 2026-09-29 |
+| [Admin](#be-admin) | Backend | 13 / 13 | 162 | `backend/tests/ShilpoHubBD.UnitTests/Features/Admin/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -553,7 +554,7 @@ Contains: 3 services, 4 validators, 3 repositories, 3 controllers.
 | ✅ | `PermissionRepository` | Repository | `Data/Repositories/PermissionRepository.cs` | `Repositories/PermissionRepositoryTests.cs` | needs the test database |
 | ✅ | `AdminUsersController` | Controller | `Api/Controllers/AdminUsersController.cs` | `Controllers/AdminUsersControllerTests.cs` |  |
 | ✅ | `IdentityVerificationsController` | Controller | `Api/Controllers/IdentityVerificationsController.cs` | `Controllers/IdentityVerificationsControllerTests.cs` |  |
-| ☐ | `PermissionsController` | Controller | `Api/Controllers/PermissionsController.cs` | `Controllers/PermissionsControllerTests.cs` |  |
+| ✅ | `PermissionsController` | Controller | `Api/Controllers/PermissionsController.cs` | `Controllers/PermissionsControllerTests.cs` |  |
 
 <a id="be-aibusiness"></a>
 
