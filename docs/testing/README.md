@@ -955,7 +955,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `OrderComplaintService` | Service | `Application/Services/Complaints/OrderComplaintService.cs` | `Services/OrderComplaintServiceTests.cs` |  |
+| ✅ | `OrderComplaintService` | Service | `Application/Services/Complaints/OrderComplaintService.cs` | `Services/OrderComplaintServiceTests.cs` |  |
 | ☐ | `CreateOrderComplaintRequestValidator` | Validator | `Application/Validators/Complaints/OrderComplaintValidators.cs` | `Validators/CreateOrderComplaintRequestValidatorTests.cs` |  |
 | ☐ | `CustomerComplaintNoteRequestValidator` | Validator | `Application/Validators/Complaints/OrderComplaintValidators.cs` | `Validators/CustomerComplaintNoteRequestValidatorTests.cs` |  |
 | ☐ | `RespondToOrderComplaintRequestValidator` | Validator | `Application/Validators/Complaints/OrderComplaintValidators.cs` | `Validators/RespondToOrderComplaintRequestValidatorTests.cs` |  |
