@@ -441,6 +441,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [CounterfeitDetection](#be-counterfeitdetection) | Backend | 3 / 3 | 15 | `backend/tests/ShilpoHubBD.UnitTests/Features/CounterfeitDetection/` | 2026-09-30 |
 | [Mentorship](#be-mentorship) | Backend | 5 / 5 | 53 | `backend/tests/ShilpoHubBD.UnitTests/Features/Mentorship/` | 2026-09-30 |
 | [Sustainability](#be-sustainability) | Backend | 5 / 5 | 58 | `backend/tests/ShilpoHubBD.UnitTests/Features/Sustainability/` | 2026-09-30 |
+| [Recommendation](#be-recommendation) | Backend | 3 / 3 | 22 | `backend/tests/ShilpoHubBD.UnitTests/Features/Recommendation/` | 2026-09-30 |
 
 ### Blocked units
 
@@ -2065,7 +2066,7 @@ Contains: 1 service, 1 infrastructure class, 1 controller.
 |---|---|---|---|---|---|
 | ✅ | `RecommendationService` | Service | `Application/Services/Recommendation/RecommendationService.cs` | `Services/RecommendationServiceTests.cs` |  |
 | ✅ | `DummyRecommendationProvider` | Infrastructure | `Infrastructure/Recommendations/DummyRecommendationProvider.cs` | `Infrastructure/DummyRecommendationProviderTests.cs` |  |
-| ☐ | `RecommendationsController` | Controller | `Api/Controllers/RecommendationsController.cs` | `Controllers/RecommendationsControllerTests.cs` |  |
+| ✅ | `RecommendationsController` | Controller | `Api/Controllers/RecommendationsController.cs` | `Controllers/RecommendationsControllerTests.cs` |  |
 
 <a id="be-research"></a>
 
