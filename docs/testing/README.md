@@ -999,7 +999,7 @@ Contains: 1 service, 1 infrastructure class, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `CounterfeitDetectionService` | Service | `Application/Services/CounterfeitDetection/CounterfeitDetectionService.cs` | `Services/CounterfeitDetectionServiceTests.cs` |  |
+| ✅ | `CounterfeitDetectionService` | Service | `Application/Services/CounterfeitDetection/CounterfeitDetectionService.cs` | `Services/CounterfeitDetectionServiceTests.cs` |  |
 | ☐ | `RuleBasedCounterfeitDetectionProvider` | Infrastructure | `Infrastructure/CounterfeitDetection/RuleBasedCounterfeitDetectionProvider.cs` | `Infrastructure/RuleBasedCounterfeitDetectionProviderTests.cs` |  |
 | ☐ | `CounterfeitDetectionController` | Controller | `Api/Controllers/CounterfeitDetectionController.cs` | `Controllers/CounterfeitDetectionControllerTests.cs` |  |
 
