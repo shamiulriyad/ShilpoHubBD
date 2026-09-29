@@ -21,7 +21,8 @@ public static class DependencyInjection
 				"to your PostgreSQL connection string, or copy backend/.env.example to backend/.env and fill it in. See backend/README.md (Setup).");
 		}
 
-		services.AddDbContext<ShilpoHubDbContext>(options => options.UseNpgsql(connectionString).AddInterceptors(new ProductIndexDirtyInterceptor()));
+		services.AddDbContext<ShilpoHubDbContext>(options => options.UseNpgsql(connectionString)
+			.AddInterceptors(new ProductIndexDirtyInterceptor(), new ReviewIndexDirtyInterceptor()));
 
 		services.AddScoped<IUserRepository, UserRepository>();
 		services.AddScoped<IRoleRepository, RoleRepository>();
@@ -39,6 +40,9 @@ public static class DependencyInjection
 		services.AddScoped<IOrderRepository, OrderRepository>();
 		services.AddScoped<IPaymentRepository, PaymentRepository>();
 		services.AddScoped<IReviewRepository, ReviewRepository>();
+		services.AddScoped<IReviewAiAnalysisRepository, ReviewAiAnalysisRepository>();
+		services.AddScoped<IReviewIndexRepository, ReviewIndexRepository>();
+		services.AddScoped<IProductModerationRepository, ProductModerationRepository>();
 		services.AddScoped<IQuestionRepository, QuestionRepository>();
 		services.AddScoped<IDiscussionRepository, DiscussionRepository>();
 		services.AddScoped<IProducerFollowRepository, ProducerFollowRepository>();
