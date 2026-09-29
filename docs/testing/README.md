@@ -734,7 +734,7 @@ Contains: 1 service, 3 validators, 1 repository, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `AuctionService` | Service | `Application/Services/Auction/AuctionService.cs` | `Services/AuctionServiceTests.cs` |  |
+| ✅ | `AuctionService` | Service | `Application/Services/Auction/AuctionService.cs` | `Services/AuctionServiceTests.cs` |  |
 | ☐ | `AuctionQueryParametersValidator` | Validator | `Application/Validators/Auction/AuctionQueryParametersValidator.cs` | `Validators/AuctionQueryParametersValidatorTests.cs` |  |
 | ☐ | `CreateAuctionRequestValidator` | Validator | `Application/Validators/Auction/CreateAuctionRequestValidator.cs` | `Validators/CreateAuctionRequestValidatorTests.cs` |  |
 | ☐ | `PlaceBidRequestValidator` | Validator | `Application/Validators/Auction/PlaceBidRequestValidator.cs` | `Validators/PlaceBidRequestValidatorTests.cs` |  |
