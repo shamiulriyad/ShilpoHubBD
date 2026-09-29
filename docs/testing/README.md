@@ -552,7 +552,7 @@ Contains: 3 services, 4 validators, 3 repositories, 3 controllers.
 | ✅ | `IdentityVerificationRepository` | Repository | `Data/Repositories/IdentityVerificationRepository.cs` | `Repositories/IdentityVerificationRepositoryTests.cs` | needs the test database |
 | ✅ | `PermissionRepository` | Repository | `Data/Repositories/PermissionRepository.cs` | `Repositories/PermissionRepositoryTests.cs` | needs the test database |
 | ✅ | `AdminUsersController` | Controller | `Api/Controllers/AdminUsersController.cs` | `Controllers/AdminUsersControllerTests.cs` |  |
-| ☐ | `IdentityVerificationsController` | Controller | `Api/Controllers/IdentityVerificationsController.cs` | `Controllers/IdentityVerificationsControllerTests.cs` |  |
+| ✅ | `IdentityVerificationsController` | Controller | `Api/Controllers/IdentityVerificationsController.cs` | `Controllers/IdentityVerificationsControllerTests.cs` |  |
 | ☐ | `PermissionsController` | Controller | `Api/Controllers/PermissionsController.cs` | `Controllers/PermissionsControllerTests.cs` |  |
 
 <a id="be-aibusiness"></a>
