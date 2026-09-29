@@ -421,7 +421,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 
 | Feature | Codebase | Units | Test cases | Test folder | Completed |
 |---|---|---|---|---|---|
-| | | | | | |
+| [Auth](#be-auth) | Backend | 20 / 20 | 224 | `backend/tests/ShilpoHubBD.UnitTests/Features/Auth/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -761,7 +761,7 @@ Contains: 2 services, 9 validators, 3 infrastructure classes, 4 repositories, 2 
 | ✅ | `RoleRepository` | Repository | `Data/Repositories/RoleRepository.cs` | `Repositories/RoleRepositoryTests.cs` | needs the test database |
 | ✅ | `UserRepository` | Repository | `Data/Repositories/UserRepository.cs` | `Repositories/UserRepositoryTests.cs` | needs the test database |
 | ✅ | `AuthController` | Controller | `Api/Controllers/AuthController.cs` | `Controllers/AuthControllerTests.cs` |  |
-| ☐ | `RolesController` | Controller | `Api/Controllers/RolesController.cs` | `Controllers/RolesControllerTests.cs` |  |
+| ✅ | `RolesController` | Controller | `Api/Controllers/RolesController.cs` | `Controllers/RolesControllerTests.cs` |  |
 
 <a id="be-businesspartner"></a>
 
