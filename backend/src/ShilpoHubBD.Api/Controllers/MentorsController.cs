@@ -32,6 +32,18 @@ public class MentorsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    [HttpGet("applications")]
+    public async Task<IActionResult> Applications(CancellationToken cancellationToken)
+        => Ok(await _mentorService.GetApplicationsAsync(cancellationToken));
+
+    public record ReviewApplication(bool Approve, string? Note);
+
+    [Authorize(Roles = RoleNames.SuperAdmin)]
+    [HttpPost("{id:guid}/review")]
+    public async Task<IActionResult> Review(Guid id, ReviewApplication request, CancellationToken cancellationToken)
+        => Ok(await _mentorService.ReviewAsync(id, CurrentUserId, request.Approve, request.Note, cancellationToken));
+
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<MentorProfileDto>> GetById(Guid id, CancellationToken cancellationToken)
     {
@@ -51,6 +63,10 @@ public class MentorsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<MentorProfileDto>> BecomeMentor(BecomeMentorRequest request, CancellationToken cancellationToken)
     {
+        var environment = HttpContext.RequestServices.GetRequiredService<IWebHostEnvironment>();
+        var name = Path.GetFileName(request.ProofImageUrl);
+        var path = Path.Combine(environment.WebRootPath ?? Path.Combine(environment.ContentRootPath, "wwwroot"), "uploads", "images", name);
+        if (!System.IO.File.Exists(path)) return BadRequest(new { message = "Upload the proof photo before submitting your application." });
         var result = await _mentorService.BecomeMentorAsync(CurrentUserId, request, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
