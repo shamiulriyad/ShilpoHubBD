@@ -160,6 +160,7 @@ const DashboardNotifications = lazy(() => import('../pages/Dashboard/DashboardNo
 const DashboardProfile = lazy(() => import('../pages/Dashboard/DashboardProfile'));
 
 const AdminWorkspace = lazy(() => import('../pages/Admin/AdminWorkspace'));
+const AdminLogisticsPartners = lazy(() => import('../pages/Admin/LogisticsPartners'));
 
 const CustomerDashboard = lazy(() => import('../pages/Customer/CustomerDashboard'));
 const CustomerMarketplace = lazy(() => import('../pages/Customer/Marketplace'));
@@ -462,6 +463,7 @@ const router = createBrowserRouter([
             element: <DashboardLayout navItems={adminSidebarNav} sidebarTitle="Admin" />,
             children: [
               { path: routePaths.admin, element: <AdminWorkspace /> },
+              { path: routePaths.adminLogistics, element: <AdminLogisticsPartners /> },
               { path: routePaths.adminUsers, element: <AdminWorkspace section="users" /> },
               { path: routePaths.adminHeritage, element: <AdminWorkspace section="heritage" /> },
               { path: routePaths.adminMarketplace, element: <AdminWorkspace section="marketplace" /> },
