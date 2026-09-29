@@ -427,6 +427,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Notifications](#be-notifications) | Backend | 2 / 2 | 27 | `backend/tests/ShilpoHubBD.UnitTests/Features/Notifications/` | 2026-09-29 |
 | [Platform](#be-platform) | Backend | 10 / 10 | 64 | `backend/tests/ShilpoHubBD.UnitTests/Features/Platform/` | 2026-09-29 |
 | [Profiles](#be-profiles) | Backend | 4 / 4 | 97 | `backend/tests/ShilpoHubBD.UnitTests/Features/Profiles/` | 2026-09-29 |
+| [Certificates](#be-certificates) | Backend | 3 / 3 | 47 | `backend/tests/ShilpoHubBD.UnitTests/Features/Certificates/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -829,7 +830,7 @@ Contains: 1 service, 1 repository, 1 controller.
 |---|---|---|---|---|---|
 | ✅ | `ExpertiseCertificateService` | Service | `Application/Services/Certificates/ExpertiseCertificateService.cs` | `Services/ExpertiseCertificateServiceTests.cs` |  |
 | ✅ | `ExpertiseCertificateRepository` | Repository | `Data/Repositories/ExpertiseCertificateRepository.cs` | `Repositories/ExpertiseCertificateRepositoryTests.cs` | needs the test database |
-| ☐ | `ExpertiseCertificatesController` | Controller | `Api/Controllers/ExpertiseCertificatesController.cs` | `Controllers/ExpertiseCertificatesControllerTests.cs` |  |
+| ✅ | `ExpertiseCertificatesController` | Controller | `Api/Controllers/ExpertiseCertificatesController.cs` | `Controllers/ExpertiseCertificatesControllerTests.cs` |  |
 
 <a id="be-cms"></a>
 
