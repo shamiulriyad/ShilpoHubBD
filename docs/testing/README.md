@@ -422,6 +422,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | Feature | Codebase | Units | Test cases | Test folder | Completed |
 |---|---|---|---|---|---|
 | [Auth](#be-auth) | Backend | 20 / 20 | 224 | `backend/tests/ShilpoHubBD.UnitTests/Features/Auth/` | 2026-09-29 |
+| [Security](#be-security) | Backend | 18 / 18 | 169 | `backend/tests/ShilpoHubBD.UnitTests/Features/Security/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -2170,7 +2171,7 @@ Contains: 5 services, 2 validators, 1 infrastructure class, 5 repositories, 5 co
 | ✅ | `AuditLogsController` | Controller | `Api/Controllers/AuditLogsController.cs` | `Controllers/AuditLogsControllerTests.cs` |  |
 | ✅ | `BackupsController` | Controller | `Api/Controllers/BackupsController.cs` | `Controllers/BackupsControllerTests.cs` |  |
 | ✅ | `SystemHealthController` | Controller | `Api/Controllers/SystemHealthController.cs` | `Controllers/SystemHealthControllerTests.cs` |  |
-| ☐ | `ThreatDetectionController` | Controller | `Api/Controllers/ThreatDetectionController.cs` | `Controllers/ThreatDetectionControllerTests.cs` |  |
+| ✅ | `ThreatDetectionController` | Controller | `Api/Controllers/ThreatDetectionController.cs` | `Controllers/ThreatDetectionControllerTests.cs` |  |
 
 <a id="be-sentimentanalysis"></a>
 
