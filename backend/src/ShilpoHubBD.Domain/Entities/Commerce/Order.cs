@@ -1,4 +1,5 @@
 using ShilpoHubBD.Domain.Entities.Marketplace;
+using ShilpoHubBD.Domain.Entities.Logistics;
 
 namespace ShilpoHubBD.Domain.Entities.Commerce;
 
@@ -13,6 +14,16 @@ public class Order
 
     public decimal Subtotal { get; set; }
     public decimal Total { get; set; }
+
+    public Guid? LogisticsPartnerProfileId { get; set; }
+    public LogisticsPartnerProfile? LogisticsPartnerProfile { get; set; }
+    public string? DeliveryPartnerName { get; set; }
+    public string? DeliveryMethod { get; set; }
+    public string? ShippingArea { get; set; }
+    public decimal DeliveryCharge { get; set; }
+    public decimal ShilpoHubDeliveryRevenue { get; set; }
+    public decimal LogisticsPartnerRevenue { get; set; }
+    public DateTime? ExpectedDeliveryAt { get; set; }
 
     public string RecipientName { get; set; } = string.Empty;
     public string RecipientPhone { get; set; } = string.Empty;
