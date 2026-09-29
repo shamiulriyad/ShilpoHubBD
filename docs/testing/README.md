@@ -2064,7 +2064,7 @@ Contains: 1 service, 1 infrastructure class, 1 controller.
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
 | ✅ | `RecommendationService` | Service | `Application/Services/Recommendation/RecommendationService.cs` | `Services/RecommendationServiceTests.cs` |  |
-| ☐ | `DummyRecommendationProvider` | Infrastructure | `Infrastructure/Recommendations/DummyRecommendationProvider.cs` | `Infrastructure/DummyRecommendationProviderTests.cs` |  |
+| ✅ | `DummyRecommendationProvider` | Infrastructure | `Infrastructure/Recommendations/DummyRecommendationProvider.cs` | `Infrastructure/DummyRecommendationProviderTests.cs` |  |
 | ☐ | `RecommendationsController` | Controller | `Api/Controllers/RecommendationsController.cs` | `Controllers/RecommendationsControllerTests.cs` |  |
 
 <a id="be-research"></a>
