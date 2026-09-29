@@ -752,7 +752,7 @@ Contains: 2 services, 9 validators, 3 infrastructure classes, 4 repositories, 2 
 | ✅ | `RegisterRequestValidator` | Validator | `Application/Validators/Auth/RegisterRequestValidator.cs` | `Validators/RegisterRequestValidatorTests.cs` |  |
 | ✅ | `RemoveRoleRequestValidator` | Validator | `Application/Validators/Roles/RemoveRoleRequestValidator.cs` | `Validators/RemoveRoleRequestValidatorTests.cs` |  |
 | ✅ | `ResetPasswordRequestValidator` | Validator | `Application/Validators/Auth/ResetPasswordRequestValidator.cs` | `Validators/ResetPasswordRequestValidatorTests.cs` |  |
-| ☐ | `SwitchRoleRequestValidator` | Validator | `Application/Validators/Auth/SwitchRoleRequestValidator.cs` | `Validators/SwitchRoleRequestValidatorTests.cs` |  |
+| ✅ | `SwitchRoleRequestValidator` | Validator | `Application/Validators/Auth/SwitchRoleRequestValidator.cs` | `Validators/SwitchRoleRequestValidatorTests.cs` |  |
 | ☐ | `BCryptPasswordHasher` | Infrastructure | `Infrastructure/Security/BCryptPasswordHasher.cs` | `Infrastructure/BCryptPasswordHasherTests.cs` |  |
 | ☐ | `ConsoleEmailSender` | Infrastructure | `Infrastructure/Email/ConsoleEmailSender.cs` | `Infrastructure/ConsoleEmailSenderTests.cs` |  |
 | ☐ | `JwtTokenService` | Infrastructure | `Infrastructure/Security/JwtTokenService.cs` | `Infrastructure/JwtTokenServiceTests.cs` |  |
