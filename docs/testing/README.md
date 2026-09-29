@@ -436,6 +436,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Complaints](#be-complaints) | Backend | 6 / 6 | 70 | `backend/tests/ShilpoHubBD.UnitTests/Features/Complaints/` | 2026-09-29 |
 | [Traceability](#be-traceability) | Backend | 7 / 7 | 63 | `backend/tests/ShilpoHubBD.UnitTests/Features/Traceability/` | 2026-09-29 |
 | [Achievement](#be-achievement) | Backend | 5 / 5 | 61 | `backend/tests/ShilpoHubBD.UnitTests/Features/Achievement/` | 2026-09-30 |
+| [Impact](#be-impact) | Backend | 3 / 3 | 17 | `backend/tests/ShilpoHubBD.UnitTests/Features/Impact/` | 2026-09-30 |
 
 ### Blocked units
 
@@ -1323,7 +1324,7 @@ Contains: 1 service, 1 repository, 1 controller.
 |---|---|---|---|---|---|
 | ✅ | `ImpactService` | Service | `Application/Services/Impact/ImpactService.cs` | `Services/ImpactServiceTests.cs` |  |
 | ✅ | `ImpactRepository` | Repository | `Data/Repositories/ImpactRepository.cs` | `Repositories/ImpactRepositoryTests.cs` | needs the test database |
-| ☐ | `ImpactController` | Controller | `Api/Controllers/ImpactController.cs` | `Controllers/ImpactControllerTests.cs` |  |
+| ✅ | `ImpactController` | Controller | `Api/Controllers/ImpactController.cs` | `Controllers/ImpactControllerTests.cs` |  |
 
 <a id="be-innovation"></a>
 
