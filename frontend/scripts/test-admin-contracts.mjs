@@ -40,11 +40,13 @@ check('form values retain false and zero, normalize optional values and dates',(
 });
 check('all requested scan types pass the backend validator',()=>{
   const validator=read(resolve(backend,'Validators/Governance/MonitoringValidators.cs'));
-  for(const config of Object.values(flagViews)) assert(validator.includes(`"${config.scanType}"`),config.scanType);
+  // A flag view with no scanType (e.g. RepeatedProductComplaints) is raised only by automated detection,
+  // never by the manual "Run scan" action, so it has no scan-type string to validate against.
+  for(const config of Object.values(flagViews)) if(config.scanType) assert(validator.includes(`"${config.scanType}"`),config.scanType);
 });
 check('all admin navigation paths are unique',()=>{
   const paths=adminGroups.flatMap(([s,,views])=>views.map(([v])=>`/admin/${s}/${v}`));
-  assert.equal(paths.length,28);assert.equal(new Set(paths).size,paths.length);
+  assert.equal(paths.length,39);assert.equal(new Set(paths).size,paths.length);
 });
 
 // Inject a transport; no live requests, tokens, or database mutations.
@@ -64,5 +66,5 @@ await api.action('delete','/admin/security/threats/blocked-ips',undefined,{ipAdd
 check('IP unblock uses DELETE query parameter, not a path segment',()=>assert.deepEqual(calls.pop(),{method:'delete',url:'/admin/security/threats/blocked-ips',data:undefined,params:{ipAddress:'2001:db8::1'}}));
 await api.action('post','/admin/security/backups');
 check('long-running backups have an extended timeout',()=>assert.equal(calls.pop().timeout,300000));
-check('public registration cannot submit SuperAdmin',()=>assert(read(resolve(root,'src/pages/Auth/RegisterPage.jsx')).includes("if (!selectedRole || selectedRole === 'SuperAdmin' || mutation.isPending) return;")));
+check('public registration cannot submit SuperAdmin or GovernmentNGO',()=>assert(read(resolve(root,'src/pages/Auth/RegisterPage.jsx')).includes("if (!selectedRole || selectedRole === 'SuperAdmin' || selectedRole === 'GovernmentNGO' || mutation.isPending) return;")));
 console.log(`\n${checks} admin contract checks passed.`);
