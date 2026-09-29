@@ -6,6 +6,7 @@ import { PageHeader, Button, AsyncState } from '../../components/ui';
 import { useCart, useCartSummary } from '../../hooks/useCart';
 import { useCheckout } from '../../hooks/useOrders';
 import { useDistricts } from '../../hooks/useDistricts';
+import { useAvailableLogisticsPartners } from '../../hooks/useLogisticsPartners';
 
 const steps = ['Cart', 'Delivery & payment', 'Confirmation'];
 
@@ -21,9 +22,16 @@ export default function Checkout() {
     recipientPhone: '',
     shippingAddressLine: '',
     shippingDistrictId: '',
+    shippingArea: '',
+    logisticsServiceAreaId: '',
   });
 
-  const update = (field) => (event) => setForm((prev) => ({ ...prev, [field]: event.target.value }));
+  const logisticsQuery = useAvailableLogisticsPartners(form.shippingDistrictId, form.shippingArea);
+  const update = (field) => (event) => setForm((prev) => ({
+    ...prev,
+    [field]: event.target.value,
+    ...(['shippingDistrictId', 'shippingArea'].includes(field) ? { logisticsServiceAreaId: '' } : {}),
+  }));
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -37,6 +45,7 @@ export default function Checkout() {
   const errorMessage = checkout.error?.response?.data?.title || checkout.error?.message;
   const itemCount = summaryQuery.data?.itemCount ?? cartQuery.data?.length ?? 0;
   const subtotal = summaryQuery.data?.subtotal ?? 0;
+  const selectedDelivery = (logisticsQuery.data || []).find((x) => x.serviceAreaId === form.logisticsServiceAreaId);
 
   return (
     <div>
@@ -105,6 +114,32 @@ export default function Checkout() {
                 onChange={update('shippingAddressLine')}
                 className="sm:col-span-2 rounded-md border border-border bg-background px-3 py-2 text-sm"
               />
+              <input aria-label="Upazila or area"
+                placeholder="Upazila / area (optional)"
+                value={form.shippingArea}
+                onChange={update('shippingArea')}
+                className="sm:col-span-2 rounded-md border border-border bg-background px-3 py-2 text-sm"
+              />
+            </div>
+          </div>
+          <div>
+            <p className="mb-3 text-sm font-semibold text-heading">Delivery Partner & Method</p>
+            {!form.shippingDistrictId && <p className="text-sm text-body/60">Select a district to see delivery options.</p>}
+            {form.shippingDistrictId && logisticsQuery.isLoading && <p className="text-sm text-body/60">Checking delivery coverage…</p>}
+            {logisticsQuery.isError && <p className="text-sm text-red-600">Could not load delivery options.</p>}
+            {logisticsQuery.isSuccess && logisticsQuery.data.length === 0 && <p className="rounded-lg border border-border p-3 text-sm text-body/70">No delivery partner available for this location.</p>}
+            <div className="space-y-2">
+              {(logisticsQuery.data || []).map((option) => (
+                <label key={option.serviceAreaId} className="flex cursor-pointer items-start gap-3 rounded-lg border border-border bg-background p-3 text-sm">
+                  <input required type="radio" name="deliveryOption" value={option.serviceAreaId}
+                    checked={form.logisticsServiceAreaId === option.serviceAreaId}
+                    onChange={update('logisticsServiceAreaId')} />
+                  <span className="flex-1">
+                    <span className="block font-medium text-heading">{option.companyName} · {option.deliveryMethod}</span>
+                    <span className="text-body/60">{option.estimatedDeliveryDays} day ETA · ৳ {Number(option.deliveryCharge).toLocaleString()}</span>
+                  </span>
+                </label>
+              ))}
             </div>
           </div>
           <div>
@@ -132,7 +167,7 @@ export default function Checkout() {
             </div>
           </AsyncState>
           {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
-          <Button type="submit" variant="primary" className="w-full" disabled={checkout.isPending || !cartQuery.isSuccess || !summaryQuery.isSuccess || cartQuery.isFetching || summaryQuery.isFetching || itemCount === 0}>
+          <Button type="submit" variant="primary" className="w-full" disabled={checkout.isPending || !form.logisticsServiceAreaId || !cartQuery.isSuccess || !summaryQuery.isSuccess || cartQuery.isFetching || summaryQuery.isFetching || itemCount === 0}>
             {checkout.isPending ? 'Placing order…' : 'Place Order'}
           </Button>
         </div>
