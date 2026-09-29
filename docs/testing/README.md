@@ -1730,7 +1730,7 @@ Contains: 1 service, 2 validators, 1 repository, 1 controller.
 | ✅ | `MentorshipService` | Service | `Application/Services/Mentorship/MentorshipService.cs` | `Services/MentorshipServiceTests.cs` |  |
 | ✅ | `CreateMentorshipRequestRequestValidator` | Validator | `Application/Validators/Mentorship/CreateMentorshipRequestRequestValidator.cs` | `Validators/CreateMentorshipRequestRequestValidatorTests.cs` |  |
 | ✅ | `RespondMentorshipRequestRequestValidator` | Validator | `Application/Validators/Mentorship/RespondMentorshipRequestRequestValidator.cs` | `Validators/RespondMentorshipRequestRequestValidatorTests.cs` |  |
-| ☐ | `MentorshipRequestRepository` | Repository | `Data/Repositories/MentorshipRequestRepository.cs` | `Repositories/MentorshipRequestRepositoryTests.cs` | needs the test database |
+| ✅ | `MentorshipRequestRepository` | Repository | `Data/Repositories/MentorshipRequestRepository.cs` | `Repositories/MentorshipRequestRepositoryTests.cs` | needs the test database |
 | ☐ | `MentorshipRequestsController` | Controller | `Api/Controllers/MentorshipRequestsController.cs` | `Controllers/MentorshipRequestsControllerTests.cs` |  |
 
 <a id="be-messaging"></a>
