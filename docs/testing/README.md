@@ -440,6 +440,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [QRVerification](#be-qrverification) | Backend | 6 / 6 | 58 | `backend/tests/ShilpoHubBD.UnitTests/Features/QRVerification/` | 2026-09-30 |
 | [CounterfeitDetection](#be-counterfeitdetection) | Backend | 3 / 3 | 15 | `backend/tests/ShilpoHubBD.UnitTests/Features/CounterfeitDetection/` | 2026-09-30 |
 | [Mentorship](#be-mentorship) | Backend | 5 / 5 | 53 | `backend/tests/ShilpoHubBD.UnitTests/Features/Mentorship/` | 2026-09-30 |
+| [Sustainability](#be-sustainability) | Backend | 5 / 5 | 58 | `backend/tests/ShilpoHubBD.UnitTests/Features/Sustainability/` | 2026-09-30 |
 
 ### Blocked units
 
@@ -2279,7 +2280,7 @@ Contains: 1 service, 2 validators, 1 repository, 1 controller.
 | ✅ | `CreateMaterialCertificationRequestValidator` | Validator | `Application/Validators/Sustainability/CreateMaterialCertificationRequestValidator.cs` | `Validators/CreateMaterialCertificationRequestValidatorTests.cs` |  |
 | ✅ | `CreateMaterialRecordRequestValidator` | Validator | `Application/Validators/Sustainability/CreateMaterialRecordRequestValidator.cs` | `Validators/CreateMaterialRecordRequestValidatorTests.cs` |  |
 | ✅ | `SustainabilityRepository` | Repository | `Data/Repositories/SustainabilityRepository.cs` | `Repositories/SustainabilityRepositoryTests.cs` | needs the test database |
-| ☐ | `SustainabilityController` | Controller | `Api/Controllers/SustainabilityController.cs` | `Controllers/SustainabilityControllerTests.cs` |  |
+| ✅ | `SustainabilityController` | Controller | `Api/Controllers/SustainabilityController.cs` | `Controllers/SustainabilityControllerTests.cs` |  |
 
 <a id="be-tourism"></a>
 
