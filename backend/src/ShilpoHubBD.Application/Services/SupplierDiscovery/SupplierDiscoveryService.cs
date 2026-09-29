@@ -92,7 +92,7 @@ public class SupplierDiscoveryService : ISupplierDiscoveryService
             HeritageVerificationStatus = craftProfile.HeritageVerificationStatus,
 
             TotalProductCount = products.Count,
-            ActiveProductCount = products.Count(p => p.IsActive && p.ApprovalStatus == ProductApprovalStatus.Approved),
+            ActiveProductCount = products.Count(p => p.IsActive && p.ApprovalStatus != ProductApprovalStatus.Rejected),
 
             AverageRating = craftProfile.AverageRating,
             TotalReviewCount = craftProfile.TotalReviewCount,
