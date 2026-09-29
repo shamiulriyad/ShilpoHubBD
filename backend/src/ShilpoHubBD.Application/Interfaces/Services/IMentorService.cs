@@ -5,6 +5,8 @@ namespace ShilpoHubBD.Application.Interfaces.Services;
 
 public interface IMentorService
 {
+    Task<List<MentorProfileDto>> GetApplicationsAsync(CancellationToken cancellationToken);
+    Task<MentorProfileDto> ReviewAsync(Guid mentorId, Guid adminId, bool approve, string? note, CancellationToken cancellationToken);
     Task<MentorProfileDto> BecomeMentorAsync(Guid userId, BecomeMentorRequest request, CancellationToken cancellationToken);
     Task<MentorProfileDto> UpdateProfileAsync(Guid userId, UpdateMentorProfileRequest request, CancellationToken cancellationToken);
     Task<MentorProfileDto> GetMyProfileAsync(Guid userId, CancellationToken cancellationToken);
