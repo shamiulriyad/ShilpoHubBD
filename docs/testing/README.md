@@ -1377,7 +1377,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 |---|---|---|---|---|---|
 | ✅ | `InventoryService` | Service | `Application/Services/Inventory/InventoryService.cs` | `Services/InventoryServiceTests.cs` |  |
 | ✅ | `AdjustStockRequestValidator` | Validator | `Application/Validators/Inventory/AdjustStockRequestValidator.cs` | `Validators/AdjustStockRequestValidatorTests.cs` |  |
-| ☐ | `InventoryRepository` | Repository | `Data/Repositories/InventoryRepository.cs` | `Repositories/InventoryRepositoryTests.cs` | needs the test database |
+| ✅ | `InventoryRepository` | Repository | `Data/Repositories/InventoryRepository.cs` | `Repositories/InventoryRepositoryTests.cs` | needs the test database |
 | ☐ | `InventoryController` | Controller | `Api/Controllers/InventoryController.cs` | `Controllers/InventoryControllerTests.cs` |  |
 
 <a id="be-investment"></a>
