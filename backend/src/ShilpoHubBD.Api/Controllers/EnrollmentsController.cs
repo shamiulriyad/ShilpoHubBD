@@ -2,6 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ShilpoHubBD.Data;
+using System.Data;
 using ShilpoHubBD.Application.DTOs.Learning;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Domain.Constants;
@@ -14,10 +17,12 @@ namespace ShilpoHubBD.Api.Controllers;
 public class EnrollmentsController : ControllerBase
 {
     private readonly IEnrollmentService _enrollmentService;
+    private readonly ShilpoHubDbContext _db;
 
-    public EnrollmentsController(IEnrollmentService enrollmentService)
+    public EnrollmentsController(IEnrollmentService enrollmentService, ShilpoHubDbContext db)
     {
         _enrollmentService = enrollmentService;
+        _db = db;
     }
 
     private Guid CurrentUserId =>
@@ -27,10 +32,20 @@ public class EnrollmentsController : ControllerBase
     private bool IsAdmin => User.IsInRole(RoleNames.SuperAdmin);
 
     [HttpPost("courses/{courseId:guid}/enroll")]
-    public async Task<ActionResult<CourseEnrollmentDto>> Enroll(Guid courseId, CancellationToken cancellationToken)
+    public async Task<ActionResult<CourseEnrollmentDto>> Enroll(Guid courseId, CancellationToken cancellationToken, [FromQuery] string attendanceMode = "Online")
     {
-        var result = await _enrollmentService.EnrollAsync(CurrentUserId, courseId, cancellationToken);
-        return Ok(result);
+        // Serialize seat allocation across concurrent requests and server instances.
+        await using var transaction = await _db.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+        try
+        {
+            var result = await _enrollmentService.EnrollAsync(CurrentUserId, courseId, cancellationToken, attendanceMode);
+            await transaction.CommitAsync(cancellationToken);
+            return Ok(result);
+        }
+        catch (Exception ex) when (ex is Npgsql.PostgresException { SqlState: "40001" or "23505" } || ex.InnerException is Npgsql.PostgresException { SqlState: "40001" or "23505" })
+        {
+            return Conflict(new { message = "Another student reserved a seat at the same time. Please retry." });
+        }
     }
 
     [HttpGet("mine")]
