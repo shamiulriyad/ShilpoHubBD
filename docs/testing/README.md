@@ -1787,7 +1787,7 @@ Contains: 1 DbContext, 1 controller, 2 middleware, 2 JSON converters, 1 helper, 
 | ✅ | `ShilpoHubDbContext` | DbContext | `Data/ShilpoHubDbContext.cs` | `Data/ShilpoHubDbContextTests.cs` | partly tested by `backend/tests/ProductImageRegression (image replacement only)` |
 | ✅ | `MediaController` | Controller | `Api/Controllers/MediaController.cs` | `Controllers/MediaControllerTests.cs` |  |
 | ✅ | `GlobalExceptionHandler` | Middleware | `Api/Middlewares/GlobalExceptionHandler.cs` | `Middlewares/GlobalExceptionHandlerTests.cs` |  |
-| ☐ | `ValidationFilter` | Middleware | `Api/Middlewares/ValidationFilter.cs` | `Middlewares/ValidationFilterTests.cs` |  |
+| ✅ | `ValidationFilter` | Middleware | `Api/Middlewares/ValidationFilter.cs` | `Middlewares/ValidationFilterTests.cs` |  |
 | ☐ | `UtcDateTimeJsonConverter` | JSON converter | `Api/Helpers/UtcDateTimeJsonConverters.cs` | `Json/UtcDateTimeJsonConverterTests.cs` |  |
 | ☐ | `UtcNullableDateTimeJsonConverter` | JSON converter | `Api/Helpers/UtcDateTimeJsonConverters.cs` | `Json/UtcNullableDateTimeJsonConverterTests.cs` |  |
 | ☐ | `SlugGenerator` | Helper | `Application/Common/SlugGenerator.cs` | `Common/SlugGeneratorTests.cs` |  |
