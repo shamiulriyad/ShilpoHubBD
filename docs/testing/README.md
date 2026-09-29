@@ -424,6 +424,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Auth](#be-auth) | Backend | 20 / 20 | 224 | `backend/tests/ShilpoHubBD.UnitTests/Features/Auth/` | 2026-09-29 |
 | [Security](#be-security) | Backend | 18 / 18 | 169 | `backend/tests/ShilpoHubBD.UnitTests/Features/Security/` | 2026-09-29 |
 | [Admin](#be-admin) | Backend | 13 / 13 | 162 | `backend/tests/ShilpoHubBD.UnitTests/Features/Admin/` | 2026-09-29 |
+| [Notifications](#be-notifications) | Backend | 2 / 2 | 27 | `backend/tests/ShilpoHubBD.UnitTests/Features/Notifications/` | 2026-09-29 |
 
 ### Blocked units
 
@@ -1749,7 +1750,7 @@ Contains: 1 DbContext (notifications), 1 controller.
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
 | ✅ | `ShilpoHubDbContext.Notifications` | DbContext (notifications) | `Data/ShilpoHubDbContext.Notifications.cs` | `Data/ShilpoHubDbContextNotificationsTests.cs` | partly tested by `backend/tests/NotificationsRegression`; notification rows created on SaveChanges |
-| ☐ | `NotificationsController` | Controller | `Api/Controllers/NotificationsController.cs` | `Controllers/NotificationsControllerTests.cs` | queries ShilpoHubDbContext directly (Postgres ILike): needs the test database |
+| ✅ | `NotificationsController` | Controller | `Api/Controllers/NotificationsController.cs` | `Controllers/NotificationsControllerTests.cs` | queries ShilpoHubDbContext directly (Postgres ILike): needs the test database |
 
 <a id="be-passport"></a>
 
