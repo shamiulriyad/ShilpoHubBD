@@ -2265,7 +2265,7 @@ Contains: 1 service, 1 validator, 1 repository, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `SupplierMatchingService` | Service | `Application/Services/SupplierMatching/SupplierMatchingService.cs` | `Services/SupplierMatchingServiceTests.cs` |  |
+| ✅ | `SupplierMatchingService` | Service | `Application/Services/SupplierMatching/SupplierMatchingService.cs` | `Services/SupplierMatchingServiceTests.cs` |  |
 | ☐ | `SupplierMatchRequestValidator` | Validator | `Application/Validators/SupplierMatching/SupplierMatchRequestValidator.cs` | `Validators/SupplierMatchRequestValidatorTests.cs` |  |
 | ☐ | `SupplierMatchingRepository` | Repository | `Data/Repositories/SupplierMatchingRepository.cs` | `Repositories/SupplierMatchingRepositoryTests.cs` | needs the test database |
 | ☐ | `SupplierMatchingController` | Controller | `Api/Controllers/SupplierMatchingController.cs` | `Controllers/SupplierMatchingControllerTests.cs` |  |
