@@ -224,7 +224,7 @@ public partial class ShilpoHubDbContext
             {
                 category = "Deliveries";
                 var owner = await LogisticsPartnerProfiles.Where(p => p.Id == shipment.LogisticsPartnerProfileId).Select(p => p.UserId).FirstOrDefaultAsync(ct);
-                Add(owner, "Shipment updated", $"Shipment {shipment.TrackingNumber} is {state}.", category, "/logistics-partner/shipments");
+                if (owner.HasValue) Add(owner.Value, "Shipment updated", $"Shipment {shipment.TrackingNumber} is {state}.", category, "/logistics-partner/shipments");
                 if (shipment.OrderId is Guid orderId)
                 {
                     var customer = await Orders.Where(o => o.Id == orderId).Select(o => o.UserId).FirstOrDefaultAsync(ct);
