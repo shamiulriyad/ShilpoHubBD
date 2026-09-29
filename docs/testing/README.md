@@ -2158,7 +2158,7 @@ Contains: 5 services, 2 validators, 1 infrastructure class, 5 repositories, 5 co
 | ✅ | `BackupService` | Service | `Application/Services/Security/BackupService.cs` | `Services/BackupServiceTests.cs` |  |
 | ✅ | `SystemHealthService` | Service | `Application/Services/Security/SystemHealthService.cs` | `Services/SystemHealthServiceTests.cs` |  |
 | ✅ | `ThreatDetectionService` | Service | `Application/Services/Security/ThreatDetectionService.cs` | `Services/ThreatDetectionServiceTests.cs` |  |
-| ☐ | `BlockIpRequestValidator` | Validator | `Application/Validators/Security/BlockIpRequestValidator.cs` | `Validators/BlockIpRequestValidatorTests.cs` |  |
+| ✅ | `BlockIpRequestValidator` | Validator | `Application/Validators/Security/BlockIpRequestValidator.cs` | `Validators/BlockIpRequestValidatorTests.cs` |  |
 | ☐ | `CreateApiKeyRequestValidator` | Validator | `Application/Validators/Security/CreateApiKeyRequestValidator.cs` | `Validators/CreateApiKeyRequestValidatorTests.cs` |  |
 | ☐ | `PgDumpBackupRunner` | Infrastructure | `Infrastructure/Security/PgDumpBackupRunner.cs` | `Infrastructure/PgDumpBackupRunnerTests.cs` |  |
 | ☐ | `ApiKeyRepository` | Repository | `Data/Repositories/ApiKeyRepository.cs` | `Repositories/ApiKeyRepositoryTests.cs` | needs the test database |
