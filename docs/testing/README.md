@@ -435,6 +435,7 @@ These already exist and are **not** moved, edited or deleted. Units they touch a
 | [Reviews](#be-reviews) | Backend | 6 / 6 | 95 | `backend/tests/ShilpoHubBD.UnitTests/Features/Reviews/` | 2026-09-29 |
 | [Complaints](#be-complaints) | Backend | 6 / 6 | 70 | `backend/tests/ShilpoHubBD.UnitTests/Features/Complaints/` | 2026-09-29 |
 | [Traceability](#be-traceability) | Backend | 7 / 7 | 63 | `backend/tests/ShilpoHubBD.UnitTests/Features/Traceability/` | 2026-09-29 |
+| [Achievement](#be-achievement) | Backend | 5 / 5 | 61 | `backend/tests/ShilpoHubBD.UnitTests/Features/Achievement/` | 2026-09-30 |
 
 ### Blocked units
 
@@ -541,7 +542,7 @@ Contains: 1 service, 2 validators, 1 repository, 1 controller.
 | ✅ | `AwardXpRequestValidator` | Validator | `Application/Validators/Achievement/AwardXpRequestValidator.cs` | `Validators/AwardXpRequestValidatorTests.cs` |  |
 | ✅ | `CreateAchievementRequestValidator` | Validator | `Application/Validators/Achievement/CreateAchievementRequestValidator.cs` | `Validators/CreateAchievementRequestValidatorTests.cs` |  |
 | ✅ | `AchievementRepository` | Repository | `Data/Repositories/AchievementRepository.cs` | `Repositories/AchievementRepositoryTests.cs` | needs the test database |
-| ☐ | `AchievementsController` | Controller | `Api/Controllers/AchievementsController.cs` | `Controllers/AchievementsControllerTests.cs` |  |
+| ✅ | `AchievementsController` | Controller | `Api/Controllers/AchievementsController.cs` | `Controllers/AchievementsControllerTests.cs` |  |
 
 <a id="be-admin"></a>
 
