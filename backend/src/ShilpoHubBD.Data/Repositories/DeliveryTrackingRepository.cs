@@ -57,6 +57,12 @@ public class DeliveryTrackingRepository : IDeliveryTrackingRepository
             .AsSplitQuery()
             .FirstOrDefaultAsync(s => s.TrackingNumber == trackingNumber, cancellationToken);
 
+    public Task<Shipment?> GetByOrderIdAsync(Guid orderId, CancellationToken cancellationToken)
+        => _context.Shipments.AsNoTracking()
+            .Include(s => s.Profile)
+            .Include(s => s.Events).ThenInclude(e => e.District)
+            .FirstOrDefaultAsync(s => s.OrderId == orderId, cancellationToken);
+
     public Task<bool> TrackingNumberExistsAsync(string trackingNumber, CancellationToken cancellationToken)
         => _context.Shipments.AnyAsync(s => s.TrackingNumber == trackingNumber, cancellationToken);
 
