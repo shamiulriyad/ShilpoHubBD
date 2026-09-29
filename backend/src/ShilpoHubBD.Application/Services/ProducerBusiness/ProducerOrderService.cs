@@ -10,10 +10,14 @@ namespace ShilpoHubBD.Application.Services.ProducerBusiness;
 
 public class ProducerOrderService : IProducerOrderService
 {
-    // Revenue and completed orders only count once the logistics partner has delivered the parcel
-    // (Delivered is set from the shipment, never by the producer).
+    // Revenue counts as soon as a customer places an order, so producers see sales on their
+    // dashboard right away. Only Rejected/Cancelled items are excluded since they never sold.
     private static readonly OrderItemProducerStatus[] RevenueStatuses =
     {
+        OrderItemProducerStatus.Pending,
+        OrderItemProducerStatus.Accepted,
+        OrderItemProducerStatus.Processing,
+        OrderItemProducerStatus.Shipped,
         OrderItemProducerStatus.Delivered,
     };
 
