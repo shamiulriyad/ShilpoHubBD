@@ -2167,7 +2167,7 @@ Contains: 5 services, 2 validators, 1 infrastructure class, 5 repositories, 5 co
 | ✅ | `SystemHealthRepository` | Repository | `Data/Repositories/SystemHealthRepository.cs` | `Repositories/SystemHealthRepositoryTests.cs` | needs the test database |
 | ✅ | `ThreatDetectionRepository` | Repository | `Data/Repositories/ThreatDetectionRepository.cs` | `Repositories/ThreatDetectionRepositoryTests.cs` | needs the test database |
 | ✅ | `ApiKeysController` | Controller | `Api/Controllers/ApiKeysController.cs` | `Controllers/ApiKeysControllerTests.cs` |  |
-| ☐ | `AuditLogsController` | Controller | `Api/Controllers/AuditLogsController.cs` | `Controllers/AuditLogsControllerTests.cs` |  |
+| ✅ | `AuditLogsController` | Controller | `Api/Controllers/AuditLogsController.cs` | `Controllers/AuditLogsControllerTests.cs` |  |
 | ☐ | `BackupsController` | Controller | `Api/Controllers/BackupsController.cs` | `Controllers/BackupsControllerTests.cs` |  |
 | ☐ | `SystemHealthController` | Controller | `Api/Controllers/SystemHealthController.cs` | `Controllers/SystemHealthControllerTests.cs` |  |
 | ☐ | `ThreatDetectionController` | Controller | `Api/Controllers/ThreatDetectionController.cs` | `Controllers/ThreatDetectionControllerTests.cs` |  |
