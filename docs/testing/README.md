@@ -2332,7 +2332,7 @@ Contains: 1 service, 4 validators, 1 repository, 1 controller.
 
 | Status | Unit | Type | Source file | Test file | Notes |
 |---|---|---|---|---|---|
-| ☐ | `TraceabilityService` | Service | `Application/Services/Traceability/TraceabilityService.cs` | `Services/TraceabilityServiceTests.cs` |  |
+| ✅ | `TraceabilityService` | Service | `Application/Services/Traceability/TraceabilityService.cs` | `Services/TraceabilityServiceTests.cs` |  |
 | ☐ | `CreateProductTraceabilityRequestValidator` | Validator | `Application/Validators/Traceability/CreateProductTraceabilityRequestValidator.cs` | `Validators/CreateProductTraceabilityRequestValidatorTests.cs` |  |
 | ☐ | `MaterialSourceInputValidator` | Validator | `Application/Validators/Traceability/MaterialSourceInputValidator.cs` | `Validators/MaterialSourceInputValidatorTests.cs` |  |
 | ☐ | `TimelineEventInputValidator` | Validator | `Application/Validators/Traceability/TimelineEventInputValidator.cs` | `Validators/TimelineEventInputValidatorTests.cs` |  |
