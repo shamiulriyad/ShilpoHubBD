@@ -52,4 +52,12 @@ public class AdminUsersController : ControllerBase
         var result = await _adminUserService.CreateGovernmentNgoUserAsync(request, CurrentUserId, ClientIp, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
+
+    [HttpPost("logistics-partners/{profileId:guid}/account")]
+    public async Task<ActionResult<AdminUserDetailDto>> CreateLogisticsUser(
+        Guid profileId, CreateGovernmentNgoUserRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _adminUserService.CreateLogisticsUserAsync(profileId, request, CurrentUserId, ClientIp, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
 }
