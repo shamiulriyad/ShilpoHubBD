@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { PageHeader, Badge, Button, AsyncState, StatusTimeline } from '../../components/ui';
 import { useDistricts } from '../../hooks/useDistricts';
 import { useShipments, useShipment, useShipmentMutations } from '../../hooks/useShipments';
@@ -9,8 +10,12 @@ const serviceLevels = ['Economy', 'Standard', 'Express', 'SameDay'];
 // Mirrors DeliveryTrackingService.Transitions so the dropdown only offers moves the API will accept
 // (e.g. a freshly created parcel cannot jump straight to "Returned").
 const nextStatuses = {
-  Created: ['LabelCreated', 'PickedUp'],
-  LabelCreated: ['PickedUp'],
+  Created: ['PartnerAssigned', 'LabelCreated'],
+  PartnerAssigned: ['PickupRequested', 'LabelCreated'],
+  PickupRequested: ['PickedUp', 'PickupFailed', 'Rescheduled'],
+  PickupFailed: ['PickupRequested', 'Rescheduled'],
+  Rescheduled: ['PickupRequested', 'OutForDelivery'],
+  LabelCreated: ['PickupRequested', 'PickedUp'],
   PickedUp: ['InTransit', 'AtHub', 'OutForDelivery'],
   InTransit: ['AtHub', 'OutForDelivery', 'DeliveryFailed'],
   AtHub: ['InTransit', 'OutForDelivery'],
@@ -74,7 +79,7 @@ function ShipmentDetail({ id }) {
       id,
       payload: {
         status: statusChoice,
-        failureReason: statusChoice === 'DeliveryFailed' ? failureReason : undefined,
+        failureReason: ['DeliveryFailed', 'PickupFailed', 'Returned'].includes(statusChoice) ? failureReason : undefined,
       },
     });
   };
@@ -99,7 +104,7 @@ function ShipmentDetail({ id }) {
               <option value="">Advance status…</option>
               {(nextStatuses[shipment.status] || []).map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
-            {statusChoice === 'DeliveryFailed' && (
+            {['DeliveryFailed', 'PickupFailed', 'Returned'].includes(statusChoice) && (
               <input aria-label="Failure reason" placeholder="Failure reason" value={failureReason} onChange={(e) => setFailureReason(e.target.value)} className={inputClass} />
             )}
             <Button type="submit" variant="secondary" size="sm" disabled={updateStatus.isPending || !statusChoice}>Update</Button>
@@ -131,8 +136,9 @@ function ShipmentDetail({ id }) {
 }
 
 export default function Shipments() {
+  const [searchParams] = useSearchParams();
   const [statusFilter, setStatusFilter] = useState('');
-  const { data, isLoading, isError, error } = useShipments({ pageSize: 50, status: statusFilter || undefined });
+  const { data, isLoading, isError, error } = useShipments({ pageSize: 50, status: statusFilter || undefined, logisticsPartnerProfileId: searchParams.get('partnerId') || undefined });
   const districtsQuery = useDistricts();
   const { create } = useShipmentMutations();
   const [showForm, setShowForm] = useState(false);
