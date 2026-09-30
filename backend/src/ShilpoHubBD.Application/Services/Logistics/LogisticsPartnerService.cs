@@ -367,9 +367,9 @@ public class LogisticsPartnerService : ILogisticsPartnerService
 
     private static void EnsureCanManage(Guid targetUserId, Guid currentUserId, bool isAdmin)
     {
-        if (!isAdmin && targetUserId != currentUserId)
+        if (!isAdmin)
         {
-            throw new UnauthorizedAccessException("You can only manage your own logistics partner profile.");
+            throw new UnauthorizedAccessException("Only a Super Admin can manage logistics companies and coverage.");
         }
     }
 
