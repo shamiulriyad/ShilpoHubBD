@@ -78,6 +78,8 @@ public class DeliveryTrackingRepository : IDeliveryTrackingRepository
         {
             shipments = shipments.Where(s => s.LogisticsPartnerProfileId == profileId.Value);
         }
+        if (query.LogisticsPartnerProfileId.HasValue)
+            shipments = shipments.Where(s => s.LogisticsPartnerProfileId == query.LogisticsPartnerProfileId.Value);
 
         if (!string.IsNullOrWhiteSpace(query.Status)
             && Enum.TryParse<ShipmentStatus>(query.Status, true, out var status))
