@@ -80,7 +80,7 @@ export default function RegisterPage() {
     : null;
 
   return (
-    <div>
+    <div className={step === 2 ? 'role-selection' : undefined}>
       <div className="mb-6 flex items-center gap-2 text-sm font-medium text-body/50" aria-label={`Registration step ${step} of 2`}>
         <StepDot active={step >= 1} done={step > 1} label="1" />
         <span className="h-px w-8 bg-border" />
@@ -186,8 +186,9 @@ export default function RegisterPage() {
             </p>
           )}
 
-          <form className="mt-6" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4" role="radiogroup" aria-label="Account type">
+          <form className="role-form mt-6" onSubmit={handleSubmit}>
+            <div className="role-options">
+            <div className="role-grid grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4" role="radiogroup" aria-label="Account type">
               {ACCOUNT_TYPES.map(({ id, label, description, Icon }) => {
                 const isSelected = selectedRole === id;
                 return (
@@ -197,7 +198,7 @@ export default function RegisterPage() {
                     role="radio"
                     aria-checked={isSelected}
                     onClick={() => setSelectedRole(id)}
-                    className={`relative flex flex-col items-start gap-2.5 rounded-xl border p-5 text-left transition focus:outline-none focus:ring-4 focus:ring-primary/15 ${
+                    className={`role-card relative flex flex-col items-start gap-2.5 rounded-xl border p-5 text-left transition focus:outline-none focus:ring-4 focus:ring-primary/15 ${
                       isSelected
                         ? 'border-primary bg-primary/5 ring-2 ring-primary'
                         : 'border-border bg-background hover:border-primary/40 hover:bg-primary/5'
@@ -213,6 +214,10 @@ export default function RegisterPage() {
               })}
             </div>
 
+            <div className="mt-4 rounded-xl border border-border bg-background p-4 text-sm">
+              <span className="block font-semibold text-heading">Logistics Partner</span>
+              <p className="mt-1 text-body/70">A Super Admin creates your company account and provides your email and password. <Link to={routePaths.login} className="font-semibold text-primary underline">Sign in with those credentials</Link> to manage assigned deliveries.</p>
+            </div>
             <button type="button" onClick={() => setSelectedRole('GovernmentNGO')} aria-pressed={selectedRole === 'GovernmentNGO'} className={`mt-4 w-full rounded-xl border p-5 text-left ${selectedRole === 'GovernmentNGO' ? 'border-primary bg-primary/5 ring-2 ring-primary' : 'border-border bg-background'}`}>
               <span className="block font-semibold text-heading">Government & NGO</span>
               <span className="mt-1 block text-sm text-body/70">This access is created by a Super Admin, not through self-registration.</span>
@@ -227,7 +232,8 @@ export default function RegisterPage() {
             {selectedRole === 'SuperAdmin' && <div role="status" className="mt-4 rounded-lg bg-primary/5 p-4 text-sm">
               Register a regular account first, then ask your platform administrator to assign the Super Admin role. If you already have administrator access, <Link to={routePaths.login} className="font-semibold text-primary underline">sign in here</Link>.
             </div>}
-            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
+            </div>
+            <div className="role-actions mt-6 flex gap-3 items-center">
               <Button type="button" variant="secondary" size="lg" onClick={() => setStep(1)} className="sm:w-auto">Back</Button>
               <Button type="submit" variant="primary" size="lg" className="flex-1" disabled={!selectedRole || selectedRole === 'SuperAdmin' || selectedRole === 'GovernmentNGO' || mutation.isPending}>
                 {mutation.isPending ? 'Creating account…' : 'Create Account'}

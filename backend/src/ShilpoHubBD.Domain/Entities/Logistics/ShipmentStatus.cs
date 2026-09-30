@@ -5,11 +5,14 @@ public enum ShipmentStatus
 {
     /// <summary>Record created; nothing physical yet.</summary>
     Created,
+    PartnerAssigned,
+    PickupRequested,
 
     /// <summary>Shipping label / manifest produced, awaiting collection.</summary>
     LabelCreated,
 
     PickedUp,
+    PickupFailed,
     InTransit,
     AtHub,
     OutForDelivery,
@@ -17,6 +20,7 @@ public enum ShipmentStatus
 
     /// <summary>A delivery attempt failed; may be retried.</summary>
     DeliveryFailed,
+    Rescheduled,
 
     /// <summary>Undeliverable and sent back to origin.</summary>
     Returned,

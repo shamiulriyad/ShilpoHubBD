@@ -92,6 +92,7 @@ export const routePaths = {
   dashboardMessages: '/dashboard/messages',
   dashboardSettings: '/dashboard/settings',
   dashboardProfile: '/dashboard/profile',
+  adminLogistics: '/admin/logistics-partners',
 
   // Customer journey
   customer: '/customer',

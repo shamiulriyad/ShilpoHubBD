@@ -1,0 +1,82 @@
+.auth-registration .auth-form-wrap {
+  height: 100dvh;
+  padding: 16px 24px;
+}
+
+.auth-registration .auth-form-wrap > a {
+  flex-shrink: 0;
+  margin-bottom: 12px;
+}
+
+.auth-registration .registration-panel {
+  min-height: 0;
+  max-height: 100%;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.registration-panel:has(.role-selection) {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.role-selection {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.role-selection > div[aria-label] { margin-bottom: 12px; }
+.role-selection > h1,
+.role-selection > p { flex-shrink: 0; }
+
+.role-form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 16px;
+}
+
+.role-options {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
+  scrollbar-gutter: stable;
+}
+
+.role-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.role-grid .role-card {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-content: start;
+  gap: 4px 12px;
+  padding: 12px;
+}
+
+.role-card > span:first-child {
+  grid-row: span 2;
+  width: 36px;
+  height: 36px;
+}
+
+.role-card > span:last-child { grid-column: 2; }
+.role-options > button { margin-top: 12px; padding: 12px; }
+
+.role-actions {
+  flex-shrink: 0;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgb(var(--color-border));
+  background: rgb(var(--color-surface));
+}
+
+@media (max-width: 639px) {
+  .auth-registration .auth-form-wrap { padding: 12px; }
+  .auth-registration .registration-panel { padding: 16px; }
+  .role-grid { grid-template-columns: minmax(0, 1fr); }
+  .role-selection > h1 { font-size: 1.25rem; }
+  .role-selection > p { font-size: 0.875rem; }
+}

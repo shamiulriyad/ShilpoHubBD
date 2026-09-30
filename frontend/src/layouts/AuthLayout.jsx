@@ -2,6 +2,7 @@ import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { routePaths } from '../routes/routePaths';
 import { useAuth } from '../hooks/useAuth';
 import BrandLogo from '../components/brand/BrandLogo';
+import './auth-registration.css';
 
 export default function AuthLayout() {
   const location = useLocation();
@@ -13,14 +14,14 @@ export default function AuthLayout() {
   }
 
   return (
-    <div className="auth-shell flex min-h-screen flex-col bg-background">
+    <div className={`auth-shell flex min-h-screen flex-col bg-background ${isRegister ? 'auth-registration' : ''}`}>
       <div className="auth-form-wrap flex flex-1 flex-col items-center justify-center px-4 py-12">
         <Link to={routePaths.home} className="mb-8 flex items-center gap-2 text-xl font-bold text-title">
           <BrandLogo />
         </Link>
         <div
           className={`w-full rounded-2xl border border-border bg-surface p-6 shadow-sm transition-[max-width] sm:p-8 ${
-            isRegister ? 'max-w-3xl' : 'max-w-md'
+            isRegister ? 'registration-panel max-w-3xl' : 'max-w-md'
           }`}
         >
           <Outlet />

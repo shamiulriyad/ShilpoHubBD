@@ -29,7 +29,7 @@ export default function NewProductForm({ initial, onCreated, onCancel }) {
     create.mutate({ ...payload, name: form.name.trim(), description: form.description.trim(), price: Number(form.price), discountPrice: form.discountPrice === '' ? null : Number(form.discountPrice), stock: Number(form.stock), lowStockThreshold: Number(form.lowStockThreshold), imageUrls: [imageUrl.trim()], threeSixtyImageUrls: initial?.threeSixtyImageUrls || [], story: form.story.trim() || null, makingProcessVideoUrl: form.makingProcessVideoUrl.trim() || null, isActive: initial?.isActive ?? true });
   }}>
     <h2 className="text-lg font-semibold">{initial ? 'Edit product' : 'Add a product'}</h2>
-    <p className="text-sm text-muted">Add complete product information. New products and producer edits remain pending until an admin approves them.</p>
+    <p className="text-sm text-muted">Add complete product information. Your active product will appear in the marketplace as soon as it is saved.</p>
     <QueryStatusBanner queries={[categories, districts]} />
     <div className="grid gap-4 sm:grid-cols-2">
       <label className="text-sm">Product name<input required maxLength={200} {...field('name')} className={inputClass} /></label>
@@ -45,6 +45,6 @@ export default function NewProductForm({ initial, onCreated, onCancel }) {
       <label className="text-sm sm:col-span-2">Making process video URL (optional)<input type="url" maxLength={2000} {...field('makingProcessVideoUrl')} className={inputClass} /></label>
     </div>
     <MutationFeedback mutation={create} />
-    <div className="flex gap-3"><Button type="submit" disabled={create.isPending || upload.isPending || !form.imageUrl || !categories.data?.length || !districts.data?.length}>{create.isPending ? 'Saving…' : initial ? 'Save and submit for review' : 'Submit product for approval'}</Button><Button type="button" variant="secondary" onClick={onCancel} disabled={create.isPending}>Cancel</Button></div>
+    <div className="flex gap-3"><Button type="submit" disabled={create.isPending || upload.isPending || !form.imageUrl || !categories.data?.length || !districts.data?.length}>{create.isPending ? 'Saving…' : initial ? 'Save changes' : 'Add product'}</Button><Button type="button" variant="secondary" onClick={onCancel} disabled={create.isPending}>Cancel</Button></div>
   </form>;
 }

@@ -17,8 +17,12 @@ public class DeliveryTrackingService : IDeliveryTrackingService
 {
     private static readonly Dictionary<ShipmentStatus, ShipmentStatus[]> Transitions = new()
     {
-        [ShipmentStatus.Created] = new[] { ShipmentStatus.LabelCreated, ShipmentStatus.PickedUp, ShipmentStatus.Cancelled },
-        [ShipmentStatus.LabelCreated] = new[] { ShipmentStatus.PickedUp, ShipmentStatus.Cancelled },
+        [ShipmentStatus.Created] = new[] { ShipmentStatus.PartnerAssigned, ShipmentStatus.LabelCreated, ShipmentStatus.Cancelled },
+        [ShipmentStatus.PartnerAssigned] = new[] { ShipmentStatus.PickupRequested, ShipmentStatus.LabelCreated, ShipmentStatus.Cancelled },
+        [ShipmentStatus.PickupRequested] = new[] { ShipmentStatus.PickedUp, ShipmentStatus.PickupFailed, ShipmentStatus.Rescheduled, ShipmentStatus.Cancelled },
+        [ShipmentStatus.PickupFailed] = new[] { ShipmentStatus.PickupRequested, ShipmentStatus.Rescheduled, ShipmentStatus.Cancelled },
+        [ShipmentStatus.Rescheduled] = new[] { ShipmentStatus.PickupRequested, ShipmentStatus.OutForDelivery, ShipmentStatus.Cancelled },
+        [ShipmentStatus.LabelCreated] = new[] { ShipmentStatus.PickupRequested, ShipmentStatus.PickedUp, ShipmentStatus.Cancelled },
         [ShipmentStatus.PickedUp] = new[]
         {
             ShipmentStatus.InTransit, ShipmentStatus.AtHub, ShipmentStatus.OutForDelivery, ShipmentStatus.Cancelled,
@@ -238,6 +242,8 @@ public class DeliveryTrackingService : IDeliveryTrackingService
             DimensionsNote = request.DimensionsNote?.Trim(),
             DeclaredValue = request.DeclaredValue,
             ShippingCost = request.ShippingCost,
+            ShilpoHubRevenue = decimal.Round((request.ShippingCost ?? 0) * 0.30m, 2, MidpointRounding.AwayFromZero),
+            PartnerRevenue = (request.ShippingCost ?? 0) - decimal.Round((request.ShippingCost ?? 0) * 0.30m, 2, MidpointRounding.AwayFromZero),
             IsCashOnDelivery = request.IsCashOnDelivery,
             CodAmount = request.IsCashOnDelivery ? request.CodAmount : null,
             EstimatedDeliveryAt = ToUtc(request.EstimatedDeliveryAt),
@@ -380,7 +386,8 @@ public class DeliveryTrackingService : IDeliveryTrackingService
 
         if (request.ShippingCost.HasValue)
         {
-            shipment.ShippingCost = request.ShippingCost;
+            if (request.ShippingCost != shipment.ShippingCost)
+                throw new ConflictException("Shipping charges are recorded at creation and cannot be changed retrospectively.");
         }
 
         if (request.IsCashOnDelivery.HasValue)
@@ -437,9 +444,9 @@ public class DeliveryTrackingService : IDeliveryTrackingService
         EnsureTransition(shipment.Status, target);
         await EnsureDistrictAsync(request.DistrictId, "District not found.", cancellationToken);
 
-        if (target == ShipmentStatus.DeliveryFailed && string.IsNullOrWhiteSpace(request.FailureReason))
+        if ((target is ShipmentStatus.DeliveryFailed or ShipmentStatus.PickupFailed or ShipmentStatus.Returned) && string.IsNullOrWhiteSpace(request.FailureReason))
         {
-            throw new ConflictException("FailureReason is required when moving a shipment to DeliveryFailed.");
+            throw new ConflictException("A reason is required for a failed pickup, failed delivery or return.");
         }
 
         var now = DateTime.UtcNow;
@@ -447,6 +454,9 @@ public class DeliveryTrackingService : IDeliveryTrackingService
         var from = shipment.Status;
         shipment.Status = target;
         shipment.LastStatusAt = now;
+
+        if (target == ShipmentStatus.PickupRequested) shipment.PickupRequestedAt = occurredAt;
+        if (target == ShipmentStatus.PickedUp) shipment.PickedUpAt = occurredAt;
 
         if (target == ShipmentStatus.PickedUp && shipment.DispatchedAt is null)
         {
@@ -456,9 +466,10 @@ public class DeliveryTrackingService : IDeliveryTrackingService
         if (target == ShipmentStatus.Returned)
         {
             shipment.FailureReason = request.FailureReason?.Trim() ?? shipment.FailureReason;
+            shipment.ReturnReason = request.FailureReason?.Trim() ?? shipment.ReturnReason;
         }
 
-        if (target == ShipmentStatus.DeliveryFailed)
+        if (target is ShipmentStatus.DeliveryFailed or ShipmentStatus.PickupFailed)
         {
             shipment.FailureReason = request.FailureReason!.Trim();
         }

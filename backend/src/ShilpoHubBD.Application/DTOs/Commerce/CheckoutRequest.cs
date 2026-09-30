@@ -8,5 +8,7 @@ public class CheckoutRequest
     public string RecipientPhone { get; set; } = string.Empty;
     public string ShippingAddressLine { get; set; } = string.Empty;
     public Guid ShippingDistrictId { get; set; }
+    public string? ShippingArea { get; set; }
+    public Guid LogisticsServiceAreaId { get; set; }
     public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.CashOnDelivery;
 }

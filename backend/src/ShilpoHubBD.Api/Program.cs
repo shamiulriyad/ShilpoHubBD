@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -276,6 +277,29 @@ app.UseCors("Frontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Company activation is checked on every operational request, including existing sessions.
+app.Use(async (context, next) =>
+{
+    if (context.User.Identity?.IsAuthenticated == true
+        && context.User.IsInRole("LogisticsPartner") && !context.User.IsInRole("SuperAdmin")
+        && context.Request.Path.StartsWithSegments("/api/logistics")
+        && context.Request.Path != "/api/logistics/partners/me")
+    {
+        var subject = context.User.FindFirst("sub")?.Value ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var db = context.RequestServices.GetRequiredService<ShilpoHubDbContext>();
+        if (!Guid.TryParse(subject, out var operatorId) || !await db.LogisticsPartnerProfiles.AnyAsync(
+            p => p.UserId == operatorId && p.User != null && p.User.IsActive && p.IsActive
+                && p.VerificationStatus == ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerVerificationStatus.Verified,
+            context.RequestAborted))
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            await context.Response.WriteAsJsonAsync(new { title = "An active, administrator-approved logistics company is required." });
+            return;
+        }
+    }
+    await next(context);
+});
 
 app.UseRateLimiter();
 

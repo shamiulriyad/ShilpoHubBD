@@ -344,6 +344,17 @@ class FakeSettlementRepository : IProducerPartnershipSettlementRepository
         => Task.FromResult(_settlements.Values.Any(s => s.AgreementId == agreementId && s.Status != ProducerPartnershipSettlementStatus.Rejected && s.PeriodStart < periodEnd && s.PeriodEnd > periodStart));
     public Task AddAsync(ProducerPartnershipSettlement settlement, CancellationToken ct) { _settlements[settlement.Id] = settlement; return Task.CompletedTask; }
     public Task SaveChangesAsync(CancellationToken ct) => Task.CompletedTask;
+    public Task<PlatformRevenueSummaryDto> GetApprovedTotalsAsync(CancellationToken ct)
+    {
+        var approved = _settlements.Values.Where(s => s.Status == ProducerPartnershipSettlementStatus.Approved).ToList();
+        return Task.FromResult(new PlatformRevenueSummaryDto
+        {
+            TotalPlatformFee = approved.Sum(s => s.PlatformFeeAmount),
+            TotalGrossRevenue = approved.Sum(s => s.GrossRevenue),
+            TotalNetPartnershipRevenue = approved.Sum(s => s.NetPartnershipRevenue),
+            ApprovedSettlementCount = approved.Count,
+        });
+    }
     public Task<decimal> GetRefundDeductionsAsync(Guid producerId, DateTime periodStart, DateTime periodEnd, CancellationToken ct) => Task.FromResult(0m);
 }
 

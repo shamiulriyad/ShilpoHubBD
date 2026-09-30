@@ -20,6 +20,11 @@ public class LogisticsServiceArea
     public string DistrictName { get; set; } = string.Empty;
     public string Division { get; set; } = string.Empty;
 
+    /// <summary>Optional upazila/area. Null means the entire district is covered.</summary>
+    public string? AreaName { get; set; }
+
+    public string DeliveryMethod { get; set; } = "Standard";
+
     /// <summary>Typical door-to-door transit time within / to this district, in days.</summary>
     public int StandardDeliveryDays { get; set; } = 3;
 
@@ -27,6 +32,12 @@ public class LogisticsServiceArea
 
     /// <summary>Optional flat surcharge applied to shipments touching this area.</summary>
     public decimal? SurchargeAmount { get; set; }
+
+    /// <summary>Immutable checkout quotes are copied from this configured charge.</summary>
+    public decimal DeliveryCharge { get; set; }
+
+    public bool PickupAvailable { get; set; }
+    public bool ReturnSupported { get; set; }
 
     public bool IsActive { get; set; } = true;
 }

@@ -144,6 +144,7 @@ public class AddShipmentNoteRequest
 
 public class ShipmentQueryParameters
 {
+    public Guid? LogisticsPartnerProfileId { get; set; }
     public string? Status { get; set; }
     public string? ServiceLevel { get; set; }
     public Guid? OrderId { get; set; }

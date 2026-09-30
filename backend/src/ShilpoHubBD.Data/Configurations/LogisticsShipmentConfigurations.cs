@@ -31,6 +31,8 @@ public class ShipmentConfiguration : IEntityTypeConfiguration<Shipment>
         builder.Property(s => s.TotalWeightKg).HasColumnType("numeric(12,2)");
         builder.Property(s => s.DeclaredValue).HasColumnType("numeric(14,2)");
         builder.Property(s => s.ShippingCost).HasColumnType("numeric(14,2)");
+        builder.Property(s => s.ShilpoHubRevenue).HasColumnType("numeric(14,2)");
+        builder.Property(s => s.PartnerRevenue).HasColumnType("numeric(14,2)");
         builder.Property(s => s.CodAmount).HasColumnType("numeric(14,2)");
 
         builder.Property(s => s.CurrentLocationLabel).HasMaxLength(200);
@@ -39,6 +41,7 @@ public class ShipmentConfiguration : IEntityTypeConfiguration<Shipment>
         builder.Property(s => s.SignatureImageUrl).HasMaxLength(1000);
         builder.Property(s => s.FailureReason).HasMaxLength(1000);
         builder.Property(s => s.CancellationReason).HasMaxLength(1000);
+        builder.Property(s => s.ReturnReason).HasMaxLength(1000);
         builder.Property(s => s.CreatedAt).IsRequired();
         builder.Property(s => s.UpdatedAt).IsRequired();
 

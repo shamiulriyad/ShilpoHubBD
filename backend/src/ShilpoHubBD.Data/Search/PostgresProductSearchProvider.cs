@@ -32,7 +32,7 @@ public class PostgresProductSearchProvider : ISearchProvider
             .Include(p => p.District)
             .Include(p => p.Producer)
             .Include(p => p.Images)
-            .Where(p => p.IsActive && p.ApprovalStatus == ProductApprovalStatus.Approved)
+            .Where(p => p.IsActive && p.ApprovalStatus != ProductApprovalStatus.Rejected)
             .Where(p =>
                 EF.Property<NpgsqlTsVector>(p, "SearchVector").Matches(EF.Functions.PlainToTsQuery("english", query)) ||
                 EF.Functions.ILike(p.Name, likePattern) ||

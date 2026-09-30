@@ -59,6 +59,11 @@ public class Shipment
     public string? DimensionsNote { get; set; }
     public decimal? DeclaredValue { get; set; }
     public decimal? ShippingCost { get; set; }
+    public decimal ShilpoHubRevenue { get; set; }
+    public decimal PartnerRevenue { get; set; }
+    public DateTime? PickupRequestedAt { get; set; }
+    public DateTime? PickedUpAt { get; set; }
+    public string? ReturnReason { get; set; }
 
     public bool IsCashOnDelivery { get; set; }
     public decimal? CodAmount { get; set; }

@@ -1,3 +1,4 @@
+import AssistantLauncher from './AssistantLauncher';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
@@ -366,7 +367,7 @@ export default function AIAssistantWidget() {
 
   return (
     <>
-      {/* Floating action button */}
+      {/* Docked in the page header when messaging is open. */}<AssistantLauncher>
       <button
         type="button"
         onClick={() => setIsOpen((open) => !open)}
@@ -378,7 +379,7 @@ export default function AIAssistantWidget() {
         {isOpen ? <CloseIcon className="h-6 w-6" /> : <HelpIcon className="h-6 w-6" />}
       </button>
 
-      {/* Chat popover */}
+      </AssistantLauncher>{/* Chat popover */}
       {isRendered && (
         <div
           id="ai-assistant-panel"

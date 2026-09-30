@@ -1,6 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { logisticsPartnersService } from '../services/logisticsPartnersService';
 
+export function useAvailableLogisticsPartners(districtId, areaName) {
+  return useQuery({
+    queryKey: ['logistics-partners', 'available', districtId, areaName],
+    queryFn: () => logisticsPartnersService.available(districtId, areaName),
+    enabled: Boolean(districtId),
+  });
+}
+
 export function useMyLogisticsPartnerProfile() {
   return useQuery({
     queryKey: ['logistics-partners', 'me'],

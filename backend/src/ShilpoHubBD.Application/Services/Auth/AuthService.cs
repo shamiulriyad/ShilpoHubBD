@@ -54,6 +54,8 @@ public class AuthService : IAuthService
         }
 
         var requestedRoleNames = request.Roles.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        if (requestedRoleNames.Any(role => !Domain.Constants.RoleNames.SelfRegisterableRoles.Contains(role)))
+            throw new ConflictException("This role is provisioned by a Super Admin and cannot self-register.");
         var roles = await _roleRepository.GetByNamesAsync(requestedRoleNames, cancellationToken);
         if (roles.Count != requestedRoleNames.Count)
         {

@@ -109,10 +109,4 @@ export const ACCOUNT_TYPES = [
     description: 'Research, innovation, and heritage knowledge.',
     Icon: HeritageInnovationIcon,
   },
-  {
-    id: 'LogisticsPartner',
-    label: 'Logistics Partner',
-    description: 'Manage pickups, warehouses, and deliveries.',
-    Icon: LogisticsPartnerIcon,
-  },
 ];

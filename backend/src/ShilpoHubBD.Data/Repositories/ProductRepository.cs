@@ -28,7 +28,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<(List<Product> Items, int TotalCount)> GetPagedAsync(ProductQueryParameters query, CancellationToken cancellationToken)
     {
-        var products = WithDetails().Where(p => p.IsActive && p.ApprovalStatus == ProductApprovalStatus.Approved);
+        var products = WithDetails().Where(p => p.IsActive && p.ApprovalStatus != ProductApprovalStatus.Rejected);
 
         if (!string.IsNullOrWhiteSpace(query.Search))
         {
@@ -101,14 +101,14 @@ public class ProductRepository : IProductRepository
 
     public Task<List<Product>> GetFeaturedAsync(int count, CancellationToken cancellationToken)
         => WithDetails()
-            .Where(p => p.IsActive && p.IsFeatured && p.ApprovalStatus == ProductApprovalStatus.Approved)
+            .Where(p => p.IsActive && p.IsFeatured && p.ApprovalStatus != ProductApprovalStatus.Rejected)
             .OrderByDescending(p => p.CreatedAt)
             .Take(count)
             .ToListAsync(cancellationToken);
 
     public Task<List<Product>> GetTrendingAsync(int count, CancellationToken cancellationToken)
         => WithDetails()
-            .Where(p => p.IsActive && p.ApprovalStatus == ProductApprovalStatus.Approved)
+            .Where(p => p.IsActive && p.ApprovalStatus != ProductApprovalStatus.Rejected)
             .OrderByDescending(p => p.ViewCount + p.SalesCount * 5)
             .ThenByDescending(p => p.CreatedAt)
             .Take(count)

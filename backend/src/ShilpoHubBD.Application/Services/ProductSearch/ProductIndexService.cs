@@ -193,7 +193,7 @@ public class ProductIndexService : IProductIndexService
             ["is_gi"] = !string.IsNullOrWhiteSpace(craft?.GiName),
             ["is_unesco"] = !string.IsNullOrWhiteSpace(craft?.Unesco),
             ["made_to_order"] = a?.MadeToOrder ?? false,
-            ["is_public"] = p.IsActive && p.ApprovalStatus == ProductApprovalStatus.Approved,
+            ["is_public"] = p.IsActive && p.ApprovalStatus != ProductApprovalStatus.Rejected,
             ["in_stock"] = inStock,
             ["price"] = p.Price,
             ["discount_price"] = p.DiscountPrice,

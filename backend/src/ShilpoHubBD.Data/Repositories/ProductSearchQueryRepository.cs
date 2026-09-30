@@ -20,7 +20,7 @@ public class ProductSearchQueryRepository : IProductSearchQueryRepository
     {
         // Visibility is not a filter the AI can influence: only active, admin-approved products are ever returned.
         var query = _context.Products.AsNoTracking()
-            .Where(p => p.IsActive && p.ApprovalStatus == ProductApprovalStatus.Approved);
+            .Where(p => p.IsActive && p.ApprovalStatus != ProductApprovalStatus.Rejected);
 
         if (c.Ids is not null) query = query.Where(p => c.Ids.Contains(p.Id));
         if (c.MinPrice is { } min) query = query.Where(p => p.EffectivePrice >= min);

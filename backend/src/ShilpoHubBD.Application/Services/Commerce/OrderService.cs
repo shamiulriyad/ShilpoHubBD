@@ -14,16 +14,21 @@ public class OrderService : IOrderService
     private readonly IDistrictRepository _districtRepository;
     private readonly IPaymentRepository _paymentRepository;
     private readonly IPaymentService _paymentService;
+    private readonly ILogisticsPartnerRepository _logisticsPartnerRepository;
+    private readonly IDeliveryTrackingRepository _deliveryTrackingRepository;
 
     public OrderService(
         IOrderRepository orderRepository, ICartRepository cartRepository, IDistrictRepository districtRepository,
-        IPaymentRepository paymentRepository, IPaymentService paymentService)
+        IPaymentRepository paymentRepository, IPaymentService paymentService,
+        ILogisticsPartnerRepository logisticsPartnerRepository, IDeliveryTrackingRepository deliveryTrackingRepository)
     {
         _orderRepository = orderRepository;
         _cartRepository = cartRepository;
         _districtRepository = districtRepository;
         _paymentRepository = paymentRepository;
         _paymentService = paymentService;
+        _logisticsPartnerRepository = logisticsPartnerRepository;
+        _deliveryTrackingRepository = deliveryTrackingRepository;
     }
 
     public async Task<PagedResult<OrderListItemDto>> GetMyOrdersAsync(Guid userId, OrderQueryParameters query, CancellationToken cancellationToken)
@@ -44,6 +49,7 @@ public class OrderService : IOrderService
             ?? throw new NotFoundException("Order not found.");
 
         EnsureOwnershipOrAdmin(order, currentUserId, isAdmin);
+
         return ToDto(order);
     }
 
@@ -54,6 +60,8 @@ public class OrderService : IOrderService
 
         EnsureOwnershipOrAdmin(order, currentUserId, isAdmin);
 
+        var shipment = await _deliveryTrackingRepository.GetByOrderIdAsync(order.Id, cancellationToken);
+
         return new OrderTrackingDto
         {
             OrderId = order.Id,
@@ -61,6 +69,16 @@ public class OrderService : IOrderService
             Status = order.Status.ToString(),
             TrackingNumber = order.TrackingNumber,
             Carrier = order.Carrier,
+            DeliveryPartnerName = order.DeliveryPartnerName,
+            DeliveryStatus = shipment?.Status.ToString(),
+            ExpectedDeliveryAt = shipment?.EstimatedDeliveryAt ?? order.ExpectedDeliveryAt,
+            DeliveryEvents = shipment?.Events.OrderBy(e => e.OccurredAt).Select(e => new DeliveryTrackingEventDto
+            {
+                Status = (e.ToStatus ?? shipment.Status).ToString(),
+                Description = e.Description,
+                Location = e.LocationLabel,
+                OccurredAt = e.OccurredAt,
+            }).ToList() ?? new List<DeliveryTrackingEventDto>(),
             Events = order.StatusHistory
                 .OrderBy(e => e.CreatedAt)
                 .Select(e => new OrderStatusEventDto { Status = e.Status.ToString(), Note = e.Note, CreatedAt = e.CreatedAt })
@@ -72,6 +90,26 @@ public class OrderService : IOrderService
     {
         var district = await _districtRepository.GetByIdAsync(request.ShippingDistrictId, cancellationToken)
             ?? throw new NotFoundException("District not found.");
+
+        var availablePartners = await _logisticsPartnerRepository.GetAvailableForLocationAsync(
+            request.ShippingDistrictId, request.ShippingArea, cancellationToken);
+        var normalizedArea = string.IsNullOrWhiteSpace(request.ShippingArea) ? null : request.ShippingArea.Trim();
+        var selected = availablePartners
+            .SelectMany(p => p.ServiceAreas
+                .Where(a => a.IsActive && a.DistrictId == request.ShippingDistrictId
+                    && (a.AreaName == null || string.Equals(a.AreaName, normalizedArea, StringComparison.OrdinalIgnoreCase)))
+                .GroupBy(a => a.DeliveryMethod, StringComparer.OrdinalIgnoreCase)
+                .Select(g => g.OrderByDescending(a => a.AreaName != null).First())
+                .Select(a => new { Partner = p, Area = a }))
+            .FirstOrDefault(x => x.Area.Id == request.LogisticsServiceAreaId && x.Area.IsActive
+                && x.Area.DistrictId == request.ShippingDistrictId
+                && (x.Area.AreaName == null || string.Equals(x.Area.AreaName, normalizedArea, StringComparison.OrdinalIgnoreCase)));
+        if (selected is null)
+        {
+            throw new ConflictException(availablePartners.Count == 0
+                ? "No delivery partner available for this location."
+                : "The selected delivery partner or method does not serve this location.");
+        }
 
         var cartItems = await _cartRepository.GetByUserIdAsync(userId, cancellationToken);
         if (cartItems.Count == 0)
@@ -104,7 +142,17 @@ public class OrderService : IOrderService
             Status = OrderStatus.Pending,
             PaymentMethod = request.PaymentMethod,
             Subtotal = subtotal,
-            Total = subtotal,
+            LogisticsPartnerProfileId = selected.Partner.Id,
+            LogisticsPartnerProfile = selected.Partner,
+            DeliveryPartnerName = selected.Partner.CompanyName,
+            DeliveryMethod = selected.Area.DeliveryMethod,
+            ShippingArea = string.IsNullOrWhiteSpace(request.ShippingArea) ? null : request.ShippingArea.Trim(),
+            DeliveryCharge = selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0),
+            ShilpoHubDeliveryRevenue = decimal.Round((selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0)) * 0.30m, 2, MidpointRounding.AwayFromZero),
+            LogisticsPartnerRevenue = selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0)
+                - decimal.Round((selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0)) * 0.30m, 2, MidpointRounding.AwayFromZero),
+            ExpectedDeliveryAt = now.AddDays(selected.Area.StandardDeliveryDays),
+            Total = subtotal + selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0),
             RecipientName = request.RecipientName.Trim(),
             RecipientPhone = request.RecipientPhone.Trim(),
             ShippingAddressLine = request.ShippingAddressLine.Trim(),
@@ -149,6 +197,45 @@ public class OrderService : IOrderService
         AddStatusEvent(order, OrderStatus.Pending, "Order placed.");
 
         await _orderRepository.AddAsync(order, cancellationToken);
+
+        var shipment = new Domain.Entities.Logistics.Shipment
+        {
+            Id = Guid.NewGuid(),
+            TrackingNumber = $"SHP-{now:yyyyMM}-{Guid.NewGuid():N}"[..20].ToUpperInvariant(),
+            LogisticsPartnerProfileId = selected.Partner.Id,
+            CreatedByUserId = userId,
+            Status = Domain.Entities.Logistics.ShipmentStatus.PartnerAssigned,
+            ServiceLevel = Enum.TryParse<Domain.Entities.Logistics.ShipmentServiceLevel>(selected.Area.DeliveryMethod, true, out var level)
+                ? level : Domain.Entities.Logistics.ShipmentServiceLevel.Standard,
+            OrderId = order.Id,
+            OriginContactName = "ShilpoHub producer",
+            OriginPhone = "Pending pickup assignment",
+            OriginAddressLine = "Producer pickup address",
+            OriginCity = "Pending assignment",
+            RecipientName = order.RecipientName,
+            RecipientPhone = order.RecipientPhone,
+            DestinationAddressLine = order.ShippingAddressLine,
+            DestinationCity = district.Name,
+            DestinationDistrictId = district.Id,
+            ParcelCount = Math.Max(1, cartItems.Sum(x => x.Quantity)),
+            DeclaredValue = subtotal,
+            ShippingCost = order.DeliveryCharge,
+            ShilpoHubRevenue = order.ShilpoHubDeliveryRevenue,
+            PartnerRevenue = order.LogisticsPartnerRevenue,
+            EstimatedDeliveryAt = order.ExpectedDeliveryAt,
+            LastStatusAt = now,
+            CreatedAt = now,
+            UpdatedAt = now,
+        };
+        shipment.Events.Add(new Domain.Entities.Logistics.ShipmentTrackingEvent
+        {
+            Id = Guid.NewGuid(), ShipmentId = shipment.Id,
+            EventType = Domain.Entities.Logistics.ShipmentEventType.StatusChanged,
+            ToStatus = Domain.Entities.Logistics.ShipmentStatus.PartnerAssigned,
+            Description = $"Assigned to {selected.Partner.CompanyName}.",
+            OccurredAt = now, RecordedByUserId = userId, CreatedAt = now,
+        });
+        await _deliveryTrackingRepository.AddAsync(shipment, cancellationToken);
         await _orderRepository.SaveChangesAsync(cancellationToken);
 
         await _cartRepository.ClearAsync(userId, cancellationToken);
@@ -559,6 +646,14 @@ public class OrderService : IOrderService
         PaymentMethod = order.PaymentMethod.ToString(),
         Subtotal = order.Subtotal,
         Total = order.Total,
+        LogisticsPartnerProfileId = order.LogisticsPartnerProfileId,
+        DeliveryPartnerName = order.DeliveryPartnerName,
+        DeliveryMethod = order.DeliveryMethod,
+        ShippingArea = order.ShippingArea,
+        DeliveryCharge = order.DeliveryCharge,
+        ShilpoHubDeliveryRevenue = order.ShilpoHubDeliveryRevenue,
+        LogisticsPartnerRevenue = order.LogisticsPartnerRevenue,
+        ExpectedDeliveryAt = order.ExpectedDeliveryAt,
         RecipientName = order.RecipientName,
         RecipientPhone = order.RecipientPhone,
         ShippingAddressLine = order.ShippingAddressLine,

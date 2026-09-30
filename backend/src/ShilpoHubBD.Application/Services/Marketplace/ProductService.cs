@@ -18,8 +18,6 @@ public class ProductService : IProductService
     private readonly IUserRepository _userRepository;
     private readonly IAuditLogService _auditLogService;
 
-    private readonly IUserProfileRepository _userProfileRepository;
-
     public ProductService(
         IProductRepository productRepository,
         ICategoryRepository categoryRepository,
@@ -27,10 +25,8 @@ public class ProductService : IProductService
         ICraftStoryRepository craftStoryRepository,
         IProducerStoryRepository producerStoryRepository,
         IUserRepository userRepository,
-        IAuditLogService auditLogService,
-        IUserProfileRepository userProfileRepository)
+        IAuditLogService auditLogService)
     {
-        _userProfileRepository = userProfileRepository;
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
         _districtRepository = districtRepository;
@@ -103,14 +99,6 @@ public class ProductService : IProductService
     {
         await EnsureCategoryAndDistrictExistAsync(request.CategoryId, request.DistrictId, cancellationToken);
 
-        // Producers must complete their profile (with NID) and have an admin approve it before selling.
-        var seller = await _userRepository.GetByIdWithRolesAsync(producerId, cancellationToken);
-        var isAdmin = seller?.UserRoles.Any(ur => ur.Role.Name == ShilpoHubBD.Domain.Constants.RoleNames.SuperAdmin) == true;
-        if (!isAdmin && !await _userProfileRepository.IsApprovedAsync(producerId, cancellationToken))
-        {
-            throw new ConflictException("Complete your profile (name, expertise, location, phone and NID) and wait for admin approval before adding products.");
-        }
-
         var slug = await GenerateUniqueSlugAsync(request.Name, cancellationToken);
         var now = DateTime.UtcNow;
 
@@ -132,7 +120,10 @@ public class ProductService : IProductService
             MakingProcessVideoUrl = request.MakingProcessVideoUrl?.Trim(),
             Story = string.IsNullOrWhiteSpace(request.Story) ? null : request.Story.Trim(),
             HandmadeVerificationStatus = HandmadeVerificationStatus.Pending,
-            ApprovalStatus = ProductApprovalStatus.Pending,
+            // Producer listings publish immediately. The status remains available so
+            // administrators can remove and restore listings through moderation.
+            ApprovalStatus = ProductApprovalStatus.Approved,
+            ApprovedAt = now,
             CreatedAt = now,
             UpdatedAt = now,
         };
@@ -171,12 +162,12 @@ public class ProductService : IProductService
         product.IsActive = request.IsActive;
         product.MakingProcessVideoUrl = request.MakingProcessVideoUrl?.Trim();
         product.Story = string.IsNullOrWhiteSpace(request.Story) ? null : request.Story.Trim();
-        if (!isAdmin)
+        if (product.ApprovalStatus == ProductApprovalStatus.Pending)
         {
-            // Material producer edits must return through the marketplace approval queue.
-            product.ApprovalStatus = ProductApprovalStatus.Pending;
+            // Publish legacy listings left in the retired approval queue.
+            product.ApprovalStatus = ProductApprovalStatus.Approved;
             product.ApprovedByUserId = null;
-            product.ApprovedAt = null;
+            product.ApprovedAt = DateTime.UtcNow;
             product.RejectionReason = null;
         }
         product.UpdatedAt = DateTime.UtcNow;

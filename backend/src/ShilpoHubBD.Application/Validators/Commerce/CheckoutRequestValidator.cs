@@ -12,6 +12,9 @@ public class CheckoutRequestValidator : AbstractValidator<CheckoutRequest>
             .WithMessage("RecipientPhone must be a valid Bangladeshi mobile number (e.g. 01712345678).");
         RuleFor(x => x.ShippingAddressLine).NotEmpty().MaximumLength(500);
         RuleFor(x => x.ShippingDistrictId).NotEmpty();
+        RuleFor(x => x.ShippingArea).MaximumLength(160);
+        RuleFor(x => x.LogisticsServiceAreaId).NotEmpty()
+            .WithMessage("Select an available delivery partner and method.");
         RuleFor(x => x.PaymentMethod).IsInEnum();
     }
 }

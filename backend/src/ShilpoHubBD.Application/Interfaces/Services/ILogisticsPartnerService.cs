@@ -5,6 +5,12 @@ namespace ShilpoHubBD.Application.Interfaces.Services;
 
 public interface ILogisticsPartnerService
 {
+    Task<List<AvailableLogisticsOptionDto>> GetAvailableAsync(Guid districtId, string? areaName, CancellationToken cancellationToken);
+    Task<LogisticsPartnerProfileDto> CreateOfficialAsync(Guid adminUserId, UpsertLogisticsPartnerProfileRequest request, CancellationToken cancellationToken);
+    Task<LogisticsPartnerProfileDto> UpdateOfficialAsync(Guid profileId, Guid adminUserId, UpsertLogisticsPartnerProfileRequest request, CancellationToken cancellationToken);
+    Task<LogisticsPartnerProfileDto> UpsertOfficialServiceAreaAsync(Guid profileId, UpsertLogisticsServiceAreaRequest request, CancellationToken cancellationToken);
+    Task<LogisticsPartnerProfileDto> RemoveOfficialServiceAreaAsync(Guid profileId, Guid serviceAreaId, CancellationToken cancellationToken);
+    Task<LogisticsPartnerPerformanceDto> GetPerformanceAsync(Guid profileId, CancellationToken cancellationToken);
     Task<LogisticsPartnerProfileDto> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken);
 
     Task<LogisticsPartnerProfileDto> GetByIdAsync(Guid id, CancellationToken cancellationToken);

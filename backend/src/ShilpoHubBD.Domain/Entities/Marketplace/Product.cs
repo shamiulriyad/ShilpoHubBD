@@ -37,8 +37,8 @@ public class Product
     public string? HandmadeVerificationNotes { get; set; }
     public DateTime? HandmadeVerifiedAt { get; set; }
 
-    /// <summary>Admin listing-approval gate: only <see cref="ProductApprovalStatus.Approved"/> products appear in public storefront queries.</summary>
-    public ProductApprovalStatus ApprovalStatus { get; set; } = ProductApprovalStatus.Pending;
+    /// <summary>Marketplace visibility state. New listings publish automatically; admins may reject a listing through moderation.</summary>
+    public ProductApprovalStatus ApprovalStatus { get; set; } = ProductApprovalStatus.Approved;
     public Guid? ApprovedByUserId { get; set; }
     public User? ApprovedBy { get; set; }
     public DateTime? ApprovedAt { get; set; }

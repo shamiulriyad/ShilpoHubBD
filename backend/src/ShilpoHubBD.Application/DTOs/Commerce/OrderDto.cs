@@ -8,6 +8,14 @@ public class OrderDto
     public string PaymentMethod { get; set; } = string.Empty;
     public decimal Subtotal { get; set; }
     public decimal Total { get; set; }
+    public Guid? LogisticsPartnerProfileId { get; set; }
+    public string? DeliveryPartnerName { get; set; }
+    public string? DeliveryMethod { get; set; }
+    public string? ShippingArea { get; set; }
+    public decimal DeliveryCharge { get; set; }
+    public decimal ShilpoHubDeliveryRevenue { get; set; }
+    public decimal LogisticsPartnerRevenue { get; set; }
+    public DateTime? ExpectedDeliveryAt { get; set; }
     public string RecipientName { get; set; } = string.Empty;
     public string RecipientPhone { get; set; } = string.Empty;
     public string ShippingAddressLine { get; set; } = string.Empty;

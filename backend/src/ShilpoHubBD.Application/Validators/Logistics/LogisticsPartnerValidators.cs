@@ -9,6 +9,8 @@ public class UpsertLogisticsPartnerProfileRequestValidator : AbstractValidator<U
     public UpsertLogisticsPartnerProfileRequestValidator()
     {
         RuleFor(x => x.CompanyName).NotEmpty().MaximumLength(200);
+        RuleFor(x => x.LogoUrl).MaximumLength(1000);
+        RuleFor(x => x.Description).MaximumLength(4000);
         RuleFor(x => x.LegalName).MaximumLength(200);
         RuleFor(x => x.RegistrationNumber).MaximumLength(100);
         RuleFor(x => x.ContactPersonName).NotEmpty().MaximumLength(160);
@@ -44,6 +46,9 @@ public class UpsertLogisticsServiceAreaRequestValidator : AbstractValidator<Upse
     {
         RuleFor(x => x.DistrictId).NotEmpty();
         RuleFor(x => x.StandardDeliveryDays).InclusiveBetween(0, 60);
+        RuleFor(x => x.AreaName).MaximumLength(160);
+        RuleFor(x => x.DeliveryMethod).NotEmpty().MaximumLength(80);
+        RuleFor(x => x.DeliveryCharge).GreaterThanOrEqualTo(0).PrecisionScale(12, 2, true);
         RuleFor(x => x.SurchargeAmount).GreaterThanOrEqualTo(0).When(x => x.SurchargeAmount.HasValue);
     }
 }

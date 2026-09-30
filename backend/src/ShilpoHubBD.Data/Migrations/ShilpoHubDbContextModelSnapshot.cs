@@ -2377,6 +2377,26 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<decimal>("DeliveryCharge")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<string>("DeliveryMethod")
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
+
+                    b.Property<string>("DeliveryPartnerName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime?>("ExpectedDeliveryAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LogisticsPartnerProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("LogisticsPartnerRevenue")
+                        .HasColumnType("decimal(12,2)");
+
                     b.Property<string>("OrderNumber")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -2408,10 +2428,17 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<decimal>("ShilpoHubDeliveryRevenue")
+                        .HasColumnType("decimal(12,2)");
+
                     b.Property<string>("ShippingAddressLine")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<string>("ShippingArea")
+                        .HasMaxLength(160)
+                        .HasColumnType("character varying(160)");
 
                     b.Property<Guid>("ShippingDistrictId")
                         .HasColumnType("uuid");
@@ -2438,6 +2465,8 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LogisticsPartnerProfileId");
 
                     b.HasIndex("OrderNumber")
                         .IsUnique();
@@ -10185,15 +10214,26 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
                     b.Property<int>("FleetSize")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsAcceptingRequests")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LegalName")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
+
+                    b.Property<string>("LogoUrl")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
                     b.Property<int>("MaxDailyPickups")
                         .HasColumnType("integer");
@@ -10214,6 +10254,9 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<bool>("OffersFragileHandling")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("OffersPickup")
+                        .HasColumnType("boolean");
+
                     b.Property<int?>("OperatingDayEndHour")
                         .HasColumnType("integer");
 
@@ -10224,10 +10267,13 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<bool>("SupportsReturns")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("VerificationNotes")
@@ -10264,6 +10310,18 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AreaName")
+                        .HasMaxLength(160)
+                        .HasColumnType("character varying(160)");
+
+                    b.Property<decimal>("DeliveryCharge")
+                        .HasColumnType("numeric(12,2)");
+
+                    b.Property<string>("DeliveryMethod")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
+
                     b.Property<Guid>("DistrictId")
                         .HasColumnType("uuid");
 
@@ -10283,6 +10341,12 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<Guid>("LogisticsPartnerProfileId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("PickupAvailable")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ReturnSupported")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("StandardDeliveryDays")
                         .HasColumnType("integer");
 
@@ -10296,7 +10360,7 @@ namespace ShilpoHubBD.Data.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.HasIndex("LogisticsPartnerProfileId", "DistrictId")
+                    b.HasIndex("LogisticsPartnerProfileId", "DistrictId", "AreaName", "DeliveryMethod")
                         .IsUnique();
 
                     b.ToTable("LogisticsServiceAreas", (string)null);
@@ -11063,8 +11127,17 @@ namespace ShilpoHubBD.Data.Migrations
                     b.Property<int>("ParcelCount")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("PartnerRevenue")
+                        .HasColumnType("numeric(14,2)");
+
+                    b.Property<DateTime?>("PickedUpAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid?>("PickupRequestId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("PickupRequestedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ProofOfDeliveryNote")
                         .HasMaxLength(2000)
@@ -11084,10 +11157,17 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
+                    b.Property<string>("ReturnReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
                     b.Property<string>("ServiceLevel")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<decimal>("ShilpoHubRevenue")
+                        .HasColumnType("numeric(14,2)");
 
                     b.Property<decimal?>("ShippingCost")
                         .HasColumnType("numeric(14,2)");
@@ -17493,6 +17573,11 @@ namespace ShilpoHubBD.Data.Migrations
 
             modelBuilder.Entity("ShilpoHubBD.Domain.Entities.Commerce.Order", b =>
                 {
+                    b.HasOne("ShilpoHubBD.Domain.Entities.Logistics.LogisticsPartnerProfile", "LogisticsPartnerProfile")
+                        .WithMany()
+                        .HasForeignKey("LogisticsPartnerProfileId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("ShilpoHubBD.Domain.Entities.Marketplace.District", "ShippingDistrict")
                         .WithMany()
                         .HasForeignKey("ShippingDistrictId")
@@ -17504,6 +17589,8 @@ namespace ShilpoHubBD.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("LogisticsPartnerProfile");
 
                     b.Navigation("ShippingDistrict");
                 });
@@ -20124,8 +20211,7 @@ namespace ShilpoHubBD.Data.Migrations
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ShilpoHubBD.Domain.Entities.Identity.User", "VerifiedBy")
                         .WithMany()

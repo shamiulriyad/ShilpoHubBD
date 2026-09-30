@@ -9,7 +9,7 @@ import { useProduct } from '../../hooks/useProducts';
 import { useProductAttributes } from '../../hooks/useProductAttributes';
 import { useProductReviews } from '../../hooks/useReviews';
 
-const STATUS = { Approved: ['success', 'Live on the marketplace'], Pending: ['secondary', 'Waiting for admin review'], Rejected: ['neutral', 'Needs changes'] };
+const STATUS = { Approved: ['success', 'Live on the marketplace'], Pending: ['success', 'Live on the marketplace'], Rejected: ['neutral', 'Removed by moderation'] };
 const money = (v) => `৳ ${Number(v).toLocaleString('en-BD')}`;
 
 function Section({ title, action, children }) {
@@ -44,7 +44,7 @@ export default function ProductOverview() {
         action={p && (
           <div className="flex flex-wrap gap-2">
             <Link to={`${routePaths.producerProducts}?edit=${p.id}`} className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-surface hover:bg-primary-dark">Edit product</Link>
-            {p.approvalStatus === 'Approved' && <Link to={routePaths.marketplaceProductDetails.replace(':productId', p.id)} className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-heading hover:border-primary/40">View public page</Link>}
+            {p.approvalStatus !== 'Rejected' && <Link to={routePaths.marketplaceProductDetails.replace(':productId', p.id)} className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-heading hover:border-primary/40">View public page</Link>}
           </div>
         )}
       />
@@ -81,7 +81,6 @@ export default function ProductOverview() {
                   {p.discountPrice != null && <span className="ml-3 text-lg font-normal text-body/50 line-through">{money(p.price)}</span>}
                 </p>
                 {p.rejectionReason && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-800">Review note from the admin: {p.rejectionReason}</p>}
-                {p.approvalStatus === 'Pending' && <p className="rounded-lg bg-secondary/10 p-3 text-sm text-heading">This listing (or your latest edit) is waiting for an admin. It is not visible to shoppers yet.</p>}
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   <StatCard label="In stock" value={p.stock} trend={p.stock === 0 ? 'Out of stock' : low ? 'Running low' : undefined} />
                   <StatCard label="Sold" value={p.salesCount} />

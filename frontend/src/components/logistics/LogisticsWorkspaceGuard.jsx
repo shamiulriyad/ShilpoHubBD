@@ -32,9 +32,9 @@ export default function LogisticsWorkspaceGuard() {
       <section>
         <h1 className="mb-6 text-3xl font-semibold text-heading">{section}</h1>
         <div className="rounded-2xl border border-border bg-surface p-6">
-          <h2 className="text-lg font-semibold text-heading">Set up your company to get started</h2>
-          <p className="mt-2 text-sm text-body/70">Your company details are needed before you can manage {section === 'Logistics Dashboard' ? 'logistics operations' : section.toLowerCase()}. You can browse the sidebar and explore heritage at any time.</p>
-          <Link to={routePaths.logisticsPartnerProfile} state={{ from: location.pathname }} className="mt-5 inline-flex rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white">Complete company profile →</Link>
+          <h2 className="text-lg font-semibold text-heading">Administrator assignment required</h2>
+          <p className="mt-2 text-sm text-body/70">A Super Admin must create your company account and provide login credentials before you can manage logistics operations.</p>
+          <Link to={routePaths.logisticsPartnerProfile} className="mt-5 inline-flex rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white">View company account →</Link>
         </div>
       </section>
     );
@@ -51,5 +51,8 @@ export default function LogisticsWorkspaceGuard() {
     );
   }
 
+  if (!profile.data?.isActive || profile.data?.verificationStatus !== 'Verified') {
+    return <p role="alert" className="rounded-xl border border-border bg-surface p-6">Your company is inactive or awaiting administrator approval. Contact your administrator to restore logistics access.</p>;
+  }
   return <Outlet />;
 }

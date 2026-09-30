@@ -34,9 +34,24 @@ public class LogisticsPartnerRepository : ILogisticsPartnerRepository
         => _context.LogisticsPartnerProfiles
             .AsNoTracking()
             .Include(p => p.BaseDistrict)
-            .Where(p => p.VerificationStatus == LogisticsPartnerVerificationStatus.Verified && p.IsAcceptingRequests)
+            .Where(p => p.VerificationStatus == LogisticsPartnerVerificationStatus.Verified && p.IsActive && p.IsAcceptingRequests)
             .OrderBy(p => p.CompanyName)
             .ToListAsync(cancellationToken);
+
+    public Task<List<LogisticsPartnerProfile>> GetAvailableForLocationAsync(
+        Guid districtId, string? areaName, CancellationToken cancellationToken)
+    {
+        var normalized = string.IsNullOrWhiteSpace(areaName) ? null : areaName.Trim().ToLower();
+        return _context.LogisticsPartnerProfiles
+            .AsNoTracking()
+            .Include(p => p.ServiceAreas).ThenInclude(a => a.District)
+            .Where(p => p.VerificationStatus == LogisticsPartnerVerificationStatus.Verified
+                && p.IsActive && p.IsAcceptingRequests
+                && p.ServiceAreas.Any(a => a.IsActive && a.DistrictId == districtId
+                    && (a.AreaName == null || (normalized != null && a.AreaName.ToLower() == normalized))))
+            .OrderBy(p => p.CompanyName)
+            .ToListAsync(cancellationToken);
+    }
 
     public Task<LogisticsPartnerProfile?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
         => _context.LogisticsPartnerProfiles
@@ -100,6 +115,31 @@ public class LogisticsPartnerRepository : ILogisticsPartnerRepository
         => _context.Users.AnyAsync(
             u => u.Id == userId && u.UserRoles.Any(ur => ur.Role.Name == roleName),
             cancellationToken);
+
+    public async Task<LogisticsPartnerPerformanceDto> GetPerformanceAsync(Guid profileId, CancellationToken cancellationToken)
+    {
+        var shipments = await _context.Shipments.AsNoTracking().Include(s => s.DestinationDistrict)
+            .Where(s => s.LogisticsPartnerProfileId == profileId).ToListAsync(cancellationToken);
+        var result = new LogisticsPartnerPerformanceDto
+        {
+            PartnerId = profileId,
+            TotalDeliveries = shipments.Count,
+            Delivered = shipments.Count(s => s.Status == ShipmentStatus.Delivered),
+            InTransit = shipments.Count(s => s.Status is ShipmentStatus.PickedUp or ShipmentStatus.InTransit or ShipmentStatus.AtHub or ShipmentStatus.OutForDelivery),
+            Failed = shipments.Count(s => s.Status is ShipmentStatus.PickupFailed or ShipmentStatus.DeliveryFailed),
+            Cancelled = shipments.Count(s => s.Status == ShipmentStatus.Cancelled),
+            Returned = shipments.Count(s => s.Status == ShipmentStatus.Returned),
+            TotalRevenue = shipments.Sum(s => s.ShippingCost ?? 0),
+            ShilpoHubRevenue = shipments.Sum(s => s.ShilpoHubRevenue),
+            PartnerRevenue = shipments.Sum(s => s.PartnerRevenue),
+        };
+        result.SuccessRate = result.TotalDeliveries == 0 ? 0 : decimal.Round(result.Delivered * 100m / result.TotalDeliveries, 2);
+        var completed = shipments.Where(s => s.PickedUpAt.HasValue && s.DeliveredAt.HasValue).ToList();
+        result.AverageDeliveryHours = completed.Count == 0 ? null : completed.Average(s => (s.DeliveredAt!.Value - s.PickedUpAt!.Value).TotalHours);
+        result.Areas = shipments.GroupBy(s => s.DestinationDistrict?.Name ?? s.DestinationCity)
+            .Select(g => new LogisticsAreaPerformanceDto { Area = g.Key, Deliveries = g.Count(), Delivered = g.Count(s => s.Status == ShipmentStatus.Delivered), Failed = g.Count(s => s.Status is ShipmentStatus.PickupFailed or ShipmentStatus.DeliveryFailed) }).ToList();
+        return result;
+    }
 
     public Task SaveChangesAsync(CancellationToken cancellationToken)
         => _context.SaveChangesAsync(cancellationToken);
