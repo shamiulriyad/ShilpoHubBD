@@ -95,7 +95,12 @@ public class OrderService : IOrderService
             request.ShippingDistrictId, request.ShippingArea, cancellationToken);
         var normalizedArea = string.IsNullOrWhiteSpace(request.ShippingArea) ? null : request.ShippingArea.Trim();
         var selected = availablePartners
-            .SelectMany(p => p.ServiceAreas.Select(a => new { Partner = p, Area = a }))
+            .SelectMany(p => p.ServiceAreas
+                .Where(a => a.IsActive && a.DistrictId == request.ShippingDistrictId
+                    && (a.AreaName == null || string.Equals(a.AreaName, normalizedArea, StringComparison.OrdinalIgnoreCase)))
+                .GroupBy(a => a.DeliveryMethod, StringComparer.OrdinalIgnoreCase)
+                .Select(g => g.OrderByDescending(a => a.AreaName != null).First())
+                .Select(a => new { Partner = p, Area = a }))
             .FirstOrDefault(x => x.Area.Id == request.LogisticsServiceAreaId && x.Area.IsActive
                 && x.Area.DistrictId == request.ShippingDistrictId
                 && (x.Area.AreaName == null || string.Equals(x.Area.AreaName, normalizedArea, StringComparison.OrdinalIgnoreCase)));
@@ -144,7 +149,8 @@ public class OrderService : IOrderService
             ShippingArea = string.IsNullOrWhiteSpace(request.ShippingArea) ? null : request.ShippingArea.Trim(),
             DeliveryCharge = selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0),
             ShilpoHubDeliveryRevenue = decimal.Round((selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0)) * 0.30m, 2, MidpointRounding.AwayFromZero),
-            LogisticsPartnerRevenue = decimal.Round((selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0)) * 0.70m, 2, MidpointRounding.AwayFromZero),
+            LogisticsPartnerRevenue = selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0)
+                - decimal.Round((selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0)) * 0.30m, 2, MidpointRounding.AwayFromZero),
             ExpectedDeliveryAt = now.AddDays(selected.Area.StandardDeliveryDays),
             Total = subtotal + selected.Area.DeliveryCharge + (selected.Area.SurchargeAmount ?? 0),
             RecipientName = request.RecipientName.Trim(),
