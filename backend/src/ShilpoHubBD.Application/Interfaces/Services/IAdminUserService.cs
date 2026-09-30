@@ -5,6 +5,8 @@ namespace ShilpoHubBD.Application.Interfaces.Services;
 
 public interface IAdminUserService
 {
+    Task<AdminUserDetailDto> CreateLogisticsUserAsync(Guid profileId,
+        CreateGovernmentNgoUserRequest request, Guid actorUserId, string? ipAddress, CancellationToken cancellationToken);
     Task<PagedResult<AdminUserListItemDto>> GetPagedAsync(
         AdminUserQueryParameters query, CancellationToken cancellationToken);
 
