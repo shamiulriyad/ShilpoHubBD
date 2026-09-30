@@ -1,6 +1,7 @@
 import apiClient from './apiClient';
 
 export const logisticsPartnersService = {
+  createAccount: (profileId, payload) => apiClient.post(`/admin/users/logistics-partners/${profileId}/account`, payload).then((res) => res.data),
   available: (districtId, areaName) => apiClient.get('/logistics/partners/available', {
     params: { districtId, areaName: areaName || undefined },
   }).then((res) => res.data),
