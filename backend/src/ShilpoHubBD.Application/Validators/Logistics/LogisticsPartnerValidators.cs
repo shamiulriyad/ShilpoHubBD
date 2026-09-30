@@ -48,7 +48,7 @@ public class UpsertLogisticsServiceAreaRequestValidator : AbstractValidator<Upse
         RuleFor(x => x.StandardDeliveryDays).InclusiveBetween(0, 60);
         RuleFor(x => x.AreaName).MaximumLength(160);
         RuleFor(x => x.DeliveryMethod).NotEmpty().MaximumLength(80);
-        RuleFor(x => x.DeliveryCharge).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.DeliveryCharge).GreaterThanOrEqualTo(0).PrecisionScale(12, 2, true);
         RuleFor(x => x.SurchargeAmount).GreaterThanOrEqualTo(0).When(x => x.SurchargeAmount.HasValue);
     }
 }
