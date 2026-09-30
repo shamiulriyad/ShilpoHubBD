@@ -7,7 +7,7 @@ import { routePaths } from '../../routes/routePaths';
 export default function ProfileStatusBanner() {
   const { activeRole } = useAuth();
   const { data } = useMyProfile();
-  if (!data || activeRole === 'SuperAdmin' || data.status === 'Approved') return null;
+  if (!data || ['SuperAdmin', 'GovernmentNGO', 'LogisticsPartner'].includes(activeRole) || data.status === 'Approved') return null;
 
   const messages = {
     NotSubmitted: 'Complete your profile with your NID number so an admin can approve it.',
