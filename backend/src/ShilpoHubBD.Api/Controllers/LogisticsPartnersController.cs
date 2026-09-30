@@ -93,6 +93,7 @@ public class LogisticsPartnersController : ControllerBase
     }
 
     [HttpPut("{userId:guid}")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<ActionResult<LogisticsPartnerProfileDto>> Upsert(
         Guid userId, UpsertLogisticsPartnerProfileRequest request, CancellationToken cancellationToken)
         => Ok(await _service.UpsertAsync(userId, CurrentUserId, IsAdmin, request, cancellationToken));
@@ -104,16 +105,19 @@ public class LogisticsPartnersController : ControllerBase
         => Ok(await _service.VerifyAsync(userId, CurrentUserId, request, cancellationToken));
 
     [HttpPut("{userId:guid}/service-areas")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<ActionResult<LogisticsPartnerProfileDto>> UpsertServiceArea(
         Guid userId, UpsertLogisticsServiceAreaRequest request, CancellationToken cancellationToken)
         => Ok(await _service.UpsertServiceAreaAsync(userId, CurrentUserId, IsAdmin, request, cancellationToken));
 
     [HttpDelete("{userId:guid}/service-areas/{serviceAreaId:guid}")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<ActionResult<LogisticsPartnerProfileDto>> RemoveServiceArea(
         Guid userId, Guid serviceAreaId, CancellationToken cancellationToken)
         => Ok(await _service.RemoveServiceAreaAsync(userId, CurrentUserId, IsAdmin, serviceAreaId, cancellationToken));
 
     [HttpDelete("{userId:guid}")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
     public async Task<IActionResult> Delete(Guid userId, CancellationToken cancellationToken)
     {
         await _service.DeleteAsync(userId, CurrentUserId, IsAdmin, cancellationToken);
