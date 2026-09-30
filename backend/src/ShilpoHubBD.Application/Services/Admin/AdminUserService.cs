@@ -18,10 +18,12 @@ public class AdminUserService : IAdminUserService
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly ILogisticsPartnerRepository _logisticsPartners;
 
     public AdminUserService(
         IAdminUserRepository repository, IIdentityVerificationRepository verificationRepository, IAuditLogService auditLogService,
-        IUserRepository userRepository, IRoleRepository roleRepository, IPasswordHasher passwordHasher)
+        IUserRepository userRepository, IRoleRepository roleRepository, IPasswordHasher passwordHasher,
+        ILogisticsPartnerRepository logisticsPartners)
     {
         _repository = repository;
         _verificationRepository = verificationRepository;
@@ -29,6 +31,7 @@ public class AdminUserService : IAdminUserService
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _passwordHasher = passwordHasher;
+        _logisticsPartners = logisticsPartners;
     }
 
     public async Task<PagedResult<AdminUserListItemDto>> GetPagedAsync(
@@ -79,6 +82,21 @@ public class AdminUserService : IAdminUserService
 
     public async Task<AdminUserDetailDto> CreateGovernmentNgoUserAsync(
         CreateGovernmentNgoUserRequest request, Guid actorUserId, string? ipAddress, CancellationToken cancellationToken)
+        => await CreateManagedUserAsync(request, RoleNames.GovernmentNGO, null, actorUserId, ipAddress, cancellationToken);
+
+    public async Task<AdminUserDetailDto> CreateLogisticsUserAsync(
+        Guid profileId, CreateGovernmentNgoUserRequest request, Guid actorUserId, string? ipAddress, CancellationToken cancellationToken)
+    {
+        var profile = await _logisticsPartners.GetByIdAsync(profileId, cancellationToken)
+            ?? throw new NotFoundException("Logistics company not found.");
+        if (profile.UserId.HasValue) throw new ConflictException("This company already has an operator account.");
+        return await CreateManagedUserAsync(request, RoleNames.LogisticsPartner, profile, actorUserId, ipAddress, cancellationToken);
+    }
+
+    private async Task<AdminUserDetailDto> CreateManagedUserAsync(
+        CreateGovernmentNgoUserRequest request, string roleName,
+        Domain.Entities.Logistics.LogisticsPartnerProfile? profile,
+        Guid actorUserId, string? ipAddress, CancellationToken cancellationToken)
     {
         var email = request.Email.Trim().ToLowerInvariant();
         if (await _userRepository.ExistsByEmailAsync(email, cancellationToken))
@@ -86,8 +104,8 @@ public class AdminUserService : IAdminUserService
             throw new ConflictException("Email is already registered.");
         }
 
-        var role = await _roleRepository.GetByNameAsync(RoleNames.GovernmentNGO, cancellationToken)
-            ?? throw new NotFoundException("The GovernmentNGO role is not configured.");
+        var role = await _roleRepository.GetByNameAsync(roleName, cancellationToken)
+            ?? throw new NotFoundException($"The {roleName} role is not configured.");
 
         var now = DateTime.UtcNow;
         var user = new User
@@ -109,13 +127,20 @@ public class AdminUserService : IAdminUserService
         });
 
         await _userRepository.AddAsync(user, cancellationToken);
+        // Both repositories share the scoped DbContext: account, role, and link commit together.
+        if (profile is not null)
+        {
+            profile.UserId = user.Id;
+            profile.User = user;
+            profile.UpdatedAt = now;
+        }
         await _userRepository.SaveChangesAsync(cancellationToken);
 
         var actor = await _repository.GetByIdWithRolesAsync(actorUserId, cancellationToken);
         await _auditLogService.LogAsync(
             actorUserId, actor?.FullName ?? actorUserId.ToString(),
-            "AdminUser.CreatedGovernmentNgo", "User", user.Id,
-            $"Created a Government/NGO account for {user.Email}.", ipAddress, cancellationToken);
+            $"AdminUser.Created{roleName}", "User", user.Id,
+            $"Created an admin-managed {roleName} account for {user.Email}.", ipAddress, cancellationToken);
 
         return await GetByIdAsync(user.Id, cancellationToken);
     }
