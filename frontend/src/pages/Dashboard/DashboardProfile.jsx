@@ -4,9 +4,12 @@ import { useAuth } from '../../hooks/useAuth';
 import { roleLabel } from '../../utils/roles';
 import ProfileForm from '../../components/profile/ProfileForm';
 import ProfilePhotoField from '../../components/profile/ProfilePhotoField';
+import LogisticsPartnerProfile from '../LogisticsPartner/Profile';
 
 export default function DashboardProfile() {
   const { user, roles, activeRole } = useAuth();
+
+  if (activeRole === 'LogisticsPartner') return <LogisticsPartnerProfile />;
 
   return (
     <div>
