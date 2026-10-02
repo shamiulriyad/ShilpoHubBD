@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { orderComplaintsService } from '../services/orderComplaintsService';
+import { mergeDemoArray } from '../data/producerDemoData';
 
 export function useMyComplaints() {
   return useQuery({ queryKey: ['order-complaints', 'mine'], queryFn: () => orderComplaintsService.mine() });
 }
 
 export function useReceivedComplaints() {
-  return useQuery({ queryKey: ['order-complaints', 'received'], queryFn: () => orderComplaintsService.received() });
+  return useQuery({ queryKey: ['order-complaints', 'received'], queryFn: async () => mergeDemoArray(await orderComplaintsService.received(), 'complaints') });
 }
 
 export function useComplaintMutations() {
