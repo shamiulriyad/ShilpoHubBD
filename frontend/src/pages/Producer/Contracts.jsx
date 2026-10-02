@@ -54,7 +54,7 @@ export default function Contracts() {
                     ))}
                   </div>
                   <StatusTimeline events={contract.statusHistory} />
-                  {contract.status === 'PendingApproval' && (
+                  {contract.status === 'PendingApproval' && !contract.isDemo && (
                     <div className="flex gap-2">
                       <Button variant="primary" onClick={() => accept.mutate(contract.id)} disabled={accept.isPending}>
                         Accept
@@ -64,7 +64,7 @@ export default function Contracts() {
                       </Button>
                     </div>
                   )}
-                  {contract.status === 'Active' && (
+                  {contract.status === 'Active' && !contract.isDemo && (
                     <Button variant="secondary" onClick={async () => { if (await confirmAction('Terminate this? This ends it for both sides.', { confirmLabel: 'Yes, terminate' })) terminate.mutate(contract.id); }} disabled={terminate.isPending}>
                       Terminate
                     </Button>
