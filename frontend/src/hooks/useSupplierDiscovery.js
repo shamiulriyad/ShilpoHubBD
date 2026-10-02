@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { supplierDiscoveryService } from '../services/supplierDiscoveryService';
+import { mergeRolePage } from '../data/roleDemoData';
 
 export function useSupplierSearch(params = {}) {
-  return useQuery({ queryKey: ['supplier-discovery', 'search', params], queryFn: () => supplierDiscoveryService.search(params) });
+  return useQuery({ queryKey: ['supplier-discovery', 'search', params], queryFn: async () => mergeRolePage(await supplierDiscoveryService.search(params), 'suppliers') });
 }
 
 export function useSupplierProfile(producerId) {
