@@ -128,7 +128,7 @@ export default function ProducerAuctions() {
                 Current bid <span className="font-semibold text-heading">৳ {Number(a.currentPrice).toLocaleString('en-BD')}</span> · {a.bidCount} bid{a.bidCount === 1 ? '' : 's'}
                 {a.status === 'Ended' && (a.winnerName ? ` · Won by ${a.winnerName}` : ' · No bids')}
               </p>
-              {['Scheduled', 'Active'].includes(a.status) && (
+              {['Scheduled', 'Active'].includes(a.status) && !a.isDemo && (
                 <div className="mt-3">
                   {cancelId === a.id ? (
                     <div className="flex flex-wrap items-center gap-2 text-sm">
