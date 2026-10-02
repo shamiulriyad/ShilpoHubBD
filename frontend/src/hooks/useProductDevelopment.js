@@ -1,16 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { productDevelopmentService } from '../services/productDevelopmentService';
+import { demoRecord, mergeDemoPage } from '../data/producerDemoData';
 
 export function useMyDevelopmentProjects(params = {}) {
   return useQuery({ queryKey: ['product-development', 'mine', params], queryFn: () => productDevelopmentService.mine(params) });
 }
 
 export function useReceivedDevelopmentProjects(params = {}) {
-  return useQuery({ queryKey: ['product-development', 'received', params], queryFn: () => productDevelopmentService.received(params) });
+  return useQuery({ queryKey: ['product-development', 'received', params], queryFn: async () => mergeDemoPage(await productDevelopmentService.received(params), 'development') });
 }
 
 export function useDevelopmentProject(id) {
-  return useQuery({ queryKey: ['product-development', id], queryFn: () => productDevelopmentService.getById(id), enabled: Boolean(id) });
+  return useQuery({ queryKey: ['product-development', id], queryFn: () => demoRecord('development', id) || productDevelopmentService.getById(id), enabled: Boolean(id) });
 }
 
 export function useProductDevelopmentMutations() {
