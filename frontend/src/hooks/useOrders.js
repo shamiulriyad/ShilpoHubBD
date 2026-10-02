@@ -1,10 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ordersService } from '../services/ordersService';
+import { mergeRolePage } from '../data/roleDemoData';
 
 export function useOrders(params = {}, enabled = true) {
   return useQuery({
     queryKey: ['orders', params],
-    queryFn: () => ordersService.list(params),
+    queryFn: async () => {
+      const live = await ordersService.list(params);
+      if (params.status === 'ReturnRequested') return mergeRolePage(live, 'customerReturns');
+      if (params.status === 'Returned') return live;
+      if (params.status === 'Refunded') return mergeRolePage(live, 'customerRefunds');
+      return live;
+    },
     enabled,
   });
 }
