@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { PageHeader, Badge, Button, AsyncState, PageNavigation } from '../../components/ui';
 import { confirmAction } from '../../lib/confirm';
 import {
   usePolicySimulations, useComplianceRecords, useComplianceRecord, usePolicyComplianceMutations,
@@ -12,7 +12,8 @@ const entityTypes = ['Producer', 'Village', 'District', 'Product', 'Organization
 const complianceStatusTone = { NotStarted: 'neutral', InProgress: 'secondary', Compliant: 'success', NonCompliant: 'neutral', Waived: 'neutral', Expired: 'neutral' };
 
 function SimulationsTab() {
-  const { data, isLoading, isError, error } = usePolicySimulations({ pageSize: 50 });
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error } = usePolicySimulations({ page, pageSize: 10 });
   const { runSimulation, removeSimulation } = usePolicyComplianceMutations();
   const [form, setForm] = useState({ title: '', simulationType: 'GrantProgram', scope: 'National', horizonMonths: 12, budget: '' });
 
@@ -54,9 +55,10 @@ function SimulationsTab() {
               <button type="button" onClick={async () => { if (await confirmAction('Remove this? This cannot be undone.', { confirmLabel: 'Yes, remove' })) removeSimulation.mutate(s.id); }} className="text-xs text-danger hover:underline">Delete</button>
             </div>
           ))}
-          {simulations.length === 0 && <p className="text-sm text-body/60">No simulations run yet.</p>}
+          {simulations.length === 0 && <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted">No simulations yet. Define a scenario above to run your first simulation.</p>}
         </div>
       </AsyncState>
+      {!isLoading && !isError && <PageNavigation data={data} page={page} onPageChange={setPage} />}
     </div>
   );
 }
@@ -98,7 +100,8 @@ function ComplianceDetail({ id }) {
 }
 
 function ComplianceTab() {
-  const { data, isLoading, isError, error } = useComplianceRecords({ pageSize: 50 });
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error } = useComplianceRecords({ page, pageSize: 10 });
   const { createComplianceRecord } = usePolicyComplianceMutations();
   const [showForm, setShowForm] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
@@ -147,9 +150,10 @@ function ComplianceTab() {
               {expandedId === r.id && <ComplianceDetail id={r.id} />}
             </div>
           ))}
-          {records.length === 0 && <p className="text-sm text-body/60">No compliance records yet.</p>}
+          {records.length === 0 && <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted">No compliance records yet. Create a record to track requirements against a framework.</p>}
         </div>
       </AsyncState>
+      {!isLoading && !isError && <PageNavigation data={data} page={page} onPageChange={(next) => { setPage(next); setExpandedId(null); }} />}
     </div>
   );
 }
