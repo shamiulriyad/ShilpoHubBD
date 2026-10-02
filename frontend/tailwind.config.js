@@ -19,6 +19,7 @@ export default {
         secondary: cssColor('secondary'),
         success: cssColor('success'),
         error: cssColor('error'),
+        danger: cssColor('error'),
       },
     },
   },
