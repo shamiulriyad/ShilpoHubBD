@@ -81,7 +81,7 @@ export default function Contracts() {
               {expandedId === contract.id && (
                 <div className="mt-4 space-y-3 border-t border-border pt-4">
                   <StatusTimeline events={contract.statusHistory} />
-                  {contract.status === 'Active' && (
+                  {contract.status === 'Active' && !contract.isDemo && (
                     <Button variant="secondary" onClick={async () => { if (await confirmAction('Terminate this? This ends it for both sides.', { confirmLabel: 'Yes, terminate' })) terminate.mutate(contract.id); }}>Terminate</Button>
                   )}
                 </div>
