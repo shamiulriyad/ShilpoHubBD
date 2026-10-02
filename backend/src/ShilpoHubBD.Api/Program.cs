@@ -249,6 +249,7 @@ using (var referenceDataScope = app.Services.CreateScope())
 	await SiteContentSeeder.SeedAsync(dbContext);
 	await ProductSearchSeeder.SeedAsync(dbContext);
 	await HeritageDiscoverySeeder.SeedAsync(dbContext);
+	await TouristDemoSeeder.SeedAsync(dbContext);
 }
 
 // Configure the HTTP request pipeline.
@@ -301,7 +302,13 @@ app.Use(async (context, next) =>
     await next(context);
 });
 
-app.UseRateLimiter();
+// Local development performs frequent login/reload cycles (and all requests come from
+// the same loopback IP), so enforcing the production limiter here quickly locks out the
+// developer. Keep every policy registered and enforced in non-development environments.
+if (!app.Environment.IsDevelopment())
+{
+	app.UseRateLimiter();
+}
 
 app.MapControllers();
 app.MapHub<MessagingHub>("/hubs/messaging");
