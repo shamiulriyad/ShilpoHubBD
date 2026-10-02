@@ -99,20 +99,20 @@ export default function ProducerCustomOrders() {
               </p>
               {order.producerResponse && <p className="mt-1 text-xs text-body/70">Your message: “{order.producerResponse}”</p>}
 
-              {order.status === 'Pending' && <ResponseForm order={order} respond={respond} onAccepted={() => setChatWith({ id: order.customerId, name: order.customerName })} />}
-              {order.status === 'Accepted' && (
+              {order.status === 'Pending' && !order.isDemo && <ResponseForm order={order} respond={respond} onAccepted={() => setChatWith({ id: order.customerId, name: order.customerName })} />}
+              {order.status === 'Accepted' && !order.isDemo && (
                 <div className="mt-4 border-t border-border pt-4">
                   <Button variant="primary" onClick={() => respond.mutate({ id: order.id, payload: { status: 'InProgress', quotedPrice: order.quotedPrice } })} disabled={respond.isPending}>
                     Start work
                   </Button>
                 </div>
               )}
-              {['Accepted', 'InProgress'].includes(order.status) && (
+              {['Accepted', 'InProgress'].includes(order.status) && !order.isDemo && (
                 <div className="mt-3">
                   <Button variant="secondary" size="sm" onClick={() => setChatWith({ id: order.customerId, name: order.customerName })}>Message {order.customerName}</Button>
                 </div>
               )}
-              {order.status === 'Completed' && (
+              {order.status === 'Completed' && !order.isDemo && (
                 <div className="mt-4 border-t border-border pt-4">
                   {!order.shippingAddressLine && (
                     <p className="mb-2 text-xs text-error">The customer has not given a delivery address yet - ask them in a message before handing over.</p>
@@ -134,7 +134,7 @@ export default function ProducerCustomOrders() {
               {order.status === 'Delivered' && (
                 <p className="mt-4 border-t border-border pt-4 text-sm text-success">Delivered{order.deliveredAt ? ` on ${new Date(order.deliveredAt).toLocaleDateString()}` : ''}.</p>
               )}
-              {order.status === 'InProgress' && (
+              {order.status === 'InProgress' && !order.isDemo && (
                 <div className="mt-4 border-t border-border pt-4">
                   <Button variant="primary" onClick={() => respond.mutate({ id: order.id, payload: { status: 'Completed', quotedPrice: order.quotedPrice } })} disabled={respond.isPending}>
                     Mark completed
