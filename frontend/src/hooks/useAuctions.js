@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { auctionsService } from '../services/auctionsService';
+import { mergeDemoPage } from '../data/producerDemoData';
 
 export function useAuctions(params = {}) {
   return useQuery({
@@ -19,7 +20,7 @@ export function useAuction(id) {
 export function useMyAuctions(params = {}) {
   return useQuery({
     queryKey: ['auctions', 'mine', params],
-    queryFn: () => auctionsService.mine(params),
+    queryFn: async () => mergeDemoPage(await auctionsService.mine(params), 'auctions'),
   });
 }
 
