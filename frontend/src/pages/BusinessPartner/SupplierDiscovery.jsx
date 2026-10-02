@@ -112,8 +112,8 @@ export default function SupplierDiscovery() {
                 <button
                   key={r.producerId}
                   type="button"
-                  onClick={() => setSelectedProducerId(r.producerId)}
-                  className={`block w-full rounded-xl border p-4 text-left transition ${selectedProducerId === r.producerId ? 'border-primary bg-primary/5' : 'border-border bg-surface hover:shadow-md'}`}
+                  onClick={() => !r.isDemo && setSelectedProducerId(r.producerId)}
+                  className={`block w-full rounded-xl border p-4 text-left transition ${selectedProducerId === r.producerId ? 'border-primary bg-primary/5' : 'border-border bg-surface hover:shadow-md'} ${r.isDemo ? 'cursor-default' : ''}`}
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold text-heading">{r.producerName}</p>
