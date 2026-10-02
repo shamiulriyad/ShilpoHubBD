@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { producerReturnsService } from '../services/producerReturnsService';
+import { mergeDemoArray } from '../data/producerDemoData';
 
 export function useProducerReturns() {
-  return useQuery({ queryKey: ['producer-returns'], queryFn: () => producerReturnsService.list() });
+  return useQuery({ queryKey: ['producer-returns'], queryFn: async () => mergeDemoArray(await producerReturnsService.list(), 'returns') });
 }
 
 export function useProducerReturnMutations() {
