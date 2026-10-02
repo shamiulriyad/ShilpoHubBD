@@ -24,7 +24,7 @@ function Card({ c, respond }) {
       {c.imageUrl && <SafeImage src={resolveUploadUrl(c.imageUrl)} alt="Photo from the customer" className="mt-2 max-h-48 rounded-lg object-cover" loading="lazy" />}
       {c.customerNote && <p className="mt-2 text-xs text-body/70">Customer note: “{c.customerNote}”</p>}
       {c.producerResponse && <p className="mt-2 rounded-md bg-background px-3 py-2 text-sm text-body/80"><span className="font-medium text-heading">Your answer:</span> {c.producerResponse}</p>}
-      {c.status === 'Open' && (
+      {c.status === 'Open' && !c.isDemo && (
         <form className="mt-4 flex flex-col gap-2 border-t border-border pt-4 sm:flex-row" onSubmit={(e) => { e.preventDefault(); if (message.trim()) respond.mutate({ id: c.id, message: message.trim() }, { onSuccess: () => setMessage('') }); }}>
           <textarea aria-label="Your answer" required rows={2} maxLength={2000} placeholder="Explain what you did to fix it (replacement, refund, repair…)" value={message} onChange={(e) => setMessage(e.target.value)} className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
           <Button type="submit" variant="primary" disabled={respond.isPending || !message.trim()}>Mark resolved</Button>
