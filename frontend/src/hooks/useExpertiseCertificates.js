@@ -1,8 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { expertiseCertificatesService } from '../services/expertiseCertificatesService';
+import { producerDemoData } from '../data/producerDemoData';
 
 export function useMyExpertise() {
-  return useQuery({ queryKey: ['expertise', 'mine'], queryFn: () => expertiseCertificatesService.mine() });
+  return useQuery({ queryKey: ['expertise', 'mine'], queryFn: async () => {
+    const live = await expertiseCertificatesService.mine();
+    return import.meta.env.DEV && !live?.ratingCount ? producerDemoData.expertise : live;
+  } });
 }
 
 export function useEligibleProducers() {
