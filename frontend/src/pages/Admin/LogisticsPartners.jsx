@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { PageHeader, Button } from '../../components/ui';
 import { useDistricts } from '../../hooks/useDistricts';
 import { logisticsPartnersService } from '../../services/logisticsPartnersService';
+import { enrichAdminData } from '../../data/adminDemoData';
 
 const emptyPartner = { companyName: '', logoUrl: '', description: '', contactPersonName: '', contactPhone: '', contactEmail: '', baseAddressLine: '', baseCity: '', country: 'Bangladesh', fleetSize: 0, maxDailyPickups: 0, offersCashOnDelivery: true, offersPickup: true, supportsReturns: true, isAcceptingRequests: true, isActive: true };
 const emptyArea = { districtId: '', areaName: '', deliveryMethod: 'Standard', standardDeliveryDays: 3, deliveryCharge: 0, pickupAvailable: true, returnSupported: true, isActive: true };
@@ -23,7 +24,7 @@ export default function AdminLogisticsPartners() {
     finally { setBusy(false); }
   };
   const [form, setForm] = useState(emptyPartner); const [area, setArea] = useState(emptyArea); const [performance, setPerformance] = useState(null); const [busy, setBusy] = useState(false); const [error, setError] = useState('');
-  const load = async () => { const page = await logisticsPartnersService.list({ pageSize: 100 }); setPartners(page.items || []); };
+  const load = async () => { const page = enrichAdminData('/admin/logistics-partners', await logisticsPartnersService.list({ pageSize: 100 })); setPartners(page.items || []); };
   useEffect(() => { load().catch((e) => setError(e.response?.data?.title || e.message)); }, []);
   const choose = async (id) => { try { const [value, stats] = await Promise.all([logisticsPartnersService.getOfficial(id), logisticsPartnersService.performance(id)]); setSelected(value); setPerformance(stats); setForm({ ...emptyPartner, ...value }); } catch (e) { setError(e.response?.data?.title || e.message); } };
   const set = (key) => (e) => setForm((p) => ({ ...p, [key]: e.target.type === 'checkbox' ? e.target.checked : e.target.value }));
@@ -58,7 +59,7 @@ export default function AdminLogisticsPartners() {
           <Button type="submit" disabled={busy}>Create operator account</Button>
         </form>}
     </section>}
-    <div className="grid gap-6 xl:grid-cols-[320px_1fr]"><section className="rounded-xl border border-border bg-surface p-4"><Button className="mb-4 w-full" onClick={() => { setSelected(null); setForm(emptyPartner); }}>Add partner</Button><div className="space-y-2">{partners.map((p) => <button key={p.id} onClick={() => choose(p.id)} className="w-full rounded-lg border border-border p-3 text-left hover:border-primary"><span className="block font-medium text-heading">{p.companyName}</span><span className="text-xs text-body/60">{p.isActive ? 'Active' : 'Inactive'} · {p.serviceAreaCount} coverage rules</span></button>)}</div></section>
+    <div className="grid gap-6 xl:grid-cols-[320px_1fr]"><section className="rounded-xl border border-border bg-surface p-4"><Button className="mb-4 w-full" onClick={() => { setSelected(null); setForm(emptyPartner); }}>Add partner</Button><div className="space-y-2">{partners.map((p) => <button key={p.id} disabled={p.isDemo} onClick={() => choose(p.id)} className="w-full rounded-lg border border-border p-3 text-left hover:border-primary disabled:cursor-default disabled:hover:border-border"><span className="block font-medium text-heading">{p.companyName}</span><span className="text-xs text-body/60">{p.isActive ? 'Active' : 'Inactive'} · {p.serviceAreaCount} coverage rules{p.isDemo ? ' · Preview data' : ''}</span></button>)}</div></section>
       <div className="space-y-6"><form onSubmit={save} className="grid gap-3 rounded-xl border border-border bg-surface p-5 sm:grid-cols-2"><h2 className="sm:col-span-2 font-semibold text-heading">{selected ? 'Edit company' : 'New official partner'}</h2>
         {[['companyName','Company name'],['logoUrl','Logo URL'],['contactPersonName','Contact person'],['contactPhone','Phone'],['contactEmail','Email'],['baseCity','Base city'],['baseAddressLine','Base address']].map(([key,label]) => <label key={key} className="flex flex-col gap-1 text-xs text-body/60">{label}<input required={key !== 'logoUrl'} value={form[key] || ''} onChange={set(key)} className={input}/></label>)}
         <label className="flex flex-col gap-1 text-xs text-body/60 sm:col-span-2">Description<textarea value={form.description || ''} onChange={set('description')} className={input}/></label>
