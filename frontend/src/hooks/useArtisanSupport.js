@@ -1,12 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { artisanSupportService as api } from '../services/artisanSupportService';
+import { mergeDemoArray } from '../data/producerDemoData';
 
 export const useSupportOrganization = (enabled = true) => useQuery({ queryKey: ['artisan-support', 'organization', 'me'], queryFn: api.myOrganization, enabled });
 export const useSupportOrganizations = (enabled = true) => useQuery({ queryKey: ['artisan-support', 'organizations'], queryFn: api.organizations, enabled });
 export const useSupportOrganizationOptions = (enabled = true) => useQuery({ queryKey: ['artisan-support', 'organization-options'], queryFn: api.organizationOptions, enabled });
 export const useSupportArtisans = (enabled = true) => useQuery({ queryKey: ['artisan-support', 'artisans'], queryFn: api.artisans, enabled });
-export const useSupportCases = () => useQuery({ queryKey: ['artisan-support', 'cases'], queryFn: api.cases });
-export const useSupportDashboard = () => useQuery({ queryKey: ['artisan-support', 'dashboard'], queryFn: api.dashboard });
+export const useSupportCases = () => useQuery({ queryKey: ['artisan-support', 'cases'], queryFn: async () => mergeDemoArray(await api.cases(), 'supportCases') });
+export const useSupportDashboard = () => useQuery({ queryKey: ['artisan-support', 'dashboard'], queryFn: async () => {
+  const live = await api.dashboard();
+  if (!import.meta.env.DEV) return live;
+  return {
+    ...live,
+    pendingOrganizationVerification: live.pendingOrganizationVerification || 10,
+    verifiedOrganizations: live.verifiedOrganizations || 18,
+    activeCases: Math.max(live.activeCases || 0, 15),
+    reportsWaitingReview: Math.max(live.reportsWaitingReview || 0, 7),
+    overdueReports: Math.max(live.overdueReports || 0, 4),
+    disputes: Math.max(live.disputes || 0, 3),
+    flaggedCases: Math.max(live.flaggedCases || 0, 2),
+  };
+} });
 export const useCaseImpact = (caseId, enabled = true) => useQuery({
   queryKey: ['artisan-support', 'impact', caseId],
   queryFn: () => api.getImpact(caseId),

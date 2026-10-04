@@ -1,7 +1,7 @@
 import UserSelect from '../../components/forms/UserSelect';
 import { useState } from 'react';
 import { routePaths } from '../../routes/routePaths';
-import { PageHeader, Badge, Button, AsyncState } from '../../components/ui';
+import { PageHeader, Badge, Button, AsyncState, PageNavigation } from '../../components/ui';
 import { confirmAction } from '../../lib/confirm';
 import {
   useResearchProjects, useResearchProject, useResearchProjectMutations, useResearchActivity,
@@ -313,7 +313,8 @@ function ProjectDetail({ id }) {
 }
 
 export default function ResearchWorkspace() {
-  const { data, isLoading, isError, error } = useResearchProjects({ pageSize: 50 });
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error } = useResearchProjects({ page, pageSize: 10 });
   const { create } = useResearchProjectMutations();
   const [showForm, setShowForm] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -369,9 +370,10 @@ export default function ResearchWorkspace() {
               {selectedId === p.id && <ProjectDetail id={p.id} />}
             </div>
           ))}
-          {projects.length === 0 && <p className="text-sm text-body/60">No research projects yet.</p>}
+          {projects.length === 0 && <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted">No research projects yet. Create a project to organize papers, notes, and milestones.</p>}
         </div>
       </AsyncState>
+      {!isLoading && !isError && <PageNavigation data={data} page={page} onPageChange={(next) => { setPage(next); setSelectedId(null); }} />}
     </div>
   );
 }

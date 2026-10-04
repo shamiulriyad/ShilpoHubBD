@@ -101,7 +101,7 @@ export default function Procurements() {
                   {req.status === 'PendingApproval' && (
                     <p className="text-sm text-body/70">The request went to {req.producerName}. Once they accept it you pay an advance of at least {`৳ ${Number(req.requiredAdvance).toLocaleString('en-BD')}`}.</p>
                   )}
-                  {req.status === 'Approved' && (!req.advancePaidAt || req.advanceRefundedAt) && (
+                  {req.status === 'Approved' && !req.isDemo && (!req.advancePaidAt || req.advanceRefundedAt) && (
                     <form
                       className="flex flex-wrap items-end gap-2"
                       onSubmit={(e) => {
@@ -119,13 +119,13 @@ export default function Procurements() {
                     </form>
                   )}
                   <div className="flex flex-wrap gap-2">
-                    {req.status === 'Approved' && (
+                    {req.status === 'Approved' && !req.isDemo && (
                       <Button variant="primary" disabled={convertToOrder.isPending || req.inspectionStatus !== 'Approved'} onClick={() => convertToOrder.mutate(req.id)}>Convert to Order</Button>
                     )}
                     {req.status === 'Approved' && req.inspectionStatus !== 'Approved' && (
                       <span className="self-center text-xs text-body/60">{req.advancePaidAt && !req.advanceRefundedAt ? 'Waiting for the admin to inspect the deal.' : 'Pay the advance first.'}</span>
                     )}
-                    {!['Converted', 'Cancelled', 'Rejected'].includes(req.status) && (
+                    {!req.isDemo && !['Converted', 'Cancelled', 'Rejected'].includes(req.status) && (
                       <Button variant="secondary" onClick={async () => { if (await confirmAction('Cancel this? It may not be possible to undo.', { confirmLabel: 'Yes, cancel it' })) cancel.mutate(req.id); }}>Cancel{req.advancePaidAt && !req.advanceRefundedAt ? ' (advance refunded)' : ''}</Button>
                     )}
                   </div>

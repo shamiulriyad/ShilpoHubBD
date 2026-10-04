@@ -1,8 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { csrSponsorshipService } from '../services/csrSponsorshipService';
+import { mergeRolePage } from '../data/roleDemoData';
 
 export function useCsrOpportunities(params = {}) {
-  return useQuery({ queryKey: ['csr', 'opportunities', params], queryFn: () => csrSponsorshipService.listOpportunities(params) });
+  return useQuery({ queryKey: ['csr', 'opportunities', params], queryFn: async () => mergeRolePage(await csrSponsorshipService.listOpportunities(params), 'sponsorships') });
 }
 
 export function useMyCsrOpportunities(params = {}) {
@@ -22,7 +23,7 @@ export function useCsrOpportunityProposals(id, params = {}) {
 }
 
 export function useMyCsrProposals(params = {}) {
-  return useQuery({ queryKey: ['csr', 'proposals', 'mine', params], queryFn: () => csrSponsorshipService.myProposals(params) });
+  return useQuery({ queryKey: ['csr', 'proposals', 'mine', params], queryFn: async () => mergeRolePage(await csrSponsorshipService.myProposals(params), 'proposals') });
 }
 
 export function useCsrProposal(id) {

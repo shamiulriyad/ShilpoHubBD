@@ -15,6 +15,10 @@ public class BookingDto
     public string ProducerName { get; set; } = string.Empty;
     public int PartySize { get; set; }
     public decimal TotalPrice { get; set; }
+    public decimal BasePrice { get; set; }
+    public decimal DiscountAmount { get; set; }
+    public decimal DiscountPercent { get; set; }
+    public string? ExplorerTier { get; set; }
     public string Status { get; set; } = string.Empty;
     public string? Notes { get; set; }
     public string? CancellationReason { get; set; }

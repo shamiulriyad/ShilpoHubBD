@@ -45,9 +45,9 @@ export default function ManufacturingPartnerships() {
                   <p className="text-sm text-body/70">{partnership.manufacturingSpecifications}</p>
                   <MilestoneList
                     milestones={partnership.milestones}
-                    onAdvance={['Accepted','InProgress'].includes(partnership.status) && !updateMilestoneStatus.isPending ? (m) => updateMilestoneStatus.mutate({ id: partnership.id, milestoneId: m.id, status: 'Completed' }) : undefined}
+                    onAdvance={!partnership.isDemo && ['Accepted','InProgress'].includes(partnership.status) && !updateMilestoneStatus.isPending ? (m) => updateMilestoneStatus.mutate({ id: partnership.id, milestoneId: m.id, status: 'Completed' }) : undefined}
                   />
-                  {partnership.status === 'Requested' && (
+                  {partnership.status === 'Requested' && !partnership.isDemo && (
                     <div className="flex gap-2">
                       <Button variant="primary" disabled={respond.isPending} onClick={() => respond.mutate({ id: partnership.id, payload: { accept: true } })}>
                         Accept

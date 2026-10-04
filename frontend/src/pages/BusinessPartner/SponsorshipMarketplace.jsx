@@ -43,9 +43,9 @@ export default function SponsorshipMarketplace() {
                   <textarea aria-label="Message" rows={2} placeholder="Message (optional)" onChange={(e) => setForm((p) => ({ ...p, proposalMessage: e.target.value }))} className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
                   <Button variant="primary" onClick={() => handleSubmit(opp.id)} disabled={submitProposal.isPending}>Submit Proposal</Button>
                 </div>
-              ) : (
+              ) : !opp.isDemo ? (
                 <Button variant="secondary" className="mt-3" onClick={() => setProposingId(opp.id)}>Propose Sponsorship</Button>
-              )}
+              ) : <p className="mt-3 text-xs font-medium text-primary">Verified programme preview</p>}
             </div>
           ))}
           {opportunities.length === 0 && <p className="col-span-full text-sm text-body/60">No open sponsorship opportunities right now.</p>}

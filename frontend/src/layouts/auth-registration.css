@@ -1,21 +1,44 @@
 .auth-registration .auth-form-wrap {
-  height: 100dvh;
-  padding: 16px 24px;
+  min-height: 100dvh;
+  padding: 24px;
 }
 
 .auth-registration .auth-form-wrap > a {
   flex-shrink: 0;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .auth-registration .registration-panel {
   min-height: 0;
-  max-height: 100%;
-  padding: 24px;
-  overflow-y: auto;
+  width: 100%;
+  max-width: 480px;
+  flex-shrink: 0;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgb(var(--color-primary) / 0.06);
 }
 
+.registration-details > div[aria-label] { margin-bottom: 18px; font-size: 12px; }
+.registration-details > h1 { font-size: 24px; line-height: 1.25; letter-spacing: -0.035em; }
+.registration-details > p { font-size: 14px; line-height: 1.5; }
+.registration-details .registration-fields { margin-top: 22px; max-width: none; }
+.registration-fields > :not([hidden]) ~ :not([hidden]) { margin-top: 14px; }
+.registration-fields label { margin-bottom: 6px; font-size: 13px; }
+.registration-fields input {
+  height: 44px;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+.registration-fields input::placeholder { color: rgb(var(--color-muted)); }
+.registration-fields > div > p { font-size: 11px; line-height: 1.5; }
+.registration-fields > button { min-height: 44px; padding: 10px 16px; font-size: 14px; border-radius: 8px; }
+.registration-details > p:last-child { margin-top: 20px; font-size: 13px; }
+
 .registration-panel:has(.role-selection) {
+  max-width: 720px;
+  max-height: calc(100dvh - 120px);
+  flex-shrink: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -74,9 +97,19 @@
 }
 
 @media (max-width: 639px) {
-  .auth-registration .auth-form-wrap { padding: 12px; }
-  .auth-registration .registration-panel { padding: 16px; }
+  .auth-registration .auth-form-wrap { padding: 20px 16px; }
+  .auth-registration .registration-panel { padding: 22px; }
   .role-grid { grid-template-columns: minmax(0, 1fr); }
   .role-selection > h1 { font-size: 1.25rem; }
   .role-selection > p { font-size: 0.875rem; }
+}
+
+@media (max-height: 740px) and (min-width: 640px) {
+  .auth-registration .auth-form-wrap { padding-block: 16px; }
+  .auth-registration .auth-form-wrap > a { margin-bottom: 12px; }
+  .auth-registration .registration-panel { padding: 22px 26px; }
+  .registration-details > div[aria-label] { margin-bottom: 12px; }
+  .registration-details .registration-fields { margin-top: 16px; }
+  .registration-fields > :not([hidden]) ~ :not([hidden]) { margin-top: 10px; }
+  .registration-details > p:last-child { margin-top: 14px; }
 }

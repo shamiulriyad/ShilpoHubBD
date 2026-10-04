@@ -1,12 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { procurementsService } from '../services/procurementsService';
+import { mergeDemoPage } from '../data/producerDemoData';
+import { mergeRolePage } from '../data/roleDemoData';
 
 export function useMyProcurements(params = {}) {
-  return useQuery({ queryKey: ['procurements', 'mine', params], queryFn: () => procurementsService.mine(params) });
+  return useQuery({ queryKey: ['procurements', 'mine', params], queryFn: async () => mergeRolePage(await procurementsService.mine(params), 'procurements') });
 }
 
 export function useIncomingProcurements(params = {}) {
-  return useQuery({ queryKey: ['procurements', 'incoming', params], queryFn: () => procurementsService.incoming(params) });
+  return useQuery({ queryKey: ['procurements', 'incoming', params], queryFn: async () => mergeDemoPage(await procurementsService.incoming(params), 'procurements') });
 }
 
 export function useProcurementInspections(params = {}) {

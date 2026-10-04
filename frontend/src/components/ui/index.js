@@ -6,6 +6,7 @@ export { default as QueryState } from './QueryState';
 export { default as SearchBar } from './SearchBar';
 export { default as FilterPanel } from './FilterPanel';
 export { default as Pagination } from './Pagination';
+export { default as PageNavigation } from './PageNavigation';
 export { default as Table } from './Table';
 export { default as MarketplaceFilter } from './MarketplaceFilter';
 export { default as CategoryFilter } from './CategoryFilter';

@@ -40,11 +40,18 @@ export default function LoginPage() {
   const errorMessage = mutation.error ? getApiErrorMessage(mutation.error, 'Unable to log in.') : null;
   const sessionExpired = searchParams.get('reason') === 'session-expired';
   const passwordReset = searchParams.get('reset') === 'success';
+  const newTabSession = searchParams.get('new-session') === '1';
 
   return (
     <div>
       <h1 className="text-2xl font-semibold text-heading">Welcome back</h1>
       <p className="mt-1 text-base text-body/60">Log in to your ShilpoHub account.</p>
+
+      {newTabSession && !errorMessage && (
+        <p role="status" className="mt-4 rounded-md border border-primary/20 bg-primary/5 px-3 py-2.5 text-sm text-body/70">
+          This tab has its own session. Sign in with another role and your other tabs will stay unchanged.
+        </p>
+      )}
 
       {sessionExpired && !errorMessage && (
         <p role="status" className="mt-4 rounded-md border border-border bg-background px-3 py-2.5 text-sm text-body/70">
