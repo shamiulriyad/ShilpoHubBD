@@ -5,6 +5,7 @@ import { PageHeader, Badge, Button, SectionHeader, AsyncState } from '../../comp
 import { useOrder, useOrderTracking, useOrderMutations } from '../../hooks/useOrders';
 import SafeImage from '../../components/media/SafeImage';
 import ReportProblemForm from '../../components/orders/ReportProblemForm';
+import RateProductForm from '../../components/orders/RateProductForm';
 
 const statusTone = {
   Delivered: 'success',
@@ -108,6 +109,7 @@ export default function OrderDetails() {
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-semibold text-heading">৳ {item.lineTotal.toLocaleString()}</p>
+                          {order.status === 'Delivered' && <RateProductForm productId={item.productId} productName={item.productName} />}
                           {order.status === 'Delivered' && <ReportProblemForm orderId={order.id} productId={item.productId} productName={item.productName} />}
                         </div>
                       </div>

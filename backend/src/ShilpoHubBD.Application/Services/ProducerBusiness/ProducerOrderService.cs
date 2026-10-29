@@ -107,15 +107,17 @@ public class ProducerOrderService : IProducerOrderService
         var item = await GetOwnedItemAsync(producerId, orderItemId, cancellationToken);
         EnsureStatus(item, OrderItemProducerStatus.Processing, "shipped");
 
-        if (!request.LogisticsPartnerProfileId.HasValue)
+        // The customer chose the logistics partner at checkout (based on their delivery district) --
+        // producers hand the order to that same partner, they don't pick one themselves.
+        if (!item.Order.LogisticsPartnerProfileId.HasValue)
         {
-            throw new ConflictException("Choose a logistics partner to hand this order to. Producers cannot deliver orders themselves.");
+            throw new ConflictException("This order has no logistics partner assigned. Contact support.");
         }
 
-        // Hand the item to the chosen logistics partner: they get a shipment for this order and
+        // Hand the item to the partner the customer chose: they get a shipment for this order and
         // the customer sees the partner and the shipment tracking number.
         var shipment = await _deliveryTrackingService.CreateForOrderHandoffAsync(
-            request.LogisticsPartnerProfileId.Value, producerId, item.Product?.Producer?.FullName ?? "Producer",
+            item.Order.LogisticsPartnerProfileId.Value, producerId, item.Product?.Producer?.FullName ?? "Producer",
             new OrderHandoffDetails
             {
                 OrderId = item.OrderId,
@@ -346,6 +348,8 @@ public class ProducerOrderService : IProducerOrderService
             RecipientName = item.Order.RecipientName,
             RecipientPhone = item.Order.RecipientPhone,
             ShippingAddressLine = item.Order.ShippingAddressLine,
+            LogisticsPartnerProfileId = item.Order.LogisticsPartnerProfileId,
+            DeliveryPartnerName = item.Order.DeliveryPartnerName,
             ProductId = item.ProductId,
             ProductName = item.ProductName,
             ProductImageUrl = item.ProductImageUrl,

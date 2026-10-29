@@ -4,7 +4,7 @@ import TravelEmptyState from '../../components/ui/TravelEmptyState';
 import MutationFeedback from '../../components/ui/MutationFeedback';
 import { useProducerCustomOrders, useCustomOrderMutations } from '../../hooks/useCustomOrders';
 import { useLogisticsDirectory } from '../../hooks/useLogisticsDirectory';
-import LogisticsHandoffControls from '../../components/producer/LogisticsHandoffControls';
+import LogisticsHandoffControls from '../../components/producer/CustomOrderLogisticsControls';
 import QuickMessageDialog from '../../components/messaging/QuickMessageDialog';
 
 const STATUS_LABEL = {

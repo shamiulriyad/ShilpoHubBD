@@ -1,6 +1,5 @@
 import MutationFeedback from '../../components/ui/MutationFeedback';
 import ProducerInsights from './ProducerInsights';
-import { useLogisticsDirectory } from '../../hooks/useLogisticsDirectory';
 import ShipControls from '../../components/producer/LogisticsHandoffControls';
 import { useState } from 'react';
 import { PageHeader, Badge, Button, AsyncState, SectionHeader, Pagination, QueryStatusBanner } from '../../components/ui';
@@ -26,7 +25,6 @@ export default function Orders() {
   const performanceQuery = useProducerProductPerformance();
   const { accept, reject, startProcessing, ship } = useProducerOrderMutations();
   const [shipForm, setShipForm] = useState({});
-  const partners = useLogisticsDirectory().data || [];
 
   const items = itemsQuery.data?.items || [];
 
@@ -83,7 +81,8 @@ export default function Orders() {
                 )}
                 {item.producerStatus === 'Processing' && (
                   <ShipControls
-                    partners={partners}
+                    partnerId={item.logisticsPartnerProfileId}
+                    partnerName={item.deliveryPartnerName}
                     form={shipForm[item.id] || {}}
                     onChange={(patch) => setShipForm((prev) => ({ ...prev, [item.id]: { ...prev[item.id], ...patch } }))}
                     onShip={(payload) => ship.mutate({ id: item.id, payload })}
