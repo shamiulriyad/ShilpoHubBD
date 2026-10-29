@@ -28,6 +28,7 @@ using ShilpoHubBD.Domain.Entities.Investment;
 using ShilpoHubBD.Domain.Entities.KnowledgeGraph;
 using ShilpoHubBD.Domain.Entities.Learning;
 using ShilpoHubBD.Domain.Entities.Logistics;
+using ShilpoHubBD.Domain.Entities.PerformingArts;
 using ShilpoHubBD.Domain.Entities.LiveClass;
 using ShilpoHubBD.Domain.Entities.LiveShopping;
 using ShilpoHubBD.Domain.Entities.ManufacturingPartnership;
@@ -252,6 +253,9 @@ public partial class ShilpoHubDbContext : DbContext
 	public DbSet<HeritageFestival> HeritageFestivals => Set<HeritageFestival>();
 	public DbSet<UnescoRecord> UnescoRecords => Set<UnescoRecord>();
 	public DbSet<CraftHeritageEntry> CraftHeritageEntries => Set<CraftHeritageEntry>();
+	public DbSet<PerformingArtRecord> PerformingArtRecords => Set<PerformingArtRecord>();
+	public DbSet<PerformingArtSource> PerformingArtSources => Set<PerformingArtSource>();
+	public DbSet<PerformingArtMedia> PerformingArtMedia => Set<PerformingArtMedia>();
 	public DbSet<ProductType> ProductTypes => Set<ProductType>();
 	public DbSet<Material> Materials => Set<Material>();
 	public DbSet<ProductMaterial> ProductMaterials => Set<ProductMaterial>();

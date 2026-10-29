@@ -13,6 +13,8 @@ export const routePaths = {
   exploreProducerDetails: '/explore/producers/:producerId',
   exploreUnesco: '/explore/unesco',
   exploreMuseum: '/explore/museum',
+  explorePerformingArts: '/explore/performing-arts',
+  explorePerformingArtDetails: '/explore/performing-arts/:slug',
 
   // Marketplace
   marketplace: '/marketplace',

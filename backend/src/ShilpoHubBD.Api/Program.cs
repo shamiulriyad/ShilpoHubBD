@@ -271,6 +271,7 @@ using (var referenceDataScope = app.Services.CreateScope())
 	await TourismLocationSeeder.SeedAsync(dbContext);
 	await TransportOptionSeeder.SeedAsync(dbContext);
 	await SiteContentSeeder.SeedAsync(dbContext);
+	await PerformingArtsSeeder.SeedAsync(dbContext);
 	await ProductSearchSeeder.SeedAsync(dbContext);
 	await HeritageDiscoverySeeder.SeedAsync(dbContext);
 	await TouristDemoSeeder.SeedAsync(dbContext);

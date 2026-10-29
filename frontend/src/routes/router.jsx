@@ -70,6 +70,8 @@ const Producers = lazy(() => import('../pages/Explore/Producers'));
 const ProducerDetails = lazy(() => import('../pages/Explore/ProducerDetails'));
 const Unesco = lazy(() => import('../pages/Explore/Unesco'));
 const DigitalMuseum = lazy(() => import('../pages/Explore/DigitalMuseum'));
+const PerformingArts = lazy(() => import('../pages/Explore/PerformingArts'));
+const PerformingArtDetails = lazy(() => import('../pages/Explore/PerformingArtDetails'));
 
 const MarketplaceHome = lazy(() => import('../pages/Marketplace/MarketplaceHome'));
 const ProductListing = lazy(() => import('../pages/Marketplace/ProductListing'));
@@ -248,6 +250,8 @@ const router = createBrowserRouter([
       { path: routePaths.exploreProducerDetails, element: <ProducerDetails /> },
       { path: routePaths.exploreUnesco, element: <Unesco /> },
       { path: routePaths.exploreMuseum, element: <DigitalMuseum /> },
+      { path: routePaths.explorePerformingArts, element: <PerformingArts /> },
+      { path: routePaths.explorePerformingArtDetails, element: <PerformingArtDetails /> },
 
       { path: routePaths.marketplace, element: <MarketplaceHome /> },
       { path: routePaths.marketplaceProducts, element: <ProductListing /> },

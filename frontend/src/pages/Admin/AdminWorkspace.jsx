@@ -6,6 +6,7 @@ import AdminUsers from './AdminUsers';
 import AdminMarketplace from './AdminMarketplace';
 import AdminModeration from './AdminModeration';
 import AdminSecurity, { SystemHealth } from './AdminSecurity';
+import AdminPerformingArts from './AdminPerformingArts';
 import { Panel, ErrorNotice, useAdminQuery } from './AdminUI';
 import { useSupportDashboard } from '../../hooks/useArtisanSupport';
 export default function AdminWorkspace({
@@ -23,7 +24,7 @@ export default function AdminWorkspace({
       path: '/admin'
     }, {
       label: title
-    }]} /><div className="mb-6 flex flex-wrap gap-2" aria-label={`${group[1]} sections`}>{group[2].map(([key, label]) => <Link key={key} to={`/admin/${section}/${key}`} aria-current={view === key ? 'page' : undefined} className={`rounded-full border px-4 py-2 text-sm font-medium ${view === key ? 'border-primary bg-primary text-white' : 'border-border bg-surface text-heading hover:border-primary'}`}>{label}</Link>)}</div><div key={`${section}/${view}`}>{section === 'users' ? <AdminUsers view={view} /> : section === 'heritage' || section === 'cms' || (section === 'marketplace' && ['productTypes', 'materials'].includes(view) && resources[view]) ? <AdminResources view={view} /> : section === 'moderation' || view === 'fraud' ? <AdminModeration view={view} /> : section === 'marketplace' ? <AdminMarketplace view={view} /> : <AdminSecurity view={view} />}</div></div>;
+    }]} /><div className="mb-6 flex flex-wrap gap-2" aria-label={`${group[1]} sections`}>{group[2].map(([key, label]) => <Link key={key} to={`/admin/${section}/${key}`} aria-current={view === key ? 'page' : undefined} className={`rounded-full border px-4 py-2 text-sm font-medium ${view === key ? 'border-primary bg-primary text-white' : 'border-border bg-surface text-heading hover:border-primary'}`}>{label}</Link>)}</div><div key={`${section}/${view}`}>{section === 'users' ? <AdminUsers view={view} /> : view === 'performingArts' ? <AdminPerformingArts /> : section === 'heritage' || section === 'cms' || (section === 'marketplace' && ['productTypes', 'materials'].includes(view) && resources[view]) ? <AdminResources view={view} /> : section === 'moderation' || view === 'fraud' ? <AdminModeration view={view} /> : section === 'marketplace' ? <AdminMarketplace view={view} /> : <AdminSecurity view={view} />}</div></div>;
 }
 function QueueCard({
   title,

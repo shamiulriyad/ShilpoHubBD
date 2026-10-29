@@ -1,0 +1,119 @@
+[
+  {
+    "slug": "dhamer-gaan",
+    "titleEn": "Dhamer Gaan",
+    "titleBn": "ধামের গান",
+    "category": "FolkTheatre",
+    "districtName": "Thakurgaon",
+    "upazila": "Thakurgaon Sadar",
+    "communities": "Barman, Rajbangshi, Koch, rural communities of Thakurgaon, Panchagarh and Dinajpur",
+    "viabilityNote": "Becoming less",
+    "inventoryReference": "BGD-55.94.2023.00113",
+    "summaryEn": "A rural narrative theatre form of north-west Bangladesh in which male performers play all the roles. It is performed through the night until dawn in the harvest season; the inventory record notes that shows once lasted up to seven days but now usually last a single night.",
+    "descriptionEn": "According to the inventory record, Dhamer Gaan has been practised across generations, with songs and dialogue in the local dialect on historical, religious or social themes. It is performed in the Bangla months of Ashwin and Kartik during the Durga and Kali Puja festivities, and in Agrahayan at the new paddy harvest. The performance space is an open arena, with the musicians seated at the centre and the actors performing around them. Performers have no formal training and work as farmers, van drivers, masons and in other trades; actors who play female roles are locally called \"Chokra\". Costume and musical instruments are recorded as associated tangible elements.",
+    "regionalContextEn": "Recorded at Sonapatila village, Balia, Thakurgaon Sadar. Threats noted in the record are funding shortages, which have shortened and reduced performances, and growing social stigma about male community members playing female roles. Existing safeguarding listed in the record: Dhamer Gaan programmes run by Gidree Bawlee since 2014, performances staged by district commissioner offices, and villagers raising funds for small-scale shows.",
+    "displayOrder": 1,
+    "sources": [
+      {
+        "sourceType": "OfficialInventory",
+        "title": "Cultural Heritage Inventory of Bangladesh — Dhamer Gaan (BGD-55.94.2023.00113)",
+        "publisher": "Ministry of Cultural Affairs, Bangladesh, with Bangladesh National Museum",
+        "url": "https://heritagehub.gov.bd/HeritageInfoes/Details/3184",
+        "notes": "Data collected 30-06-2023 with community consent. The record also cites a book on Dhamer Gaan by Monotosh Kumar Dey (title not legible in the online record)."
+      }
+    ]
+  },
+  {
+    "slug": "lai-haraoba",
+    "titleEn": "Lai Haraoba",
+    "titleBn": "লাই হারাওবা",
+    "category": "RegionalTradition",
+    "districtName": "Moulvibazar",
+    "upazila": "Kamalganj",
+    "communities": "Manipuri (Meitei)",
+    "instruments": "Pena, cymbals",
+    "viabilityNote": "Threatened with extinction",
+    "inventoryReference": "BGD-60.58.2024.00118",
+    "summaryEn": "A traditional festival of the Manipuri (Meitei) people, celebrated annually in Meitei communities of the greater Sylhet division of Bangladesh.",
+    "descriptionEn": "The inventory record lists the pena (a mono-string instrument of the lute family) and cymbals, together with costumes, headwear, masks and shrines dedicated to the umanglai (deities), as elements associated with Lai Haraoba.",
+    "regionalContextEn": "Recorded in Kamalganj, Moulvibazar. The record notes that practice in Bangladesh is limited compared with Manipur, and that Meitei communities in Bangladesh hold Lai Haraoba celebrations on a limited scale, passing knowledge down within families and social circles.",
+    "displayOrder": 2,
+    "sources": [
+      {
+        "sourceType": "OfficialInventory",
+        "title": "Cultural Heritage Inventory of Bangladesh — Lai Haraoba (BGD-60.58.2024.00118)",
+        "publisher": "Ministry of Cultural Affairs, Bangladesh, with Bangladesh National Museum",
+        "url": "https://heritagehub.gov.bd/HeritageInfoes/Details/3321"
+      },
+      {
+        "sourceType": "Book",
+        "title": "Parratt, S.N. and J. Parratt (1997). The Pleasing of the Gods: Meitei Lai Haraoba. New Delhi: Vikas Publishing House.",
+        "notes": "Cited in the Cultural Heritage Inventory of Bangladesh record."
+      },
+      {
+        "sourceType": "Book",
+        "title": "Parratt, S.N. (1980). The Religion of Manipur. Calcutta: Firma KLM.",
+        "notes": "Cited in the Cultural Heritage Inventory of Bangladesh record."
+      }
+    ]
+  },
+  {
+    "slug": "dotara",
+    "titleEn": "Dotara",
+    "titleBn": "দোতারা",
+    "category": "FolkMusic",
+    "districtName": "Kurigram",
+    "upazila": "Kurigram Sadar",
+    "communities": "Rajbangshi, Bhawaiya artists",
+    "instruments": "Dotara",
+    "viabilityNote": "Still maintaining",
+    "inventoryReference": "BGD-55.49.2024.00115",
+    "summaryEn": "A long stringed instrument made of solid wood, about 70 cm long, with a leather canopy and metal strings. The inventory record describes it as essential for performing Bhawaiya, a traditional song of northern Bangladesh.",
+    "descriptionEn": "The player hangs the instrument from the shoulder to the chest, strikes the strings with a wooden piece held in the right hand, and presses the strings with the left hand to change the pitch. The record lists its use in Baul, Bhawaiya, Bhatiali, Murshidi, Marfoti and Maijbhandari songs, as well as in modern songs. Materials recorded: wood, metal strings and a leather canopy.",
+    "regionalContextEn": "Recorded in Kurigram Sadar, Kurigram. The record describes the Dotara as still a very popular instrument among folk singers, with no threats to its enactment or transmission listed.",
+    "displayOrder": 3,
+    "sources": [
+      {
+        "sourceType": "OfficialInventory",
+        "title": "Cultural Heritage Inventory of Bangladesh — Dotara (BGD-55.49.2024.00115)",
+        "publisher": "Ministry of Cultural Affairs, Bangladesh, with Bangladesh National Museum",
+        "url": "https://heritagehub.gov.bd/HeritageInfoes/Details/3206"
+      },
+      {
+        "sourceType": "Book",
+        "title": "Saymon Zakaria, Traditional Musical Instruments, Bangladesh National Museum Descriptive Catalogue Series, Vol. 08/2018 (translated by Nurunnabi Shanto)",
+        "notes": "Cited in the Cultural Heritage Inventory of Bangladesh record."
+      }
+    ]
+  },
+  {
+    "slug": "ektara",
+    "titleEn": "Ektara",
+    "titleBn": "একতারা",
+    "alternateNames": "Gupijantra",
+    "category": "FolkMusic",
+    "districtName": "Kushtia",
+    "upazila": "Kumarkhali",
+    "communities": "Baul",
+    "instruments": "Ektara",
+    "viabilityNote": "Still maintaining",
+    "inventoryReference": "BGD-40.50.2024.00114",
+    "summaryEn": "A traditional instrument of the Baul, used to perform Baul songs; singers use it to match their voice to the tune.",
+    "descriptionEn": "Its body is a dried bottle-gourd shell with the top and bottom cut away, covered at the bottom with a leather canopy, with two bamboo slices fixed to its sides; a string runs from the leather to a wooden key at a bamboo knot. The player holds the bamboo in the right hand and strikes the string with a finger of the same hand. The record lists its use by Baul, Fakir and devotee artists in Baul, Murshidi, Marfoti and other folk songs. Materials recorded: bamboo, gourd shell, metal string, broken glass bangle, kori, wood, leather canopy and a coin.",
+    "regionalContextEn": "Recorded in Kumarkhali, Kushtia. The record names the loss of the original melody under the influence of modern music as the main threat to its enactment, and notes that the Ektara is not transmitted as a separate instrument because it is considered part of Baul song.",
+    "displayOrder": 4,
+    "sources": [
+      {
+        "sourceType": "OfficialInventory",
+        "title": "Cultural Heritage Inventory of Bangladesh — Ektara [Gupijantra] (BGD-40.50.2024.00114)",
+        "publisher": "Ministry of Cultural Affairs, Bangladesh, with Bangladesh National Museum",
+        "url": "https://heritagehub.gov.bd/HeritageInfoes/Details/3205"
+      },
+      {
+        "sourceType": "Book",
+        "title": "Saymon Zakaria, Traditional Musical Instruments, Bangladesh National Museum Descriptive Catalogue Series, Vol. 08/2018 (translated by Nurunnabi Shanto)",
+        "notes": "Cited in the Cultural Heritage Inventory of Bangladesh record."
+      }
+    ]
+  }
+]

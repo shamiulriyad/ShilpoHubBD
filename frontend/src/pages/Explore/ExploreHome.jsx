@@ -12,6 +12,7 @@ const sections = [
   { title: 'Producers', description: 'Artisans, farmers & makers', to: routePaths.exploreProducers, image: '/images/heritage-weaver.png' },
   { title: 'UNESCO Heritage', description: 'Nationally & internationally recognized heritage', to: routePaths.exploreUnesco, image: '/images/heritage-landscape.png' },
   { title: 'Digital Museum', description: 'Curated heritage collections', to: routePaths.exploreMuseum, image: '/images/heritage-crafts.png' },
+  { title: 'Performing Arts', description: 'Folk music, theatre, dance & oral traditions', to: routePaths.explorePerformingArts, image: '/images/festival-community.jpg' },
 ];
 
 export default function ExploreHome() {

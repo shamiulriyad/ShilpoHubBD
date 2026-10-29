@@ -119,6 +119,7 @@ public static class DependencyInjection
 		services.AddScoped<IHeritageRouteRepository, HeritageRouteRepository>();
 		services.AddScoped<IUnescoRecordRepository, UnescoRecordRepository>();
 		services.AddScoped<ICraftHeritageRepository, CraftHeritageRepository>();
+		services.AddScoped<IPerformingArtRepository, PerformingArtRepository>();
 		services.AddScoped<ISiteContentRepository, SiteContentRepository>();
 		services.AddScoped<IProductLookupRepository, ProductLookupRepository>();
 		services.AddScoped<IProductAttributesRepository, ProductAttributesRepository>();

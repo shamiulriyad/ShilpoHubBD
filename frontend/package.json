@@ -10,7 +10,8 @@
     "lint": "node scripts/validate-source.mjs",
     "check": "npm run lint && npm run build",
     "test:admin": "node scripts/test-admin-contracts.mjs",
-    "test:launch": "node scripts/test-launch-contracts.mjs"
+    "test:launch": "node scripts/test-launch-contracts.mjs",
+    "test:performing-arts": "node scripts/test-performing-arts.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.59.0",
