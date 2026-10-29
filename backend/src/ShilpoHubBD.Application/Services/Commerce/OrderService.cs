@@ -143,7 +143,6 @@ public class OrderService : IOrderService
             PaymentMethod = request.PaymentMethod,
             Subtotal = subtotal,
             LogisticsPartnerProfileId = selected.Partner.Id,
-            LogisticsPartnerProfile = selected.Partner,
             DeliveryPartnerName = selected.Partner.CompanyName,
             DeliveryMethod = selected.Area.DeliveryMethod,
             ShippingArea = string.IsNullOrWhiteSpace(request.ShippingArea) ? null : request.ShippingArea.Trim(),

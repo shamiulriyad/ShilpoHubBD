@@ -15,6 +15,11 @@ public class ProducerOrderItemDto
     public string RecipientPhone { get; set; } = string.Empty;
     public string ShippingAddressLine { get; set; } = string.Empty;
 
+    // The logistics partner the customer chose at checkout -- producers hand the order to this
+    // partner, they don't choose one themselves.
+    public Guid? LogisticsPartnerProfileId { get; set; }
+    public string? DeliveryPartnerName { get; set; }
+
     public Guid ProductId { get; set; }
     public string ProductName { get; set; } = string.Empty;
     public string? ProductImageUrl { get; set; }
