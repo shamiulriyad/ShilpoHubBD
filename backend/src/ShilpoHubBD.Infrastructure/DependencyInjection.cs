@@ -37,13 +37,18 @@ public static class DependencyInjection
         services.Configure<NominatimOptions>(configuration.GetSection("Nominatim"));
         services.Configure<ShilpoHubBD.Application.Options.ExternalPoiOptions>(configuration.GetSection("Tourism:ExternalPoi"));
         services.Configure<OsrmOptions>(configuration.GetSection("Osrm"));
+        services.Configure<SmtpOptions>(configuration.GetSection("Smtp"));
 
         services.AddMemoryCache();
         services.AddSingleton<NominatimRateGate>();
 
         services.AddScoped<ITokenService, JwtTokenService>();
         services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
-        services.AddScoped<IEmailSender, ConsoleEmailSender>();
+        // Real email once Smtp__Host is configured; otherwise reset links only go to the log (local dev).
+        if (string.IsNullOrWhiteSpace(configuration["Smtp:Host"]))
+            services.AddScoped<IEmailSender, ConsoleEmailSender>();
+        else
+            services.AddScoped<IEmailSender, SmtpEmailSender>();
         services.AddScoped<IPaymentProvider, CashOnDeliveryPaymentProvider>();
         services.AddScoped<IRecommendationProvider, DummyRecommendationProvider>();
         services.AddScoped<IAIBusinessProvider, DummyAIBusinessProvider>();

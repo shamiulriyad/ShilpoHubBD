@@ -13,6 +13,9 @@ public class ArtisanSupportController(IArtisanSupportService service, IArtisanSu
 {
     private Guid UserId => Guid.Parse(User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     private bool Admin => User.IsInRole(RoleNames.SuperAdmin); private bool Government => User.IsInRole(RoleNames.GovernmentNGO);
+    // The stored extension comes from the validated content type, never from the client file name,
+    // so an upload named "x.html" cannot be served back from wwwroot as a page.
+    private static readonly Dictionary<string,string> UploadExtensions=new(StringComparer.OrdinalIgnoreCase){["application/pdf"]=".pdf",["image/jpeg"]=".jpg",["image/png"]=".png",["image/webp"]=".webp"};
 
     [Authorize(Roles=RoleNames.GovernmentNGO), HttpGet("organization/me")]
     public async Task<IActionResult> MyOrganization(CancellationToken ct) => Ok(await service.GetMyOrganizationAsync(UserId,ct));
@@ -21,10 +24,9 @@ public class ArtisanSupportController(IArtisanSupportService service, IArtisanSu
     [Authorize(Roles=RoleNames.GovernmentNGO), HttpPost("organization/document"), RequestSizeLimit(10_500_000)]
     public async Task<IActionResult> UploadOrganizationDocument(IFormFile file,[FromServices] IWebHostEnvironment env,CancellationToken ct)
     {
-        var allowed=new HashSet<string>(StringComparer.OrdinalIgnoreCase){"application/pdf","image/jpeg","image/png","image/webp"};
-        if(file is null||file.Length==0||file.Length>10*1024*1024||!allowed.Contains(file.ContentType))return BadRequest(new{message="Upload a PDF, JPG, PNG or WebP file smaller than 10 MB."});
-        var ext=Path.GetExtension(file.FileName);if(string.IsNullOrWhiteSpace(ext))ext=file.ContentType=="application/pdf"?".pdf":".jpg";
-        var folder=Path.Combine(env.WebRootPath??Path.Combine(env.ContentRootPath,"wwwroot"),"uploads","organization-documents");Directory.CreateDirectory(folder);var name=$"{Guid.NewGuid():N}{ext.ToLowerInvariant()}";
+        string? ext=null;
+        if(file is null||file.Length==0||file.Length>10*1024*1024||!UploadExtensions.TryGetValue(file.ContentType,out ext))return BadRequest(new{message="Upload a PDF, JPG, PNG or WebP file smaller than 10 MB."});
+        var folder=Path.Combine(env.WebRootPath??Path.Combine(env.ContentRootPath,"wwwroot"),"uploads","organization-documents");Directory.CreateDirectory(folder);var name=$"{Guid.NewGuid():N}{ext}";
         await using var stream=System.IO.File.Create(Path.Combine(folder,name));await file.CopyToAsync(stream,ct);return Ok(new{url=$"/uploads/organization-documents/{name}"});
     }
     [Authorize(Roles=RoleNames.SuperAdmin), HttpGet("organizations")]
@@ -66,10 +68,9 @@ public class ArtisanSupportController(IArtisanSupportService service, IArtisanSu
     [Authorize(Roles=$"{RoleNames.GovernmentNGO},{RoleNames.SuperAdmin},{RoleNames.Producer}"),HttpPost("cases/{id:guid}/evidence-upload"),RequestSizeLimit(10_500_000)]
     public async Task<IActionResult> UploadEvidence(Guid id,IFormFile file,[FromForm]string stage,[FromForm]string? caption,[FromServices]IWebHostEnvironment env,CancellationToken ct)
     {
-        var allowed=new HashSet<string>(StringComparer.OrdinalIgnoreCase){"application/pdf","image/jpeg","image/png","image/webp"};
-        if(file is null||file.Length==0||file.Length>10*1024*1024||!allowed.Contains(file.ContentType))return BadRequest(new{message="Upload a PDF, JPG, PNG or WebP file smaller than 10 MB."});
-        var ext=Path.GetExtension(file.FileName);if(string.IsNullOrWhiteSpace(ext))ext=file.ContentType=="application/pdf"?".pdf":".jpg";
-        var folder=Path.Combine(env.WebRootPath??Path.Combine(env.ContentRootPath,"wwwroot"),"uploads","artisan-support");Directory.CreateDirectory(folder);var name=$"{Guid.NewGuid():N}{ext.ToLowerInvariant()}";
+        string? ext=null;
+        if(file is null||file.Length==0||file.Length>10*1024*1024||!UploadExtensions.TryGetValue(file.ContentType,out ext))return BadRequest(new{message="Upload a PDF, JPG, PNG or WebP file smaller than 10 MB."});
+        var folder=Path.Combine(env.WebRootPath??Path.Combine(env.ContentRootPath,"wwwroot"),"uploads","artisan-support");Directory.CreateDirectory(folder);var name=$"{Guid.NewGuid():N}{ext}";
         await using(var stream=System.IO.File.Create(Path.Combine(folder,name)))await file.CopyToAsync(stream,ct);
         return Ok(await service.AddEvidenceAsync(UserId,id,Admin,new CreateSupportEvidenceRequest(stage,$"/uploads/artisan-support/{name}",file.FileName,file.ContentType,caption),ct));
     }

@@ -43,14 +43,17 @@ check('tourist places have list, detail and admin authoring routes', () => {
   assert(read('frontend/src/routes/router.jsx').includes('tourismPlaceDetails'));
   assert(read('frontend/src/pages/Admin/adminConfig.js').includes("path: '/heritage-places'"));
 });
-check('logistics operations require profile onboarding instead of exposing repeated 404 errors', () => {
+check('logistics operations require an admin-assigned company instead of exposing repeated 404 errors', () => {
   const guard = read('frontend/src/components/logistics/LogisticsWorkspaceGuard.jsx');
   const router = read('frontend/src/routes/router.jsx');
   const profile = read('frontend/src/pages/LogisticsPartner/Profile.jsx');
+  const admin = read('frontend/src/pages/Admin/LogisticsPartners.jsx');
   assert(guard.includes("profile.error?.response?.status === 404"));
   assert(guard.includes('logisticsPartnerProfile'));
   assert(router.includes('<LogisticsWorkspaceGuard />'));
-  assert(profile.includes('Create Company Profile'));
+  // Companies and operator logins are created by a Super Admin; the partner page only explains that.
+  assert(profile.includes('query.error?.response?.status === 404'));
+  assert(admin.includes('logisticsPartnersService.createAccount'));
 });
 
 console.log(`\n${passed} launch-critical contract checks passed.`);

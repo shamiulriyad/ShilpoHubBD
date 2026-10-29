@@ -114,6 +114,13 @@ if (string.IsNullOrWhiteSpace(jwtKey))
 		"JWT signing key is not configured. Set Jwt__Key (env var) or Jwt:Key (appsettings/.env).");
 }
 
+// HMAC-SHA256 needs at least 256 bits; a shorter key would otherwise only fail on the first login.
+if (Encoding.UTF8.GetByteCount(jwtKey) < 32)
+{
+	throw new InvalidOperationException(
+		"JWT signing key is too short. Jwt__Key must be at least 32 characters (see backend/README.md to generate one).");
+}
+
 builder.Services
 	.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
@@ -216,12 +223,29 @@ builder.Services.AddRateLimiter(options =>
 				PermitLimit = 10,
 				Window = TimeSpan.FromMinutes(1),
 			}));
+
+	// Endpoints that spend paid Gemini quota per call (translation, image generation, RAG answers).
+	options.AddPolicy("ai", ctx =>
+	{
+		var authenticated = ctx.User.Identity?.IsAuthenticated == true;
+		return RateLimitPartition.GetFixedWindowLimiter(RatePartitionKey(ctx), _ =>
+			new FixedWindowRateLimiterOptions
+			{
+				PermitLimit = authenticated ? 20 : 5,
+				Window = TimeSpan.FromMinutes(1),
+			});
+	});
 });
+
+// Deployed frontends add their origin via Cors__AllowedOrigins__0, __1, ... (or Cors:AllowedOrigins in appsettings).
+var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() is { Length: > 0 } configuredOrigins
+	? configuredOrigins
+	: new[] { "http://localhost:5173", "https://localhost:5173" };
 
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("Frontend", policy => policy
-		.WithOrigins("http://localhost:5173", "https://localhost:5173" )
+		.WithOrigins(corsOrigins)
 		.AllowAnyHeader()
 		.AllowAnyMethod());
 });
@@ -270,7 +294,9 @@ var mediaWebRoot = app.Environment.WebRootPath
 Directory.CreateDirectory(Path.Combine(mediaWebRoot, "uploads", "images"));
 app.UseStaticFiles(new StaticFileOptions
 {
-	FileProvider = new PhysicalFileProvider(mediaWebRoot)
+	FileProvider = new PhysicalFileProvider(mediaWebRoot),
+	// User uploads live here; stop browsers from sniffing an "image" into HTML/script.
+	OnPrepareResponse = ctx => ctx.Context.Response.Headers["X-Content-Type-Options"] = "nosniff",
 });
 
 app.UseCors("Frontend");

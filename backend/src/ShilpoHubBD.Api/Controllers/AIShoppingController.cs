@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ShilpoHubBD.Application.DTOs.AIShopping;
 using ShilpoHubBD.Application.Interfaces.Services;
 
@@ -34,6 +35,7 @@ public class AIShoppingController : ControllerBase
     }
 
     [HttpPost("fashion-matches")]
+    [EnableRateLimiting("ai")]
     public async Task<ActionResult<List<FashionMatchDto>>> GetFashionMatches(FashionMatchRequest request, CancellationToken cancellationToken)
     {
         var result = await _fashionMatchingService.GetMatchesAsync(request, cancellationToken);
@@ -43,6 +45,7 @@ public class AIShoppingController : ControllerBase
     // multipart/form-data, same upload convention as MediaController/ChatMediaController/ProfileController:
     // a real room photo plus the product to place in it, not a JSON body of free-text fields.
     [HttpPost("interior-preview")]
+    [EnableRateLimiting("ai")]
     [RequestSizeLimit(20 * 1024 * 1024)]
     [RequestFormLimits(MultipartBodyLengthLimit = 20 * 1024 * 1024)]
     public async Task<ActionResult<InteriorPreviewDto>> GetInteriorPreview(
@@ -69,6 +72,7 @@ public class AIShoppingController : ControllerBase
     }
 
     [HttpPost("translate")]
+    [EnableRateLimiting("ai")]
     public async Task<ActionResult<TranslationResultDto>> Translate(TranslationRequest request, CancellationToken cancellationToken)
     {
         var result = await _translationService.TranslateAsync(request, cancellationToken);
