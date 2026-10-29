@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ShilpoHubBD.Application.DTOs.HeritageAssistant;
 using ShilpoHubBD.Application.Interfaces.Services;
 
@@ -17,6 +18,7 @@ public class HeritageAssistantController : ControllerBase
     }
 
     [HttpPost("ask")]
+    [EnableRateLimiting("ai")]
     public async Task<ActionResult<HeritageAssistantAnswerDto>> Ask(AskHeritageAssistantRequest request, CancellationToken cancellationToken)
         => Ok(await _service.AskAsync(request, cancellationToken));
 }

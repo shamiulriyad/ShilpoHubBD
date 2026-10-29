@@ -43,13 +43,23 @@ check('tourist places have list, detail and admin authoring routes', () => {
   assert(read('frontend/src/routes/router.jsx').includes('tourismPlaceDetails'));
   assert(read('frontend/src/pages/Admin/adminConfig.js').includes("path: '/heritage-places'"));
 });
+<<<<<<< HEAD
+check('logistics operations require an admin-assigned company instead of exposing repeated 404 errors', () => {
+=======
 check('logistics operations require an admin-assigned company account', () => {
+>>>>>>> origin/main
   const guard = read('frontend/src/components/logistics/LogisticsWorkspaceGuard.jsx');
   const router = read('frontend/src/routes/router.jsx');
   const profile = read('frontend/src/pages/LogisticsPartner/Profile.jsx');
+  const admin = read('frontend/src/pages/Admin/LogisticsPartners.jsx');
   assert(guard.includes("profile.error?.response?.status === 404"));
   assert(guard.includes('logisticsPartnerProfile'));
   assert(router.includes('<LogisticsWorkspaceGuard />'));
+<<<<<<< HEAD
+  // Companies and operator logins are created by a Super Admin; the partner page only explains that.
+  assert(profile.includes('query.error?.response?.status === 404'));
+  assert(admin.includes('logisticsPartnersService.createAccount'));
+=======
   assert(guard.includes('Administrator assignment required'));
   assert(profile.includes('Contact your administrator'));
   assert(!profile.includes('useUpsertLogisticsPartnerProfile'));
@@ -61,6 +71,7 @@ check('authentication is isolated per browser tab', () => {
   assert(store.includes('window.sessionStorage'));
   assert(menu.includes('Open another role tab'));
   assert(menu.includes('noopener,noreferrer'));
+>>>>>>> origin/main
 });
 
 console.log(`\n${passed} launch-critical contract checks passed.`);

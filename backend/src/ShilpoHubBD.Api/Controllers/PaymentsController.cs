@@ -63,13 +63,14 @@ public class PaymentsController : ControllerBase
         return Ok(result);
     }
 
-    // Called by the payment gateway itself, not the logged-in user.
+    // Called by the payment gateway itself, not the logged-in user. The caller is anonymous, so it only
+    // gets an acknowledgement — never the order/payment details.
     [AllowAnonymous]
     [HttpPost("{id:guid}/callback")]
-    public async Task<ActionResult<PaymentDto>> Callback(Guid id, [FromBody] JsonElement payload, CancellationToken cancellationToken)
+    public async Task<ActionResult<object>> Callback(Guid id, [FromBody] JsonElement payload, CancellationToken cancellationToken)
     {
         var result = await _paymentService.HandleCallbackAsync(id, payload.GetRawText(), cancellationToken);
-        return Ok(result);
+        return Ok(new { status = result.Status });
     }
 
     [Authorize(Roles = RoleNames.SuperAdmin)]

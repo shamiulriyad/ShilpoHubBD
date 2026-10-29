@@ -29,7 +29,7 @@ public class CartService : ICartService
         var product = await _productRepository.GetByIdAsync(productId, cancellationToken)
             ?? throw new NotFoundException("Product not found.");
 
-        if (!product.IsActive)
+        if (!product.IsActive || product.ApprovalStatus == ProductApprovalStatus.Rejected)
         {
             throw new ConflictException("This product is no longer available.");
         }

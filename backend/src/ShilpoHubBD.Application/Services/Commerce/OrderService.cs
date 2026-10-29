@@ -119,7 +119,9 @@ public class OrderService : IOrderService
 
         foreach (var cartItem in cartItems)
         {
-            if (!cartItem.Product.IsActive)
+            // A product removed by moderation after it was carted must not be purchasable.
+            if (!cartItem.Product.IsActive
+                || cartItem.Product.ApprovalStatus == Domain.Entities.Marketplace.ProductApprovalStatus.Rejected)
             {
                 throw new ConflictException($"'{cartItem.Product.Name}' is no longer available.");
             }
