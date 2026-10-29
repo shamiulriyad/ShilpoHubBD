@@ -41,7 +41,7 @@ export default function PartnershipAgreements() {
 
       {selectedId && (
         <AsyncState isLoading={detailQuery.isLoading} isError={detailQuery.isError} error={detailQuery.error}>
-          {detailQuery.data && <PartnershipAgreementCard agreement={detailQuery.data} viewerRole="Producer" />}
+          {detailQuery.data && <PartnershipAgreementCard agreement={detailQuery.data} viewerRole={detailQuery.data.isDemo ? 'Preview' : 'Producer'} />}
         </AsyncState>
       )}
     </div>

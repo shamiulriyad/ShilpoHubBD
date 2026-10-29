@@ -85,13 +85,13 @@ export default function Quotations() {
                       className="rounded-md border border-border bg-background px-3 py-2 text-sm"
                     />
                   </div>
-                  <Button
+                  {!request.isDemo && <Button
                     variant="primary"
                     onClick={() => handleSubmit(request)}
                     disabled={submitResponse.isPending || !['Sent','PartiallyResponded'].includes(request.status) || !request.items?.length || !request.items.every(item => form.unitPrices[item.id] !== undefined && form.unitPrices[item.id] !== '' && Number.isFinite(Number(form.unitPrices[item.id])) && Number(form.unitPrices[item.id]) >= 0)}
                   >
                     {submitResponse.isPending ? 'Submitting…' : 'Submit Quote'}
-                  </Button>
+                  </Button>}
                 </div>
                 </AsyncState>
               )}

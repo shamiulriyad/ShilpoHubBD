@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { PageHeader, Badge, Button, AsyncState, StatusTimeline } from '../../components/ui';
+import { PageHeader, Badge, Button, AsyncState, StatusTimeline, PageNavigation } from '../../components/ui';
 import { useDistricts } from '../../hooks/useDistricts';
 import { useShipments, useShipment, useShipmentMutations } from '../../hooks/useShipments';
 
@@ -138,7 +138,8 @@ function ShipmentDetail({ id }) {
 export default function Shipments() {
   const [searchParams] = useSearchParams();
   const [statusFilter, setStatusFilter] = useState('');
-  const { data, isLoading, isError, error } = useShipments({ pageSize: 50, status: statusFilter || undefined, logisticsPartnerProfileId: searchParams.get('partnerId') || undefined });
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error } = useShipments({ page, pageSize: 10, status: statusFilter || undefined, logisticsPartnerProfileId: searchParams.get('partnerId') || undefined });
   const districtsQuery = useDistricts();
   const { create } = useShipmentMutations();
   const [showForm, setShowForm] = useState(false);
@@ -173,7 +174,7 @@ export default function Shipments() {
 
       <div className="mb-4 flex items-center gap-2">
         <span className="text-xs text-body/60">Filter:</span>
-        <select aria-label="Status Filter" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={inputClass}>
+        <select aria-label="Status Filter" value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }} className={inputClass}>
           <option value="">All statuses</option>
           {['Created', 'LabelCreated', 'PickedUp', 'InTransit', 'AtHub', 'OutForDelivery', 'DeliveryFailed', 'Returned', 'Delivered', 'Cancelled'].map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
@@ -252,9 +253,10 @@ export default function Shipments() {
               {expandedId === s.id && <ShipmentDetail id={s.id} />}
             </div>
           ))}
-          {shipments.length === 0 && <p className="text-sm text-body/60">No shipments yet.</p>}
+          {shipments.length === 0 && <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted">{statusFilter ? 'No shipments match this status. Choose another status to continue.' : 'No shipments yet. Create a shipment to start tracking deliveries.'}</p>}
         </div>
       </AsyncState>
+      {!isLoading && !isError && <PageNavigation data={data} page={page} onPageChange={(next) => { setPage(next); setExpandedId(null); }} />}
     </div>
   );
 }

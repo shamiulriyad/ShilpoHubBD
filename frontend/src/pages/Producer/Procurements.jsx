@@ -34,7 +34,7 @@ export default function ProducerProcurements() {
                 <Badge tone={statusTone[req.status] || 'neutral'}>{statusLabel[req.status] || req.status}</Badge>
               </div>
               <div className="mt-3"><ProcurementAdvanceInfo req={req} /></div>
-              {req.status === 'PendingApproval' && (
+              {req.status === 'PendingApproval' && !req.isDemo && (
                 <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-4">
                   <input aria-label="Note to the partner" placeholder="Note to the partner (optional)" value={notes[req.id] || ''} onChange={(e) => setNotes((p) => ({ ...p, [req.id]: e.target.value }))} className="min-w-[14rem] flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm" />
                   <Button variant="primary" disabled={approve.isPending} onClick={() => approve.mutate({ id: req.id, notes: notes[req.id]?.trim() || undefined })}>Accept</Button>

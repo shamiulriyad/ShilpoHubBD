@@ -1,16 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { contractsService } from '../services/contractsService';
+import { mergeRolePage, roleDemoRecord } from '../data/roleDemoData';
 
 export function useMyContracts(params = {}) {
-  return useQuery({ queryKey: ['contracts', 'mine', params], queryFn: () => contractsService.mine(params) });
+  return useQuery({ queryKey: ['contracts', 'mine', params], queryFn: async () => mergeRolePage(await contractsService.mine(params), 'contracts') });
 }
 
 export function useReceivedContracts(params = {}) {
-  return useQuery({ queryKey: ['contracts', 'received', params], queryFn: () => contractsService.received(params) });
+  return useQuery({ queryKey: ['contracts', 'received', params], queryFn: async () => mergeRolePage(await contractsService.received(params), 'contracts') });
 }
 
 export function useContract(id) {
-  return useQuery({ queryKey: ['contracts', id], queryFn: () => contractsService.getById(id), enabled: Boolean(id) });
+  return useQuery({ queryKey: ['contracts', id], queryFn: () => roleDemoRecord('contracts', id) || contractsService.getById(id), enabled: Boolean(id) });
 }
 
 export function useContractMutations() {

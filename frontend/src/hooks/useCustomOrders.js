@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { customOrdersService } from '../services/customOrdersService';
+import { mergeDemoArray } from '../data/producerDemoData';
 
 export function useMyCustomOrders(enabled = true) {
   return useQuery({
@@ -12,7 +13,7 @@ export function useMyCustomOrders(enabled = true) {
 export function useProducerCustomOrders(enabled = true) {
   return useQuery({
     queryKey: ['custom-orders', 'producer'],
-    queryFn: () => customOrdersService.mineAsProducer(),
+    queryFn: async () => mergeDemoArray(await customOrdersService.mineAsProducer(), 'customOrders'),
     enabled,
   });
 }

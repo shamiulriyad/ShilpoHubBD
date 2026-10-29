@@ -21,7 +21,8 @@ export default function Refunds() {
             <Link
               key={order.id}
               to={routePaths.customerOrderDetails.replace(':orderId', order.id)}
-              className="flex flex-wrap items-center justify-between gap-3 p-4 transition hover:bg-background/40"
+              onClick={(event) => { if (order.isDemo) event.preventDefault(); }}
+              className={`flex flex-wrap items-center justify-between gap-3 p-4 transition hover:bg-background/40 ${order.isDemo ? 'cursor-default' : ''}`}
             >
               <div>
                 <p className="text-sm font-medium text-heading">{order.orderNumber}</p>

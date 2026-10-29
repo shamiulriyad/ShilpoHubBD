@@ -80,7 +80,7 @@ export default function RegisterPage() {
     : null;
 
   return (
-    <div className={step === 2 ? 'role-selection' : undefined}>
+    <div className={step === 2 ? 'role-selection' : 'registration-details'}>
       <div className="mb-6 flex items-center gap-2 text-sm font-medium text-body/50" aria-label={`Registration step ${step} of 2`}>
         <StepDot active={step >= 1} done={step > 1} label="1" />
         <span className="h-px w-8 bg-border" />
@@ -99,7 +99,7 @@ export default function RegisterPage() {
             </p>
           )}
 
-          <form className="mx-auto mt-6 max-w-md space-y-5" onSubmit={handleContinue} noValidate>
+          <form className="registration-fields mx-auto mt-6 max-w-md space-y-5" onSubmit={handleContinue} noValidate>
             <div>
               <label htmlFor="register-name" className="mb-1.5 block text-sm font-medium text-body/70">Full Name</label>
               <input aria-label="Your name"

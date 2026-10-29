@@ -55,6 +55,12 @@ export default function ProfileDropdown() {
     item.label === 'Dashboard' && homePath ? { ...item, path: homePath } : item,
   );
 
+  const openAnotherRoleTab = () => {
+    // noopener starts with fresh tab storage instead of copying this tab's credentials.
+    window.open('/login?new-session=1', '_blank', 'noopener,noreferrer');
+    setOpen(false);
+  };
+
   return (
     <div
       className="relative"
@@ -125,6 +131,14 @@ export default function ProfileDropdown() {
           )}
 
           <div className="py-1">
+            <button
+              type="button"
+              role="menuitem"
+              onClick={openAnotherRoleTab}
+              className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-primary hover:bg-background"
+            >
+              Open another role tab
+            </button>
             {menuItems.map((item) => (
               <Link
                 key={item.label}

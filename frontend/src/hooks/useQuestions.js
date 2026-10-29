@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { questionsService } from '../services/questionsService';
+import { mergeDemoPage } from '../data/producerDemoData';
 
 export function useProductQuestions(productId, params = {}) {
   return useQuery({
@@ -29,7 +30,12 @@ export function useQuestionMutations(productId) {
 export function useProducerQuestions(params = {}) {
   return useQuery({
     queryKey: ['questions', 'mine', params],
-    queryFn: () => questionsService.listMine(params),
+    queryFn: async () => {
+      const result = mergeDemoPage(await questionsService.listMine(params), 'questions');
+      if (params.unansweredOnly) result.items = result.items.filter((item) => !item.answers?.length);
+      result.totalCount = result.items.length;
+      return result;
+    },
   });
 }
 

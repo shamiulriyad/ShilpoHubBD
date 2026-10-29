@@ -1,18 +1,19 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { producerPartnershipAgreementService } from '../services/producerPartnershipAgreementService';
+import { demoRecord, mergeDemoPage } from '../data/producerDemoData';
 
 export function useMyPartnershipAgreements(params = {}) {
   return useQuery({ queryKey: ['producer-partnership-agreements', 'mine', params], queryFn: () => producerPartnershipAgreementService.mine(params) });
 }
 
 export function useReceivedPartnershipAgreements(params = {}) {
-  return useQuery({ queryKey: ['producer-partnership-agreements', 'received', params], queryFn: () => producerPartnershipAgreementService.received(params) });
+  return useQuery({ queryKey: ['producer-partnership-agreements', 'received', params], queryFn: async () => mergeDemoPage(await producerPartnershipAgreementService.received(params), 'agreements') });
 }
 
 export function usePartnershipAgreement(id) {
   return useQuery({
     queryKey: ['producer-partnership-agreements', id],
-    queryFn: () => producerPartnershipAgreementService.getById(id),
+    queryFn: () => demoRecord('agreements', id) || producerPartnershipAgreementService.getById(id),
     enabled: Boolean(id),
   });
 }

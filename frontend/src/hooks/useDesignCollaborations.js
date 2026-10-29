@@ -1,16 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { designCollaborationsService } from '../services/designCollaborationsService';
+import { demoRecord, mergeDemoPage } from '../data/producerDemoData';
 
 export function useMyDesignCollaborations(params = {}) {
   return useQuery({ queryKey: ['design-collaborations', 'mine', params], queryFn: () => designCollaborationsService.mine(params) });
 }
 
 export function useReceivedDesignCollaborations(params = {}) {
-  return useQuery({ queryKey: ['design-collaborations', 'received', params], queryFn: () => designCollaborationsService.received(params) });
+  return useQuery({ queryKey: ['design-collaborations', 'received', params], queryFn: async () => mergeDemoPage(await designCollaborationsService.received(params), 'design') });
 }
 
 export function useDesignCollaboration(id) {
-  return useQuery({ queryKey: ['design-collaborations', id], queryFn: () => designCollaborationsService.getById(id), enabled: Boolean(id) });
+  return useQuery({ queryKey: ['design-collaborations', id], queryFn: () => demoRecord('design', id) || designCollaborationsService.getById(id), enabled: Boolean(id) });
 }
 
 export function useDesignCollaborationMutations() {

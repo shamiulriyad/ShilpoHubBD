@@ -1,16 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { quotationsService } from '../services/quotationsService';
+import { demoRecord, mergeDemoPage } from '../data/producerDemoData';
 
 export function useMyQuotations(params = {}) {
   return useQuery({ queryKey: ['quotations', 'mine', params], queryFn: () => quotationsService.mine(params) });
 }
 
 export function useReceivedQuotations(params = {}) {
-  return useQuery({ queryKey: ['quotations', 'received', params], queryFn: () => quotationsService.received(params) });
+  return useQuery({ queryKey: ['quotations', 'received', params], queryFn: async () => mergeDemoPage(await quotationsService.received(params), 'quotations') });
 }
 
 export function useQuotation(id) {
-  return useQuery({ queryKey: ['quotations', id], queryFn: () => quotationsService.getById(id), enabled: Boolean(id) });
+  return useQuery({ queryKey: ['quotations', id], queryFn: () => demoRecord('quotations', id) || quotationsService.getById(id), enabled: Boolean(id) });
 }
 
 export function useQuotationComparison(id, enabled = true) {

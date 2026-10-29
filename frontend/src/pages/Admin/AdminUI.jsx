@@ -6,6 +6,7 @@ import { formPayload } from './adminConfig';
 import { productsService } from '../../services/productsService';
 import SafeImage from '../../components/media/SafeImage';
 import { resolveMediaUrl } from '../../components/media/CardMedia';
+import { enrichAdminData } from '../../data/adminDemoData';
 export const inputClass = 'w-full rounded-lg border border-border bg-surface px-3 py-2.5 text-sm text-heading focus:outline-none focus:ring-2 focus:ring-primary/30';
 export function Action({
   children,
@@ -38,7 +39,7 @@ export function display(value, key = '') {
 export function useAdminQuery(path, params = {}, enabled = true) {
   return useQuery({
     queryKey: ['super-admin', path, params],
-    queryFn: () => api.list(path, params),
+    queryFn: async () => enrichAdminData(path, await api.list(path, params)),
     enabled,
     retry: 1
   });
@@ -71,7 +72,7 @@ export function DataTable({
   const pages = query.data?.totalPages || 1;
   return <><ErrorNotice error={query.error} />{query.isError && <Action onClick={() => query.refetch()}>Retry</Action>}
     {query.isPending ? <p role="status" className="p-8 text-body/60">Loading records…</p> : !query.isError && <>
-    <div className="overflow-x-auto rounded-xl border border-border"><table className="w-full text-left text-sm"><thead className="bg-background"><tr>{columns.map(c => <th scope="col" className="whitespace-nowrap px-4 py-3 font-semibold text-body/70" key={c}>{labelOf(c)}</th>)}{actions && <th scope="col" className="px-4 py-3">Actions</th>}</tr></thead><tbody className="divide-y divide-border">{rows.map((row, i) => <tr key={row.id || row.ipAddress || i} className="align-top hover:bg-background/50">{columns.map(c => <td key={c} className="max-w-xs break-words px-4 py-4">{display(row[c], c)}</td>)}{actions && <td className="px-4 py-3"><div className="flex min-w-32 flex-wrap gap-2">{actions(row)}</div></td>}</tr>)}</tbody></table>{rows.length === 0 && <p className="p-10 text-center text-body/60">No records match this view.</p>}</div>
+    <div className="overflow-x-auto rounded-xl border border-border"><table className="w-full text-left text-sm"><thead className="bg-background"><tr>{columns.map(c => <th scope="col" className="whitespace-nowrap px-4 py-3 font-semibold text-body/70" key={c}>{labelOf(c)}</th>)}{actions && <th scope="col" className="px-4 py-3">Actions</th>}</tr></thead><tbody className="divide-y divide-border">{rows.map((row, i) => <tr key={row.id || row.ipAddress || i} className="align-top hover:bg-background/50">{columns.map(c => <td key={c} className="max-w-xs break-words px-4 py-4">{display(row[c], c)}</td>)}{actions && <td className="px-4 py-3"><div className="flex min-w-32 flex-wrap gap-2">{row.isDemo ? <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">Preview data</span> : actions(row)}</div></td>}</tr>)}</tbody></table>{rows.length === 0 && <p className="p-10 text-center text-body/60">No records match this view.</p>}</div>
     {onPage && !Array.isArray(query.data) && <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm"><span>{query.data?.totalCount ?? 0} records · Page {page} of {Math.max(pages, 1)}</span><div className="flex gap-2"><Action disabled={page <= 1 || query.isFetching} onClick={() => onPage(page - 1)}>Previous</Action><Action disabled={page >= pages || query.isFetching} onClick={() => onPage(page + 1)}>Next</Action></div></div>}</>}
   </>;
 }

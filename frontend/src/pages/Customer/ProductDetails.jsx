@@ -196,19 +196,19 @@ export default function ProductDetails() {
                     to={routePaths.customerAISimilarProducts.replace(':productId', product.id)}
                     className="text-link hover:underline"
                   >
-                    Find similar products â†’
+                    Find similar products {'\u2192'}
                   </Link>
                   <Link
                     to={routePaths.customerAIInteriorPreview.replace(':productId', product.id)}
                     className="text-link hover:underline"
                   >
-                    Preview in your room â†’
+                    Preview in your room {'\u2192'}
                   </Link>
                   <Link
                     to={routePaths.customerAIFashionMatching.replace(':productId', product.id)}
                     className="text-link hover:underline"
                   >
-                    Complete the look â†’
+                    Complete the look {'\u2192'}
                   </Link>
                 </div>
 
@@ -223,7 +223,7 @@ export default function ProductDetails() {
                     <p className="text-sm font-medium text-heading">{product.producerName}</p>
                     <p className="text-xs text-body/60">{product.districtName}</p>
                   </div>
-                  <span className="text-sm text-link">View profile â†’</span>
+                  <span className="text-sm text-link">View profile {'\u2192'}</span>
                 </Link>
 
                 {isAuthenticated && (
@@ -250,7 +250,7 @@ export default function ProductDetails() {
                     className="mt-3 flex items-center justify-between rounded-xl border border-border bg-surface p-4 text-sm transition hover:shadow-md"
                   >
                     <span className="font-medium text-heading">Read the story behind {product.categoryName}</span>
-                    <span className="text-link">Explore â†’</span>
+                    <span className="text-link">Explore {'\u2192'}</span>
                   </Link>
                 )}
               </div>
@@ -293,7 +293,7 @@ export default function ProductDetails() {
                         to={routePaths.customerCraftStory.replace(':craftId', product.categoryId)}
                         className="inline-block text-link hover:underline"
                       >
-                        Read the full craft story â†’
+                        Read the full craft story {'\u2192'}
                       </Link>
                     </>
                   ) : (
@@ -359,7 +359,7 @@ export default function ProductDetails() {
                       }`}
                     >
                       <p className="font-semibold">
-                        {verifyQr.data.isValid ? 'âœ“ Authentic' : 'âœ• Could not verify'}
+                        {verifyQr.data.isValid ? '\u2713 Authentic' : '\u2715 Could not verify'}
                       </p>
                       <p className="mt-1 text-body/70">{verifyQr.data.message}</p>
                       {verifyQr.data.isValid && (

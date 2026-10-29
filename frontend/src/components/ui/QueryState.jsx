@@ -23,7 +23,7 @@ export default function QueryState({
   if (isLoading || isPending) {
     return (
       skeleton || (
-        <div className="flex items-center justify-center rounded-xl border border-border bg-surface px-4 py-16 text-sm text-body/50">
+        <div role="status" className="flex items-center justify-center rounded-xl border border-border bg-surface px-4 py-16 text-sm text-muted">
           {loadingLabel}
         </div>
       )
@@ -50,7 +50,7 @@ export default function QueryState({
   const empty =
     typeof isEmpty === 'function'
       ? isEmpty(data)
-      : data == null || (Array.isArray(data) && data.length === 0);
+      : data == null || (Array.isArray(data) && data.length === 0) || (Array.isArray(data?.items) && data.items.length === 0);
 
   if (empty) {
     return (

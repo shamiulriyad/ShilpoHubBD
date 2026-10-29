@@ -1,6 +1,7 @@
 using ShilpoHubBD.Application.DTOs.Common;
 using ShilpoHubBD.Application.DTOs.TouristBooking;
 using ShilpoHubBD.Application.Exceptions;
+using ShilpoHubBD.Application.Common;
 using ShilpoHubBD.Application.Interfaces.Repositories;
 using ShilpoHubBD.Application.Interfaces.Services;
 using ShilpoHubBD.Domain.Entities.TouristBooking;
@@ -12,15 +13,18 @@ public class BookingService : IBookingService
     private readonly IBookingRepository _bookingRepository;
     private readonly ITouristServiceRepository _serviceRepository;
     private readonly IServiceAvailabilitySlotRepository _slotRepository;
+    private readonly IHeritageCheckInRepository _checkInRepository;
 
     public BookingService(
         IBookingRepository bookingRepository,
         ITouristServiceRepository serviceRepository,
-        IServiceAvailabilitySlotRepository slotRepository)
+        IServiceAvailabilitySlotRepository slotRepository,
+        IHeritageCheckInRepository checkInRepository)
     {
         _bookingRepository = bookingRepository;
         _serviceRepository = serviceRepository;
         _slotRepository = slotRepository;
+        _checkInRepository = checkInRepository;
     }
 
     public async Task<BookingDto> CreateAsync(Guid touristId, CreateBookingRequest request, CancellationToken cancellationToken)
@@ -63,6 +67,10 @@ public class BookingService : IBookingService
         }
 
         var now = DateTime.UtcNow;
+        var basePrice = service.Price * request.PartySize;
+        var uniqueSitesVisited = await _checkInRepository.GetDistinctVisitedPlaceCountAsync(touristId, cancellationToken);
+        var tier = ExplorerTierPolicy.Resolve(uniqueSitesVisited);
+        var discountPercent = service.Type == BookingType.HomestayBooking ? tier.DiscountPercent : 0m;
         var booking = new Domain.Entities.TouristBooking.Booking
         {
             Id = Guid.NewGuid(),
@@ -71,7 +79,7 @@ public class BookingService : IBookingService
             TouristId = touristId,
             ProducerId = service.ProducerId,
             PartySize = request.PartySize,
-            TotalPrice = service.Price * request.PartySize,
+            TotalPrice = decimal.Round(basePrice * (1m - discountPercent / 100m), 2),
             Status = BookingStatus.Pending,
             Notes = request.Notes?.Trim(),
             CreatedAt = now,
@@ -82,7 +90,7 @@ public class BookingService : IBookingService
         await _bookingRepository.SaveChangesAsync(cancellationToken);
 
         var created = await _bookingRepository.GetByIdAsync(booking.Id, cancellationToken);
-        return ToDto(created!);
+        return ToDto(created!, tier);
     }
 
     public async Task<PagedResult<BookingDto>> GetMyBookingsAsync(
@@ -91,7 +99,7 @@ public class BookingService : IBookingService
         var (items, totalCount) = await _bookingRepository.GetPagedByTouristAsync(touristId, query, cancellationToken);
         return new PagedResult<BookingDto>
         {
-            Items = items.Select(ToDto).ToList(),
+            Items = items.Select(booking => ToDto(booking)).ToList(),
             TotalCount = totalCount,
             Page = query.Page,
             PageSize = query.PageSize,
@@ -104,7 +112,7 @@ public class BookingService : IBookingService
         var (items, totalCount) = await _bookingRepository.GetPagedByProducerAsync(producerId, query, cancellationToken);
         return new PagedResult<BookingDto>
         {
-            Items = items.Select(ToDto).ToList(),
+            Items = items.Select(booking => ToDto(booking)).ToList(),
             TotalCount = totalCount,
             Page = query.Page,
             PageSize = query.PageSize,
@@ -216,7 +224,11 @@ public class BookingService : IBookingService
         return booking;
     }
 
-    private static BookingDto ToDto(Domain.Entities.TouristBooking.Booking booking) => new()
+    private static BookingDto ToDto(Domain.Entities.TouristBooking.Booking booking, ExplorerTier? appliedTier = null)
+    {
+        var basePrice = booking.Service.Price * booking.PartySize;
+        var savings = Math.Max(0m, basePrice - booking.TotalPrice);
+        return new()
     {
         Id = booking.Id,
         ServiceId = booking.ServiceId,
@@ -231,6 +243,10 @@ public class BookingService : IBookingService
         ProducerName = booking.Producer.FullName,
         PartySize = booking.PartySize,
         TotalPrice = booking.TotalPrice,
+        BasePrice = basePrice,
+        DiscountAmount = savings,
+        DiscountPercent = basePrice > 0 ? decimal.Round(savings / basePrice * 100m, 2) : 0m,
+        ExplorerTier = appliedTier?.Name,
         Status = booking.Status.ToString(),
         Notes = booking.Notes,
         CancellationReason = booking.CancellationReason,
@@ -240,4 +256,5 @@ public class BookingService : IBookingService
         CreatedAt = booking.CreatedAt,
         UpdatedAt = booking.UpdatedAt,
     };
+    }
 }

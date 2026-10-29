@@ -41,7 +41,7 @@ function QuestionCard({ question }) {
         </div>
       )}
 
-      <form onSubmit={submit} className="mt-3 flex flex-col gap-2 sm:flex-row">
+      {!question.isDemo && <form onSubmit={submit} className="mt-3 flex flex-col gap-2 sm:flex-row">
         <textarea
           aria-label="Your answer"
           rows={2}
@@ -55,7 +55,7 @@ function QuestionCard({ question }) {
         <Button type="submit" variant="primary" disabled={answer.isPending || !reply.trim()}>
           {answer.isPending ? 'Sending…' : 'Reply'}
         </Button>
-      </form>
+      </form>}
       <MutationFeedback mutation={answer} successMessage="Reply sent. The customer has been notified." />
     </div>
   );

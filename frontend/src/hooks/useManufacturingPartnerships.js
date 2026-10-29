@@ -1,16 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { manufacturingPartnershipsService } from '../services/manufacturingPartnershipsService';
+import { demoRecord, mergeDemoPage } from '../data/producerDemoData';
 
 export function useMyPartnerships(params = {}) {
   return useQuery({ queryKey: ['partnerships', 'mine', params], queryFn: () => manufacturingPartnershipsService.mine(params) });
 }
 
 export function useReceivedPartnerships(params = {}) {
-  return useQuery({ queryKey: ['partnerships', 'received', params], queryFn: () => manufacturingPartnershipsService.received(params) });
+  return useQuery({ queryKey: ['partnerships', 'received', params], queryFn: async () => mergeDemoPage(await manufacturingPartnershipsService.received(params), 'manufacturing') });
 }
 
 export function usePartnership(id) {
-  return useQuery({ queryKey: ['partnerships', id], queryFn: () => manufacturingPartnershipsService.getById(id), enabled: Boolean(id) });
+  return useQuery({ queryKey: ['partnerships', id], queryFn: () => demoRecord('manufacturing', id) || manufacturingPartnershipsService.getById(id), enabled: Boolean(id) });
 }
 
 export function usePartnershipMutations() {

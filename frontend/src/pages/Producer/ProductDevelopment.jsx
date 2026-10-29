@@ -44,7 +44,7 @@ export default function ProductDevelopment() {
                 <AsyncState isLoading={detailQuery.isLoading} isError={detailQuery.isError} error={detailQuery.error}>
                 <div className="mt-4 space-y-4 border-t border-border pt-4">
                   <p className="text-sm leading-6 text-muted">{project.businessRequirements}</p><p className="text-sm leading-6 text-muted">{project.productSpecifications}</p>
-                  {project.status === 'Requested' && (
+                  {project.status === 'Requested' && !project.isDemo && (
                     <div className="flex flex-wrap gap-2">
                       <Button variant="primary" disabled={respond.isPending} onClick={() => respond.mutate({ id: project.id, accept: true })}>Accept</Button>
                       <Button variant="secondary" disabled={respond.isPending} onClick={() => respond.mutate({ id: project.id, accept: false })}>Decline</Button>
@@ -56,7 +56,7 @@ export default function ProductDevelopment() {
                       <p key={c.id} className="text-sm text-body/70"><span className="font-medium text-heading">{c.authorName}:</span> {c.content}</p>
                     ))}
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  {!project.isDemo && <div className="flex flex-wrap gap-2">
                     <input aria-label="Add a comment"
                       placeholder="Add a comment…"
                       value={comment}
@@ -66,9 +66,9 @@ export default function ProductDevelopment() {
                     <Button variant="secondary" disabled={!comment.trim() || addComment.isPending} onClick={() => addComment.mutate({ id: project.id, content: comment.trim() }, { onSuccess: () => setComment('') })}>
                       Comment
                     </Button>
-                  </div>
+                  </div>}
 
-                  {project.status === 'Active' && (
+                  {project.status === 'Active' && !project.isDemo && (
                     <div className="flex flex-wrap gap-2">
                       <input aria-label="Describe this prototype"
                         placeholder="Describe this prototype…"

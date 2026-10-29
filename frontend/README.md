@@ -1,180 +1,288 @@
 # ShilpoHubBD Frontend
 
-ShilpoHubBD's frontend is a React 19 + Vite application that integrates with the existing ASP.NET Core backend. The application is organized by feature and uses a shared API/authentication layer so role-specific areas, marketplace flows, academy features, live commerce, messaging, heritage/research tools, and dashboards behave consistently.
+The ShilpoHubBD frontend is the web client for a role-based digital heritage ecosystem serving artisans, customers, businesses, tourists, researchers, public organizations, logistics operators, and platform administrators. It combines a public heritage portal with authenticated workspaces for commerce, learning, tourism, research, governance, logistics, messaging, and administration.
 
-## Technology
+The application is built with React 19 and Vite and consumes the ShilpoHubBD ASP.NET Core API. Persistent business data, authorization decisions, financial calculations, delivery validation, and workflow transitions are enforced by the backend.
 
-- React 19
-- Vite 6
-- React Router
-- TanStack React Query
-- Zustand
-- Axios
-- Tailwind CSS
+## Technology stack
 
-## Requirements
+| Area | Technology |
+| --- | --- |
+| UI | React 19, JSX, Tailwind CSS |
+| Build tooling | Vite 6, PostCSS, Autoprefixer |
+| Routing | React Router 6 |
+| Server state | TanStack React Query 5 |
+| Client state | Zustand 5 |
+| HTTP | Axios |
+| Maps | Leaflet |
 
-- Node.js 20+ recommended
-- npm 10+ recommended
-- A running ShilpoHubBD backend for API-backed features
+## Application areas
 
-Do not reuse `node_modules` copied from another operating system. Run a clean install on the machine where the frontend will execute.
+Public visitors can browse heritage districts, villages, crafts, producers, products, tourism content, academy content, research material, auctions, and platform information.
 
-## Installation
+Authenticated users receive a workspace based on their backend role:
+
+| Role | Primary workspace | Account creation |
+| --- | --- | --- |
+| Customer | Marketplace, orders, returns, community, heritage collections, and AI shopping | Self-registration |
+| Producer | Products, inventory, orders, auctions, partnerships, support, sustainability, and live commerce | Self-registration |
+| Business Partner | Procurement, contracts, supplier discovery, partnerships, investment, and analytics | Self-registration |
+| Tourist | Heritage discovery, maps, routes, bookings, passport, and AI trip planning | Self-registration |
+| Heritage Academy Member | Courses, mentors, live classes, assessments, and certificates | Self-registration |
+| Heritage Innovation Hub | Research, heritage database, field work, publications, experiments, and knowledge graph | Self-registration |
+| Government & NGO | Organization profile, artisan support, policy compliance, funding, monitoring, and reports | Super Admin provisioned |
+| Logistics Partner | Assigned shipments, pickups, warehouses, stock, routes, returns, and tracking | Super Admin provisioned |
+| Super Admin | Users, moderation, content, marketplace governance, logistics, security, and reporting | Existing Super Admin provisioned |
+
+Government/NGO, Logistics Partner, and Super Admin roles are intentionally excluded from public registration. A Super Admin creates these accounts and provides their initial credentials.
+
+## Prerequisites
+
+- Node.js 20 or later
+- npm 10 or later
+- The ShilpoHubBD backend running on port `5065`
+- Heritage RAG and Product Search RAG when using AI-backed features
+
+Install dependencies on the same operating system that will run the project. Do not reuse a `node_modules` directory copied from another environment.
+
+## Quick start
+
+From the repository root, the recommended command starts the backend, frontend, and both RAG services:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\run-all.ps1
+```
+
+The launcher checks environment files and dependencies, replaces previous project listeners, starts each service, writes logs to `.run-logs`, and waits for health checks.
+
+| Service | Default URL |
+| --- | --- |
+| Frontend | `http://localhost:5173` |
+| Backend Swagger | `http://localhost:5065/swagger` |
+| Heritage RAG | `http://localhost:8000` |
+| Product Search RAG | `http://localhost:8001` |
+
+To run only the frontend:
 
 ```bash
+cd frontend
 npm ci
-```
-
-If you intentionally change dependencies, use `npm install` and commit the resulting `package-lock.json` change.
-
-## Environment configuration
-
-Create a local `.env` file when you need to override the API URL.
-
-```env
-VITE_API_BASE_URL=http://localhost:5000/api
-```
-
-`VITE_API_BASE_URL` must contain the backend API base path. Do not put backend secrets, database credentials, signing keys, or other private values in frontend environment variables.
-
-The runtime configuration in `src/config/runtime.js` normalizes the API base URL and provides the development fallback. Production deployments should set `VITE_API_BASE_URL` explicitly.
-
-## Run locally
-
-```bash
 npm run dev
 ```
 
-Vite will print the local development URL in the terminal.
+## Environment configuration
 
-## Production build
+Copy the example when `frontend/.env` does not exist:
 
-```bash
-npm run build
+```powershell
+Copy-Item .env.example .env
 ```
 
-Preview a completed production build with:
-
-```bash
-npm run preview
+```env
+VITE_API_BASE_URL=http://localhost:5065/api
 ```
 
-## Source validation
+The URL must include the backend `/api` base path. Runtime normalization and fallback behavior live in `src/config/runtime.js`.
 
-```bash
-npm run lint
+Every `VITE_*` value is embedded in the browser bundle. Never place database credentials, JWT signing keys, or private API keys in frontend environment files.
+
+## Commands
+
+Run commands from `frontend/`:
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Create an optimized build in `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run deterministic source validation |
+| `npm run check` | Run source validation and the production build |
+| `npm run test:admin` | Run admin contract checks |
+| `npm run test:launch` | Run launch-critical cross-layer contract checks |
+
+`scripts/validate-source.mjs` checks syntax, imports, accessibility basics, broken route patterns, hard-coded development URLs, unsafe image handling, debugging statements, and unfinished-code markers. Contract scripts validate important assumptions against frontend and backend source. These checks complement browser and API integration testing; they do not replace it.
+
+## Project structure
+
+```text
+frontend/
+├── public/                 Static images and public assets
+├── scripts/                Validation, contract tests, and UI fixtures
+├── src/
+│   ├── components/         Shared UI, layouts, navigation, and feature controls
+│   ├── config/             Runtime configuration
+│   ├── contexts/           Theme and other React contexts
+│   ├── data/               Navigation and presentation configuration
+│   ├── hooks/              React Query and reusable behavior hooks
+│   ├── layouts/            Public, authentication, and dashboard shells
+│   ├── lib/                Query client and shared infrastructure
+│   ├── pages/              Route-level screens grouped by domain
+│   ├── routes/             Routes, paths, and access guards
+│   ├── services/           API clients and Axios interceptors
+│   ├── stores/             Zustand state, including authentication
+│   ├── styles/             Global styles and design tokens
+│   └── utils/              Role, JWT, validation, storage, and error helpers
+├── .env.example
+├── package.json
+├── tailwind.config.js
+└── vite.config.js
 ```
 
-This repository uses `scripts/validate-source.mjs` as a deterministic source-level QA check. It validates frontend source files for syntax/import problems and common development leftovers such as inaccessible standard form controls, hard-coded localhost URLs in application source, raw broken-image handling, dead `#` links, `alert()`, `console.log`, `debugger`, and TODO/FIXME markers.
+## Architecture and data flow
 
-This command is not a substitute for browser/E2E testing, but it is designed to catch common regressions without requiring a project-wide ESLint migration.
+Pages compose shared components and call feature hooks. Hooks use service modules, and services send requests through the shared Axios client.
 
-## Frontend architecture
+```text
+Page or component
+      ↓
+React Query hook
+      ↓
+Feature service
+      ↓
+Shared Axios client and interceptors
+      ↓
+ASP.NET Core API
+```
 
-Important areas under `src/`:
+Use this flow for API-backed features. Avoid page-specific Axios instances, hard-coded URLs, direct database access, or frontend-only copies of backend business rules.
 
-- `components/` — reusable UI, layout, navigation, cards, async states, safe images, and shared controls
-- `pages/` — route-level screens grouped by application domain
-- `routes/` — route definitions, protected routes, role gates, and route error handling
-- `services/` — API modules that map frontend features to backend endpoints
-- `hooks/` — React Query hooks and feature-level reusable behavior
-- `store/` — persisted/global client state such as authentication
-- `config/` — runtime configuration
-- `lib/` / `utils/` — query client, validation, API helpers, JWT helpers, and other shared utilities
+TanStack React Query owns API data, loading states, caching, invalidation, and mutation refresh behavior. Query keys must identify the resource and parameters that affect it. Zustand stores only cross-component client state such as authentication; business records belong in the backend and query cache.
 
-## API integration
+## Authentication and multi-tab role sessions
 
-All normal API traffic should go through the shared Axios/API client rather than creating page-specific Axios instances or hard-coding backend URLs.
+Authentication is stored in `sessionStorage`, so each browser tab has an independent login. Multiple ShilpoHubBD roles can remain open simultaneously—for example, Customer, Producer, Government/NGO, Logistics Partner, and Super Admin in separate tabs.
 
-The shared layer handles:
+To open another workspace:
 
-- API base URL resolution
-- request timeout behavior
-- authentication headers
-- token refresh handling
-- consistent API error extraction
-- invalid/expired session cleanup
+1. Open the profile menu in an authenticated workspace.
+2. Select **Open another role tab**.
+3. Sign in with the credentials for the other role.
 
-When adding a feature, treat the ASP.NET backend controller/DTO contract as the source of truth. Do not create mock endpoints to make a UI appear functional.
+The new tab uses `noopener` and fresh tab storage. Login, logout, token refresh, active-role switching, API authorization, and user-specific query data remain isolated. Theme and sidebar preferences remain browser-wide because they are not credentials.
 
-## Authentication and authorization
+The shared Axios interceptor:
 
-Authentication state is managed centrally and protected routes wait for initial session validation before showing private content.
+- attaches the current tab's access token;
+- coordinates concurrent refresh requests inside that tab;
+- retries queued requests with the refreshed token;
+- clears only the current tab when refresh fails; and
+- redirects expired sessions to login.
 
-Role-specific UI should use the existing route/role guards. Client-side role checks are only a UX layer; the backend remains responsible for authorization enforcement.
+Frontend role checks control navigation and presentation. Backend authorization remains the security boundary.
 
-Logout and invalid-session handling clear user-specific cached data so one account cannot see stale data from a previous session.
+## Routing and workspaces
 
-## Data fetching states
+`src/routes/router.jsx` defines public, authenticated, and role-restricted branches. `src/routes/routePaths.js` is the canonical path registry. Role names and workspace landing routes live in `src/utils/roles.js`; sidebars live in `src/data/navigation.js`.
 
-API-driven pages should explicitly handle:
+When adding a route:
 
-1. loading
-2. error
-3. empty/unavailable
-4. successful data
+1. Add or reuse its canonical path.
+2. Register the page in the correct router branch.
+3. Apply the existing authentication or role guard.
+4. Add navigation only when the route and API action work.
+5. Provide loading, error, empty, unauthorized, and not-found states.
 
-Use existing shared async-state components where appropriate instead of returning a blank page or leaving a permanent spinner.
+## Key integrated workflows
 
-## Forms
+### Marketplace and orders
 
-Forms should include:
+The customer marketplace uses real product, cart, checkout, order, payment, return, refund, review, auction, and tracking APIs. The backend validates stock, ownership, order transitions, delivery availability, and money values.
 
-- accessible labels or accessible names
-- logical client-side validation
-- backend validation/error feedback
-- disabled/loading submit state
-- duplicate-submit protection
-- explicit successful completion behavior
+### Logistics
 
-Backend validation remains authoritative.
+Super Admin manages official logistics companies, operator credentials, service coverage, delivery methods, ETA, charges, activation, performance, and revenue. Logistics operators cannot self-register or change company coverage.
 
-## Images
+Checkout queries active coverage for the selected district and area. The backend validates the selected service again, creates a shipment, records tracking history, and persists the 30% ShilpoHub logistics share and partner remainder. Customers see status and history from stored shipment events.
 
-Use the shared safe-image behavior for remote/backend-provided images so missing or invalid URLs do not leave browser broken-image UI. Do not hard-code machine-specific asset paths.
+### Government and artisan support
 
-## Routing
+Government/NGO accounts are created by Super Admin. Their workspace includes organization data, artisan-support cases, inspections, evidence, monitoring, reports, policy tools, complaints, and funding.
 
-The router contains public, authenticated, and role-restricted areas. When adding a page:
+### Heritage, tourism, academy, and research
 
-- add the route in the appropriate authenticated/public branch
-- use role protection when the backend endpoint requires a role
-- avoid links to routes that do not exist
-- provide meaningful invalid-resource and error states
+Public and authenticated experiences share backend content. Role workspaces add bookings, heritage passports, learning progress, assessments, certificates, field research, datasets, knowledge graphs, and AI-assisted discovery.
 
-## Live commerce integration
+### Messaging and notifications
 
-Live-shopping/workshop screens are backed by the real Live Events API. Producer management uses the authenticated producer-scoped `GET /api/live-events/mine` endpoint added to the backend while preserving the existing public API contracts.
+Messaging and notifications use authenticated APIs and shared components. User-specific cached data is cleared when the current tab changes or ends its session.
 
-The UI intentionally does not display a fake video player because the current backend live-event contract does not provide a stream URL/media stream contract.
+## UI and accessibility conventions
 
-## Theme and responsive layout
+- Reuse components from `src/components/ui` and existing domain components.
+- Use shared design tokens instead of introducing isolated color systems.
+- Give every form control a visible label or accessible name.
+- Preserve keyboard focus, Escape behavior, and modal focus handling.
+- Use shared async-state and error-feedback patterns.
+- Use the safe-image component for backend or remote images.
+- Verify layouts near 320, 375, 425, 768, 1024, and 1366+ pixel widths.
+- Disable submissions while mutations are pending and show backend errors.
 
-The application keeps the existing ShilpoHubBD design language and uses shared Tailwind/design-token behavior for light/dark appearance. Dashboard navigation collapses into a mobile-friendly drawer rather than forcing desktop sidebar columns onto narrow displays.
+## Adding a frontend feature
 
-When adding new UI, verify at minimum around 320, 375, 425, 768, 1024 and 1366+ pixel widths.
+1. Inspect the related backend entity, DTO, controller, service, and authorization.
+2. Reuse existing services, hooks, components, and route patterns.
+3. Add or extend the service method for the real endpoint.
+4. Add a React Query hook with stable keys and focused invalidation.
+5. Build complete loading, error, empty, form, and success states.
+6. Add the route and role guard.
+7. Add focused contract coverage for critical cross-layer assumptions.
+8. Run verification and exercise the workflow against the real backend.
 
-## Important development rules
-
-- Do not hard-code API URLs inside pages/components.
-- Do not expose secrets in `VITE_*` variables.
-- Do not replace backend data with mock data in production UI.
-- Do not add controls without an implemented action.
-- Do not silently swallow mutation errors.
-- Do not trust client-side authorization as the security boundary.
-- Prefer existing components/services/hooks before duplicating functionality.
-
-## Verification before merging
-
-Run:
+## Production deployment
 
 ```bash
 npm ci
-npm run lint
-npm run build
+npm run check
 ```
 
-Then manually verify the important flows relevant to the change, including authentication, protected navigation, backend failure states, mobile layout, and the affected create/update/delete or commerce flow.
+Deploy `dist/` through a static host or reverse proxy with SPA fallback so client-side paths return `index.html`. Set `VITE_API_BASE_URL` at build time and configure backend CORS for the frontend origin. Do not deploy the Vite development server as the production server.
 
-If `npm ci` or the production build fails because `node_modules` was copied from a different OS, delete `node_modules` and perform a clean install on the current platform.
+## Troubleshooting
+
+### The same login appears in every tab
+
+Refresh each tab once after upgrading from an older build. The app removes the former browser-wide auth entry and uses tab-scoped storage. Use **Open another role tab** for additional logins.
+
+### API requests fail
+
+Confirm that `VITE_API_BASE_URL` ends in `/api`, the backend is available, and the browser reports no CORS error. With the default environment, Swagger loads at `http://localhost:5065/swagger`.
+
+### A protected page redirects to unauthorized
+
+Confirm the account's backend role and the active role in that tab. Admin-provisioned workspaces also require the related organization or logistics company to be active and approved.
+
+### The build cannot access `node_modules`
+
+From `frontend/`, confirm the target and reinstall dependencies:
+
+```powershell
+Remove-Item -LiteralPath .\node_modules -Recurse -Force
+npm ci
+```
+
+### AI features are unavailable
+
+Check both RAG health endpoints and `.run-logs`. The rest of the application can remain available while an AI service shows an error state.
+
+## Verification checklist
+
+Before merging:
+
+```bash
+npm run check
+npm run test:admin
+npm run test:launch
+```
+
+Then verify the affected workflow against the real backend, including authorization failure, loading, empty, error, success, and responsive states. For authentication changes, verify two accounts in separate tabs.
+
+## Development principles
+
+- Reuse existing architecture before creating parallel abstractions.
+- Treat backend DTOs and authorization policies as the contract source of truth.
+- Keep secrets and sensitive business logic out of the browser bundle.
+- Persist real workflows through APIs rather than mock state.
+- Preserve historical financial and tracking records.
+- Keep public registration limited to approved self-registerable roles.
+- Add only controls whose actions are implemented and authorized.
+- Validate critical workflows across frontend, API, and database boundaries.

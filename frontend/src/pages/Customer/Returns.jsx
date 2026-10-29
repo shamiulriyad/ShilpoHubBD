@@ -27,12 +27,13 @@ export default function Returns() {
             <Link
               key={order.id}
               to={routePaths.customerOrderDetails.replace(':orderId', order.id)}
-              className="flex flex-wrap items-center justify-between gap-3 p-4 transition hover:bg-background/40"
+              onClick={(event) => { if (order.isDemo) event.preventDefault(); }}
+              className={`flex flex-wrap items-center justify-between gap-3 p-4 transition hover:bg-background/40 ${order.isDemo ? 'cursor-default' : ''}`}
             >
               <div>
                 <p className="text-sm font-medium text-heading">{order.orderNumber}</p>
                 <p className="text-xs text-body/60">
-                  {order.itemCount} item{order.itemCount > 1 ? 's' : ''} · ৳ {order.total.toLocaleString()}
+                  {order.itemCount} item{order.itemCount > 1 ? 's' : ''} · ৳ {order.total.toLocaleString()}{order.reason ? ` · ${order.reason}` : ''}
                 </p>
               </div>
               <Badge tone={statusTone[order.status] || 'neutral'}>{order.status}</Badge>

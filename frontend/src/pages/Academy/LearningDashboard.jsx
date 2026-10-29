@@ -38,7 +38,7 @@ export default function LearningDashboard() {
             />
           ))}
           {inProgress.length === 0 && (
-            <p className="col-span-full text-sm text-body/60">You're not enrolled in any courses yet.</p>
+            <p className="col-span-full rounded-xl border border-dashed border-border bg-surface p-6 text-sm text-muted">{enrollments.length ? 'You have completed all your enrolled courses. Browse the catalog to keep learning.' : "You're not enrolled in any courses yet. Browse the course catalog to get started."}</p>
           )}
         </div>
       </AsyncState>

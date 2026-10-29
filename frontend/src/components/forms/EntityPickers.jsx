@@ -1,4 +1,7 @@
 import { useSupplierSearch } from '../../hooks/useSupplierDiscovery';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supplierDiscoveryService } from '../../services/supplierDiscoveryService';
 import { useMyProducts, useProducts } from '../../hooks/useProducts';
 
 // Pickers for records people used to have to paste in as raw GUIDs ("Producer ID", "Product ID").
@@ -44,30 +47,57 @@ export function ProducerSelect({ id = 'producer-select', label = 'Producer', val
   );
 }
 
-// Several producers at once (Compare Producers). Renders checkboxes, keeps `value` an array of ids.
+// Search the directory in bounded pages; retain the shortlist across searches.
 export function ProducerMultiSelect({ value, onChange, max = 6 }) {
-  const { query, options } = useProducerOptions();
-  const toggle = (id) => {
-    if (value.includes(id)) onChange(value.filter((v) => v !== id));
-    else if (value.length < max) onChange([...value, id]);
+  const [search, setSearch] = useState('');
+  const [term, setTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [selectedNames, setSelectedNames] = useState({});
+  useEffect(() => {
+    const timer = setTimeout(() => { setTerm(search.trim()); setPage(1); }, 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+  const query = useQuery({
+    queryKey: ['producer-picker', term, page],
+    queryFn: () => supplierDiscoveryService.search({ search: term || undefined, page, pageSize: 8 }),
+  });
+  const options = query.data?.items || [];
+  const total = query.data?.totalCount || 0;
+  const totalPages = Math.max(1, Math.ceil(total / 8));
+  const add = (producer) => {
+    if (value.includes(producer.producerId) || value.length >= max) return;
+    setSelectedNames((names) => ({ ...names, [producer.producerId]: producer.producerName }));
+    onChange([...value, producer.producerId]);
   };
-  if (query.isLoading) return <p className="text-sm text-body/60">Loading producers…</p>;
-  if (query.isError) return <p role="alert" className="text-sm text-error">Could not load producers. Please try again.</p>;
-  if (options.length === 0) return <p className="text-sm text-body/60">No producers found.</p>;
   return (
-    <fieldset>
-      <legend className="mb-2 text-sm font-medium text-heading">Choose 2 to {max} producers ({value.length} selected)</legend>
-      <div className="grid gap-2 sm:grid-cols-2">
-        {options.map((o) => {
-          const checked = value.includes(o.id);
-          const blocked = !checked && value.length >= max;
-          return (
-            <label key={o.id} className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm ${checked ? 'border-primary bg-primary/5' : 'border-border bg-surface'} ${blocked ? 'opacity-50' : ''}`}>
-              <input type="checkbox" checked={checked} disabled={blocked} onChange={() => toggle(o.id)} />
-              <span>{o.label}</span>
-            </label>
-          );
-        })}
+    <fieldset className="producer-picker">
+      <legend className="sr-only">Choose 2 to {max} producers</legend>
+      <div className="producer-shortlist">
+        <div className="supplier-filter-heading"><h2>Comparison shortlist</h2><span aria-live="polite">{value.length} / {max} selected</span></div>
+        <p className="text-sm text-body/70">Find producers below and add 2 to {max} to compare.</p>
+        <div className="producer-shortlist-chips">
+          {value.map((id) => <button key={id} type="button" onClick={() => onChange(value.filter((item) => item !== id))} aria-label={`Remove ${selectedNames[id] || 'producer'}`}><span>{selectedNames[id] || 'Selected producer'}</span><span aria-hidden="true">×</span></button>)}
+          {value.length === 0 && <span className="text-sm text-body/60">Your shortlist is empty.</span>}
+        </div>
+        {value.length >= max && <p role="status" className="text-xs text-primary">Shortlist full. Remove a producer to add another.</p>}
+      </div>
+      <div className="producer-directory">
+        <label htmlFor="comparison-producer-search" className="mb-2 block text-sm font-semibold text-heading">Search the producer directory</label>
+        <input id="comparison-producer-search" type="search" placeholder="Search by producer or workshop name" value={search} onChange={(event) => setSearch(event.target.value)} className={fieldClass} />
+        <div className="producer-directory-results" aria-busy={query.isFetching}>
+          {query.isLoading ? <p role="status">Finding producers…</p> : query.isError ? <div role="alert">Could not load producers. <button type="button" onClick={() => query.refetch()} className="text-primary underline">Try again</button></div> : options.length === 0 ? <p>No producers found. Try another name.</p> : options.map((producer) => {
+            const selected = value.includes(producer.producerId);
+            return <div key={producer.producerId} className="producer-directory-row">
+              <span className="supplier-avatar" aria-hidden="true">{(producer.producerName || 'P').slice(0, 1).toUpperCase()}</span>
+              <div className="min-w-0 flex-1"><p className="font-semibold text-heading">{producer.producerName}</p><p className="text-xs text-body/70">{[producer.workshopName, producer.primaryCraft, producer.districtName].filter(Boolean).join(' · ') || `${producer.productCount ?? 0} listed products`}</p></div>
+              <button type="button" disabled={selected || value.length >= max || query.isFetching} onClick={() => add(producer)}>{selected ? 'Added' : '+ Add'}</button>
+            </div>;
+          })}
+        </div>
+        <div className="producer-directory-pagination">
+          <span>{query.isLoading ? 'Loading…' : `Page ${page} of ${totalPages} · ${total.toLocaleString()} producers`}</span>
+          <div><button type="button" disabled={page <= 1 || query.isFetching} onClick={() => setPage(page - 1)}>Previous</button><button type="button" disabled={page >= totalPages || query.isFetching} onClick={() => setPage(page + 1)}>Next</button></div>
+        </div>
       </div>
     </fieldset>
   );

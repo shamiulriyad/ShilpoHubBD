@@ -1,6 +1,16 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { resolveActiveRole } from '../utils/roles';
+
+const LEGACY_AUTH_STORAGE_KEY = 'shilpohub-auth';
+const TAB_AUTH_STORAGE_KEY = 'shilpohub-auth-tab';
+
+const tabSessionStorage = () => {
+  // Older builds kept credentials in localStorage, which made every browser tab share
+  // one login. Remove that stale browser-wide copy and keep credentials in this tab.
+  try { window.localStorage.removeItem(LEGACY_AUTH_STORAGE_KEY); } catch { /* Storage may be disabled. */ }
+  return window.sessionStorage;
+};
 
 export const useAuthStore = create(
   persist(
@@ -55,7 +65,8 @@ export const useAuthStore = create(
       },
     }),
     {
-      name: 'shilpohub-auth',
+      name: TAB_AUTH_STORAGE_KEY,
+      storage: createJSONStorage(tabSessionStorage),
       partialize: (state) => ({
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
