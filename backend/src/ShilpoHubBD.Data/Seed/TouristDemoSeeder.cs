@@ -23,13 +23,17 @@ public static class TouristDemoSeeder
         }
 
         var now = DateTime.UtcNow;
-        var places = await context.HeritagePlaces
-            .Where(p => p.IsActive)
+        // One place per district, picked in memory: EF Core cannot translate GroupBy(..).Select(g => g.OrderBy(..).First())
+        // followed by OrderBy/Take ("EmptyProjectionMember"), which crashed startup.
+        var places = (await context.HeritagePlaces
+                .Where(p => p.IsActive)
+                .OrderBy(p => p.Name)
+                .ToListAsync(cancellationToken))
             .GroupBy(p => p.DistrictId)
-            .Select(group => group.OrderBy(p => p.Name).First())
+            .Select(group => group.First())
             .OrderBy(p => p.Name)
             .Take(7)
-            .ToListAsync(cancellationToken);
+            .ToList();
 
         var existingPlaceIds = await context.HeritageCheckIns
             .Where(c => c.UserId == tourist.Id)

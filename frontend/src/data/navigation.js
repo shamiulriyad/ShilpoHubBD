@@ -22,6 +22,7 @@ export const megaMenus = {
       { label: 'Producers', description: 'Artisans, farmers & makers', path: routePaths.exploreProducers },
       { label: 'UNESCO Heritage', description: 'Recognized intangible heritage', path: routePaths.exploreUnesco },
       { label: 'Digital Museum', description: 'Curated heritage collections', path: routePaths.exploreMuseum },
+      { label: 'Performing Arts', description: 'Folk music, theatre, dance & oral traditions', path: routePaths.explorePerformingArts },
     ],
   },
   marketplace: {

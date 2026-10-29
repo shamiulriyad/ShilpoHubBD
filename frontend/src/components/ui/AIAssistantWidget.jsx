@@ -130,6 +130,7 @@ async function requestHeritageAnswer(question) {
     answer: data.answer,
     source: data.sources?.length ? data.sources : undefined,
     category: data.category,
+    links: Array.isArray(data.links) ? data.links.filter((link) => typeof link?.url === 'string' && /^\/(?!\/)/.test(link.url)) : [],
   };
 }
 
@@ -172,6 +173,25 @@ function AnswerMeta({ source, category, confidence }) {
         </div>
       ))}
     </dl>
+  );
+}
+
+/** In-site records an answer was drawn from (e.g. performing-arts detail pages). Only relative paths are rendered. */
+function AnswerLinks({ links }) {
+  if (!links?.length) return null;
+  return (
+    <ul className="mt-3 flex flex-wrap gap-2" aria-label="Related heritage records">
+      {links.map((link) => (
+        <li key={link.url}>
+          <Link
+            to={link.url}
+            className="inline-flex items-center rounded-full border border-teal-200 bg-white px-3 py-1 text-xs font-semibold text-teal-800 transition hover:border-teal-400 hover:bg-teal-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/30"
+          >
+            {link.title} →
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -230,9 +250,10 @@ function MessageBubble({ message }) {
           isError ? 'bg-rose-50 ring-1 ring-rose-100' : 'bg-gray-100/80'
         }`}
       >
-        <p className={`text-sm leading-relaxed ${isError ? 'text-rose-700' : 'text-gray-700'}`}>
+        <p className={`whitespace-pre-line text-sm leading-relaxed ${isError ? 'text-rose-700' : 'text-gray-700'}`}>
           {message.text}
         </p>
+        <AnswerLinks links={message.links} />
         <AnswerMeta source={message.source} category={message.category} confidence={message.confidence} />
       </div>
     </li>
@@ -346,6 +367,7 @@ export default function AIAssistantWidget() {
         text: reply.answer,
         source: reply.source,
         category: reply.category,
+        links: reply.links,
         tone: reply.tone,
       },
     ]);

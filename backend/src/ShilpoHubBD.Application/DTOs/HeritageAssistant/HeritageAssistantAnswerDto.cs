@@ -12,4 +12,13 @@ public class HeritageAssistantAnswerDto
     // (e.g. "craftDetails.json"), Category is the detected question type (e.g. "craft_location").
     public List<string> Sources { get; set; } = new();
     public string? Category { get; set; }
+
+    /// <summary>In-site pages the answer was drawn from (e.g. performing-arts detail pages).</summary>
+    public List<HeritageAssistantLinkDto> Links { get; set; } = new();
+}
+
+public class HeritageAssistantLinkDto
+{
+    public string Title { get; set; } = string.Empty;
+    public string Url { get; set; } = string.Empty;
 }
